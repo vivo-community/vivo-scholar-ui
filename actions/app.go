@@ -13,8 +13,8 @@ import (
 
 	vq "github.com/vivo-community/vivo-graphql"
 
-	"os"
 	"fmt"
+	"os"
 )
 
 // ENV is used to help switch settings based on where the
@@ -57,6 +57,8 @@ func App() *buffalo.App {
 		app.Use(translations())
 
 		app.GET("/", HomeHandler)
+		app.GET("/person", PersonHandler)
+
 		if err := vq.EstablishElasticIndexer("https://elasticsearch-ads-graphql-elastic.cloud.duke.edu/"); err != nil {
 			fmt.Printf("could not establish elastic client %s\n", err)
 			os.Exit(1)
