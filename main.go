@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 
-	"vivo_scholar/actions"
+	"github.com/OIT-ADS-Web/vivo-scholar/actions"
 )
 
 // main is the starting point for your Buffalo application.
