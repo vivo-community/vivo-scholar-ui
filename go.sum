@@ -680,6 +680,8 @@ github.com/unrolled/secure v1.0.0/go.mod h1:mnPT77IAdsi/kV7+Es7y+pXALeV3h7G6dQF6
 github.com/vivo-community/vivo-graphql v0.0.0-20190415164051-a577d20e5bd0 h1:jNBun3V3t1IgKxhYbT7rJ7c3ACAbucecsV/xUbjj7/Y=
 github.com/vivo-community/vivo-graphql v0.0.0-20190419175640-5f3be3721d99 h1:6kn5nYaNi7Jhf9pvAzNr8D5v8ZFe8XXNowHkh6+B7Cg=
 github.com/vivo-community/vivo-graphql v0.0.0-20190419175640-5f3be3721d99/go.mod h1:KFc9JcB3HNf1BwCKn0BQ+O8eX1HYQWdSWrZsMuKaCtM=
+github.com/vivo-community/vivo-graphql v0.0.0-20190419201132-2bbef763231f h1:LUVFGpzylxA3HWYwyNOOZBJ//7UzytSb/GnnQkzKU8Q=
+github.com/vivo-community/vivo-graphql v0.0.0-20190419201132-2bbef763231f/go.mod h1:KFc9JcB3HNf1BwCKn0BQ+O8eX1HYQWdSWrZsMuKaCtM=
 github.com/xeipuuv/gojsonpointer v0.0.0-20180127040702-4e3ac2762d5f h1:J9EGpcZtP0E/raorCMxlFGSTBrsSlaDGf3jU/qvAE2c=
 github.com/xeipuuv/gojsonpointer v0.0.0-20180127040702-4e3ac2762d5f/go.mod h1:N2zxlSyiKSe5eX1tZViRH5QA0qijqEDrYZiPEAiq3wU=
 github.com/xeipuuv/gojsonreference v0.0.0-20180127040603-bd5ef7bd5415 h1:EzJWgHovont7NscjpAxXsDA8S8BMYve8Y5+7cuRE7R0=

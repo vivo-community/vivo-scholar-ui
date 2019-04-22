@@ -15,5 +15,5 @@ require (
 	github.com/gobuffalo/plush v3.7.34+incompatible
 	github.com/gobuffalo/suite v2.6.2+incompatible
 	github.com/unrolled/secure v1.0.0
-	github.com/vivo-community/vivo-graphql v0.0.0-20190419175640-5f3be3721d99
+	github.com/vivo-community/vivo-graphql v0.0.0-20190419201132-2bbef763231f
 )

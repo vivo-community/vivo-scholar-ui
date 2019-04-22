@@ -65,6 +65,7 @@ func App() *buffalo.App {
 		}
 		handler := vq.MakeGraphqlHandler()
 		app.Mount("/api", handler)
+		app.GET("/{type}/{id}", EntityPageHandler)
 
 		app.ServeFiles("/", assetsBox) // serve files from the public directory
 	}
