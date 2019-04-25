@@ -1,6 +1,7 @@
 package actions
 
 import (
+	"github.com/OIT-ADS-Web/vivo-scholar/helpers"
 	"github.com/gobuffalo/buffalo/render"
 	"github.com/gobuffalo/packr/v2"
 )
@@ -19,6 +20,7 @@ func init() {
 
 		// Add template helpers here:
 		Helpers: render.Helpers{
+			"FormatDateTime": helpers.FormatDateTime,
 			// uncomment for non-Bootstrap form helpers:
 			// "form":     plush.FormHelper,
 			// "form_for": plush.FormForHelper,

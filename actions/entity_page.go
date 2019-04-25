@@ -32,9 +32,6 @@ func EntityPageHandler(c buffalo.Context) error {
 		"id": entity_id,
 	}
 	results := vq.ExecuteQueryWithParams(query, schema, variables)
-	log.Print(results)
-
 	c.Set("data", results.Data)
-
 	return c.Render(200, r.HTML(view_template_path))
 }

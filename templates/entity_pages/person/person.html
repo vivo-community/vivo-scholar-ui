@@ -1,3 +1,17 @@
-<h1>Person Page</h1>
-<p><%= inspect(data) %></p>
-<p><%= data["person"]["name"]["firstName"] %></p>
+<h2>
+    <%= data["person"]["name"]["firstName"] %>
+    <%= data["person"]["name"]["middleName"] %>
+    <%= data["person"]["name"]["lastName"] %>
+</h2>
+<h3><%= data["person"]["primaryTitle"] %></h3>
+<img src="<%= data["person"]["image"]["thumbnail"] %>">
+<section class="affiliation-list">
+  <ul>
+      <%= for (a) in data["person"]["affliationList"] { %>
+        <div class="affiliation">
+            <span class="affiliation-label"><%= a["label"] %></span>
+            <span class="date"><%= FormatDateTime(a["startDate"]) %></span>
+        </div>
+      <% } %>
+  </ul>
+</section>
