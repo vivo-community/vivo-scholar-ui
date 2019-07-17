@@ -1,0 +1,18 @@
+query($pageSize: Int!, $pageNumber: Int!) {
+    personsPaged(paging: {
+        pageNumber: $pageNumber, pageSize: $pageSize,
+        sort:{ 
+          orders: [{direction: ASC, property:"name"}]
+        }
+    })
+      {
+      content {
+        id
+        name
+        thumbnail
+      }
+      page {
+        totalPages
+      }
+    }
+}

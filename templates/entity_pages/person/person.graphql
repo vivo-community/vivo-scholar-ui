@@ -1,6 +1,10 @@
 query($id: String!) {
   person(id: $id) {
     name
+    thumbnail
+    positions {
+      type
+    }
     selectedPublications {
       id
       title

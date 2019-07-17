@@ -1,0 +1,10 @@
+query($id: String!) {
+  documentById(id: $id) {
+    type
+    title
+    authors {
+      id
+      label
+    }
+  }
+}
