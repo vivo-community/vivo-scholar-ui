@@ -15,6 +15,8 @@ require (
 	github.com/gobuffalo/packr/v2 v2.4.0
 	github.com/gobuffalo/plush v3.8.2+incompatible
 	github.com/gobuffalo/suite v2.7.0+incompatible
+	github.com/machinebox/graphql v0.2.2
+	github.com/matryer/is v1.2.0 // indirect
 	github.com/unrolled/secure v1.0.0
 	github.com/vivo-community/vivo-graphql v0.0.0-20190419201132-2bbef763231f
 )

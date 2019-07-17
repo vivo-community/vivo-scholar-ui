@@ -1,17 +1,11 @@
 <h2>
-    <%= data["person"]["name"]["firstName"] %>
-    <%= data["person"]["name"]["middleName"] %>
-    <%= data["person"]["name"]["lastName"] %>
+   <%= data["person"]["name"] %>
 </h2>
-<h3><%= data["person"]["primaryTitle"] %></h3>
-<img src="<%= data["person"]["image"]["thumbnail"] %>">
-<section class="affiliation-list">
-  <ul>
-      <%= for (a) in data["person"]["affliationList"] { %>
-        <div class="affiliation">
-            <span class="affiliation-label"><%= a["label"] %></span>
-            <span class="date"><%= FormatDateTime(a["startDate"]) %></span>
-        </div>
-      <% } %>
-  </ul>
+<ul>
+<section class="publication-list">
+<%= for (p) in data["person"]["selectedPublications"] { %>
+   <div class="publication">
+   <span class="publication-title"><%= p["title"] %></span>
+   </div>
+<% } %>
 </section>

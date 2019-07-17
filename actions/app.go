@@ -10,11 +10,6 @@ import (
 	csrf "github.com/gobuffalo/mw-csrf"
 	i18n "github.com/gobuffalo/mw-i18n"
 	"github.com/gobuffalo/packr/v2"
-
-	vq "github.com/vivo-community/vivo-graphql"
-
-	"fmt"
-	"os"
 )
 
 // ENV is used to help switch settings based on where the
@@ -57,14 +52,6 @@ func App() *buffalo.App {
 		app.Use(translations())
 
 		app.GET("/", HomeHandler)
-		app.GET("/person", PersonHandler)
-
-		if err := vq.EstablishElasticIndexer("https://elasticsearch-ads-graphql-elastic.cloud.duke.edu/"); err != nil {
-			fmt.Printf("could not establish elastic client %s\n", err)
-			os.Exit(1)
-		}
-		handler := vq.MakeGraphqlHandler()
-		app.Mount("/api", handler)
 		app.GET("/entities/{type}/{id}", EntityPageHandler)
 		app.ServeFiles("/", assetsBox) // serve files from the public directory
 	}

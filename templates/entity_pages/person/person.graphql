@@ -1,22 +1,9 @@
 query($id: String!) {
   person(id: $id) {
-    id
-    name {
-      firstName
-      middleName
-      lastName
-    }
-    primaryTitle
-    affliationList {
+    name
+    selectedPublications {
       id
-      label
-      startDate {
-        dateTime
-        resolution
-      }
-    }
-    image {
-      thumbnail
+      title
     }
   }
 }
