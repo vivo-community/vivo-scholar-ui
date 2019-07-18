@@ -1,6 +1,7 @@
-<h4>People</h4>
+<h4>People (<span><%= data["personsPaged"]["page"]["totalElements"] %>)</span></h4>
 
-<div><%= data["personsPaged"]["page"]["number"] %> of Total Pages: <%= data["personsPaged"]["page"]["totalPages"] %></div>
+<div><%= FloatToInt(data["personsPaged"]["page"]["number"]) + 1 %> of Total Pages: <%= data["personsPaged"]["page"]["totalPages"] %></div>
+
 <ul class="pagination">
     <%= for (index, number) in range(0, FloatToInt(data["personsPaged"]["page"]["totalPages"]) - 1) { %>
         <li class="page-item <%=if (number == FloatToInt(data["personsPaged"]["page"]["number"])) { %>active<% } %>">
