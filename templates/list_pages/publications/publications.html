@@ -14,7 +14,7 @@
     
                    <span class="person-name">
                       <a href="/entities/publication/<%= p["id"] %>">
-                        <%= p["title"] %>
+                        <%= raw(p["title"]) %>
                      </a> 
                    </span>
                </li>
