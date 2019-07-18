@@ -1,11 +1,36 @@
-<h2>
-   <%= data["person"]["name"] %>
-</h2>
-<ul>
-<section class="publication-list">
-<%= for (p) in data["person"]["selectedPublications"] { %>
-   <div class="publication">
-   <span class="publication-title"><%= p["title"] %></span>
+<div class="row">
+   <div class="col-sm"> 
+         <section class="image">
+            <div>
+               <img width="160" src="http://openvivo.org<%= data["person"]["thumbnail"] %>" />
+            </div>
+         </section>
    </div>
+   <div class="col-sm">  
+         <h2><%= data["person"]["name"] %></h2>
+       </div>
+   <div class="col-sm"> 
+         <%= for (p) in data["person"]["positions"] { %>
+            <div class="position row">
+            <span class="position-type"><%= p["type"] %></span>
+            </div>
+         <% } %>
+   </div>
+
+</div>
+
+<h3>Publications</h3>
+<section class="publication-list">
+
+<ul class="list-group">
+<%= for (p) in data["person"]["selectedPublications"] { %>
+   <li class="list-group-item">
+       <span class="publication-title">
+          <a href=/entities/publication/<%= p["id"] %>>
+            <%= p["title"] %>
+         </a> 
+       </span>
+   </li>
 <% } %>
+</ul>
 </section>

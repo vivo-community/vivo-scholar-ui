@@ -1,0 +1,23 @@
+<h4>People</h4>
+
+<div>Total Pages: <%= data["personsPaged"]["page"]["totalPages"] %></div>
+<section class="author-list">
+        <ul class="list-group">
+        <%= for (p) in data["personsPaged"]["content"] { %>
+           <li class="list-group-item">
+
+               <span class="person-name">
+                  <a href="/entities/person/<%= p["id"] %>">
+                    <%= p["name"] %>
+                 </a> 
+               </span>
+               <% if (p["thumbnail"] != "") { %>
+               <img width="90" src="http://openvivo.org<%=p["thumbnail"] %>" />
+               <% } %>
+           </li>
+        <% } %>
+        </ul>
+    </section>
+         
+
+
