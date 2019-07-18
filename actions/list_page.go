@@ -39,7 +39,7 @@ func ListPageHandler(c buffalo.Context) error {
 
 	// just setting for now
 	req.Var("pageSize", 100)
-	pageNumber := 1
+	pageNumber := 0
     pageParameter, err := strconv.Atoi(c.Params().Get("pageNumber"))
 	if err == nil {
 		pageNumber = pageParameter

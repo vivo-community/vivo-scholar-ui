@@ -13,6 +13,8 @@ query($pageSize: Int!, $pageNumber: Int!) {
       }
       page {
         totalPages
+        number
+        size
       }
     }
 }
