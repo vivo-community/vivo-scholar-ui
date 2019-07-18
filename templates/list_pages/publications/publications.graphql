@@ -1,21 +1,21 @@
 query($pageSize: Int!, $pageNumber: Int!) {
-    personsPaged(paging: {
+    documentsPaged(paging: {
         pageNumber: $pageNumber, pageSize: $pageSize,
         sort:{ 
-          orders: [{direction: ASC, property:"name"}]
+          orders: [{direction: ASC, property:"title"}]
         }
     })
       {
       content {
         id
-        name
-        thumbnail
+        title
       }
       page {
         totalElements
         totalPages
         number
         size
+        
       }
     }
 }

@@ -21,6 +21,7 @@ func init() {
 		// Add template helpers here:
 		Helpers: render.Helpers{
 			"FormatDateTime": helpers.FormatDateTime,
+			"FloatToInt": helpers.FloatToInt,
 			// uncomment for non-Bootstrap form helpers:
 			// "form":     plush.FormHelper,
 			// "form_for": plush.FormForHelper,
