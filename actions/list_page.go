@@ -4,7 +4,8 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
-	"strconv"
+	//"net/url"
+	//"strconv"
 
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/plush"
@@ -32,26 +33,27 @@ func ListPageHandler(c buffalo.Context) error {
 		log.Fatal(err)
 	}
 
-	log.Printf("query=%s\n", query)
-
 	client := graphql.NewClient("http://localhost:9000/graphql")
 	req := graphql.NewRequest(query)
+	
+	// how to determine defaults? 
+	req.Var("pageSize", "100")
+	req.Var("pageNumber", "0")
 
-	// just setting for now
-	req.Var("pageSize", 100)
-	pageNumber := 0
-    pageParameter, err := strconv.Atoi(c.Params().Get("pageNumber"))
-	if err == nil {
-		pageNumber = pageParameter
-	}
-	req.Var("pageNumber", pageNumber)
-	// need to add pageNumber, pageSize etc...
+	pageNumber := c.Params().Get("pageNumber")
+	if pageNumber != "" {
+		req.Var("pageNumber", pageNumber)
+	} 
+	pageSize := c.Params().Get("pageSize")
+	if pageSize != "" {
+		req.Var("pageSize", pageSize)
+	} 
+
 	var results map[string]interface{}
 
 	if err := client.Run(ctx, req, &results); err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("data=%#v\n", results)
 	
 	c.Set("data", results)
 	return c.Render(200, r.HTML(viewTemplatePath))
