@@ -1,0 +1,12 @@
+<h2>Relationships</h2>
+<section class="author-list">
+    <ul class="list-group">
+    <%= for (r) in data["relationshipsPaged"]["content"] { %>
+       <li class="list-group-item">
+           <span>
+                <%= r["id"] %>
+           </span>
+       </li>
+    <% } %>
+    </ul>
+</section>
