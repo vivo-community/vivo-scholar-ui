@@ -1,0 +1,33 @@
+query($search: String!, $pageNumber: Int!)  {
+  personsFacetedSearch(
+    facets: [{field: "keywords"}],
+    filters: [],
+    paging: { pageSize:100, pageNumber: $pageNumber,
+        sort:{ 
+          orders: [{direction: ASC, property:"name"}]
+        }  
+    },
+    query: $search
+  ) {
+    content {
+      id
+      name
+      keywords
+    }
+    page {
+        totalElements
+        totalPages
+        number
+        size
+    }
+    facets {
+      field
+      entries {
+        content { 
+          value
+          count 
+        }
+      }
+    }
+  }
+}

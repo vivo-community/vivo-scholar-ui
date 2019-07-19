@@ -15,7 +15,6 @@ query($pageSize: Int!, $pageNumber: Int!) {
         totalPages
         number
         size
-        
       }
     }
 }
