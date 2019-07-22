@@ -1,29 +1,37 @@
-<h4>People (<span><%= data["personsFacetedSearch"]["page"]["totalElements"] %>)</span></h4>
+<%
+ let totalItems = data["personsFacetedSearch"]["page"]["totalElements"]
+ let totalPages = FloatToInt(data["personsFacetedSearch"]["page"]["totalPages"])
+ let currentPage = FloatToInt(data["personsFacetedSearch"]["page"]["number"])
+ let query = search[0]
+ let results = data["personsFacetedSearch"]["content"]
+%>
+<h4>People (<span><%= totalItems %>)</span></h4>
 
-<div><%= FloatToInt(data["personsFacetedSearch"]["page"]["number"]) + 1 %> of Total Pages: <%= data["personsFacetedSearch"]["page"]["totalPages"] %></div>
+<div><%= currentPage + 1 %> of Total Pages: <%= totalPages %></div>
 
-<div>Query: <%= search[0] %></div>
+<div>Query: <%= query %></div>
 <form action="/search/people" method="GET">
     <div class="form-group">
       <label for="search">Search:</label>
       <input type="text" class="form-control" 
-      id="search" name="search" placeholder="search..." value="<%= search[0] %>">
+      id="search" name="search" placeholder="search..." value="<%= query %>">
     </div>
 </form>
 
 <ul class="pagination">
-    <%= for (index, number) in range(0, FloatToInt(data["personsFacetedSearch"]["page"]["totalPages"]) - 1) { %>
-        <li class="page-item <%=if (number == FloatToInt(data["personsFacetedSearch"]["page"]["number"])) { %>active<% } %>">
+    <%= for (index, number) in range(0, totalPages - 1) { %>
+        <li class="page-item <%=if (number == currentPage) { %>active<% } %>">
             <a class="page-link" href="?pageNumber=<%= number %>&search=<%= search[0] %>"><%= number + 1 %></a>
         </li>
     <% } %>
 </ul> 
+
 <section class="person-list">
     <div class="row">
       <div class="col-sm"> 
 
         <ul class="list-group">
-        <%= for (p) in data["personsFacetedSearch"]["content"] { %>
+        <%= for (p) in results { %>
            <li class="list-group-item">
 
                <span class="person-name">
@@ -58,12 +66,11 @@
 
 </section>
 
-    <ul class="pagination">
-            <%= for (index, number) in range(0, FloatToInt(data["personsFacetedSearch"]["page"]["totalPages"]) - 1) { %>
-                <li class="page-item <%=if (number == FloatToInt(data["personsFacetedSearch"]["page"]["number"])) { %>active<% } %>">
-                    <a class="page-link" href="?pageNumber=<%= number %>"><%= number + 1 %></a>
-                </li>
-            <% } %>
-    </ul> 
-
+<ul class="pagination">
+    <%= for (index, number) in range(0, totalPages - 1) { %>
+        <li class="page-item <%=if (number == currentPage) { %>active<% } %>">
+            <a class="page-link" href="?pageNumber=<%= number %>&search=<%= search[0] %>"><%= number + 1 %></a>
+        </li>
+    <% } %>
+</ul> 
 
