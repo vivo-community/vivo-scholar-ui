@@ -14,41 +14,50 @@ import (
 // EntityPageHandler - Use naming convention to load a template and
 // corresponding graphql query. Execute the query and use results as
 // the model for the template. File locations are:
-// Template: pages/{Type}.html
-// Query:    pages/{Type}.graphql
+// Template: any_pages/{Type}.html
+// Query:    any_pages/{Type}.graphql
 func AnyPageHandler(c buffalo.Context) error {
 	entityType := c.Params().Get("type")
 	viewTemplatePath := fmt.Sprintf("any_pages/%s.html", entityType)
 	queryTemplatePath := fmt.Sprintf("templates/any_pages/%s.graphql", entityType)
 
+	queryExists := true
 	queryTemplate, err := ioutil.ReadFile(queryTemplatePath)
 	if err != nil {
-		log.Fatal(err)
+		queryExists = false
 	}
 
-	ctx := plush.NewContext()
-	// could ignore if there is no query
-	query, err := plush.Render(string(queryTemplate), ctx)
-	if err != nil {
-		log.Fatal(err)
+	if (queryExists) {
+		ctx := plush.NewContext()
+		client := graphql.NewClient("http://localhost:9000/graphql")
+
+		query, err := plush.Render(string(queryTemplate), ctx)
+		if err != nil {
+			log.Fatal(err)
+		}
+		
+		req := graphql.NewRequest(query)
+		if m, ok := c.Params().(url.Values); ok {
+			for k, v := range m {
+			  if (len(v) == 1) {
+				// I don't know how GraphQL handles array parameters
+				req.Var(k, v[0])
+			  }
+			}
+		}
+		var results map[string]interface{}
+		if err := client.Run(ctx, req, &results); err != nil {
+			log.Fatal(err)
+		}
+		c.Set("data", results)	
 	}
 
-	client := graphql.NewClient("http://localhost:9000/graphql")
-	req := graphql.NewRequest(query)
-
+	// NOTE: slightly ineffecient to iterate twice 
 	if m, ok := c.Params().(url.Values); ok {
 		for k, v := range m {
-		  if (len(v) == 1) {
-			req.Var(k, v[0])
-		  }
 		  c.Set(k, v)
 		}
-	  }
-
-	var results map[string]interface{}
-	if err := client.Run(ctx, req, &results); err != nil {
-		log.Fatal(err)
 	}
-	c.Set("data", results)
+
 	return c.Render(200, r.HTML(viewTemplatePath))
 }
