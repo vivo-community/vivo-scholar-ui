@@ -279,6 +279,7 @@ github.com/gobuffalo/httptest v1.0.6/go.mod h1:7T1IbSrg60ankme0aDLVnEY0h056g9M1/
 github.com/gobuffalo/httptest v1.1.0/go.mod h1:BIfCgiqCOotRc5xYwCcZN7IFYag4277Ynqjar/Ra3iI=
 github.com/gobuffalo/httptest v1.2.0 h1:EYJDPL1UTiNjXweHO0jPJCWAbSGZxyRxxog2Q6mLNyA=
 github.com/gobuffalo/httptest v1.2.0/go.mod h1:0KfourZCsapuvkljDMSr7YM+66kCt/rXv54YcWRWwhc=
+github.com/gobuffalo/httptest v1.3.0 h1:/ykFRXJYWYLnxlYons2eL7p6B5vuz22DoySTFfd4wkY=
 github.com/gobuffalo/httptest v1.3.0/go.mod h1:Y4qebOsMH91XdB0cZuS8OUdAKHGV7hVDcjgzGupoYlk=
 github.com/gobuffalo/licenser v0.0.0-20180924033006-eae28e638a42/go.mod h1:Ubo90Np8gpsSZqNScZZkVXXAo5DGhTb+WYFIjlnog8w=
 github.com/gobuffalo/licenser v0.0.0-20181025145548-437d89de4f75/go.mod h1:x3lEpYxkRG/XtGCUNkio+6RZ/dlOvLzTI9M1auIwFcw=
@@ -619,6 +620,7 @@ github.com/markbates/grift v1.0.6 h1:ZTw+Y3A0HjfiYc7xR3jdu8TvCbwNiTJ5eXXb1LgK+0M
 github.com/markbates/grift v1.0.6/go.mod h1:2AUYA/+pODhwonRbYwsltPVPIztBzw5nIJEGiWgKMPM=
 github.com/markbates/hmax v1.0.0 h1:yo2N0gBoCnUMKhV/VRLHomT6Y9wUm+oQQENuWJqCdlM=
 github.com/markbates/hmax v1.0.0/go.mod h1:cOkR9dktiESxIMu+65oc/r/bdY4bE8zZw3OLhLx0X2c=
+github.com/markbates/hmax v1.1.0 h1:MswE0ks4Iv1UAQNlvAyFpsyFQSBHolckas95gRUkka4=
 github.com/markbates/hmax v1.1.0/go.mod h1:hhn8pJiRwNTEmNlxhfiTbL+CtEYiAX3wuhSf/kg/6wI=
 github.com/markbates/inflect v1.0.0/go.mod h1:oTeZL2KHA7CUX6X+fovmK9OvIOFuqu0TwdQrZjLTh88=
 github.com/markbates/inflect v1.0.1/go.mod h1:uv3UVNBe5qBIfCm8O8Q+DW+S1EopeyINj+Ikhc7rnCk=

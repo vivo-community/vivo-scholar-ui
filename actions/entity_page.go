@@ -3,8 +3,8 @@ package actions
 import (
 	"fmt"
 	"io/ioutil"
-	"log"
-	
+
+	"github.com/pkg/errors"
 	"github.com/gobuffalo/envy"
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/plush"
@@ -27,24 +27,18 @@ func EntityPageHandler(c buffalo.Context) error {
 
 	queryTemplate, err := ioutil.ReadFile(queryTemplatePath)
 	if err != nil {
-		log.Print(err)
-		msg := fmt.Sprintf("query file %s not found:%s", queryTemplatePath, err)
-		return c.Render(500, r.String(msg))
+		return errors.Wrap(err, "finding query")
 	}
 
 	ctx := plush.NewContext()
 	query, err := plush.Render(string(queryTemplate), ctx)
 	if err != nil {
-		log.Print(err)
-		msg := fmt.Sprintf("unable to process template %s:%s", queryTemplatePath, err)
-		return c.Render(500, r.String(msg))
+		return errors.Wrap(err, "processing query")
 	}
 
 	endpoint, err := envy.MustGet("GRAPHQL_ENDPOINT")
 	if err != nil {
-		log.Print(err)
-		msg := fmt.Sprintf("endpoint not set or readable %s", err)
-		return c.Render(500, r.String(msg))
+		return errors.Wrap(err, "finding endpoint")
 	}
 	client := graphql.NewClient(endpoint)
 	req := graphql.NewRequest(query)
@@ -52,9 +46,7 @@ func EntityPageHandler(c buffalo.Context) error {
 
 	var results map[string]interface{}
 	if err := client.Run(ctx, req, &results); err != nil {
-		log.Print(err)
-		msg := fmt.Sprintf("unable to run query: %s", err)
-		return c.Render(500, r.String(msg))
+		return errors.Wrap(err, "running query")
 
 	}
 	c.Set("data", results)
