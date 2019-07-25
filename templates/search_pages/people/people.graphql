@@ -1,6 +1,11 @@
 query($search: String!, $pageNumber: Int!)  {
   personsFacetedSearch(
-    facets: [{field: "keywords"}, {field: "preferredTitle"}],
+    facets: [{field: "keywords"},
+      {field: "researchAreas"},
+      {field: "selectedPublicationVenue"},
+      {field: "selectedPublicationPublisher"},
+      {field: "positions"}
+    ],
     filters: [],
     paging: { pageSize:100, pageNumber: $pageNumber,
         sort:{ 
