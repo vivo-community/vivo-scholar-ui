@@ -7,13 +7,14 @@
 %>
 <h4>People (<span><%= totalItems %>)</span></h4>
 
+<!-- names by B: query="name:B*"" -->
 <div><%= currentPage + 1 %> of Total Pages: <%= totalPages %></div>
 
 <div>Query: <%= query %></div>
 <form action="/search/people" method="GET">
     <div class="form-group">
       <label for="search">Search:</label>
-      <input type="text" class="form-control" 
+      <input type="text" className="form-control" 
       id="search" name="search" placeholder="search..." value="<%= query %>">
     </div>
 </form>
@@ -21,7 +22,7 @@
 <ul class="pagination">
     <%= for (index, number) in range(0, totalPages - 1) { %>
         <li class="page-item <%=if (number == currentPage) { %>active<% } %>">
-            <a class="page-link" href="?pageNumber=<%= number %>&search=<%= search[0] %>"><%= number + 1 %></a>
+            <a class="page-link" href="?pageNumber=<%= number %>&search=<%= query %>"><%= number + 1 %></a>
         </li>
     <% } %>
 </ul> 
@@ -51,12 +52,12 @@
       <div class="col-sm"> 
             
             <%= for (f) in data["personsFacetedSearch"]["facets"] { %>
-                <h3><%= f["field"] %></h3>
+                <h3><%= capitalize(f["field"]) %></h3>
                 
                 <ul class="list-group">
                 <%= for (e) in f["entries"]["content"] { %>
                 <li class="list-group-item">
-                  <span><%= e["value"] %> (<%= e["count"] %>)</span>
+                  <span><%= capitalize(e["value"]) %> (<%= e["count"] %>)</span>
                 </li>
                 <% } %>
             </ul>  
@@ -69,7 +70,7 @@
 <ul class="pagination">
     <%= for (index, number) in range(0, totalPages - 1) { %>
         <li class="page-item <%=if (number == currentPage) { %>active<% } %>">
-            <a class="page-link" href="?pageNumber=<%= number %>&search=<%= search[0] %>"><%= number + 1 %></a>
+            <a class="page-link" href="?pageNumber=<%= number %>&search=<%= query %>"><%= number + 1 %></a>
         </li>
     <% } %>
 </ul> 

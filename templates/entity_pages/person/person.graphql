@@ -5,6 +5,7 @@ query($id: String!) {
     positions {
       type
     }
+    publications { label }
     selectedPublications {
       id
       title
