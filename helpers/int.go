@@ -13,7 +13,8 @@ func FloatToInt(value float64) int {
 func StringToInt(value string) int {
 	result, err:= strconv.Atoi(value)
 	if err != nil {
-		log.Fatal(err)
+		log.Print(err)
+		result = 0 // default to 0?
 	}
 	return result
 }

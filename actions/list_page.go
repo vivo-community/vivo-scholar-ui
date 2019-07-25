@@ -5,9 +5,8 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
-	//"net/url"
-	//"strconv"
 
+	"github.com/gobuffalo/envy"
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/plush"
 	"github.com/machinebox/graphql"
@@ -36,16 +35,27 @@ func ListPageHandler(c buffalo.Context) error {
 
 	queryTemplate, err := ioutil.ReadFile(queryTemplatePath)
 	if err != nil {
-		log.Fatal(err)
+		log.Print(err)
+		msg := fmt.Sprintf("error running query:%s", err)
+		return c.Render(500, r.String(msg))
 	}
 
 	ctx := plush.NewContext()
 	query, err := plush.Render(string(queryTemplate), ctx)
 	if err != nil {
-		log.Fatal(err)
+		log.Print(err)
+		msg := fmt.Sprintf("error running template:%s", err)
+		return c.Render(500, r.String(msg))
 	}
 
-	client := graphql.NewClient("http://localhost:9000/graphql")
+	endpoint, err := envy.MustGet("GRAPHQL_ENDPOINT")
+	if err != nil {
+		log.Print(err)
+		msg := fmt.Sprintf("endpoint not set or readable %s", err)
+		return c.Render(500, r.String(msg))
+	}
+	client := graphql.NewClient(endpoint)
+
 	req := graphql.NewRequest(query)
 	
 	// how to determine defaults? query itself should also
@@ -66,7 +76,9 @@ func ListPageHandler(c buffalo.Context) error {
 	var results map[string]interface{}
 
 	if err := client.Run(ctx, req, &results); err != nil {
-		log.Fatal(err)
+		log.Print(err)
+		msg := fmt.Sprintf("error running query:%s", err)
+		return c.Render(500, r.String(msg))
 	}
 	
 	c.Set("data", results)

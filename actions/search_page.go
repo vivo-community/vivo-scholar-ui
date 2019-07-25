@@ -5,12 +5,29 @@ import (
 	"io/ioutil"
 	"log"
 	"net/url"
-
+	
+	"github.com/gobuffalo/envy"
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/plush"
 	"github.com/machinebox/graphql"
 )
 
+/*
+use 'bind' mechanism?
+
+  type Search struct {
+	  PageNumber int
+
+	  ...
+  }
+
+  // with defaults ...
+  s := &Search{PageNumber: 0}
+  if err := c.Bind(e); err != nil {
+    return err
+  }
+
+*/
 // EntityPageHandler - Use naming convention to load a template and
 // corresponding graphql query. Execute the query and use results as
 // the model for the template. File locations are:
@@ -33,7 +50,14 @@ func SearchPageHandler(c buffalo.Context) error {
 		log.Fatal(err)
 	}
 
-	client := graphql.NewClient("http://localhost:9000/graphql")
+	endpoint, err := envy.MustGet("GRAPHQL_ENDPOINT")
+	if err != nil {
+		log.Print(err)
+		msg := fmt.Sprintf("endpoint not set or readable %s", err)
+		return c.Render(500, r.String(msg))
+	}
+	client := graphql.NewClient(endpoint)
+
 	req := graphql.NewRequest(query)
 	req.Var("search", search)
 	

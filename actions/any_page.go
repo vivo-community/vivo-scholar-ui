@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/url"
 
+	"github.com/gobuffalo/envy"
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/plush"
 	"github.com/machinebox/graphql"
@@ -29,11 +30,19 @@ func AnyPageHandler(c buffalo.Context) error {
 
 	if (queryExists) {
 		ctx := plush.NewContext()
-		client := graphql.NewClient("http://localhost:9000/graphql")
+		endpoint, err := envy.MustGet("GRAPHQL_ENDPOINT")
+		if err != nil {
+			log.Print(err)
+			msg := fmt.Sprintf("endpoint not set or readable %s", err)
+			return c.Render(500, r.String(msg))
+		}
+		client := graphql.NewClient(endpoint)
 
 		query, err := plush.Render(string(queryTemplate), ctx)
 		if err != nil {
-			log.Fatal(err)
+			log.Print(err)
+			msg := fmt.Sprintf("error running query:%s", err)
+			return c.Render(500, r.String(msg))
 		}
 		
 		req := graphql.NewRequest(query)
@@ -47,7 +56,9 @@ func AnyPageHandler(c buffalo.Context) error {
 		}
 		var results map[string]interface{}
 		if err := client.Run(ctx, req, &results); err != nil {
-			log.Fatal(err)
+			log.Print(err)
+			msg := fmt.Sprintf("error running query:%s", err)
+			return c.Render(500, r.String(msg))
 		}
 		c.Set("data", results)	
 	}

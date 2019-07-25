@@ -4,7 +4,8 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
-
+	
+	"github.com/gobuffalo/envy"
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/plush"
 	"github.com/machinebox/graphql"
@@ -18,27 +19,43 @@ import (
 func EntityPageHandler(c buffalo.Context) error {
 	entityType := c.Params().Get("type")
 	entityID := c.Params().Get("id")
+	
+	// could do something like this:
+	// theme := envy.Get("THEME", "") 
 	viewTemplatePath := fmt.Sprintf("entity_pages/%s/%s.html", entityType, entityType)
 	queryTemplatePath := fmt.Sprintf("templates/entity_pages/%s/%s.graphql", entityType, entityType)
 
 	queryTemplate, err := ioutil.ReadFile(queryTemplatePath)
 	if err != nil {
-		log.Fatal(err)
+		log.Print(err)
+		msg := fmt.Sprintf("query file %s not found:%s", queryTemplatePath, err)
+		return c.Render(500, r.String(msg))
 	}
 
 	ctx := plush.NewContext()
 	query, err := plush.Render(string(queryTemplate), ctx)
 	if err != nil {
-		log.Fatal(err)
+		log.Print(err)
+		msg := fmt.Sprintf("unable to process template %s:%s", queryTemplatePath, err)
+		return c.Render(500, r.String(msg))
 	}
 
-	client := graphql.NewClient("http://localhost:9000/graphql")
+	endpoint, err := envy.MustGet("GRAPHQL_ENDPOINT")
+	if err != nil {
+		log.Print(err)
+		msg := fmt.Sprintf("endpoint not set or readable %s", err)
+		return c.Render(500, r.String(msg))
+	}
+	client := graphql.NewClient(endpoint)
 	req := graphql.NewRequest(query)
 	req.Var("id", entityID)
 
 	var results map[string]interface{}
 	if err := client.Run(ctx, req, &results); err != nil {
-		log.Fatal(err)
+		log.Print(err)
+		msg := fmt.Sprintf("unable to run query: %s", err)
+		return c.Render(500, r.String(msg))
+
 	}
 	c.Set("data", results)
 	return c.Render(200, r.HTML(viewTemplatePath))
