@@ -95,6 +95,9 @@ type PagingInfo struct {
 			HasMore: true,
 			Previous: int(currentPartition - 1) * PAGE_BY + 1,
 		}
+		// if there is no last page (because we are on last page)
+		// it should be included in range
+		pageRange = append(pageRange, end)
 		last := LastPage{HasMore: false}
 		return PagingInfo{First: first, PageList: pageRange, Last:last}
 	  } else if ((currentPartition < partitions) && (currentPartition > 1)) {

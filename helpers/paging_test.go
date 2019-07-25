@@ -88,6 +88,7 @@ func Test_Paging_94_92_Last(t *testing.T) {
 func Test_Paging_94_92_List(t *testing.T) {
 	paging := FigurePagingInfo(94, 92)
 
+	// this one is wrong
 	list := []int{91, 92, 93, 94}
 	if (reflect.DeepEqual(paging.PageList, list) != true) {
 		t.Errorf("pages=94, page=92 %v\n", paging.PageList)
