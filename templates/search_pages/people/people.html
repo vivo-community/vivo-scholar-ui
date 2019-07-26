@@ -9,13 +9,18 @@
 %>
 <h4>People (<span><%= totalItems %>)</span></h4>
 
-<%= form({action: searchPath({type: "people"}), method: "GET"}) { %>
+<!-- NOTE: new search needs to go to page 0 -->
+<%= form_for(searchForm, {action: searchPath({type: "people"}), method: "GET"}) { %>
     <div class="form-group">
       <label for="search">Search:</label>
+      <%= f.InputTag("Search") %>
+      
+      <!--
+
       <input type="text" class="form-control" 
       id="search" name="search" placeholder="search..." value="<%= query %>">
-
-      <input type="hidden" name="pageNumber" value="<%= currentPage %>" />
+      -->
+      <input type="hidden" name="pageNumber" value="0" />
     </div>
 
 
@@ -45,15 +50,31 @@
       
       <div class="col-sm"> 
             
-            <%= for (f) in data["personsFacetedSearch"]["facets"] { %>
-                <h3><%= capitalize(f["field"]) %></h3>
+            <%= for (facet) in data["personsFacetedSearch"]["facets"] { %>
+                <h3><%= capitalize(facet["field"]) %></h3>
                 
                 <ul class="list-group">
-                <%= for (index, e) in f["entries"]["content"] { %>
+                <%= for (index, e) in facet["entries"]["content"] { %>
                 <li class="list-group-item">
                   <span>
-                    <input type="checkbox" name="filter[<%= f["field"] %>]" value="<%= e["value"] %>"/>
+                      <% 
+                      let facetField = facet["field"]
+                      let value = e["value"] 
+                      let count = e["count"]
+                      let fieldName = "filters" + "[" + facetField + "]" + "[" + value + "]"
+
+                      let label = value + " (" + count + ")"
+                      let checked = HasKey(searchForm.Filters[facetField], value)
+                      %> 
+                      
+                      <%#= f.CheckboxTag(fieldName, {label: label}) %>
+                      <br/>
+
+                    <input type="checkbox" 
+                    name="filters[<%= facet["field"] %>][<%= e["value"] %>]" 
+                    value="true" <%= if (checked) {%> checked <% } %>/>
                     <%= e["value"] %> (<%= e["count"] %>)
+                    
                   </span>
                 </li>
                 <% } %>

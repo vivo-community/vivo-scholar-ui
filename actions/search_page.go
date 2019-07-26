@@ -32,12 +32,33 @@ way to bind search params to this ...
 */
 //<input type="text" name="Products[0].Name" value="Playstation 4">
 
+type FilterField struct {
+	Field string `form:"facetField"`
+	Value string `form:"facetValue"`
+}
+
 type Search struct {
 	PageNumber int `form:"pageNumber"`
 	PageSize int `form:"pageSize"`
 	Search string `form:"search"`
-	Filters map[string][]string `form:"filter"`
+	//Filters map[string][]string `form:"filters"`
+
+	//Filters []FilterField `form:"filters"`
+	//Filters map[string][]FilterField `form:"filters"`
+	//Filters map[string]interface{} `form:"filters"`
+	//Filters []interface{} `form:"filters"`
+	Filters map[string]map[string]bool `form:"filters"`
+
+	// filters[0]["keywords"]["informatics"] = true
+	// filters[1]["keywords"]["biostatistics"] = true
 }
+
+/*
+Products   []struct {
+    Name string
+    Type string
+  }
+*/
 // EntityPageHandler - Use naming convention to load a template and
 // corresponding graphql query. Execute the query and use results as
 // the model for the template. File locations are:
@@ -53,7 +74,7 @@ func SearchPageHandler(c buffalo.Context) error {
 	  return err
 	}
 	fmt.Printf("s=%#v\n", s)
-
+    
 	viewTemplatePath := fmt.Sprintf("search_pages/%s/%s.html", entityType, entityType)
 	queryTemplatePath := fmt.Sprintf("templates/search_pages/%s/%s.graphql", entityType, entityType)
 
@@ -104,5 +125,6 @@ func SearchPageHandler(c buffalo.Context) error {
 	}
 
 	c.Set("data", results)
+	c.Set("searchForm", s)
 	return c.Render(200, r.HTML(viewTemplatePath))
 }
