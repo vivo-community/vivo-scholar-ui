@@ -30,29 +30,14 @@ way to bind search params to this ...
 		//https://demos.library.tamu.edu/scholars-ui/discovery/People?collection=persons&facets=type,positionOrganization,researchAreas,selectedPublicationVenue,selectedPublicationPublisher,positions,keywords&sort=name,ASC&query=search&selectedPublicationVenue.filter=Optics%20InfoBase%20Conference%20Papers&page=1
 
 */
+//<input type="text" name="Products[0].Name" value="Playstation 4">
+
 type Search struct {
-	PageNumber int
-	PageSize int
-	Search string
-	Type string
+	PageNumber int `form:"pageNumber"`
+	PageSize int `form:"pageSize"`
+	Search string `form:"search"`
+	Filters map[string][]string `form:"filter"`
 }
-/*
-use 'bind' mechanism?
-
-func (s *Search) Paths() (templatePath, queryPath) {
-	viewTemplatePath := fmt.Sprintf("search_pages/%s/%s.html", s.Type, s.Type)
-	queryTemplatePath := fmt.Sprintf("templates/search_pages/%s/%s.graphql", s.Type, s.Type)
-}
-
-func NewSearch(c buffalo.Context) Search {
-   s := &Search{PageNumber: 0, PageSize: 100}
-   s.Type = c.Params().Get("type")
-   s.Search = c.Params().Get("search")
-   if val, ok := c.Params()["pageNumber"]; ok {
-     s.PageNumber := c.Params().Get("pageNumber")
-   }
-}
-*/
 // EntityPageHandler - Use naming convention to load a template and
 // corresponding graphql query. Execute the query and use results as
 // the model for the template. File locations are:
@@ -60,7 +45,14 @@ func NewSearch(c buffalo.Context) Search {
 // Query:    entity_pages/{entityType}/{entityType}.graphql
 func SearchPageHandler(c buffalo.Context) error {
 	entityType := c.Params().Get("type")
+	// might not need this is binding (see below) works
 	search := c.Params().Get("search")
+
+	s := &Search{}
+	if err := c.Bind(s); err != nil {
+	  return err
+	}
+	fmt.Printf("s=%#v\n", s)
 
 	viewTemplatePath := fmt.Sprintf("search_pages/%s/%s.html", entityType, entityType)
 	queryTemplatePath := fmt.Sprintf("templates/search_pages/%s/%s.graphql", entityType, entityType)
@@ -81,6 +73,9 @@ func SearchPageHandler(c buffalo.Context) error {
 		return errors.Wrap(err, "setting graphql endpoint")
 	}
 	client := graphql.NewClient(endpoint)
+
+	// need tp try and set filters ...
+	//filters: [],
 
 	req := graphql.NewRequest(query)
 	req.Var("search", search)

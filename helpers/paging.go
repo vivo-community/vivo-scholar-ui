@@ -2,7 +2,6 @@ package helpers
 
 import (
 	"math"
-	//"fmt"
 )
 
 // NOTE: should probably make this configurable
@@ -32,7 +31,8 @@ type PagingInfo struct {
     return a
 }
 
-// NOTE: assuming 0 based index - this is kind of ugly I know
+// NOTE: assuming 0 based index - i'm pretty sure this is way
+// more convoluted then it needs to be
 func FigurePagingInfo(currentPage int, totalPages int) PagingInfo {
 	// If total pages = 12 (for example)
 	if (totalPages <= PAGE_BY) {
@@ -44,23 +44,27 @@ func FigurePagingInfo(currentPage int, totalPages int) PagingInfo {
 	}
 	
 	// NOTE: total pages is NOT 0 based - cause it's a count
-	partitions := math.Floor(float64(totalPages / PAGE_BY)) 
+	partitions := math.Floor(float64(totalPages/PAGE_BY)) 
 	// since it's zero based need to add 1 
 	// 66 / 15 = 4.? -> 4
 	currentPartition := math.Floor(float64((currentPage + 1)/PAGE_BY))
-
-	// if current page = 15 or 30 or 45
+	// if current page = 14 or 29 or 44
+	
+	// not sure this is necessary or not
+	/*
 	isEnd := (currentPage + 1 % PAGE_BY == 0)
 	if (isEnd) {
 	  // if it's exact, we don't need to switch to next range
 	  currentPartition = currentPartition - 1
 	}
+	*/
 
 	// 0 * 15 = 0
 	// 1 * 15 = 15 
+	// zero based
 	start := int(currentPartition * PAGE_BY) - 1
 
-	// 0 + 15 - 1 = 14
+	// 0 + 15 - 1 = 14 (should this be 13?)
 	// 14 + 15 - 1 = 28
 	// 29 + 15  - 1 = 43
 	end := (int(start) + PAGE_BY) - 1
@@ -82,7 +86,9 @@ func FigurePagingInfo(currentPage int, totalPages int) PagingInfo {
 	//last e.g. page 92 of 100
 	case currentPartition >= partitions:
 		prev := (int(currentPartition - 1) * PAGE_BY) - 1
-
+		if (prev < 0) {
+			prev = 0
+		}
 		first := FirstPage{
 			HasMore: true,
 			Previous: prev,
@@ -92,6 +98,9 @@ func FigurePagingInfo(currentPage int, totalPages int) PagingInfo {
 	// 'between' e.g. page 47 of 100 	
 	case currentPartition < partitions && currentPartition > 1:
 		prev := (int(currentPartition - 1) * PAGE_BY) - 1
+		if (prev < 0) {
+		  prev = 0
+	    }
 		first := FirstPage{
 			HasMore: true,
 			Previous: prev,
@@ -102,7 +111,7 @@ func FigurePagingInfo(currentPage int, totalPages int) PagingInfo {
 			Next: next,
 		}
 		return PagingInfo{First: first, PageList: pageRange, Last:last}
-	// at 'second' page e.g. page 16 of 100	
+	// at 'second' page e.g. page 15 of 100	
 	case currentPartition == 1:
 		prev := 0
 		first := FirstPage{
@@ -120,66 +129,12 @@ func FigurePagingInfo(currentPage int, totalPages int) PagingInfo {
 	case currentPartition == 0:
 		first := FirstPage{HasMore: false}
 		
-		next := int(currentPartition + 1) * PAGE_BY
+		next := int(currentPartition + 1) * PAGE_BY - 1
 		last := LastPage{
 			HasMore: true,
 			Next: next,
 		}
 		return PagingInfo{First: first, PageList: pageRange, Last:last}
 	}
-
-
-    /*
-
-	// case 1) e.g. page 92 of 100
-	if (currentPartition >= partitions) {
-		prev := (int(currentPartition - 1) * PAGE_BY)
-
-		first := FirstPage{
-			HasMore: true,
-			Previous: prev,
-		}
-		last := LastPage{HasMore: false}
-		return PagingInfo{First: first, PageList: pageRange, Last:last}
-		// case 2) between e.g. page 47 of 100 
-	  } else if ((currentPartition < partitions) && (currentPartition > 1)) {
-		prev := int(currentPartition - 1) * PAGE_BY
-		first := FirstPage{
-			HasMore: true,
-			Previous: prev,
-		}
-		next := int(currentPartition + 1) * PAGE_BY
-		last := LastPage{
-			HasMore: true,
-			Next: next,
-		}
-		return PagingInfo{First: first, PageList: pageRange, Last:last}
-		// case 3) at start e.g. page 16 of 100
-	  } else if (currentPartition == 1) {
-		first := FirstPage{
-			HasMore: true,
-			Previous: 1,
-		}
-		next := (int(currentPartition + 1) * PAGE_BY)
-
-		last := LastPage{
-			HasMore: true,
-			Next: next,
-		}
-		return PagingInfo{First: first, PageList: pageRange, Last:last}
-		// case 4) at very start e.g. page 0 of 100
-	  } else if (currentPartition == 0) {
-		
-		first := FirstPage{HasMore: false}
-		
-		next := int(currentPartition + 1) * PAGE_BY
-		last := LastPage{
-			HasMore: true,
-			Next: next,
-		}
-		return PagingInfo{First: first, PageList: pageRange, Last:last}
-	  }
-    */
-	// if all else fails ...
 	return PagingInfo{}
 }

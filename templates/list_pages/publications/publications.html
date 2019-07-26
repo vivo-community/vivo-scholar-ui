@@ -1,12 +1,37 @@
+<%
+ let totalItems = data["documentsPaged"]["page"]["totalElements"]
+ let totalPages = FloatToInt(data["documentsPaged"]["page"]["totalPages"])
+ let currentPage = FloatToInt(data["documentsPaged"]["page"]["number"])
+ let results = data["documentsPaged"]["content"]
+
+ let paging = FigurePagingInfo(currentPage, totalPages)
+%>
 <h4>Publications(<span><%= data["documentsPaged"]["page"]["totalElements"] %>)</span></h4>
 
-<ul class="pagination">
-        <%= for (index, number) in range(0, FloatToInt(data["documentsPaged"]["page"]["totalPages"]) - 1) { %>
-            <li class="page-item <%=if (number == FloatToInt(data["documentsPaged"]["page"]["number"])) { %>active<% } %>">
-                <a class="page-link" href="?pageNumber=<%= number %>"><%= number + 1 %></a>
-            </li>
-        <% } %>
-    </ul> 
+<div><%= currentPage + 1 %> of Total Pages: <%= totalPages %></div>
+
+    <ul class="pagination">
+            <%= if (paging.First.HasMore == true) { %>
+              <li>
+                <a class="page-link" href="?pageNumber=<%= paging.First.Previous %>">
+                  <span>&laquo; Previous</span>
+                </a>
+              </li>
+            <% } %>
+            <%= for (number) in paging.PageList { %>
+                <li class="page-item <%=if (number == currentPage) { %>active<% } %>">
+                    <a class="page-link" href="?pageNumber=<%= number %>"><%= number + 1 %></a>
+                </li>
+            <% } %>
+            <%= if (paging.Last.HasMore == true) { %>
+              <li>
+                <a class="page-link" href="?pageNumber=<%= paging.Last.Next %>">
+                  <span>&raquo; Next</span>
+                </a>
+              </li>
+            <% } %>
+        </ul> 
+
     <section class="author-list">
             <ul class="list-group">
             <%= for (p) in data["documentsPaged"]["content"] { %>
@@ -22,13 +47,29 @@
             </ul>
         </section>
     
+        <div><%= currentPage + 1 %> of Total Pages: <%= totalPages %></div>
+
         <ul class="pagination">
-                <%= for (index, number) in range(0, FloatToInt(data["documentsPaged"]["page"]["totalPages"]) - 1) { %>
-                    <li class="page-item <%=if (number == FloatToInt(data["documentsPaged"]["page"]["number"])) { %>active<% } %>">
+                <%= if (paging.First.HasMore == true) { %>
+                  <li>
+                    <a class="page-link" href="?pageNumber=<%= paging.First.Previous %>">
+                      <span>&laquo; Previous</span>
+                    </a>
+                  </li>
+                <% } %>
+                <%= for (number) in paging.PageList { %>
+                    <li class="page-item <%=if (number == currentPage) { %>active<% } %>">
                         <a class="page-link" href="?pageNumber=<%= number %>"><%= number + 1 %></a>
                     </li>
                 <% } %>
-        </ul> 
+                <%= if (paging.Last.HasMore == true) { %>
+                  <li>
+                    <a class="page-link" href="?pageNumber=<%= paging.Last.Next %>">
+                      <span>&raquo; Next</span>
+                    </a>
+                  </li>
+                <% } %>
+            </ul> 
     
     
     
