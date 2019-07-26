@@ -3,9 +3,9 @@ package actions
 import (
 	"fmt"
 	"io/ioutil"
-	"log"
 	"net/http"
 
+	"github.com/pkg/errors"
 	"github.com/gobuffalo/envy"
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/plush"
@@ -29,30 +29,24 @@ func ListPageHandler(c buffalo.Context) error {
 	listType := c.Params().Get("type")
 	// different view template based on content-type??
 	extension := TemplateExtension(c.Request())
-	fmt.Println("extension=%s\n", extension)
+	fmt.Printf("extension=%s\n", extension)
 	viewTemplatePath := fmt.Sprintf("list_pages/%s/%s.html", listType, listType)
 	queryTemplatePath := fmt.Sprintf("templates/list_pages/%s/%s.graphql", listType, listType)
 
 	queryTemplate, err := ioutil.ReadFile(queryTemplatePath)
 	if err != nil {
-		log.Print(err)
-		msg := fmt.Sprintf("error running query:%s", err)
-		return c.Render(500, r.String(msg))
+		return errors.Wrap(err, "reading query template")
 	}
 
 	ctx := plush.NewContext()
 	query, err := plush.Render(string(queryTemplate), ctx)
 	if err != nil {
-		log.Print(err)
-		msg := fmt.Sprintf("error running template:%s", err)
-		return c.Render(500, r.String(msg))
+		return errors.Wrap(err, "running query template")
 	}
 
 	endpoint, err := envy.MustGet("GRAPHQL_ENDPOINT")
 	if err != nil {
-		log.Print(err)
-		msg := fmt.Sprintf("endpoint not set or readable %s", err)
-		return c.Render(500, r.String(msg))
+		return errors.Wrap(err, "finding endpoint")
 	}
 	client := graphql.NewClient(endpoint)
 
@@ -76,9 +70,7 @@ func ListPageHandler(c buffalo.Context) error {
 	var results map[string]interface{}
 
 	if err := client.Run(ctx, req, &results); err != nil {
-		log.Print(err)
-		msg := fmt.Sprintf("error running query:%s", err)
-		return c.Render(500, r.String(msg))
+		return errors.Wrap(err, "running query")
 	}
 	
 	c.Set("data", results)

@@ -3,9 +3,9 @@ package actions
 import (
 	"fmt"
 	"io/ioutil"
-	"log"
 	"net/url"
 	
+	"github.com/pkg/errors"
 	"github.com/gobuffalo/envy"
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/plush"
@@ -13,20 +13,51 @@ import (
 )
 
 /*
-use 'bind' mechanism?
+way to bind search params to this ...
++plus limit of pageSize (select options)
+    facets: [{field: "keywords"},
+      {field: "researchAreas"},
+      {field: "selectedPublicationVenue"},
+      {field: "selectedPublicationPublisher"},
+      {field: "positions"}
+    ],
+	
+	filters: [],
+    paging: { pageSize:100, pageNumber: $pageNumber,
+        sort:{ 
+          orders: [{direction: ASC, property:"name"}]
+		}  
+		//https://demos.library.tamu.edu/scholars-ui/discovery/People?collection=persons&facets=type,positionOrganization,researchAreas,selectedPublicationVenue,selectedPublicationPublisher,positions,keywords&sort=name,ASC&query=search&selectedPublicationVenue.filter=Optics%20InfoBase%20Conference%20Papers&page=1
 
-  type Search struct {
-	  PageNumber int
+*/
+//<input type="text" name="Products[0].Name" value="Playstation 4">
 
-	  ...
+type FilterField struct {
+	Field string `form:"facetField"`
+	Value string `form:"facetValue"`
+}
+
+type Search struct {
+	PageNumber int `form:"pageNumber"`
+	PageSize int `form:"pageSize"`
+	Search string `form:"search"`
+	//Filters map[string][]string `form:"filters"`
+
+	//Filters []FilterField `form:"filters"`
+	//Filters map[string][]FilterField `form:"filters"`
+	//Filters map[string]interface{} `form:"filters"`
+	//Filters []interface{} `form:"filters"`
+	Filters map[string]map[string]bool `form:"filters"`
+
+	// filters[0]["keywords"]["informatics"] = true
+	// filters[1]["keywords"]["biostatistics"] = true
+}
+
+/*
+Products   []struct {
+    Name string
+    Type string
   }
-
-  // with defaults ...
-  s := &Search{PageNumber: 0}
-  if err := c.Bind(e); err != nil {
-    return err
-  }
-
 */
 // EntityPageHandler - Use naming convention to load a template and
 // corresponding graphql query. Execute the query and use results as
@@ -35,28 +66,37 @@ use 'bind' mechanism?
 // Query:    entity_pages/{entityType}/{entityType}.graphql
 func SearchPageHandler(c buffalo.Context) error {
 	entityType := c.Params().Get("type")
+	// might not need this is binding (see below) works
 	search := c.Params().Get("search")
+
+	s := &Search{}
+	if err := c.Bind(s); err != nil {
+	  return err
+	}
+	fmt.Printf("s=%#v\n", s)
+    
 	viewTemplatePath := fmt.Sprintf("search_pages/%s/%s.html", entityType, entityType)
 	queryTemplatePath := fmt.Sprintf("templates/search_pages/%s/%s.graphql", entityType, entityType)
 
 	queryTemplate, err := ioutil.ReadFile(queryTemplatePath)
 	if err != nil {
-		log.Fatal(err)
+		return errors.Wrap(err, "reading query template")
 	}
 
 	ctx := plush.NewContext()
 	query, err := plush.Render(string(queryTemplate), ctx)
 	if err != nil {
-		log.Fatal(err)
+		return errors.Wrap(err, "process query template")
 	}
 
 	endpoint, err := envy.MustGet("GRAPHQL_ENDPOINT")
 	if err != nil {
-		log.Print(err)
-		msg := fmt.Sprintf("endpoint not set or readable %s", err)
-		return c.Render(500, r.String(msg))
+		return errors.Wrap(err, "setting graphql endpoint")
 	}
 	client := graphql.NewClient(endpoint)
+
+	// need tp try and set filters ...
+	//filters: [],
 
 	req := graphql.NewRequest(query)
 	req.Var("search", search)
@@ -79,13 +119,12 @@ func SearchPageHandler(c buffalo.Context) error {
 		req.Var("pageNumber", pageNumber)
 	} 
 
-
 	var results map[string]interface{}
 	if err := client.Run(ctx, req, &results); err != nil {
-		log.Fatal(err)
+		return errors.Wrap(err, "running graphql statement")
 	}
 
-	
 	c.Set("data", results)
+	c.Set("searchForm", s)
 	return c.Render(200, r.HTML(viewTemplatePath))
 }

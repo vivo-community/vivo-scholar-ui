@@ -19,6 +19,7 @@ require (
 	github.com/machinebox/graphql v0.2.2
 	github.com/markbates/going v1.0.3 // indirect
 	github.com/matryer/is v1.2.0 // indirect
+	github.com/pkg/errors v0.8.1
 	github.com/spf13/afero v1.2.1 // indirect
 	github.com/unrolled/secure v1.0.0
 	github.com/vivo-community/vivo-graphql v0.0.0-20190419201132-2bbef763231f

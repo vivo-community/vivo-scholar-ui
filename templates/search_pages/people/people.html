@@ -4,28 +4,27 @@
  let currentPage = FloatToInt(data["personsFacetedSearch"]["page"]["number"])
  let query = search[0]
  let results = data["personsFacetedSearch"]["content"]
+
+ let paging = FigurePagingInfo(currentPage, totalPages)
 %>
 <h4>People (<span><%= totalItems %>)</span></h4>
 
-<!-- names by B: query="name:B*"" -->
-<div><%= currentPage + 1 %> of Total Pages: <%= totalPages %></div>
-
-<div>Query: <%= query %></div>
-<form action="/search/people" method="GET">
+<!-- NOTE: new search needs to go to page 0 -->
+<%= form_for(searchForm, {action: searchPath({type: "people"}), method: "GET"}) { %>
     <div class="form-group">
       <label for="search">Search:</label>
-      <input type="text" className="form-control" 
-      id="search" name="search" placeholder="search..." value="<%= query %>">
-    </div>
-</form>
+      <%= f.InputTag("Search") %>
+      
+      <!--
 
-<ul class="pagination">
-    <%= for (index, number) in range(0, totalPages - 1) { %>
-        <li class="page-item <%=if (number == currentPage) { %>active<% } %>">
-            <a class="page-link" href="?pageNumber=<%= number %>&search=<%= query %>"><%= number + 1 %></a>
-        </li>
-    <% } %>
-</ul> 
+      <input type="text" class="form-control" 
+      id="search" name="search" placeholder="search..." value="<%= query %>">
+      -->
+      <input type="hidden" name="pageNumber" value="0" />
+    </div>
+
+
+<div><%= currentPage + 1 %> of Total Pages: <%= totalPages %></div>
 
 <section class="person-list">
     <div class="row">
@@ -51,13 +50,32 @@
       
       <div class="col-sm"> 
             
-            <%= for (f) in data["personsFacetedSearch"]["facets"] { %>
-                <h3><%= capitalize(f["field"]) %></h3>
+            <%= for (facet) in data["personsFacetedSearch"]["facets"] { %>
+                <h3><%= capitalize(facet["field"]) %></h3>
                 
                 <ul class="list-group">
-                <%= for (e) in f["entries"]["content"] { %>
+                <%= for (index, e) in facet["entries"]["content"] { %>
                 <li class="list-group-item">
-                  <span><%= capitalize(e["value"]) %> (<%= e["count"] %>)</span>
+                  <span>
+                      <% 
+                      let facetField = facet["field"]
+                      let value = e["value"] 
+                      let count = e["count"]
+                      let fieldName = "filters" + "[" + facetField + "]" + "[" + value + "]"
+
+                      let label = value + " (" + count + ")"
+                      let checked = HasKey(searchForm.Filters[facetField], value)
+                      %> 
+                      
+                      <%#= f.CheckboxTag(fieldName, {label: label}) %>
+                      <br/>
+
+                    <input type="checkbox" 
+                    name="filters[<%= facet["field"] %>][<%= e["value"] %>]" 
+                    value="true" <%= if (checked) {%> checked <% } %>/>
+                    <%= e["value"] %> (<%= e["count"] %>)
+                    
+                  </span>
                 </li>
                 <% } %>
             </ul>  
@@ -67,11 +85,27 @@
 
 </section>
 
+<% } %>
+
 <ul class="pagination">
-    <%= for (index, number) in range(0, totalPages - 1) { %>
+    <%= if (paging.First.HasMore == true) { %>
+      <li>
+        <a class="page-link" href="?pageNumber=<%= paging.First.Previous %>&search=<%= query %>">
+          <span>&laquo; Previous</span>
+        </a>
+      </li>
+    <% } %>
+    <%= for (number) in paging.PageList { %>
         <li class="page-item <%=if (number == currentPage) { %>active<% } %>">
             <a class="page-link" href="?pageNumber=<%= number %>&search=<%= query %>"><%= number + 1 %></a>
         </li>
+    <% } %>
+    <%= if (paging.Last.HasMore == true) { %>
+      <li>
+        <a class="page-link" href="?pageNumber=<%= paging.Last.Next %>&search=<%= query %>">
+          <span>&raquo; Next</span>
+        </a>
+      </li>
     <% } %>
 </ul> 
 
