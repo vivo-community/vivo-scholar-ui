@@ -2,40 +2,8 @@ package helpers
 
 import (
 	"math"
+	//"fmt"
 )
-/*
- * NOTE: this returns an array of 3 arrays given a total number of pages
- * and the current page.  The first array is what to do with *before*,
- * the last array is what to do with *after*
- *
- * just made PAGE_BY a constant
- *
- * so, as an example:
- *
- * if we have 95 pages, and we 
- * are on page 1:
- *
- [ [ '-' ],
- [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 ],
- [ '+', 16 ] ]
- - means no page to show for *before*
- [1...15] are the pages to show
- +, 16 means the *after* link goes to page 16
- if we're on page 65
- that falls within the 61-75 range
- the *before* would be 46
- the *next would be 76
- [ [ '+', 46 ],
-  [ 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75 ],
-  [ '+', 76 ] ]
- if we're on page 92 of 94
- that falls with the 91-105 range (but we don't have 105 pages)
- so *before* would be 76
- *next* would be no page
- and [91...94] are the pages to show
-[ [ '+', 76 ], [ 91, 92, 93, 94 ], [ '-' ] ]
- *
- */
 
 // NOTE: should probably make this configurable
 const PAGE_BY = 15
@@ -64,128 +32,154 @@ type PagingInfo struct {
     return a
 }
 
- func FigurePagingInfo(totalPages int, currentPage int) PagingInfo {
-	// no first or last page
+// NOTE: assuming 0 based index - this is kind of ugly I know
+func FigurePagingInfo(currentPage int, totalPages int) PagingInfo {
+	// If total pages = 12 (for example)
 	if (totalPages <= PAGE_BY) {
 		first := FirstPage{HasMore: false}
 		last := LastPage{HasMore: false}
-		pages := makeRange(1, totalPages + 1)
+		// 0 based index
+		pages := makeRange(0, totalPages - 1)
 		return PagingInfo{First: first, PageList: pages, Last:last}
 	}
 	
+	// NOTE: total pages is NOT 0 based - cause it's a count
 	partitions := math.Floor(float64(totalPages / PAGE_BY)) 
-	currentPartition := math.Floor(float64(currentPage / PAGE_BY))
+	// since it's zero based need to add 1 
+	// 66 / 15 = 4.? -> 4
+	currentPartition := math.Floor(float64((currentPage + 1)/PAGE_BY))
 
-	isEnd := (currentPage % PAGE_BY == 0)
+	// if current page = 15 or 30 or 45
+	isEnd := (currentPage + 1 % PAGE_BY == 0)
 	if (isEnd) {
 	  // if it's exact, we don't need to switch to next range
 	  currentPartition = currentPartition - 1
 	}
 
-	start := int(currentPartition * PAGE_BY) + 1
-	end := int(start) + PAGE_BY
+	// 0 * 15 = 0
+	// 1 * 15 = 15 
+	start := int(currentPartition * PAGE_BY) - 1
 
+	// 0 + 15 - 1 = 14
+	// 14 + 15 - 1 = 28
+	// 29 + 15  - 1 = 43
+	end := (int(start) + PAGE_BY) - 1
+
+	// starting after total number of pages
 	if (int(start + PAGE_BY) > totalPages) {
-		end = totalPages
+		end = totalPages - 1
 	}
-	pageRange := makeRange(start, end - 1)
+
+	// e.g 0=15 (don't include last in range)
+	// it goes as PageList in PageInfo
+	// don't include -1 in range
+	if start < 0 {
+		start = 0
+	}
+	pageRange := makeRange(start, end)
  
-	if (currentPartition >= partitions) {
+	switch {
+	//last e.g. page 92 of 100
+	case currentPartition >= partitions:
+		prev := (int(currentPartition - 1) * PAGE_BY) - 1
+
 		first := FirstPage{
 			HasMore: true,
-			Previous: int(currentPartition - 1) * PAGE_BY + 1,
+			Previous: prev,
 		}
-		// if there is no last page (because we are on last page)
-		// it should be included in range
-		pageRange = append(pageRange, end)
 		last := LastPage{HasMore: false}
 		return PagingInfo{First: first, PageList: pageRange, Last:last}
-	  } else if ((currentPartition < partitions) && (currentPartition > 1)) {
+	// 'between' e.g. page 47 of 100 	
+	case currentPartition < partitions && currentPartition > 1:
+		prev := (int(currentPartition - 1) * PAGE_BY) - 1
 		first := FirstPage{
 			HasMore: true,
-			Previous: (int(currentPartition - 1) * PAGE_BY) + 1,
+			Previous: prev,
 		}
+		next := (int(currentPartition + 1) * PAGE_BY) - 1
 		last := LastPage{
 			HasMore: true,
-			Next: (int(currentPartition + 1) * PAGE_BY) + 1,
+			Next: next,
 		}
 		return PagingInfo{First: first, PageList: pageRange, Last:last}
+	// at 'second' page e.g. page 16 of 100	
+	case currentPartition == 1:
+		prev := 0
+		first := FirstPage{
+			HasMore: true,
+			Previous: prev,
+		}
+		next := (int(currentPartition + 1) * PAGE_BY) - 1
+
+		last := LastPage{
+			HasMore: true,
+			Next: next,
+		}
+		return PagingInfo{First: first, PageList: pageRange, Last:last}
+	// at very start e.g. page 0 of 100	
+	case currentPartition == 0:
+		first := FirstPage{HasMore: false}
+		
+		next := int(currentPartition + 1) * PAGE_BY
+		last := LastPage{
+			HasMore: true,
+			Next: next,
+		}
+		return PagingInfo{First: first, PageList: pageRange, Last:last}
+	}
+
+
+    /*
+
+	// case 1) e.g. page 92 of 100
+	if (currentPartition >= partitions) {
+		prev := (int(currentPartition - 1) * PAGE_BY)
+
+		first := FirstPage{
+			HasMore: true,
+			Previous: prev,
+		}
+		last := LastPage{HasMore: false}
+		return PagingInfo{First: first, PageList: pageRange, Last:last}
+		// case 2) between e.g. page 47 of 100 
+	  } else if ((currentPartition < partitions) && (currentPartition > 1)) {
+		prev := int(currentPartition - 1) * PAGE_BY
+		first := FirstPage{
+			HasMore: true,
+			Previous: prev,
+		}
+		next := int(currentPartition + 1) * PAGE_BY
+		last := LastPage{
+			HasMore: true,
+			Next: next,
+		}
+		return PagingInfo{First: first, PageList: pageRange, Last:last}
+		// case 3) at start e.g. page 16 of 100
 	  } else if (currentPartition == 1) {
 		first := FirstPage{
 			HasMore: true,
 			Previous: 1,
 		}
+		next := (int(currentPartition + 1) * PAGE_BY)
+
 		last := LastPage{
 			HasMore: true,
-			Next: (int(currentPartition + 1) * PAGE_BY) + 1,
+			Next: next,
 		}
 		return PagingInfo{First: first, PageList: pageRange, Last:last}
+		// case 4) at very start e.g. page 0 of 100
 	  } else if (currentPartition == 0) {
+		
 		first := FirstPage{HasMore: false}
+		
+		next := int(currentPartition + 1) * PAGE_BY
 		last := LastPage{
 			HasMore: true,
-			Next: (int(currentPartition + 1) * PAGE_BY) + 1,
+			Next: next,
 		}
 		return PagingInfo{First: first, PageList: pageRange, Last:last}
 	  }
-   
+    */
 	// if all else fails ...
-    return PagingInfo{}
- }
- /*
- const PAGE_BY = 15
-
- function pageArrays(totalPages, currentPage) {
- 
-   let returnArray = []
- 
-   if (totalPages <= PAGE_BY) {
-	 let pageArray = _.range(1, totalPages + 1)
-	 returnArray.push(['-'])
-	 returnArray.push(pageArray)
-	 returnArray.push(['-'])
-	 return returnArray
-   }
-   
-   let partitions = Math.floor(totalPages/PAGE_BY) 
- 
-   // which segment are we in ??
-   let currentPartition = Math.floor(currentPage/PAGE_BY)
-   
-   let isEnd =  currentPage % PAGE_BY == 0
-   if (isEnd) {
-	 // if it's exact, we don't need to switch to next range
-	 currentPartition = currentPartition - 1
-   }
- 
-   let start = (currentPartition * PAGE_BY) + 1
- 
-   let end = (start + PAGE_BY > totalPages) ? totalPages : (start + PAGE_BY)
- 
-   let pageRange = _.range(start, end)
- 
-   if (currentPartition >= partitions) {
-	 returnArray.push(['+', (currentPartition - 1) * PAGE_BY + 1])
-	 returnArray.push(pageRange)
-	 returnArray.push(['-'])
-   } else if ((currentPartition < partitions) && (currentPartition > 1)) {
-	 returnArray.push(['+', (currentPartition - 1) * PAGE_BY + 1])
-	 returnArray.push(pageRange)
-	 returnArray.push(['+', ((currentPartition + 1) * PAGE_BY) + 1])
-   } else if (currentPartition == 1) {
-	 returnArray.push(['+', 1])
-	 returnArray.push(pageRange)
-	 returnArray.push(['+', ((currentPartition + 1) * PAGE_BY) + 1])
-   } else if (currentPartition == 0) {
-	 returnArray.push(['-'])
-	 returnArray.push(pageRange)
-	 returnArray.push(['+', ((currentPartition + 1) * PAGE_BY) + 1])
-   }
- 
-   return returnArray
- 
- }
- 
- 
- export default { pageArrays }
- */
+	return PagingInfo{}
+}
