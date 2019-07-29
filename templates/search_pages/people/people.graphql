@@ -1,4 +1,4 @@
-query($search: String!, $pageNumber: Int!)  {
+query($search: String!, $pageNumber: Int!, $filters: [FilterArgInput])  {
   personsFacetedSearch(
     facets: [{field: "keywords"},
       {field: "researchAreas"},
@@ -6,7 +6,7 @@ query($search: String!, $pageNumber: Int!)  {
       {field: "selectedPublicationPublisher"},
       {field: "positions"}
     ],
-    filters: [],
+    filters: $filters,
     paging: { pageSize:100, pageNumber: $pageNumber,
         sort:{ 
           orders: [{direction: ASC, property:"name"}]
