@@ -58,6 +58,17 @@ Products   []struct {
     Name string
     Type string
   }
+
+
+  in grapqhl file -->
+
+    filters: [
+      <%= for (k,v) in searchForm.Filters { %>
+        <%= for (sel, x) in v { %>
+         {field: "<%= k %>", value: "<%= sel %>"}
+        <% } %>
+      <% } %>
+    ],  
 */
 // EntityPageHandler - Use naming convention to load a template and
 // corresponding graphql query. Execute the query and use results as
@@ -85,6 +96,17 @@ func SearchPageHandler(c buffalo.Context) error {
 
 	ctx := plush.NewContext()
 	ctx.Set("searchForm", s)
+	// {"field": field, "value": value}
+	filters := make([]map[string]string, 0)
+
+	for k, v := range(s.Filters) {
+		for k2, _ := range v {
+			hash := map[string]string{"field": k, "value": k2}
+			filters = append(filters, hash)
+		}
+	}
+	fmt.Printf("filters=%v#\n", filters)
+
 	query, err := plush.Render(string(queryTemplate), ctx)
 	if err != nil {
 		return errors.Wrap(err, "process query template")
@@ -102,6 +124,7 @@ func SearchPageHandler(c buffalo.Context) error {
 
 	req := graphql.NewRequest(query)
 	req.Var("search", search)
+	req.Var("filters", filters)
 	
 	// send in all params (sort of)
 	if m, ok := c.Params().(url.Values); ok {
