@@ -6,7 +6,13 @@ query($search: String!, $pageNumber: Int!)  {
       {field: "selectedPublicationPublisher"},
       {field: "positions"}
     ],
-    filters: [],
+    filters: [
+      <%= for (k,v) in searchForm.Filters { %>
+        <%= for (sel, x) in v { %>
+         {field: "<%= k %>", value: "<%= sel %>"}
+        <% } %>
+      <% } %>
+    ],
     paging: { pageSize:100, pageNumber: $pageNumber,
         sort:{ 
           orders: [{direction: ASC, property:"name"}]

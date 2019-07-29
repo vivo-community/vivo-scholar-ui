@@ -84,11 +84,13 @@ func SearchPageHandler(c buffalo.Context) error {
 	}
 
 	ctx := plush.NewContext()
+	ctx.Set("searchForm", s)
 	query, err := plush.Render(string(queryTemplate), ctx)
 	if err != nil {
 		return errors.Wrap(err, "process query template")
 	}
 
+	fmt.Printf("query=%s\n", query)
 	endpoint, err := envy.MustGet("GRAPHQL_ENDPOINT")
 	if err != nil {
 		return errors.Wrap(err, "setting graphql endpoint")
