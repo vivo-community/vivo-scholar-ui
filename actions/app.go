@@ -54,6 +54,7 @@ func App() *buffalo.App {
 		app.GET("/", HomeHandler)
 		app.GET("/pages/{type}", AnyPageHandler)
 		app.GET("/search/{type}", SearchPageHandler)
+		app.GET("/search_api/{type}", SearchApiHandler)
 		app.GET("/lists/{type}", ListPageHandler)
 		app.GET("/entities/{type}/{id}", EntityPageHandler)
 

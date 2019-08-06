@@ -1,3 +1,12 @@
+<%
+ let totalItems = data["personsPaged"]["page"]["totalElements"]
+ let totalPages = FloatToInt(data["personsPaged"]["page"]["totalPages"])
+ let currentPage = FloatToInt(data["personsPaged"]["page"]["number"])
+ let results = data["personsPaged"]["content"]
+
+ let paging = FigurePagingInfo(currentPage, totalPages)
+%>
+
 <h4>People (<span><%= data["personsPaged"]["page"]["totalElements"] %>)</span></h4>
 
 <div><%= FloatToInt(data["personsPaged"]["page"]["number"]) + 1 %> of Total Pages: <%= data["personsPaged"]["page"]["totalPages"] %></div>

@@ -46,27 +46,11 @@ func FigurePagingInfo(currentPage int, totalPages int) PagingInfo {
 	// NOTE: total pages is NOT 0 based - cause it's a count
 	partitions := math.Floor(float64(totalPages/PAGE_BY)) 
 	// since it's zero based need to add 1 
-	// 66 / 15 = 4.? -> 4
 	currentPartition := math.Floor(float64((currentPage + 1)/PAGE_BY))
-	// if current page = 14 or 29 or 44
 	
-	// not sure this is necessary or not
-	/*
-	isEnd := (currentPage + 1 % PAGE_BY == 0)
-	if (isEnd) {
-	  // if it's exact, we don't need to switch to next range
-	  currentPartition = currentPartition - 1
-	}
-	*/
-
-	// 0 * 15 = 0
-	// 1 * 15 = 15 
 	// zero based
 	start := int(currentPartition * PAGE_BY) - 1
 
-	// 0 + 15 - 1 = 14 (should this be 13?)
-	// 14 + 15 - 1 = 28
-	// 29 + 15  - 1 = 43
 	end := (int(start) + PAGE_BY) - 1
 
 	// starting after total number of pages
