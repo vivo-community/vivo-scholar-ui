@@ -17,12 +17,20 @@
             <h3>{{ facet.field }}</h3>
                 
             <ul class="list-group">                             
-                <li className="list-group-item" 
+                <li class="list-group-item" 
                   v-bind:key="entry.value" v-for="entry in facet.entries.content">
-                        {{entry.value}} ({{entry.count}})
-                </li>
-                    
+
+                  <!--
+                    can't quite get this to work               
+                  <input type="checkbox" 
+                      name="{{ facet.field }}"
+                      value="{{ entry.value }}" 
+                      v-model="filters" />
+                      -->
+                  {{entry.value}} ({{entry.count}})
+                </li>    
             </ul>
+            <span>filters: {{ filters }}</span>  
         </div><!-- end div/loop -->
     </div><!-- end div col -->
   </div><!-- end row -->
@@ -31,7 +39,7 @@
 <script>
 export default {
   name: 'SearchResults',
-  props: ['people', 'facets', 'page']
+  props: ['people', 'facets', 'page', 'filters']
 };
 </script>
 

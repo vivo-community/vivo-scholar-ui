@@ -10,7 +10,8 @@ const routes = [
     path: "/search/people", 
     component: SearchPeople, 
     name: "searchPeople"
-  },
+  }//,
+  //{ path: '*', component: NotFoundComponent }
 ];
 
 const router = new VueRouter({

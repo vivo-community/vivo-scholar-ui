@@ -22,7 +22,10 @@ export default {
     SearchResults
   },
   created () {
-    this.search({})
+    // this seems to initialize page right
+    // e.g. 
+    // http://localhost:3000/search/people?search=Conlon
+    this.search(this.$route.query.search);
   },
   watch: {
     '$route': 'search'
@@ -31,7 +34,10 @@ export default {
     return {
       people: [],
       facets: [],
-      page: {},
+      page: {
+        pageNumber: 0,
+        pageSize: 100
+      },
       api: {
         baseUrl: '/search_api/people?',
         search: '',
@@ -46,7 +52,19 @@ export default {
       this.getData(apiUrl);
       //console.debug(this.$route);
       // not getting query here (for changing URL)
-		  //this.$router.push({name: 'searchPeople', query : this.$route.query });
+      console.debug(`SEARCH=${search}`);
+      // can't get anything to work here even though
+      // above prints correct search
+      if (search != undefined) {
+        console.debug(`should add ${search} to query`);
+        console.debug(`route=${this.$route.query.search}`)
+        //this.$router.replace({ name: "searchPeople", query: {query: search} })
+        //const qry = { search: search };
+		    //this.$router.replace({name: 'searchPeople', query : qry});
+        //console.debug(`route=${this.$route.query.search}`)
+        //this.$route.query = {...this.$route.query, query: search};
+        //this.$router.push({ name: "searchPeople", query: { search: 'Conlon' }});
+      }
     },
     getData(apiUrl) {
       axios
