@@ -44,8 +44,7 @@ export default {
       const { baseUrl, search } = this.api;
       const apiUrl = `${baseUrl}search=${search}`;  
       this.getData(apiUrl);
-
-      console.debug(this.$route);
+      //console.debug(this.$route);
       // not getting query here (for changing URL)
 		  //this.$router.push({name: 'searchPeople', query : this.$route.query });
     },
