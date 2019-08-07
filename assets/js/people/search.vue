@@ -12,8 +12,29 @@
 
 <script>
 import SearchForm from './searchForm.vue';
-import SearchResults from './searchResults.vue';
 import axios from 'axios';
+
+//search=Conlon&filters[keywords]=Informatics&filters[keywords]=biostatistics
+//https://stackoverflow.com/questions/50692081/vue-js-router-query-array
+
+/*
+submitForm () {
+  this.$router.push({
+    name: 'AuctionResult',
+    query: {
+      'models[]': this.selectedModels.map(e => e.value)
+      models: this.selectedModels.map(e => e.value)
+    }
+  })
+},
+page:
+number
+size
+totalElements
+totalPages
+
+
+*/
 
 export default {
   name: 'SearchPeople',
@@ -25,7 +46,25 @@ export default {
     // this seems to initialize page right
     // e.g. 
     // http://localhost:3000/search/people?search=Conlon
-    this.search(this.$route.query.search);
+    //this.search(this.$route.query.search);
+    // might need to read filters from url too
+    // page number etc...
+    const qry = this.$route.query.search;
+    const pageNumber = this.$route.query.pageNumber || 0;
+
+    //const page = { pageNumber: pageNumber }
+    const filters = this.$route.query.filter; // as array?
+    
+    /*
+    if (isNaN(pageNumber)) {
+      this.search(qry, 0)
+    } else {
+      this.search(qry, pageNumber);
+    }  
+    */
+    this.search(qry, pageNumber);
+    // const pageSize = this.$route.query.pageSize;
+
   },
   watch: {
     '$route': 'search'
@@ -34,30 +73,37 @@ export default {
     return {
       people: [],
       facets: [],
+      //filters: [],
       page: {
-        pageNumber: 0,
-        pageSize: 100
+        number: 0,
+        size: 100,
+        totalElements: 0,
+        totalPages: 0
       },
       api: {
-        baseUrl: '/search_api/people?',
-        search: '',
+        baseUrl: '/search_api/people',
+        //search: '',
       }
     };
   },
   methods: {
-    search(query) {
-      this.api.search = query;
-      const { baseUrl, search } = this.api;
-      const apiUrl = `${baseUrl}search=${search}`;  
+    search(query, pageNumber) {
+      //this.api.search = query;
+      const { baseUrl } = this.api;
+      const apiUrl = `${baseUrl}?search=${query}&pageNumber=${pageNumber}`;  
+      //const apiUrl = `${baseUrl}?search=${query}`;  
       this.getData(apiUrl);
       //console.debug(this.$route);
       // not getting query here (for changing URL)
-      console.debug(`SEARCH=${search}`);
-      console.log(search);
+      console.debug(`SEARCH=${query}`);
+      //console.log(query);
+      this.page.number = pageNumber;
+      console.log(this.page);
+
       // can't get anything to work here even though
       // above prints correct search
-      if (search != undefined) {
-        console.debug(`should add ${search} to query`);
+      if (query != undefined) {
+        console.debug(`should add ${query} to query`);
         console.debug(`route=${this.$route.query.search}`)
         //this.$router.replace({ name: "searchPeople", query: {query: search} })
         //const qry = { search: search };
