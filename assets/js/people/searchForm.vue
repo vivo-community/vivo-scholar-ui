@@ -17,6 +17,7 @@
         </div>
       
     <SearchResults
+      v-on:filtered="onFilter"
       v-if="people.length > 0"
       v-bind:people="people"
       v-bind:facets="facets"
@@ -35,20 +36,25 @@ export default {
   components: {
     SearchResults
   },
-  props: ['people', 'facets', 'page', 'filters'],
+  props: ['people', 'facets', 'page'],
   data() {
     return {
-      searchString: '*'
+      searchString: '*',
+      filters: []
     };
   },
   methods: {
     parseSearchString() {
       // Trim search string
       const trimmedSearchString = this.searchString.trim();
+      // filters = this.filters ?
       if (trimmedSearchString !== '') {
         const query = trimmedSearchString;
         this.$emit('search', query);
       }
+    },
+    onFilter (value) {
+      console.log(value) // someValue
     }
   }
 };
