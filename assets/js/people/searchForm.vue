@@ -16,6 +16,11 @@
           </button>
         </div>
       
+    <SearchResults
+      v-if="people.length > 0"
+      v-bind:people="people"
+      v-bind:facets="facets"
+      v-bind:page="page"/>
 
   </form>
 
@@ -23,8 +28,14 @@
 </template>
 
 <script charset="utf-8">
+import SearchResults from './searchResults.vue';
+
 export default {
   name: 'SearchForm',
+  components: {
+    SearchResults
+  },
+  props: ['people', 'facets', 'page', 'filters'],
   data() {
     return {
       searchString: '*'

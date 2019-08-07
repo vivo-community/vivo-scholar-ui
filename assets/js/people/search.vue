@@ -1,12 +1,12 @@
 <template>
   <div id="search-form">
-    <SearchForm v-on:search="search"/>
-    <SearchResults
+    <SearchForm v-on:search="search"
       v-if="people.length > 0"
       v-bind:people="people"
       v-bind:facets="facets"
       v-bind:page="page"
     />
+
   </div>
 </template>
 
@@ -19,7 +19,7 @@ export default {
   name: 'SearchPeople',
   components: {
     SearchForm,
-    SearchResults
+    //SearchResults
   },
   created () {
     // this seems to initialize page right
@@ -53,6 +53,7 @@ export default {
       //console.debug(this.$route);
       // not getting query here (for changing URL)
       console.debug(`SEARCH=${search}`);
+      console.log(search);
       // can't get anything to work here even though
       // above prints correct search
       if (search != undefined) {
