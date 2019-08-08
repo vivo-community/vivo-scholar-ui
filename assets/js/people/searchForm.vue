@@ -25,7 +25,8 @@
         :number-of-pages="page.totalPages" 
         limit="10"
         hide-goto-end-buttons
-        use-router></b-pagination-nav>
+        use-router>
+      </b-pagination-nav>
     
     <SearchResults
       v-on:filtered="onFilter"
@@ -56,9 +57,7 @@ export default {
   },
   methods: {
     parseSearchString() {
-      // Trim search string
       const trimmedSearchString = this.searchString.trim();
-      // filters = this.filters ?
       if (trimmedSearchString !== '') {
         const query = trimmedSearchString;
         this.$emit('search', query, this.pageNumber);
@@ -66,7 +65,29 @@ export default {
     },
     onFilter (value) {
       console.log("onFilter:SearchForm")
-      console.log(value) // someValue
+      console.log(value) // should be array of objects
+
+      if (Array.isArray(value) && value.length > 0) {
+        console.log("adding filters to router...")
+        console.debug(value)
+        /// NOTE: wanted this:
+        //filters[keywords]=biostatistics
+        // getting this:
+        //filters[0][field]=keywords&filters[0][value]=management
+        this.$router.push({
+          name: 'searchPeople',
+          query: {
+            search: this.searchString,
+            pageNumber: 1,
+            filters: value
+          }
+        })
+        
+        
+
+      }
+      // NOTE: add to router?
+      // (then that might trigger search)
     },
     linkGen(pageNum) {
         return `?search=${this.searchString}&pageNumber=${pageNum}`

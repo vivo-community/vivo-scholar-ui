@@ -13,53 +13,27 @@
 <script>
 import SearchForm from './searchForm.vue';
 import axios from 'axios';
+import qs from 'qs';
 
-//search=Conlon&filters[keywords]=Informatics&filters[keywords]=biostatistics
 //https://stackoverflow.com/questions/50692081/vue-js-router-query-array
-
-/*
-submitForm () {
-  this.$router.push({
-    name: 'AuctionResult',
-    query: {
-      'models[]': this.selectedModels.map(e => e.value)
-      models: this.selectedModels.map(e => e.value)
-    }
-  })
-},
-*/
 
 export default {
   name: 'SearchPeople',
   components: {
-    SearchForm,
-    //SearchResults
+    SearchForm
   },
   created () {
-    // this seems to initialize page right
-    // e.g. 
-    // http://localhost:3000/search/people?search=Conlon
-    //this.search(this.$route.query.search);
-    // might need to read filters from url too
-    // page number etc...
-    const qry = this.$route.query.search;
-    const pageNumber = this.$route.query.pageNumber || 1;
-
-    const filters = this.$route.query.filter; // as array?
-    this.search(qry, pageNumber);
+    this.search(this.$route.query);
   },
   watch: {
     '$route' (to, from) {
-      const qry = to.query.search;
-      const page = to.query.pageNumber;
-      this.search(qry, page);
+      this.search(to.query);
     }
   },
   data() {
     return {
       people: [],
       facets: [],
-      //filters: [],
       page: {
         number: 0,
         size: 100,
@@ -67,21 +41,23 @@ export default {
         totalPages: 0
       },
       api: {
-        baseUrl: '/search_api/people',
-        //search: '',
+        baseUrl: '/search_api/people'
       }
     };
   },
   methods: {
-    search(query, pageNumber) {
-      console.log(`getting query: ${query}`)
-      console.log(`getting page:${pageNumber}`)
-      console.debug(query)
-      console.debug(pageNumber)
+    search(query) {
+      console.log(query)
       const { baseUrl } = this.api;
-      // paging in api is 0 based
-      const apiUrl = `${baseUrl}?search=${query}&pageNumber=${pageNumber-1}`;  
-      //const apiUrl = `${baseUrl}?search=${query}`;  
+      // paging api is 0 based
+      let {pageNumber, ...newQuery } = query
+      pageNumber = pageNumber ? pageNumber - 1 : 0
+      newQuery['pageNumber'] = pageNumber
+      // NOTE: kind of redundant, since we override
+      // router with same function
+      const result = qs.stringify(newQuery, {encode: false});
+      const queryString = result ? ('?' + result) : '';
+      const apiUrl = `${baseUrl}${queryString}`;  
       this.getData(apiUrl);
     },
     getData(apiUrl) {

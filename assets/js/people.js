@@ -6,6 +6,7 @@ import BootstrapVue from 'bootstrap-vue';
 Vue.use(BootstrapVue);
 
 import SearchPeople from "./people/search.vue";
+import qs from "qs";
 
 // not sure about routes at the moment
 const routes = [
@@ -17,26 +18,19 @@ const routes = [
   //{ path: '*', component: NotFoundComponent }
 ];
 
+//https://stackoverflow.com/questions/51901983/vue-router-query-parameter-as-array-with-keys
 const router = new VueRouter({
     mode: "history",
-    routes
+    routes,
+    parseQuery: (query) => {
+      return qs.parse(query);
+    },
+    stringifyQuery(query) {
+      let result = qs.stringify(query, {encode: false});
+      return result ? ('?' + result) : '';
+    }
 });
 
-// https://forum.vuejs.org/t/vue-js-router-how-to-change-or-update-url-query-on-click-event/22915
-//
-// not sure how to initialize with data already
-// how to get url to change (in browser)
-// ???
-// router.push({ name: 'user', params: { userId }})
-//a(@click.prevent="updateNav(item.key)") {{item.title}}
-/*
-updateNav(query) {
-		var data = Object.assign({}, this.$route.query);
-		data['scrollto'] = query;
-		this.$router.push({name: 'home', query : data });
-    ...
-}
-*/
 const searchApp = new Vue({
   router,
   render: (h) => h(SearchPeople)

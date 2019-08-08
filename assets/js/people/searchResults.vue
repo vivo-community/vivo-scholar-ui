@@ -13,6 +13,8 @@
     </div>
     <!-- facets -->
     <div class="col-sm">
+
+
         <div v-bind:key="facet.field" v-for="facet in facets">
             <h3>{{ facet.field }}</h3>
                 
@@ -54,10 +56,6 @@ export default {
   },
   methods: {
    toggleOption(event, facet, entry) {
-            //let app = this;
-            //app.loading = true;
-            //this.filters.push({ value: 'def' })
-            // if checked + to filters?
             if (event.target.checked) {
               console.log(`should ADD ${facet.field}:${entry.value}`);
               this.filters.push({field: facet.field, value: entry.value})
@@ -69,7 +67,6 @@ export default {
               console.log(`should REMOVE ${facet.field}:${entry.value}`);
             }
             this.$emit('filtered', this.filters);
-            // would need to trigger a search too
         }
   }
 };

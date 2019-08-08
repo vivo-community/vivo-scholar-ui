@@ -40,13 +40,28 @@ type FilterField struct {
 
 type Search struct {
 	PageNumber int `form:"pageNumber"`
-	PageSize int `form:"pageSize"`
+	//PageSize int `form:"pageSize"`
 	Search string `form:"search"`
 	//Filters map[string][]string `form:"filters"`
 	Filters map[string]map[string]bool `form:"filters"`
 	// filters[0]["keywords"]["informatics"] = true
 	// filters[1]["keywords"]["biostatistics"] = true
 }
+
+/*
+formam:
+  <input type="text" name="Products[0].Name" value="Playstation 4">
+  <input type="text" name="Products[0].Type" value="Video games">
+
+*/
+
+//
+//{\"filters[0][field]\":[\"keywords\"],
+// \"filters[0][value]\":[\"management\"],
+// \"filters[1][field]\":[\"keywords\"],
+// \"filters[1][value]\":[\"Data\"],
+// \"pageNumber\":[\"0\"],
+// \"search\":[\"*\"],\"type\":[\"people\"]}"
 
 func SearchApiHandler(c buffalo.Context) error {
   entityType := c.Params().Get("type")
@@ -59,6 +74,7 @@ func SearchApiHandler(c buffalo.Context) error {
   // return errors.Wrap(err, "binding to search form")
   //}
   s.Search = c.Params().Get("search")
+  //s.Filters = c.Params().Get("filters")
 
   //fmt.Printf("s=%#v\n", s)
   queryTemplatePath := fmt.Sprintf("templates/search_pages/%s/%s.graphql", entityType, entityType)
@@ -67,13 +83,19 @@ func SearchApiHandler(c buffalo.Context) error {
   ctx := plush.NewContext()
   filters := make([]map[string]string, 0)
 
+  // might have to get them like this:
+  //filters[0][field]=keywords&filters[0][value]=management
+
   // how to get filters from xhr??? - maybe
   // just c.Params().Get("filter")-->
   for k, v := range(s.Filters) {
+	  fmt.Printf("filters:key=%#v,value=%#v\n", k, v)
+	  /* 
 	  for k2, _ := range v {
 		  hash := map[string]string{"field": k, "value": k2}
-		  filters = append(filters, hash)
+		  //filters = append(filters, hash)
 	  }
+	  */
   }
   fmt.Printf("filters=%v#\n", filters)
 
@@ -81,7 +103,6 @@ func SearchApiHandler(c buffalo.Context) error {
   if err != nil {
 	  return errors.Wrap(err, "process query template")
   }
-
 
   fmt.Printf("query=%s\n", query)
   endpoint, err := envy.MustGet("GRAPHQL_ENDPOINT")
