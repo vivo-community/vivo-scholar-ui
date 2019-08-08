@@ -11,6 +11,7 @@
     "bootstrap-vue": "^2.0.0-rc.27",
     "jquery": "~3.4.0",
     "jquery-ujs": "~1.2.2",
+    "lodash": "^4.17.13",
     "popper.js": "^1.14.4",
     "vue": "^2.6.7",
     "vue-router": "^3.0.2",
