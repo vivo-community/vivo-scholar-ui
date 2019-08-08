@@ -63,8 +63,11 @@ export default {
     },
     getData(apiUrl) {
       axios
-        .get(apiUrl)
-        .then(res => {
+        .get(apiUrl, {
+          headers: {
+            Accept: 'application/html'
+          }
+        }).then(res => {
           this.people = res.data.personsFacetedSearch.content;
           this.facets = res.data.personsFacetedSearch.facets;
           this.page = res.data.personsFacetedSearch.page;

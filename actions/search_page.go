@@ -64,18 +64,22 @@ formam:
 // \"search\":[\"*\"],\"type\":[\"people\"]}"
 
 func SearchApiHandler(c buffalo.Context) error {
+  fmt.Println(c.Request())
   entityType := c.Params().Get("type")
   // might not need this is binding (see below) works
   search := c.Params().Get("search")
   
+  //m, _ := url.ParseQuery()
+
   s := &Search{}
   // NOTE: bind error when called via xhr ...
-  //if err := c.Bind(s); err != nil {
+  if err := c.Bind(s); err != nil {
+	  fmt.Printf("ERROR:%s\n", err)
   // return errors.Wrap(err, "binding to search form")
-  //}
+  }
   s.Search = c.Params().Get("search")
-  //s.Filters = c.Params().Get("filters")
-
+  filteredParam := c.Params()//.Get("filters")
+  fmt.Printf("filteredParams:%#v\n", filteredParam)
   //fmt.Printf("s=%#v\n", s)
   queryTemplatePath := fmt.Sprintf("templates/search_pages/%s/%s.graphql", entityType, entityType)
   queryTemplate, err := ioutil.ReadFile(queryTemplatePath)
@@ -118,10 +122,15 @@ func SearchApiHandler(c buffalo.Context) error {
   req.Var("search", search)
   req.Var("filters", filters)
 
+  //key=filters[0][field],value=[keywords]
+  //key=filters[0][value],value=[management]
+
   // send in all params (sort of)
   if m, ok := c.Params().(url.Values); ok {
 	for k, v := range m {
+	  fmt.Printf("key=%v,value=%v\n", k, v)
 	  // what about 'filters'
+	  // if it has [num] -?
 	  if (len(v) == 1) {
 		req.Var(k, v[0])
 	  }
