@@ -19,18 +19,13 @@
         </div>
       
       <!-- pages -->
-      <!-- use this?
-        import { PaginationNavPlugin } from 'bootstrap-vue'
-        Vue.use(PaginationNavPlugin)
-      -->
-      <ul class="pagination">
-        <!-- NOTE: would have to rebuild link here -->
-        <li :key="index" class="page-item" 
-        :class="{ 'active': index === page.number }"
-        v-for="(n, index) in page.totalPages">
-          <a :href="`?search=${searchString}&pageNumber=${n-1}`" class="page-link">{{ n }}</a>
-        </li>
-      </ul>
+      <b-pagination-nav 
+        base-url="/search/people"
+        :link-gen="linkGen" 
+        :number-of-pages="page.totalPages" 
+        limit="10"
+        hide-goto-end-buttons
+        use-router></b-pagination-nav>
     
     <SearchResults
       v-on:filtered="onFilter"
@@ -38,7 +33,6 @@
       v-bind:people="people"
       v-bind:facets="facets"
       v-bind:page="page"/>
-
   </form>
 
 </div>
@@ -57,7 +51,7 @@ export default {
     return {
       searchString: '*',
       filters: [],
-      pageNumber: 0
+      pageNumber: 1
     };
   },
   methods: {
@@ -74,9 +68,8 @@ export default {
       console.log("onFilter:SearchForm")
       console.log(value) // someValue
     },
-    // TODO: make paging work (like filters?)
-    onPage (value) {
-      console.log(value)
+    linkGen(pageNum) {
+        return `?search=${this.searchString}&pageNumber=${pageNum}`
     }
   }
 };

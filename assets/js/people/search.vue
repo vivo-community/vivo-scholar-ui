@@ -27,13 +27,6 @@ submitForm () {
     }
   })
 },
-page:
-number
-size
-totalElements
-totalPages
-
-
 */
 
 export default {
@@ -50,25 +43,18 @@ export default {
     // might need to read filters from url too
     // page number etc...
     const qry = this.$route.query.search;
-    const pageNumber = this.$route.query.pageNumber || 0;
+    const pageNumber = this.$route.query.pageNumber || 1;
 
-    //const page = { pageNumber: pageNumber }
     const filters = this.$route.query.filter; // as array?
-    
-    /*
-    if (isNaN(pageNumber)) {
-      this.search(qry, 0)
-    } else {
-      this.search(qry, pageNumber);
-    }  
-    */
     this.search(qry, pageNumber);
-    // const pageSize = this.$route.query.pageSize;
-
   },
   watch: {
-    '$route': 'search'
-  },  
+    '$route' (to, from) {
+      const qry = to.query.search;
+      const page = to.query.pageNumber;
+      this.search(qry, page);
+    }
+  },
   data() {
     return {
       people: [],
@@ -88,30 +74,15 @@ export default {
   },
   methods: {
     search(query, pageNumber) {
-      //this.api.search = query;
+      console.log(`getting query: ${query}`)
+      console.log(`getting page:${pageNumber}`)
+      console.debug(query)
+      console.debug(pageNumber)
       const { baseUrl } = this.api;
-      const apiUrl = `${baseUrl}?search=${query}&pageNumber=${pageNumber}`;  
+      // paging in api is 0 based
+      const apiUrl = `${baseUrl}?search=${query}&pageNumber=${pageNumber-1}`;  
       //const apiUrl = `${baseUrl}?search=${query}`;  
       this.getData(apiUrl);
-      //console.debug(this.$route);
-      // not getting query here (for changing URL)
-      console.debug(`SEARCH=${query}`);
-      //console.log(query);
-      this.page.number = pageNumber;
-      console.log(this.page);
-
-      // can't get anything to work here even though
-      // above prints correct search
-      if (query != undefined) {
-        console.debug(`should add ${query} to query`);
-        console.debug(`route=${this.$route.query.search}`)
-        //this.$router.replace({ name: "searchPeople", query: {query: search} })
-        //const qry = { search: search };
-		    //this.$router.replace({name: 'searchPeople', query : qry});
-        //console.debug(`route=${this.$route.query.search}`)
-        //this.$route.query = {...this.$route.query, query: search};
-        //this.$router.push({ name: "searchPeople", query: { search: 'Conlon' }});
-      }
     },
     getData(apiUrl) {
       axios

@@ -2,6 +2,9 @@ import Vue from "vue";
 import VueRouter from "router";
 Vue.use(VueRouter);
 
+import BootstrapVue from 'bootstrap-vue';
+Vue.use(BootstrapVue);
+
 import SearchPeople from "./people/search.vue";
 
 // not sure about routes at the moment

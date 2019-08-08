@@ -58,26 +58,16 @@ export default {
             //app.loading = true;
             //this.filters.push({ value: 'def' })
             // if checked + to filters?
-            //option.value = event.target.checked;
             if (event.target.checked) {
-              // add+
-              console.log(facet.field);
-              console.log(entry.value);
               console.log(`should ADD ${facet.field}:${entry.value}`);
               this.filters.push({field: facet.field, value: entry.value})
             } else {
-              // how to remove ?
-              //this.filters = _.reject(this.filters, f => f.field ===  )
-              //this.filters.push({field: facet.field, value: entry.value})
-              
               this.filters = _.without(this.filters, _.find(this.filters, {
                 field: facet.field,
                 value: `${entry.value}`
               }));
-              console.log(this.filters);
               console.log(`should REMOVE ${facet.field}:${entry.value}`);
             }
-            //const filters = [{"field" : "value"}];
             this.$emit('filtered', this.filters);
             // would need to trigger a search too
         }
