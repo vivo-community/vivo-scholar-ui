@@ -23,6 +23,7 @@ export default {
     SearchForm
   },
   created () {
+    // add a pageNumbers so paginator highlights?
     this.search(this.$route.query);
   },
   watch: {

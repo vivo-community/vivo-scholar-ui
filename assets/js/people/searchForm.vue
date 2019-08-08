@@ -60,7 +60,17 @@ export default {
       const trimmedSearchString = this.searchString.trim();
       if (trimmedSearchString !== '') {
         const query = trimmedSearchString;
-        this.$emit('search', query, this.pageNumber);
+        this.$router.push({
+          name: 'searchPeople',
+          query: {
+            search: trimmedSearchString,
+            pageNumber: 1,
+            //filters: value
+          }
+        })
+        // since router is watch - it effectively
+        // is a listener for state change and emiter
+        //this.$emit('search', this.$router.query);
       }
     },
     onFilter (value) {
@@ -82,14 +92,12 @@ export default {
             filters: value
           }
         })
-        
-        
-
       }
       // NOTE: add to router?
       // (then that might trigger search)
     },
     linkGen(pageNum) {
+        // add filters??
         return `?search=${this.searchString}&pageNumber=${pageNum}`
     }
   }
