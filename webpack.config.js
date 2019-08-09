@@ -6,6 +6,7 @@ const ManifestPlugin = require("webpack-manifest-plugin");
 const CleanObsoleteChunks = require('webpack-clean-obsolete-chunks');
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const LiveReloadPlugin = require('webpack-livereload-plugin');
+const VueLoaderPlugin = require('vue-loader/lib/plugin');
 
 const configurator = {
   entries: function(){
@@ -43,7 +44,8 @@ const configurator = {
       new MiniCssExtractPlugin({filename: "[name].[contenthash].css"}),
       new CopyWebpackPlugin([{from: "./assets",to: ""}], {copyUnmodified: true,ignore: ["css/**", "js/**", "src/**"] }),
       new Webpack.LoaderOptionsPlugin({minimize: true,debug: false}),
-      new ManifestPlugin({fileName: "manifest.json"})
+      new ManifestPlugin({fileName: "manifest.json"}),
+      new VueLoaderPlugin()
     ];
 
     return plugins
@@ -52,12 +54,14 @@ const configurator = {
   moduleOptions: function() {
     return {
       rules: [
+        {test: /\.vue/, loader: "vue-loader"},
         {
           test: /\.s[ac]ss$/,
           use: [
             MiniCssExtractPlugin.loader,
             { loader: "css-loader", options: {sourceMap: true}},
-            { loader: "sass-loader", options: {sourceMap: true}}
+            { loader: "sass-loader", options: {sourceMap: true}}//,
+            //{ loader: "vue-style-loader" }
           ]
         },
         { test: /\.tsx?$/, use: "ts-loader", exclude: /node_modules/},
@@ -83,7 +87,11 @@ const configurator = {
       plugins: configurator.plugins(),
       module: configurator.moduleOptions(),
       resolve: {
-        extensions: ['.ts', '.js', '.json']
+        extensions: ['.ts', '.js', '.json'],
+        alias: {
+          vue$: `${__dirname}/node_modules/vue/dist/vue.esm.js`,
+          router$: `${__dirname}/node_modules/vue-router/dist/vue-router.esm.js`
+        }
       }
     }
 

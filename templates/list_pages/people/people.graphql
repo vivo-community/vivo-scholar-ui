@@ -1,6 +1,7 @@
 query($pageSize: Int!, $pageNumber: Int!) {
     personsPaged(paging: {
-        pageNumber: $pageNumber, pageSize: $pageSize,
+        pageNumber: $pageNumber, 
+        pageSize: $pageSize,
         sort:{ 
           orders: [{direction: ASC, property:"name"}]
         }
