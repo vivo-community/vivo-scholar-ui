@@ -1,32 +1,33 @@
 <template>
 <div>
   <h1 class="page-header">Search</h1>
-
   <h2>Page {{ page.number + 1 }} of {{ page.totalPages }}</h2>
 
   <form id="people-search">
-        <input
-          v-model="searchString"
-          @keydown.13.prevent="parseSearchString"
-          type="text"
-          class="form-control"
-          placeholder="Search ..."
-        >
-        <div class="input-group-append">
-          <button @click="parseSearchString" class="btn btn-outline-secondary" type="button">
-            <i class="fas fa-search"></i>
-          </button>
-        </div>
+    <input
+      v-model="searchString"
+      @keydown.13.prevent="parseSearchString"
+      type="text"
+      class="form-control"
+      placeholder="Search ..."
+    >
+    <div class="input-group-append">
+      <button @click="parseSearchString" class="btn btn-outline-secondary" type="button">
+        <i class="fas fa-search"></i>
+      </button>
+    </div>
       
-      <!-- pages -->
-      <b-pagination-nav 
-        base-url="/search/people"
-        :link-gen="linkGen" 
-        :number-of-pages="page.totalPages" 
-        limit="10"
-        hide-goto-end-buttons
-        use-router>
-      </b-pagination-nav>
+    <!-- pages NOTE: page.number is 0 based -->
+    <!-- limit should be configurable or something -->
+    <b-pagination-nav 
+      base-url="/search/people"
+      :link-gen="linkGen" 
+      :number-of-pages="page.totalPages" 
+      limit="10"
+      :current-page="pageNumber"
+      hide-goto-end-buttons
+      use-router>
+    </b-pagination-nav>
     
     <SearchResults
       v-on:filtered="onFilter"
@@ -42,6 +43,8 @@
 <script charset="utf-8">
 import SearchResults from './searchResults.vue';
 
+import qs from 'qs';
+
 export default {
   name: 'SearchForm',
   components: {
@@ -51,9 +54,13 @@ export default {
   data() {
     return {
       searchString: '*',
-      filters: [],
-      pageNumber: 1
+      filters: []
     };
+  },
+  computed: {
+    pageNumber: function () {
+      return this.page.number + 1
+    }
   },
   methods: {
     parseSearchString() {
@@ -64,27 +71,16 @@ export default {
           name: 'searchPeople',
           query: {
             search: trimmedSearchString,
-            pageNumber: 1,
-            //filters: value
+            pageNumber: 1
           }
         })
-        // since router is watch - it effectively
-        // is a listener for state change and emiter
+        // since router is watch(ed) - it effectively
+        // is a listener for state change and emiter already
         //this.$emit('search', this.$router.query);
       }
     },
     onFilter (value) {
-      console.log("onFilter:SearchForm")
-      console.log(value) // should be array of objects
-
-      if (Array.isArray(value) && value.length > 0) {
-        console.log("adding filters to router...")
-        console.debug(value)
-        /// NOTE: wanted this:
-        //filters[keywords]=biostatistics
-        // getting this:
-        //filters[0][field]=keywords&filters[0][value]=management
-        this.$router.push({
+       this.$router.push({
           name: 'searchPeople',
           query: {
             search: this.searchString,
@@ -92,13 +88,20 @@ export default {
             filters: value
           }
         })
-      }
-      // NOTE: add to router?
-      // (then that might trigger search)
+        this.filters = value
+        // FIXME: losing page number in pagination component
+        // when removing all filters
+        this.pageNumber = 1
     },
     linkGen(pageNum) {
-        // add filters??
-        return `?search=${this.searchString}&pageNumber=${pageNum}`
+        const newQuery = {
+             search: this.searchString,
+             pageNumber: pageNum,
+             filters: this.filters,
+        }
+        const result = qs.stringify(newQuery, {encode: false});
+        const queryString = result ? ('?' + result) : '';
+        return queryString
     }
   }
 };

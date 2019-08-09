@@ -13,26 +13,17 @@
     </div>
     <!-- facets -->
     <div class="col-sm">
-
-
         <div v-bind:key="facet.field" v-for="facet in facets">
             <h3>{{ facet.field }}</h3>
                 
             <ul class="list-group">                             
                 <li class="list-group-item" 
                   v-bind:key="entry.value" v-for="entry in facet.entries.content">
-
-<!-- v-model="item.checked" 
-:checked=?  lookup from initial data?
-                      v-model="filters"
--->
                   <input type="checkbox" 
                       :name="facet.field"
                       :value="entry.value" 
-
                       @change="toggleOption($event, facet, entry)"
                       />
-                      
                   {{entry.value}} ({{entry.count}})
                 </li>    
             </ul>

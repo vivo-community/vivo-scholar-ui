@@ -91,7 +91,7 @@ func SearchApiHandler(c buffalo.Context) error {
   queryTemplate, err := ioutil.ReadFile(queryTemplatePath)
 
   ctx := plush.NewContext()
-  filters := make([]map[string]string, 0)
+  //filters := make([]map[string]string, 0)
 
   // might have to get them like this:
   //filters[0][field]=keywords&filters[0][value]=management
@@ -111,7 +111,7 @@ func SearchApiHandler(c buffalo.Context) error {
 	  */
 	  
   }
-  fmt.Printf("filters=%v#\n", filters)
+  //fmt.Printf("filters=%v#\n", filters)
 
   query, err := plush.Render(string(queryTemplate), ctx)
   if err != nil {
@@ -130,7 +130,13 @@ func SearchApiHandler(c buffalo.Context) error {
 
   req := graphql.NewRequest(query)
   req.Var("search", s.Search)
-  req.Var("filters", s.Filters)
+  if (len(s.Filters) > 0) {
+	req.Var("filters", s.Filters)
+  } else {
+	filters := make([]map[string]string, 0)
+	req.Var("filters", filters)
+  }
+  
 
   //key=filters[0][field],value=[keywords]
   //key=filters[0][value],value=[management]

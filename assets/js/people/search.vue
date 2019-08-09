@@ -23,7 +23,6 @@ export default {
     SearchForm
   },
   created () {
-    // add a pageNumbers so paginator highlights?
     this.search(this.$route.query);
   },
   watch: {
@@ -65,6 +64,7 @@ export default {
       axios
         .get(apiUrl, {
           headers: {
+            // need so we can parse form data
             Accept: 'application/html'
           }
         }).then(res => {
