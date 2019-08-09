@@ -31,21 +31,26 @@ way to bind search params to this ...
 
 */
 
-/*
+
 type FilterField struct {
-	Field string `form:"facetField"`
-	Value string `form:"facetValue"`
+	Field string `form:"field"`
+	Value string `form:"value"`
 }
-*/
+
 
 type Search struct {
 	PageNumber int `form:"pageNumber"`
 	//PageSize int `form:"pageSize"`
 	Search string `form:"search"`
 	//Filters map[string][]string `form:"filters"`
-	Filters map[string]map[string]bool `form:"filters"`
+	//Filters map[string]map[string]bool `form:"filters"`
+	//Filters []map[string]string `form:"filters"`
+	//Filters []FilterField `form:"filters"`
+	//Filters []FilterField `form:"filters"`
+    Filters []map[string]string `form:"filters"`
 	// filters[0]["keywords"]["informatics"] = true
 	// filters[1]["keywords"]["biostatistics"] = true
+	// filters[0][field]=keywords&filters[0][value]=management
 }
 
 /*
@@ -67,7 +72,7 @@ func SearchApiHandler(c buffalo.Context) error {
   fmt.Println(c.Request())
   entityType := c.Params().Get("type")
   // might not need this is binding (see below) works
-  search := c.Params().Get("search")
+  //search := c.Params().Get("search")
   
   //m, _ := url.ParseQuery()
 
@@ -77,9 +82,10 @@ func SearchApiHandler(c buffalo.Context) error {
 	  fmt.Printf("ERROR:%s\n", err)
   // return errors.Wrap(err, "binding to search form")
   }
-  s.Search = c.Params().Get("search")
-  filteredParam := c.Params()//.Get("filters")
-  fmt.Printf("filteredParams:%#v\n", filteredParam)
+  fmt.Printf("search=%#v\n", s)
+  //s.Search = c.Params().Get("search")
+  //filteredParam := c.Params()//.Get("filters")
+  //fmt.Printf("filteredParams:%#v\n", filteredParam)
   //fmt.Printf("s=%#v\n", s)
   queryTemplatePath := fmt.Sprintf("templates/search_pages/%s/%s.graphql", entityType, entityType)
   queryTemplate, err := ioutil.ReadFile(queryTemplatePath)
@@ -93,13 +99,17 @@ func SearchApiHandler(c buffalo.Context) error {
   // how to get filters from xhr??? - maybe
   // just c.Params().Get("filter")-->
   for k, v := range(s.Filters) {
+	  //filters:key=0,value=map[string]string{"field":"keywords", "value":"management"}                                                 
+	  //filters:key=1,value=map[string]string{"field":"keywords", "value":"Data"}   
 	  fmt.Printf("filters:key=%#v,value=%#v\n", k, v)
-	  /* 
+	  
+	  /*
 	  for k2, _ := range v {
 		  hash := map[string]string{"field": k, "value": k2}
-		  //filters = append(filters, hash)
+		  filters = append(filters, hash)
 	  }
 	  */
+	  
   }
   fmt.Printf("filters=%v#\n", filters)
 
@@ -119,8 +129,8 @@ func SearchApiHandler(c buffalo.Context) error {
   //filters: [],
 
   req := graphql.NewRequest(query)
-  req.Var("search", search)
-  req.Var("filters", filters)
+  req.Var("search", s.Search)
+  req.Var("filters", s.Filters)
 
   //key=filters[0][field],value=[keywords]
   //key=filters[0][value],value=[management]
