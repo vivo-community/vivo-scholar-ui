@@ -13,6 +13,7 @@
     </div>
     <!-- facets -->
     <div class="col-sm">
+      <!-- use b-form-group, b-form-checkbox etc... ?? -->
         <div v-bind:key="facet.field" v-for="facet in facets">
             <h3>{{ facet.field }}</h3>
                 
@@ -35,6 +36,7 @@
 
 <script>
 import _ from 'lodash';
+//import R from 'ramda';
 
 export default {
   name: 'SearchResults',
@@ -42,7 +44,8 @@ export default {
   // send data back up to search ??
   data() {
     return {
-      filters: []
+      filters: [],
+      //filterMap: {}
     }
   },
   methods: {
@@ -50,11 +53,37 @@ export default {
             if (event.target.checked) {
               console.log(`should ADD ${facet.field}:${entry.value}`);
               this.filters.push({field: facet.field, value: entry.value})
-            } else {
+              
+              /*
+              if (facet.field in this.filterMap) {
+                  let ary = this.filterMap[facet.field]
+                  ary.push(entry.value)
+              } else {
+                 this.filterMap[facet.field] = [entry.value]
+              }
+              */
+
+            } else { // remove
               this.filters = _.without(this.filters, _.find(this.filters, {
                 field: facet.field,
                 value: `${entry.value}`
               }));
+
+              /*
+              if (facet.field in this.filterMap) {
+                  let ary = this.filterMap[facet.field]
+                  let newArray = ary.filter(function(value, index, arr) {
+                    return (value != entry.value)
+                  })
+                  if (newArray.length == 0) {
+                    delete this.filterMap[facet.field]  
+                  } else {
+                    this.filterMap[facet.field] = newArray;
+                  }
+              } else {
+                   console.error("did not find field to remove value")
+              }
+              */
               console.log(`should REMOVE ${facet.field}:${entry.value}`);
             }
             this.$emit('filtered', this.filters);

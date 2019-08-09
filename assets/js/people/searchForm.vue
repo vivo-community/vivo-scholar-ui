@@ -89,9 +89,7 @@ export default {
           }
         })
         this.filters = value
-        // FIXME: losing page number in pagination component
-        // when removing all filters
-        this.pageNumber = 1
+        //console.log(qs.stringify(value2, {encode: false}))
     },
     linkGen(pageNum) {
         const newQuery = {

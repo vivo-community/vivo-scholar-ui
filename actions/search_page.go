@@ -51,6 +51,10 @@ type Search struct {
 	// filters[0]["keywords"]["informatics"] = true
 	// filters[1]["keywords"]["biostatistics"] = true
 	// filters[0][field]=keywords&filters[0][value]=management
+
+	// Filters map[string][]string `form:"filters"`
+	// filters[keywords]=management&filters[keywords]=Data
+
 }
 
 /*
