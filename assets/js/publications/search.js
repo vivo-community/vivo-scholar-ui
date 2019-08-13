@@ -3,13 +3,15 @@ import axios from 'axios'
 import _ from 'lodash'
 import PagingPanel from './paging'
 
+//import { createBrowserHistory } from 'history'
+import { withRouter } from "react-router"
+
 const PublicationSearch = (props) => {
   const [query, setQuery] = useState('*');
   const [search, setSearch] = useState('*');
   const [url, setUrl] = useState(
     `/search_api/publications?search=*&pageNumber=0`,
   );
-  //const [query, setQuery] = useState('redux');
 
   const [ publications, setPublications ] = useState([])
   const [ facets, setFacets ] = useState([])
@@ -17,41 +19,17 @@ const PublicationSearch = (props) => {
   const [ isLoading, setIsLoading ] = useState(false)
   const [ isError, setIsError ] = useState(false)
 
+  const [ filters, setFilters ] = useState([])
+
   useEffect(() => {
-    // TODO: need to build up form query parameters
-    /*
-    axios
-    .get(
-      `${url}`
-    )
-    .then(({ data }) => {
-      console.log("setting publications")
-      console.log(data)
-      setPublications(data.documentsFacetedSearch.content)
-      setFacets(data.documentsFacetedSearch.facets)
-      setPage(data.documentsFacetedSearch.page)
-
-      console.log(publications)
-    });
-
-    */
     const fetchData = async () => {
       setIsLoading(true)
       setIsError(false)
       try {
         const res = await axios(url)
-        //const res = await axios(
-        //  `/search_api/publications`
-        // );
-        console.log("setting publications")
-        console.log(res.data)
         setPublications(res.data.documentsFacetedSearch.content)
         setFacets(res.data.documentsFacetedSearch.facets)
         setPage(res.data.documentsFacetedSearch.page)
-
-        console.log(publications)
-        console.log(facets)
-        console.log(page)
 
         setIsLoading(false)
       } catch (error) {
@@ -68,17 +46,35 @@ const PublicationSearch = (props) => {
   const handleSubmit = (evt) => {
       // need to build uri better
       setUrl(`/search_api/publications?search=${query}&pageNumber=0`)
+      props.history.push({
+        pathname: '/search/publications',
+        search: `?search=${query}&pageNumber=0`
+      })
       evt.preventDefault()
   }
 
-  const onFacet = (evt) => {
-    // have to add filters here
+  const onFacet = (field, value, evt) => {
+    if (evt.target.checked) {
+      console.log(`ADD filter by ${field} and ${value}`)
+    } else {
+      console.log(`REMOVE filter by ${field} and ${value}`)
+    }
+    /*
+    FIXME: not sure what to do here
+    props.history.push({
+      pathname: '/search/publications',
+      search: `?search=${query}&pageNumber=${pageNumber}&filters=${filters}`
+    })
+    */
     setUrl(`/search_api/publications?search=${query}&pageNumber=0`)
-    //evt.preventDefault()
   }
 
   let cb = (pageNumber) => {
     console.log(`page=${pageNumber}`)
+    props.history.push({
+      pathname: '/search/publications',
+      search: `?search=${query}&pageNumber=${pageNumber}`
+    })
     setUrl(`/search_api/publications?search=${query}&pageNumber=${pageNumber}`)
  }
 
@@ -99,7 +95,7 @@ const PublicationSearch = (props) => {
                  <li className="list-group-item" 
                    key={`lgi-${facet.field}+${e.value}`}>
                     <input
-                      onChange={onFacet}
+                      onChange={(evt) => onFacet(facet.field, e.value, evt)}
                       type="checkbox" 
                       name={`filters[${facet.field}]`}
                       value={e.value} />
@@ -123,6 +119,8 @@ const PublicationSearch = (props) => {
       </div>
     )
   }
+  const { match, location, history } = props
+  console.log(`You are now at ${location.pathname}`)
   return (
       <div>
         <h2>Publication Search</h2>
@@ -178,4 +176,4 @@ const PublicationSearch = (props) => {
   )
 }
   
-export default PublicationSearch
+export default withRouter(PublicationSearch)
