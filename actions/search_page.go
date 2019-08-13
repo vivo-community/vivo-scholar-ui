@@ -31,12 +31,12 @@ way to bind search params to this ...
 
 */
 
-
+/*
 type FilterField struct {
 	Field string `form:"field"`
 	Value string `form:"value"`
 }
-
+*/
 
 type Search struct {
 	PageNumber int `form:"pageNumber"`

@@ -15,6 +15,14 @@ const routes = [
     component: SearchPeople, 
     name: "searchPeople"
   }//,
+  /*
+  etc... 
+  {
+    path: "/search/publications", 
+    component: SearchPublications, 
+    name: "searchPublications"
+  }//,
+  */
   //{ path: '*', component: NotFoundComponent }
 ];
 

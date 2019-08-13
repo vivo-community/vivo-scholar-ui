@@ -12,6 +12,7 @@ const configurator = {
   entries: function(){
     var entries = {
       application: [
+        'babel-polyfill',
         './node_modules/jquery-ujs/src/rails.js',
         './assets/css/application.scss',
       ],
@@ -66,6 +67,7 @@ const configurator = {
         },
         { test: /\.tsx?$/, use: "ts-loader", exclude: /node_modules/},
         { test: /\.jsx?$/,loader: "babel-loader",exclude: /node_modules/ },
+        { test: /\.js?$/,loader: "babel-loader",exclude: /node_modules/ },
         { test: /\.(woff|woff2|ttf|svg)(\?v=\d+\.\d+\.\d+)?$/,use: "url-loader"},
         { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,use: "file-loader" },
         { test: require.resolve("jquery"),use: "expose-loader?jQuery!expose-loader?$"},
