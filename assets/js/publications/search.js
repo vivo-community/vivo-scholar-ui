@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react"
 import axios from 'axios'
 import _ from 'lodash'
+import PagingPanel from './paging'
 
 const PublicationSearch = (props) => {
   const [query, setQuery] = useState('*');
@@ -70,12 +71,23 @@ const PublicationSearch = (props) => {
       evt.preventDefault()
   }
 
+  const onFacet = (evt) => {
+    // have to add filters here
+    setUrl(`/search_api/publications?search=${query}&pageNumber=0`)
+    //evt.preventDefault()
+  }
+
+  let cb = (pageNumber) => {
+    console.log(`page=${pageNumber}`)
+    setUrl(`/search_api/publications?search=${query}&pageNumber=${pageNumber}`)
+ }
+
   let facetsFragment = ""
   if (facets != undefined && facets.length > 0) {
     // go needs this now
     // filters[0][field]=keywords&filters[0][value]=management
     facetsFragment = (
-    <div className="col-sm" key={`form-search-col2`}>
+    <div className="col-sm">
     {facets.map((facet, index) => (
         /* NOTE: needed a key here */
         <div key={`div-${facet.field}`}>
@@ -87,6 +99,7 @@ const PublicationSearch = (props) => {
                  <li className="list-group-item" 
                    key={`lgi-${facet.field}+${e.value}`}>
                     <input
+                      onChange={onFacet}
                       type="checkbox" 
                       name={`filters[${facet.field}]`}
                       value={e.value} />
@@ -104,14 +117,16 @@ const PublicationSearch = (props) => {
   let pagesFragment = ""
   if (page != undefined) {
     pagesFragment = (
-     <h3>{page}</h3>
-
+      <div>
+      <h3>page {page.number+1} of {page.totalPages} pages</h3>
+      <PagingPanel page={page} callback={cb} />
+      </div>
     )
   }
   return (
       <div>
         <h2>Publication Search</h2>
-
+        { pagesFragment }
         <form id="searchForm" onSubmit={handleSubmit}>
         
           <div>Query: </div>
@@ -137,7 +152,7 @@ const PublicationSearch = (props) => {
         
         <div className="row" key={`form-search-row`}>
 
-          <div className="col-sm" key={`form-search-col1`}> 
+          <div className="col-sm"> 
             <ul className="list-group">
                      
             {publications.map(item => (
@@ -148,7 +163,7 @@ const PublicationSearch = (props) => {
           
             </ul>
           </div>
-          <div className="col-sm" key={`form-search-col1`}> 
+          <div className="col-sm"> 
               { facetsFragment }
           </div>
 
