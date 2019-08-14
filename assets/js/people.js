@@ -1,36 +1,18 @@
-import Vue from "vue";
-import VueRouter from "router";
-Vue.use(VueRouter);
+import React from 'react'
+import ReactDOM from 'react-dom'
+import { BrowserRouter as Router, Route } from 'react-router-dom'
 
-import BootstrapVue from 'bootstrap-vue';
-Vue.use(BootstrapVue);
+import PersonSearch from './people/search.js'
 
-import SearchPeople from "./people/search.vue";
-import qs from "qs";
+function App() {
+  return (
+    <Router>
+      <Route exact path="/search/people" component={PersonSearch} />
+    </Router>
+    )
+}
 
-// not sure about routes at the moment
-const routes = [
-  {
-    path: "/search/people", 
-    component: SearchPeople, 
-    name: "searchPeople"
-  }
-];
-
-//https://stackoverflow.com/questions/51901983/vue-router-query-parameter-as-array-with-keys
-const router = new VueRouter({
-    mode: "history",
-    routes,
-    parseQuery: (query) => {
-      return qs.parse(query);
-    },
-    stringifyQuery(query) {
-      let result = qs.stringify(query, {encode: false});
-      return result ? ('?' + result) : '';
-    }
-});
-
-const searchApp = new Vue({
-  router,
-  render: (h) => h(SearchPeople)
-}).$mount("#search");
+ReactDOM.render(
+  <App />,
+  document.getElementById('search')
+);
