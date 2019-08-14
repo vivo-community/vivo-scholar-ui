@@ -1,10 +1,10 @@
 import gql from 'graphql-tag'
 
 const publicationQuery = gql`
-query($search: String!, $pageNumber: Int!)  {
+query($search: String!, $pageNumber: Int!, $filters: [FilterArgInput])  {
   documentsFacetedSearch(
     facets: [{field:"type"}, {field: "numberOfPages"}],
-    filters: [],
+    filters: $filters,
     paging: { pageSize:100, pageNumber: $pageNumber,
         sort:{ 
           orders: [{direction: ASC, property:"title"}]

@@ -5,9 +5,8 @@ import { useRouter } from '../lib/react-router-hooks'
 // but 'qs' seemed best
 import qs from 'qs'
 
-//import PagingPanel from './paging'
 import PagingPanel from '../components/paging'
-import publicationQuery from './query'
+import peopleQuery from './query'
 import client from '../lib/apollo'
 
 function stringifyQuery(params) {
@@ -19,8 +18,8 @@ function parseQuery(qryString) {
   return qs.parse(qryString)
 }
 
-const PublicationSearch = (props) => {
-  const [ publications, setPublications ] = useState([])
+const PersonSearch = (props) => {
+  const [ people, setPeople ] = useState([])
   const [ facets, setFacets ] = useState([])
   const [ page, setPage ] = useState()
   const [ isLoading, setIsLoading ] = useState(false)
@@ -50,7 +49,7 @@ const PublicationSearch = (props) => {
       try {
         // supposed to be adding filters
         const { data } = await client.query({
-          query: publicationQuery,
+          query: peopleQuery,
           variables: { 
             pageNumber: pageNumber,  
             search: query,
@@ -58,9 +57,9 @@ const PublicationSearch = (props) => {
           },
         });
         
-        setPublications(data.documentsFacetedSearch.content)
-        setFacets(data.documentsFacetedSearch.facets)
-        setPage(data.documentsFacetedSearch.page)
+        setPeople(data.personsFacetedSearch.content)
+        setFacets(data.personsFacetedSearch.facets)
+        setPage(data.personsFacetedSearch.page)
 
         setIsLoading(false)
       } catch (error) {
@@ -75,7 +74,7 @@ const PublicationSearch = (props) => {
       let qry = { search: query, pageNumber: 0 }
       let params = stringifyQuery(qry)
       props.history.push({
-        pathname: '/search/publications',
+        pathname: '/search/people',
         search: `${params}`
       })
       // need to build uri better
@@ -110,7 +109,7 @@ const PublicationSearch = (props) => {
     let obj = { search: query, pageNumber: 0, filters: newFilters }
     let params = stringifyQuery(obj)
     props.history.push({
-      pathname: '/search/publications',
+      pathname: '/search/people',
       search: `${params}`
     })    
   }
@@ -123,7 +122,7 @@ const PublicationSearch = (props) => {
     let params = stringifyQuery(obj)
 
     props.history.push({
-      pathname: '/search/publications',
+      pathname: '/search/people',
       search: params
     })
  }
@@ -171,7 +170,7 @@ const PublicationSearch = (props) => {
 
   return (
       <div>
-        <h2>Publication Search</h2>
+        <h2>Person Search</h2>
         { pagesFragment }
         <form id="searchForm" onSubmit={handleSubmit}>
         
@@ -199,9 +198,9 @@ const PublicationSearch = (props) => {
             <div className="col-sm"> 
               <ul className="list-group">
                      
-              {publications.map(item => (
+              {people.map(item => (
                 <li className="list-group-item" key={item.id}>
-                  <a href={item.id}>{item.title}</a>
+                  <a href={item.id}>{item.name}</a>
                 </li>
               ))}
           
@@ -220,4 +219,4 @@ const PublicationSearch = (props) => {
   )
 }
   
-export default PublicationSearch
+export default PersonSearch

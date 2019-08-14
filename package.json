@@ -21,6 +21,7 @@
     "jquery-ujs": "~1.2.2",
     "lodash": "^4.17.13",
     "popper.js": "^1.14.4",
+    "qs": "^6.7.0",
     "react": "^16.9.0",
     "react-apollo": "^3.0.0",
     "react-dom": "^16.9.0",
