@@ -1,106 +1,57 @@
 import React, { useState, useEffect } from "react"
-import axios from 'axios'
 import _ from 'lodash'
-import PagingPanel from './paging'
-import qs from 'qs'
-
-import { useQuery } from '@apollo/react-hooks';
-import publicationQuery from './query'
-
-//import { createBrowserHistory } from 'history'
-//import { withRouter } from "react-router"
 import { useRouter } from '../lib/react-router-hooks'
+// NOTE: had to use query-string vs. querystring
+import qs from 'query-string'
 
+import PagingPanel from './paging'
+import publicationQuery from './query'
 import client from '../lib/apollo'
 
+function stringifyQuery(params) {
+  // NOTE: needed to specify sep and eq parameters for some reason
+  //let result = qs.stringify(params, "&", "=", {encode: false});
+  let result = qs.stringify(params, {encode: false});
+  return result ? ('?' + result) : '';
+}
+
+function parseQuery(qryString) {
+  return qs.parse(qryString);
+}
+
 const PublicationSearch = (props) => {
-  const [query, setQuery] = useState('*')
-  const [search, setSearch] = useState('*')
-  
-  const [pageNumber, setPageNumber] = useState(0)
-
-  //$search: String!, $pageNumber: Int!
-
-  // , fetchMore 
-  //const { loading, error, data, fetchMore } = useQuery( publicationQuery, {
-  // variables: { pageNumber: 0, search: "*" } 
-  //}
-
-  /*
-  const { loading, error, data } = useQuery(GET_DOG_PHOTO, {
-    variables: { breed },
-  });
-  if (loading) return null;
-  if (error) return `Error! ${error}`;
-  */
-
-  // NOTE: need to initialize from query params ---
-  // queryString.parse(location.search)
-  const [url, setUrl] = useState(
-    `/search_api/publications?search=*&pageNumber=0`,
-  );
-
   const [ publications, setPublications ] = useState([])
   const [ facets, setFacets ] = useState([])
   const [ page, setPage ] = useState()
   const [ isLoading, setIsLoading ] = useState(false)
   const [ isError, setIsError ] = useState(false)
 
-  const [ filters, setFilters ] = useState([])
-  //const { match, location, history } = props
   const { match, location, history } = useRouter()
 
   console.log(`You are now at ${location.pathname}`)
   console.log(`search=${location.search}`)
-  // FIXME: parsing as this: { "?search": "effect", pageNumber: "0" }
-  // seems like a bug people would have noticed by now
-  //use this instead? might need polyfill
-  //const createQueryString = i => (new URLSearchParams(i)).toString()
-  //const parseQueryString = i => Array.from(new URLSearchParams(i).entries()).reduce((c, p) => (c[p[0]] = p[1], c), {})
-  const parsed = qs.parse(location.search.substring(1))
-  console.log("starting with params: %0", parsed)
 
-  // could set it here instead of above
-  // maybe even just pass it through if they match exactly
-  // as long as defaults happen
-  //  let result = qs.stringify(parsed, {encode: false});
-  //  //return result ? ('?' + result) : '';
-  //const [url, setUrl] = useState(
-  //  `/search_api/publications${location.search}`,
-  //);
+  const parsed = parseQuery (location.search.substring(1))
+  console.log("starting with params: %0", parsed)
+  
+  const defaultSearch = parsed.search ? parsed.search : "*" 
+  const [query, setQuery] = useState(defaultSearch)
+  const defaultPage = parsed.pageNumber ? parsed.pageNumber : 0
+  const [pageNumber, setPageNumber] = useState(defaultPage)
+
+  // could read from parameters
+  const [ filters, setFilters ] = useState([])
 
   useEffect(() => {
-    /*
-            onClick={async () => {
-          const { data } = await client.query({
-            query: GET_DOG_PHOTO,
-            variables: { breed: 'bulldog' },
-          });
-          */
-    /*
-      fetchMore({
-          variables: {
-            offset: data.feed.length
-          },
-          updateQuery: (prev, { fetchMoreResult }) => {
-            if (!fetchMoreResult) return prev;
-            return Object.assign({}, prev, {
-              feed: [...prev.feed, ...fetchMoreResult.feed]
-            });
-          }
-        })
-        */
+    // get from url ????
     const fetchData = async () => {
       setIsLoading(true)
       setIsError(false)
-      try {
-        // using url (pass through)
-        // const res = await axios(url)
-        //setPublications(res.data.documentsFacetedSearch.content)
-        //setFacets(res.data.documentsFacetedSearch.facets)
-        //setPage(res.data.documentsFacetedSearch.page)
 
-        // not using url
+      console.log("***** FILTERS before query ****")
+      console.log(filters)
+      try {
+        // supposed to be adding filters
         const { data } = await client.query({
           query: publicationQuery,
           variables: { 
@@ -121,68 +72,77 @@ const PublicationSearch = (props) => {
       }
     };
     fetchData();
-  }, [url]);
+  }, [search, filters, pageNumber]);
 
   const handleSubmit = (evt) => {
+      let qry = { search: query, pageNumber: 0 }
+      let params = stringifyQuery(qry)
       props.history.push({
         pathname: '/search/publications',
-        search: `?search=${query}&pageNumber=0`
+        search: `${params}`
       })
       // need to build uri better
       // instead set props?
+      // reset filters?
       setPageNumber(0)
+      setFilters([])
 
-      //setUrl(`/search_api/publications?search=${query}&pageNumber=0`)
       evt.preventDefault()
   }
 
   const onFacet = (field, value, evt) => {
+    // Expected type 'Map' but was 'Integer'
     if (evt.target.checked) {
       console.log(`ADD filter by ${field} and ${value}`)
-      filters.push({field: field, value: value})
+
+      // have to set via state to trigger updated graphql query
+      var newFilters = _.concat(filters, {field: field, value: value})
+      setFilters(newFilters)
     } else {
-      filters = _.without(this.filters, _.find(this.filters, {
+      const newFilters = _.without(filters, _.find(filters, {
         field: field,
         value: value
       }));
+      setFilters(newFilters)
+      // need to querystring them --> then also read them back in
       console.log(`REMOVE filter by ${field} and ${value}`)
     }
+    console.log("**** FILTERS **********")
+    console.log(filters)
     /*
-    FIXME: not sure what to do here
-
-    maybe use qs -> and filters[] array
+    let query = { search: query, pageNumber: 0, filters: filters }
+    let params = stringifyQuery(query)
     props.history.push({
       pathname: '/search/publications',
-      search: `?search=${query}&pageNumber=${pageNumber}&filters=${filters}`
+      search: `${params}`
     })
-
-        const newQuery = {
-             search: query,
-             pageNumber: 0,
-             filters: filters,
-        }
-        const result = qs.stringify(newQuery, {encode: false})
-        const queryString = result ? ('?' + result) : ''\
-
-        setUrl(`/search_api/publications${queryString}`)
     */
-    setUrl(`/search_api/publications?search=${query}&pageNumber=0`)
+    
   }
 
-  let cb = (pageNumber) => {
+  let onPage = (pageNumber) => {
     console.log(`page=${pageNumber}`)
+    setPageNumber(pageNumber)
+
+    //new URLSearchParams({clientId: clientId}).toString()
+
+    let qry = { search: query, pageNumber: pageNumber, filters: filters }
+    console.log(`query=${qry}`)
+    let params = stringifyQuery(qry)
+    console.log(`stringified:${params}`)
+    // what about filters array ???
+    //params = Object.keys(qry).map(key => key + '=' + qry[key]).join('&');
+    //console.log(`stringified (es6):${params}`)
+    //params = new URLSearchParams(qry).toString()
+    //console.log(`stringified (URLSearchParams):${params}`)
     props.history.push({
       pathname: '/search/publications',
-      search: `?search=${query}&pageNumber=${pageNumber}`
+      search: params
     })
-    setPageNumber(pageNumber)
-    setUrl(`/search_api/publications?search=${query}&pageNumber=${pageNumber}`)
  }
 
   let facetsFragment = ""
   if (facets != undefined && facets.length > 0) {
-    // go needs this now
-    // filters[0][field]=keywords&filters[0][value]=management
     facetsFragment = (
     <div className="col-sm">
     {facets.map((facet, index) => (
@@ -196,6 +156,7 @@ const PublicationSearch = (props) => {
                  <li className="list-group-item" 
                    key={`lgi-${facet.field}+${e.value}`}>
                     <input
+                      defaultChecked={!!_.find(filters, { "field": facet.field, "value": e.value}) } 
                       onChange={(evt) => onFacet(facet.field, e.value, evt)}
                       type="checkbox" 
                       name={`filters[${facet.field}]`}
@@ -216,7 +177,7 @@ const PublicationSearch = (props) => {
     pagesFragment = (
       <div>
       <h3>page {page.number+1} of {page.totalPages} pages</h3>
-      <PagingPanel page={page} callback={cb} />
+      <PagingPanel page={page} callback={onPage} />
       </div>
     )
   }
@@ -246,28 +207,24 @@ const PublicationSearch = (props) => {
            <div>Loading ...</div>
       ) : (
         <div>
-       
-        
-        <div className="row" key={`form-search-row`}>
+          <div className="row" key={`form-search-row`}>
 
-          <div className="col-sm"> 
-            <ul className="list-group">
+            <div className="col-sm"> 
+              <ul className="list-group">
                      
-            {publications.map(item => (
-              <li className="list-group-item" key={item.id}>
-                <a href={item.id}>{item.title}</a>
-              </li>
-            ))}
+              {publications.map(item => (
+                <li className="list-group-item" key={item.id}>
+                  <a href={item.id}>{item.title}</a>
+                </li>
+              ))}
           
-            </ul>
-          </div>
-          <div className="col-sm"> 
-              { facetsFragment }
-          </div>
-
-
-        </div>
-        </div>
+              </ul>
+            </div>
+            <div className="col-sm"> 
+                { facetsFragment }
+            </div>  { /* end col-sm */ }
+          </div> { /* end row */ }
+        </div> 
       )}
 
         </form>
@@ -276,56 +233,4 @@ const PublicationSearch = (props) => {
   )
 }
   
-//export default withRouter(PublicationSearch)
-
 export default PublicationSearch
-
-/*
-import { graphql } from 'react-apollo'
-import gql from 'graphql-tag'
-import withData from '../lib/apollo'
-
-const publicationSearch = gql`
-query($search: String!, $pageNumber: Int!)  {
-  documentsFacetedSearch(
-    facets: [{field:"type"}, {field: "numberOfPages"}],
-    filters: [],
-    paging: { pageSize:100, pageNumber: $pageNumber,
-        sort:{ 
-          orders: [{direction: ASC, property:"title"}]
-        }  
-    },
-    query: $search
-  ) {
-    content {
-      id
-      title
-    }
-    page {
-      totalPages
-      number
-      size
-      totalElements
-    }
-    facets {
-      field
-      entries {
-        content { 
-          value
-          count 
-        }
-      }
-    }
-  }
-}
-`
-
-export default withData(graphql(peopleSearch, {
-    options: ({ url: { query: { search, pageNumber } }}) => ({ 
-      variables: { 
-        search,
-        pageNumber
-      } 
-    })
-})(PersonList))
-*/
