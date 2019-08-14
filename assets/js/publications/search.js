@@ -201,7 +201,7 @@ const PublicationSearch = (props) => {
                      
               {publications.map(item => (
                 <li className="list-group-item" key={item.id}>
-                  <a href={item.id}>{item.title}</a>
+                  <a href={'/entities/publication/'+item.id}>{item.title}</a>
                 </li>
               ))}
           
