@@ -200,7 +200,7 @@ const PersonSearch = (props) => {
                      
               {people.map(item => (
                 <li className="list-group-item" key={item.id}>
-                  <a href={item.id}>{item.name}</a>
+                  <a href={'/entities/person/'+item.id}>{item.name}</a>
                 </li>
               ))}
           
