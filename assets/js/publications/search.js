@@ -1,22 +1,21 @@
 import React, { useState, useEffect } from "react"
 import _ from 'lodash'
 import { useRouter } from '../lib/react-router-hooks'
-// NOTE: had to use query-string vs. querystring
-import qs from 'query-string'
+// NOTE: tried 'query-string' and 'querystring'
+// but 'qs' seemed best
+import qs from 'qs'
 
 import PagingPanel from './paging'
 import publicationQuery from './query'
 import client from '../lib/apollo'
 
 function stringifyQuery(params) {
-  // NOTE: needed to specify sep and eq parameters for some reason
-  //let result = qs.stringify(params, "&", "=", {encode: false});
-  let result = qs.stringify(params, {encode: false});
+  let result = qs.stringify(params);
   return result ? ('?' + result) : '';
 }
 
 function parseQuery(qryString) {
-  return qs.parse(qryString);
+  return qs.parse(qryString)
 }
 
 const PublicationSearch = (props) => {
@@ -28,19 +27,18 @@ const PublicationSearch = (props) => {
 
   const { match, location, history } = useRouter()
 
-  console.log(`You are now at ${location.pathname}`)
-  console.log(`search=${location.search}`)
+  console.debug(`You are now at ${location.pathname}`)
+  console.debug(`search=${location.search}`)
 
   const parsed = parseQuery (location.search.substring(1))
-  console.log("starting with params: %0", parsed)
+  console.debug("starting with params: %0", parsed)
   
   const defaultSearch = parsed.search ? parsed.search : "*" 
   const [query, setQuery] = useState(defaultSearch)
   const defaultPage = parsed.pageNumber ? parsed.pageNumber : 0
   const [pageNumber, setPageNumber] = useState(defaultPage)
-
-  // could read from parameters
-  const [ filters, setFilters ] = useState([])
+  const defaultFilters = parsed.filters ? parsed.filters : []
+  const [ filters, setFilters ] = useState(defaultFilters)
 
   useEffect(() => {
     // get from url ????
@@ -48,8 +46,6 @@ const PublicationSearch = (props) => {
       setIsLoading(true)
       setIsError(false)
 
-      console.log("***** FILTERS before query ****")
-      console.log(filters)
       try {
         // supposed to be adding filters
         const { data } = await client.query({
@@ -67,7 +63,7 @@ const PublicationSearch = (props) => {
 
         setIsLoading(false)
       } catch (error) {
-        console.log(error)
+        console.error(error)
         setIsError(true)
       }
     };
@@ -92,49 +88,39 @@ const PublicationSearch = (props) => {
 
   const onFacet = (field, value, evt) => {
     // Expected type 'Map' but was 'Integer'
+    let newFilters = []
     if (evt.target.checked) {
-      console.log(`ADD filter by ${field} and ${value}`)
-
+      console.debug(`ADD filter by ${field} and ${value}`)
       // have to set via state to trigger updated graphql query
-      var newFilters = _.concat(filters, {field: field, value: value})
+      newFilters = _.concat(filters, {field: field, value: value})
       setFilters(newFilters)
     } else {
-      const newFilters = _.without(filters, _.find(filters, {
+      newFilters = _.without(filters, _.find(filters, {
         field: field,
         value: value
       }));
       setFilters(newFilters)
       // need to querystring them --> then also read them back in
-      console.log(`REMOVE filter by ${field} and ${value}`)
+      console.debug(`REMOVE filter by ${field} and ${value}`)
     }
-    console.log("**** FILTERS **********")
-    console.log(filters)
-    /*
-    let query = { search: query, pageNumber: 0, filters: filters }
-    let params = stringifyQuery(query)
+    // NOTE: doesn't seem to resolve 'filters' here - as if it's
+    // updated at a slightly different time
+    
+    let obj = { search: query, pageNumber: 0, filters: newFilters }
+    let params = stringifyQuery(obj)
     props.history.push({
       pathname: '/search/publications',
       search: `${params}`
-    })
-    */
-    
+    })    
   }
 
   let onPage = (pageNumber) => {
-    console.log(`page=${pageNumber}`)
+    console.debug(`page=${pageNumber}`)
     setPageNumber(pageNumber)
 
-    //new URLSearchParams({clientId: clientId}).toString()
+    let obj = { search: query, pageNumber: pageNumber, filters: newFilters }
+    let params = stringifyQuery(obj)
 
-    let qry = { search: query, pageNumber: pageNumber, filters: filters }
-    console.log(`query=${qry}`)
-    let params = stringifyQuery(qry)
-    console.log(`stringified:${params}`)
-    // what about filters array ???
-    //params = Object.keys(qry).map(key => key + '=' + qry[key]).join('&');
-    //console.log(`stringified (es6):${params}`)
-    //params = new URLSearchParams(qry).toString()
-    //console.log(`stringified (URLSearchParams):${params}`)
     props.history.push({
       pathname: '/search/publications',
       search: params

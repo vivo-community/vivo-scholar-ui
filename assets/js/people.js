@@ -14,16 +14,7 @@ const routes = [
     path: "/search/people", 
     component: SearchPeople, 
     name: "searchPeople"
-  }//,
-  /*
-  etc... 
-  {
-    path: "/search/publications", 
-    component: SearchPublications, 
-    name: "searchPublications"
-  }//,
-  */
-  //{ path: '*', component: NotFoundComponent }
+  }
 ];
 
 //https://stackoverflow.com/questions/51901983/vue-router-query-parameter-as-array-with-keys
