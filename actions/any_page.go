@@ -12,8 +12,9 @@ import (
 	"github.com/machinebox/graphql"
 )
 
-// EntityPageHandler - Use naming convention to load a template and
-// corresponding graphql query. Execute the query and use results as
+// AnyPageHandler - Use naming convention to load a template and
+// (optional) corresponding graphql query. 
+// Execute the query and use results as
 // the model for the template. File locations are:
 // Template: any_pages/{Type}.html
 // Query:    any_pages/{Type}.graphql
@@ -28,6 +29,8 @@ func AnyPageHandler(c buffalo.Context) error {
 		queryExists = false
 	}
 
+	// if there is a query run it - but it's okay to not have one
+	// (unlike entity pages)
 	if (queryExists) {
 		ctx := plush.NewContext()
 		endpoint, err := envy.MustGet("GRAPHQL_ENDPOINT")

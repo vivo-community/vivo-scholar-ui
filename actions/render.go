@@ -22,6 +22,7 @@ func init() {
 		Helpers: render.Helpers{
 			"FormatDateTime": helpers.FormatDateTime,
 			"FloatToInt": helpers.FloatToInt,
+			// TODO: not sure about this
 			"FigurePagingInfo": helpers.FigurePagingInfo,
 			"HasKey": helpers.HasKey,
 			// uncomment for non-Bootstrap form helpers:
