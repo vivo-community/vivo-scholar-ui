@@ -15,3 +15,5 @@ class Hello extends Element {
 }
 
 customElements.define('x-hello', Hello);
+
+//export default Hello

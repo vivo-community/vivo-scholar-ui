@@ -46,7 +46,9 @@ const configurator = {
       new MiniCssExtractPlugin({filename: "[name].[contenthash].css"}),
       new CopyWebpackPlugin([{from: "./assets",to: ""}], {copyUnmodified: true,ignore: ["css/**", "js/**", "src/**"] }),
       new Webpack.LoaderOptionsPlugin({minimize: true,debug: false}),
-      new ManifestPlugin({fileName: "manifest.json"}),
+      new ManifestPlugin({
+        fileName: "manifest.json"
+      }),
       new VueLoaderPlugin(),
       new Dotenv()
     ];

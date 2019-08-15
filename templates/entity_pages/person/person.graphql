@@ -1,10 +1,17 @@
 query($id: String!) {
   person(id: $id) {
+    id
     name
+    overview
     thumbnail
     positions {
       type
     }
+    keywords
+    primaryEmail
+    additionalEmails
+    scopusId
+    preferredTitle
     publications { label }
     selectedPublications {
       id
