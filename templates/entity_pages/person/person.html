@@ -1,3 +1,20 @@
+<%= javascriptTag("hello.js") %>
+<script type="application/ld+json">
+   {
+     "@context": "https://schema.org",
+     "@type": "Person",
+     "url": "http://vivo.org",
+     "name": "<%= data["person"]["name"] %>"",
+     "contactPoint": {
+       "@type": "ContactPoint",
+       "telephone": "+1-401-555-1212",
+       "contactType": "Customer service"
+     }
+   }
+</script>
+<%
+  let person = data["person"]
+%>
 <div class="row">
    <div class="col-sm"> 
          <section class="image">
@@ -7,10 +24,10 @@
          </section>
    </div>
    <div class="col-sm">  
-         <h2><%= data["person"]["name"] %></h2>
+         <h2><%= person["name"] %></h2>
        </div>
    <div class="col-sm"> 
-         <%= for (p) in data["person"]["positions"] { %>
+         <%= for (p) in person["positions"] { %>
             <div class="position row">
             <span class="position-type"><%= p["type"] %></span>
             </div>
@@ -19,11 +36,13 @@
 
 </div>
 
+<x-hello><span class="badge badge-secondary">World</span></x-hello>
+
 <h3>Publications</h3>
 <section class="publication-list">
 
 <ul class="list-group">
-<%= for (p) in data["person"]["selectedPublications"] { %>
+<%= for (p) in person["selectedPublications"] { %>
    <li class="list-group-item">
        <span class="publication-title">
           <a href=/entities/publication/<%= p["id"] %>>
@@ -35,8 +54,8 @@
 </ul>
 </section>
 
-<!-- hidden content ...
-<%= for (p) in data["person"]["publications"] { %>
+<!-- hidden content ... or json-ld
+<%= for (p) in person["publications"] { %>
   <div><%= p["label"] %></div>
 <% } %>   
 -->
