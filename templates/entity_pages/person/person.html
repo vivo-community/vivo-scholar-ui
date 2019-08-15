@@ -15,47 +15,131 @@
 <%
   let person = data["person"]
 %>
+
+<form class="form-inline my-2 my-lg-0" method="GET" action="/search/people">
+   <input name="search" id="search" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+   <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+</form>
+
 <div class="row">
-   <div class="col-sm"> 
-         <section class="image">
+
+   <div class="col-4">
+      <section class="image">
+         <div>
+            <img width="160" src="http://openvivo.org<%= person["thumbnail"] %>" />
+         </div>
+      </section>
+
+      <!-- info --> 
+      <h5>Contact</h5>
+      <section class="contact">
+         <div>
+            <%= person["primaryEmail"] %>
+         </div>
+      </section>
+
+      <!-- info --> 
+      <h5>Web Component</h5>
+      <section class="contact">
+         <div>
+            <x-hello><span class="badge badge-secondary">World</span></x-hello>
+         </div>
+      </section>
+      
+   </div><!-- end col-4 -->
+   <div class="col-8">  
+         <h4 class="title"><%= person["name"] %></h4> 
+
+         <div>
+            <h5><%= person["preferredTitle"] %></h5>
+         </div>
+
+
+
+     <!-- tabs -->
+     <!-- MORE: Teaching and Mentoring, Professional Activities ... -->
+     <!-- Nav tabs -->
+     <ul class="nav nav-pills nav-fill" id="myTab" role="tablist">
+      <li class="nav-item">
+        <a class="nav-link active" id="about-tab" data-toggle="tab" href="#about" role="tab" aria-controls="about" aria-selected="true">About</a>
+      </li>
+      <li class="nav-item">
+         <a class="nav-link" id="background-tab" data-toggle="tab" href="#background" role="tab" aria-controls="background" aria-selected="false">Background</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="research-tab" data-toggle="tab" href="#research" role="tab" aria-controls="research" aria-selected="false">Research &amp; Expertise</a>
+      </li>
+    </ul>
+    
+    <!-- Tab panes -->
+    <div class="tab-content">
+      <div class="tab-pane active" id="about" role="tabpanel" aria-labelledby="about-tab">
+         
+         <section class="overviews">
+            <h5>Overview</h5>
             <div>
-               <img width="160" src="http://openvivo.org<%= person["thumbnail"] %>" />
+               <%= raw(person["overview"]) %>
             </div>
          </section>
-   </div>
-   <div class="col-sm">  
-         <h2><%= person["name"] %></h2>
-       </div>
-   <div class="col-sm"> 
-         <%= for (p) in person["positions"] { %>
-            <div class="position row">
-            <span class="position-type"><%= p["type"] %></span>
-            </div>
-         <% } %>
-   </div>
+
+         <h5>Current Appointments &amp; Affiliations</h5>
+         <section class="positions">
+               <%= for (p) in person["positions"] { %>
+                  <div class="position">
+                    <span class="position-type"><%= p["type"] %></span>
+                  </div>
+               <% } %>
+         </section>
+
+      </div><!-- end about -->
+      <div class="tab-pane" id="background" role="tabpanel" aria-labelledby="background-tab">
+         
+         <div><b>Orcid</b> <%= person["id"] %></div>
+         <div><b>Scopus</b> <%= person["scopusId"] %></div>
+         <h4>Keywords</h4>
+         <section class="keyword-list">
+               <ul class="list-group">
+               <%= for (k) in person["keywords"] { %>
+                  <li class="list-group-item">
+                        <span class="keyword">
+                             <%= k %>
+                        </span>
+                  </li>
+               <% } %>  
+               </ul>
+         </section>
+      </div> <!-- end background -->
+      <div class="tab-pane" id="research" role="tabpanel" aria-labelledby="research-tab">
+           
+           <h4>Publications</h4>
+            <section class="publication-list">
+            
+            <ul class="list-group">
+            <%= for (p) in person["selectedPublications"] { %>
+               <li class="list-group-item">
+                   <span class="publication-title">
+                      <a href=/entities/publication/<%= p["id"] %>>
+                        <%= p["title"] %>
+                     </a> 
+                   </span>
+               </li>
+            <% } %>
+            </ul>
+            </section>
+            
+            
+            <%= for (p) in person["publications"] { %>
+              <div class="d-none"><%= p["label"] %></div>
+            <% } %>   
+            
+            
+      </div><!-- end research-tab -->
+    </div><!-- end tab content -->
+
+         
+   </div><!-- end col-8 -->
 
 </div>
 
-<x-hello><span class="badge badge-secondary">World</span></x-hello>
 
-<h3>Publications</h3>
-<section class="publication-list">
 
-<ul class="list-group">
-<%= for (p) in person["selectedPublications"] { %>
-   <li class="list-group-item">
-       <span class="publication-title">
-          <a href=/entities/publication/<%= p["id"] %>>
-            <%= p["title"] %>
-         </a> 
-       </span>
-   </li>
-<% } %>
-</ul>
-</section>
-
-<!-- hidden content ... or json-ld
-<%= for (p) in person["publications"] { %>
-  <div><%= p["label"] %></div>
-<% } %>   
--->
