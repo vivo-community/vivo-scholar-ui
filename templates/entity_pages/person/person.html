@@ -113,20 +113,29 @@
            
            <h4>Publications</h4>
             <section class="publication-list">
-            
+
             <ul class="list-group">
             <%= for (p) in person["selectedPublications"] { %>
                <li class="list-group-item">
                    <span class="publication-title">
                       <a href=/entities/publication/<%= p["id"] %>>
                         <%= p["title"] %>
-                     </a> 
+                      </a> 
                    </span>
                </li>
             <% } %>
             </ul>
             </section>
             
+            <h4>Publications (via Web Components)</h4>
+            <section class="publication-list">
+
+            <vivo-publication-list>
+                <%= for (p) in person["selectedPublications"] { %>
+                  <vivo-publication id="<%= p["id"] %>" title="<%= p["title"] %>">
+                  </vivo-publication>
+                <% } %>
+            </vivo-publication-list>
             
             <%= for (p) in person["publications"] { %>
               <div class="d-none"><%= p["label"] %></div>
