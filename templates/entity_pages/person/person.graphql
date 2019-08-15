@@ -1,6 +1,7 @@
 query($id: String!) {
   person(id: $id) {
     id
+    type
     name
     overview
     thumbnail
