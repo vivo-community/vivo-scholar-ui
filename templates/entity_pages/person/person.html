@@ -46,7 +46,19 @@
          </div>
       </section>
 
-      <!-- info --> 
+
+      <h5>Web Sites</h5>
+      <section class="websites">
+      <%= for (w) in person["websites"] { %>
+         <div class="website">
+               <a href="<%= w["url"] %>">
+                  <%= w["label"] %>
+               </a>
+         </div>
+      <% } %>
+      </section>
+
+
       <h5>Web Component</h5>
       <section class="contact">
          <div>
@@ -99,27 +111,51 @@
                <% } %>
          </section>
 
+         <div><b>Orcid</b> <%= person["id"] %></div>
+         <div><b>Scopus</b> <%= person["scopusId"] %></div>
+
       </div><!-- end about -->
       <div class="tab-pane" id="background" role="tabpanel" aria-labelledby="background-tab">
          
-         <div><b>Orcid</b> <%= person["id"] %></div>
-         <div><b>Scopus</b> <%= person["scopusId"] %></div>
-         <h4>Keywords</h4>
-         <section class="keyword-list">
-               <ul class="list-group">
-               <%= for (k) in person["keywords"] { %>
-                  <li class="list-group-item">
-                        <span class="keyword">
-                             <%= k %>
-                        </span>
-                  </li>
-               <% } %>  
-               </ul>
+         <h4>Education & Credentials</h4>
+         <h5>Education</h5>
+
+         <section class="educations">
+               <%= for (e) in person["educationAndTraining"] { %>
+                  <div class="education">
+                    <span class="education-label">
+                       <%= e["abbreviation"] %>
+                       <%= if (e["organization"]) { %>
+                         <%= e["organization"]["label"] %>
+                        <% } %>
+                       <!-- can't seem to get organization in here -->
+                       <%= e["field"] %>
+                     </span>
+                  </div>
+               <% } %>
          </section>
+         
+
       </div> <!-- end background -->
       <div class="tab-pane" id="research" role="tabpanel" aria-labelledby="research-tab">
-           
-           <h4>Publications</h4>
+     
+            <h4>Expertise</h4>
+            <h5>Subject Headings</h5>
+            <section class="keyword-list">
+                  <ul class="list-group">
+                  <%= for (k) in person["keywords"] { %>
+                     <li class="list-group-item">
+                           <span class="keyword">
+                                <%= k %>
+                           </span>
+                     </li>
+                  <% } %>  
+                  </ul>
+            </section>
+
+            
+           <h4>Publications &amp; Artistic Works</h4>
+           <h5>Selected Publications</h5>
             <section class="publication-list">
 
             <ul class="list-group">

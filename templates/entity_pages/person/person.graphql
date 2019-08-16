@@ -3,8 +3,22 @@ query($id: String!) {
     id
     type
     name
+    streetAddress
+    phone
     overview
     thumbnail
+    websites {
+      label
+      url
+    }    
+    educationAndTraining {
+      id
+      field
+      abbreviation
+      organization {
+        label
+      }
+    }    
     positions {
       type
     }
@@ -17,6 +31,16 @@ query($id: String!) {
     selectedPublications {
       id
       title
+    }
+    # no data
+    geographicFocus {
+      label
+    }
+    awardsAndHonors {
+      label
+    }
+    clinicalActivities {
+      label
     }
   }
 }
