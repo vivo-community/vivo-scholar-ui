@@ -17,11 +17,19 @@
    }
 </script>
 
-<form class="form-inline my-2 my-lg-0" method="GET" action="/search/people">
-   <input name="search" id="search" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-   <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-</form>
-
+<div class="row">
+   <div class="col-lg-1"></div>
+   <div class="col-lg-11">
+<form class="form-inline" method="GET" action="/search/people">
+   <div class="input-group search">
+      <input name="search" id="search" type="text" class="form-control" placeholder="Search" aria-label="Search" aria-describedby="basic-addon2">
+      <div class="input-group-append">
+        <button id="search-button" class="btn btn-outline-success" type="button">Search</button>
+      </div>
+    </div>
+ </form>
+</div>
+</div>
 <!-- 
    tabs like this (so back button might be able to go back to last tab)
    https://hashnode.com/post/building-flexible-components-with-react-hooks-cjth4fdlk000jzls1krpou422
@@ -29,57 +37,67 @@
    https://www.redotheweb.com/2012/05/17/enable-back-button-handling-with-twitter-bootstrap-tabs-plugin.html
 
 -->
+
 <div class="row">
 
-   <div class="col-4">
+   <div class="col-4 col-md-2 col-sm-2 profile-column">
       <section class="image">
          <div>
-            <img width="160" src="http://openvivo.org<%= person["thumbnail"] %>" />
+               <img class="img-fluid" src="<%= assetPath("images/profile_picture_u39_a.png") %>" />
+            <!--
+               NOTE: should actually link to person's image
+               <img width="160" src="http://openvivo.org<%= person["thumbnail"] %>" />
+            -->
          </div>
       </section>
 
       <!-- info --> 
-      <h5>Contact</h5>
+      <h5 class="side-bar">Contact</h5>
       <section class="contact">
          <div>
-            <%= person["primaryEmail"] %>
+            <span class="label">Email</span>
+            <span class="data"><%= person["primaryEmail"] %></span>
+         </div>
+
+         <div>
+            <span class="label">Telephone</span>
+            <span class="data"><%= person["phone"] %></span>
+         </div>    
+         
+         <div class="address-block">
+            <span class="label">Address 1</span>
+            <div>
+               100 Main St.
+            </div>
          </div>
       </section>
 
 
-      <h5>Web Sites</h5>
+      <h5 class="side-bar">Professional Links</h5>
       <section class="websites">
       <%= for (w) in person["websites"] { %>
          <div class="website">
-               <a href="<%= w["url"] %>">
+               <a class="prof-link" href="<%= w["url"] %>">
                   <%= w["label"] %>
                </a>
          </div>
       <% } %>
       </section>
 
-
-      <h5>Web Component</h5>
-      <section class="contact">
-         <div>
-            <x-hello><span class="badge badge-secondary">World</span></x-hello>
-         </div>
-      </section>
-      
    </div><!-- end col-4 -->
-   <div class="col-8">  
-         <h4 class="title"><%= person["name"] %></h4> 
+
+   <div class="col-12 col-md-8 col-sm-8 profile-column"">  
+         <h4 class="profile-name"><%= person["name"] %></h4> 
 
          <div>
-            <h5><%= person["preferredTitle"] %></h5>
+            <h5 class="preferred-title"><%= person["preferredTitle"] %></h5>
          </div>
-
 
 
      <!-- tabs -->
      <!-- MORE: Teaching and Mentoring, Professional Activities ... -->
      <!-- Nav tabs -->
-     <ul class="nav nav-pills nav-fill" id="myTab" role="tablist">
+     <ul class="nav nav-tabs nav-fill" id="myTab" role="tablist">
       <li class="nav-item">
         <a class="nav-link active" id="about-tab" data-toggle="tab" href="#about" role="tab" aria-controls="about" aria-selected="true">About</a>
       </li>
@@ -96,17 +114,17 @@
       <div class="tab-pane active" id="about" role="tabpanel" aria-labelledby="about-tab">
          
          <section class="overviews">
-            <h5>Overview</h5>
+            <h5 class="tab-content">Overview</h5>
             <div>
                <%= raw(person["overview"]) %>
             </div>
          </section>
 
-         <h5>Current Appointments &amp; Affiliations</h5>
+         <h5 class="tab-content">Current Appointments &amp; Affiliations</h5>
          <section class="positions">
                <%= for (p) in person["positions"] { %>
                   <div class="position">
-                    <span class="position-type"><%= p["type"] %></span>
+                    <span class="position-type"><%= p["label"] %></span>
                   </div>
                <% } %>
          </section>
@@ -115,10 +133,11 @@
          <div><b>Scopus</b> <%= person["scopusId"] %></div>
 
       </div><!-- end about -->
+
       <div class="tab-pane" id="background" role="tabpanel" aria-labelledby="background-tab">
          
-         <h4>Education & Credentials</h4>
-         <h5>Education</h5>
+         <h4 class="tab-content">Education & Credentials</h4>
+         <h5 class="tab-content">Education</h5>
 
          <section class="educations">
                <%= for (e) in person["educationAndTraining"] { %>
@@ -139,8 +158,8 @@
       </div> <!-- end background -->
       <div class="tab-pane" id="research" role="tabpanel" aria-labelledby="research-tab">
      
-            <h4>Expertise</h4>
-            <h5>Subject Headings</h5>
+            <h4 class="tab-content">Expertise</h4>
+            <h5 class="tab-content">Subject Headings</h5>
             <section class="keyword-list">
                   <ul class="list-group">
                   <%= for (k) in person["keywords"] { %>
@@ -154,8 +173,8 @@
             </section>
 
             
-           <h4>Publications &amp; Artistic Works</h4>
-           <h5>Selected Publications</h5>
+           <h4 class="tab-content">Publications &amp; Artistic Works</h4>
+           <h5 class="tab-content">Selected Publications</h5>
             <section class="publication-list">
 
             <ul class="list-group">
@@ -171,7 +190,7 @@
             </ul>
             </section>
             
-            <h4>Publications (via Web Components)</h4>
+            <h4 class="tab-content">Publications (via Web Components)</h4>
             <section class="publication-list">
 
             <vivo-publication-list>

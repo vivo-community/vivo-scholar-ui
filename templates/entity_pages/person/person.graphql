@@ -20,7 +20,9 @@ query($id: String!) {
       }
     }    
     positions {
+      id
       type
+      label
     }
     keywords
     primaryEmail
