@@ -116,3 +116,211 @@ table.table tbody tr td {
 		display: block;
 	}
 }
+
+/* global (all pages) */
+body {
+	font-family: 'ArialMT', 'Arial';
+font-weight: 400;
+font-style: normal;
+font-size: 13px;
+color: #333333;
+/* text-align: center; */
+line-height: normal;
+ }
+
+ section {
+	 margin-bottom: .5em;
+ }
+
+
+ /*  header main page */
+ #main-menu { 
+    background-color: rgba(47, 61, 79, 1); 
+    padding: 0 0 0 0;
+  }
+  .navbar-brand {
+    padding: 0 0 0 0;
+  }
+  span.badge {
+    color: #FFFFFF;
+    font-family: 'ArialMT', 'Arial';
+    font-weight: 400;
+    font-style: normal;
+	font-size: 72px;
+	display: inline;
+	line-height: 1;
+  }
+  span.logo-secondary {
+    color: rgb(38, 169, 224);
+    font-family: 'ArialMT', 'Arial';
+    font-weight: 400;
+    font-style: normal;
+	font-size: 72px;
+	display: inline;
+	line-height: 1;
+  }
+  span.divider {
+    color: #FFFFFF;
+  }
+  #main-menu {
+    /* text-align: right;*/
+    margin-bottom: 1em;
+    line-height: 72px;
+  }
+  #main-menu .nav-link {
+    font-size: 28px;
+    color: #FFFFFF;
+    text-align: right;
+  }
+  #navbarSupportedContent {
+    text-align: justify;
+    text-align: right;
+  }
+  #main-nav {
+    text-align: justify;
+    text-align: right;
+  }
+
+
+/* profile nav-bar */
+.nav-tabs .nav-link.active, .nav-tabs .nav-item.show .nav-link {
+    color: #495057;
+	background-color: rgb(165, 213, 238);
+    border-color: transparent;
+}
+
+.nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover{
+	border-top: none;
+	border-left: none;
+	border-right: none;
+	border-bottom: 3px solid rgb(165, 213, 238);
+	font-weight: bold;
+	background-color: rgb(165, 213, 238);
+
+
+   }
+   
+   .nav-tabs>li>a:hover{
+	 border: 1px solid transparent;
+   }
+   
+   
+   .nav>li>a:focus, .nav>li>a:hover{
+	   /* background-color: #d4d4d4; */
+	   background-color: rgb(165, 213, 238);
+   }
+   
+   .nav-tabs{
+	   border-bottom: none;
+	   display: inline-block; /* needed to center the list items */
+   }
+   
+   .tabbable{
+		text-align: center;
+   }
+   
+   .nav-tabs>li{
+	   vertical-align: bottom;
+	   display: inline-block;
+	   float: none;
+   }
+
+   .nav-tabs{
+	border-bottom: 8px solid rgb(165, 213, 238);
+    /* border-bottom: none; */ /* remove the "grey" underline from ul */
+    display: inline-block; /* needed to center the list items */
+  }
+
+  .nav-item {
+	font-family: 'ArialMT', 'Arial';
+	font-weight: 400;
+	font-style: normal;
+	font-size: 20px;
+	color: #000000;
+  }
+
+ 
+
+
+
+  /* person profile page */
+  #search-button { 
+	background-color: rgba(38, 169, 224, 1); 
+	color: #FFFFFF;
+	border: 0px;
+ }
+ 
+
+ div.input-group.search { width: 100%; margin-bottom: 2em; }
+
+
+
+ h5.side-bar {
+	font-size: 13px;
+	font-family: Arial-BoldMT, "Arial Bold", Arial; 
+	font-weight: 700;
+	background-color: rgba(165, 213, 238, 1);
+	display: block;
+margin-block-start: 1em;
+margin-block-end: 1em;
+margin-inline-start: 0px;
+margin-inline-end: 0px;
+ }
+ span.label {
+	font-family: Arial-BoldMT, "Arial Bold", Arial;
+	font-weight: 700;
+	font-size: 13px;
+ }
+ span.info {
+	font-family: ArialMT, Arial; 
+	font-weight: 400;
+	
+ }
+ div.address-block {
+	display: block;
+margin-block-start: 1em;
+margin-block-end: 1em;
+margin-inline-start: 0px;
+margin-inline-end: 0px;
+ }
+
+ a.prof-link {
+	font-size: 13px; line-height: 20px;
+	font-family: Arial-BoldMT, "Arial Bold", Arial; 
+	font-weight: 700; 
+	font-size: 13px;
+	text-decoration: none;
+ }
+   h4.profile-name {
+      transform-origin: 77px 18.5px;
+      font-family: Arial-BoldMT, "Arial Bold", Arial; 
+      font-weight: 700; 
+      font-size: 36px; 
+      color: rgb(18, 89, 124);
+   }
+
+   h5.preferred-title {
+      transform-origin: 77px 18px;
+        font-size: 21px; line-height: 24px;
+        font-family: Arial-BoldMT, "Arial Bold", Arial; 
+        font-weight: 700; 
+        font-size: 21px; 
+        color: rgb(47, 61, 79)
+   }
+   #myTab { width: 100%; }
+   h4.tab-content {
+	transform-origin: 47.5px 12px; 
+	left: 0px; 
+	font-size: 22px;
+	font-family: Arial-BoldMT, "Arial Bold", Arial; 
+	font-weight: 700;
+	color: rgb(18, 89, 124);
+  }
+  h5.tab-content {
+	transform-origin: 47.5px 12px; 
+	left: 0px; 
+	font-size: 21px;
+	font-family: Arial-BoldMT, "Arial Bold", Arial; 
+	font-weight: 700;
+	color: rgb(18, 89, 124);
+  }
