@@ -162,30 +162,44 @@ const PersonSearch = (props) => {
   if (page != undefined) {
     pagesFragment = (
       <div>
-      <h3>page {page.number+1} of {page.totalPages} pages</h3>
+      { 
+       /* <h3>page {page.number+1} of {page.totalPages} pages</h3> */
+      }
+      
       <PagingPanel page={page} callback={onPage} />
       </div>
     )
   }
 
+  let pageSummary = ""
+  if (page != undefined) {
+    pageSummary = (
+      <span>
+        ({ page.totalElements })
+      </span>
+    )
+  }
+
   return (
       <div>
-        <h2>Person Search</h2>
+        <h3>People { pageSummary }</h3>
         { pagesFragment }
         <form id="searchForm" onSubmit={handleSubmit}>
         
           <div>Query: </div>
 
-          <div className="form-group">
-            <label htmlFor="search">Search:</label>
-            <input type="text" 
-              value={query}
-              onChange={event => setQuery(event.target.value)}
-              className="form-control" key="search" 
-              name="search" placeholder="search..." />
-          </div>
-
-          <button>Submit</button>
+          <div className="input-group search">
+             <input name="search" type="text" key="search"
+               value={query}
+               onChange={event => setQuery(event.target.value)}
+               className="form-control" 
+               placeholder="Search..." 
+               aria-label="Search" aria-describedby="basic-addon2" />
+           
+             <div className="input-group-append">
+               <button className="btn btn-outline-success search-button" type="button">Search</button>
+             </div>
+           </div>
 
          {isError && <div>Something went wrong ...</div>}
 
@@ -220,3 +234,18 @@ const PersonSearch = (props) => {
 }
   
 export default PersonSearch
+/*
+<div class="row">
+   <div class="col-lg-1"></div>
+   <div class="col-lg-11">
+<form class="form-inline" method="GET" action="/search/people">
+   <div class="input-group search">
+      <input name="search" id="search" type="text" class="form-control" placeholder="Search" aria-label="Search" aria-describedby="basic-addon2">
+      <div class="input-group-append">
+        <button id="search-button" class="btn btn-outline-success" type="button">Search</button>
+      </div>
+    </div>
+ </form>
+</div>
+</div>
+*/
