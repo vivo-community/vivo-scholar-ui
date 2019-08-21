@@ -39,6 +39,8 @@ func SiteMapPageHandler(c buffalo.Context) error {
 	// different view template based on content-type??
 	extension := TemplateExtension(c.Request())
 	fmt.Printf("extension=%s\n", extension)
+	// might be good to index by beginning letter, or pub date filter
+	// or something like that ???
 	viewTemplatePath := fmt.Sprintf("sitemap_pages/%s/%s.xml", listType, listType)
 	queryTemplatePath := fmt.Sprintf("templates/sitemap_pages/%s/%s.graphql", listType, listType)
 

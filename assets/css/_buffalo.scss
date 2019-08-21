@@ -23,14 +23,11 @@ section {
   padding: 0 0 0 0;
 }
 
-span.badge {
-  color: #FFFFFF;
-  font-family: 'ArialMT', 'Arial';
-  font-weight: 400;
-  font-style: normal;
+span.logo {
+  color: rgb(255, 255, 255);
+  font-family: "CenturyGothic", "Century Gothic";
+  font-weight: 700;
   font-size: 72px;
-  display: inline;
-  line-height: 1;
 }
   
 span.logo-secondary {
@@ -173,8 +170,14 @@ h5.side-bar {
   margin-block-end: 1em;
   margin-inline-start: 0px;
   margin-inline-end: 0px;
+  padding-left: 0.4em;
+}
+
+.contact>div>span.label, .contact>div>span.data {
+  font-size: 13px;
 }
  
+/* more general */
 span.label {
   font-family: Arial-BoldMT, "Arial Bold", Arial;
   font-weight: 700;
@@ -186,6 +189,11 @@ span.info {
   font-weight: 400;	
 }
  
+span.data {
+  font-family: ArialMT, Arial; 
+  font-weight: 400;	
+}
+
 div.address-block {
   display: block;
   margin-block-start: 1em;
