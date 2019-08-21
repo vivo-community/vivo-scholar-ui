@@ -13,11 +13,19 @@ import (
 	"github.com/machinebox/graphql"
 )
 
+// this is effectivily a sitemap index
+// could run a query that gets max modTimes or something
 func SiteMapHandler(c buffalo.Context) error {
 	viewTemplatePath := "templates/sitemap_pages/sitemap.xml"
 	viewTemplate, err := ioutil.ReadFile(viewTemplatePath)
 
 	ctx := plush.NewContext()
+	v, err := envy.MustGet("SITE_URL")
+	ctx.Set("siteUrl", v)
+	// how to figure out lastMod ??? - would need to be
+	// a max of each sitemap .... but (as of now)
+	// were leaving it up to the template to know this
+	// 
 	xml, err := plush.Render(string(viewTemplate), ctx)
 
 	renderer := func(w io.Writer, d render.Data) error {
@@ -63,21 +71,6 @@ func SiteMapPageHandler(c buffalo.Context) error {
 
 	req := graphql.NewRequest(query)
 	
-	// how to determine defaults? query itself should also
-	// be taking nulls and have defaults too
-	req.Var("pageSize", "100")
-	req.Var("pageNumber", "0")
-
-	pageNumber := c.Params().Get("pageNumber")
-	// check null or "" ??
-	if pageNumber != "" {
-		req.Var("pageNumber", pageNumber)
-	} 
-	pageSize := c.Params().Get("pageSize")
-	if pageSize != "" {
-		req.Var("pageSize", pageSize)
-	} 
-
 	var results map[string]interface{}
 
 	if err := client.Run(ctx, req, &results); err != nil {
@@ -86,6 +79,21 @@ func SiteMapPageHandler(c buffalo.Context) error {
 	
 	c.Set("data", results)
 
-	// this does not work
-	return c.Render(200, r.XML(viewTemplatePath))
+
+	viewTemplate, err := ioutil.ReadFile(viewTemplatePath)
+
+	ctx2 := plush.NewContext()
+	// if err ???
+	v, err := envy.MustGet("SITE_URL")
+	ctx2.Set("siteUrl", v)
+    
+	xml, err := plush.Render(string(viewTemplate), ctx2)
+
+	renderer := func(w io.Writer, d render.Data) error {
+		_, err = w.Write([]byte(xml))
+		return err
+	}
+	// not sending data in
+	return c.Render(200, r.Func("application/xml", renderer))
+
 }

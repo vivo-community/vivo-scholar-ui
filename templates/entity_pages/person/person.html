@@ -43,11 +43,11 @@
    <div class="col-4 col-md-2 col-sm-2 profile-column">
       <section class="image">
          <div>
+            <%= if (person["thumbnail"]) { %>
+               <img class="img-fluid" src="http://openvivo.org<%= person["thumbnail"] %>" />
+            <% } else { %>
                <img class="img-fluid" src="<%= assetPath("images/profile_picture_u39_a.png") %>" />
-            <!--
-               NOTE: should actually link to person's image
-               <img width="160" src="http://openvivo.org<%= person["thumbnail"] %>" />
-            -->
+            <% } %>
          </div>
       </section>
 
