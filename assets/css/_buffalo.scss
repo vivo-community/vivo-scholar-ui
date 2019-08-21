@@ -129,6 +129,12 @@ span.divider {
 	padding: .25rem .5rem;
 }
 
+div.profile-column>ul.nav-tabs > li {
+  float:none;
+  display: table-cell;
+  width: 1%;
+}
+
 div.profile-column>ul.nav>li.nav-item a {
 	color: #495057;
 }
