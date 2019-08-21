@@ -21,10 +21,11 @@ func init() {
 		// Add template helpers here:
 		Helpers: render.Helpers{
 			"FormatDateTime": helpers.FormatDateTime,
-			"FloatToInt": helpers.FloatToInt,
+			"FloatToInt":     helpers.FloatToInt,
 			// TODO: not sure about this
-			"FigurePagingInfo": helpers.FigurePagingInfo,
-			"HasKey": helpers.HasKey,
+			"FigurePagingInfo":            helpers.FigurePagingInfo,
+			"HasKey":                      helpers.HasKey,
+			"FormatGraphqlDateForSitemap": helpers.FormatGraphqlDateForSitemap,
 			// uncomment for non-Bootstrap form helpers:
 			// "form":     plush.FormHelper,
 			// "form_for": plush.FormForHelper,

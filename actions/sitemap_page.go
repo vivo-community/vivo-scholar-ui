@@ -2,15 +2,15 @@ package actions
 
 import (
 	"fmt"
-	"io/ioutil"
 	"io"
+	"io/ioutil"
 
-	"github.com/pkg/errors"
-	"github.com/gobuffalo/envy"
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/buffalo/render"
+	"github.com/gobuffalo/envy"
 	"github.com/gobuffalo/plush"
 	"github.com/machinebox/graphql"
+	"github.com/pkg/errors"
 )
 
 // this is effectivily a sitemap index
@@ -25,7 +25,7 @@ func SiteMapHandler(c buffalo.Context) error {
 	// how to figure out lastMod ??? - would need to be
 	// a max of each sitemap .... but (as of now)
 	// were leaving it up to the template to know this
-	// 
+	//
 	xml, err := plush.Render(string(viewTemplate), ctx)
 
 	renderer := func(w io.Writer, d render.Data) error {
@@ -37,7 +37,7 @@ func SiteMapHandler(c buffalo.Context) error {
 }
 
 // TODO: still have to work out details
-// the general idea is you can combine this with the 
+// the general idea is you can combine this with the
 // above sitemap.xml template to make a full sitemap
 // of all entity pages (you want)
 // including being able to limit to 50,000 (limit of
@@ -45,14 +45,18 @@ func SiteMapHandler(c buffalo.Context) error {
 func SiteMapPageHandler(c buffalo.Context) error {
 	listType := c.Params().Get("type")
 	// different view template based on content-type??
-	extension := TemplateExtension(c.Request())
-	fmt.Printf("extension=%s\n", extension)
+	//extension := TemplateExtension(c.Request())
+	//fmt.Printf("extension=%s\n", extension)
 	// might be good to index by beginning letter, or pub date filter
 	// or something like that ???
-	viewTemplatePath := fmt.Sprintf("sitemap_pages/%s/%s.xml", listType, listType)
+	viewTemplatePath := fmt.Sprintf("templates/sitemap_pages/%s/%s.xml", listType, listType)
 	queryTemplatePath := fmt.Sprintf("templates/sitemap_pages/%s/%s.graphql", listType, listType)
 
+	fmt.Printf("view path=%v\n", viewTemplatePath)
+	fmt.Printf("query path=%v\n", queryTemplatePath)
+
 	queryTemplate, err := ioutil.ReadFile(queryTemplatePath)
+	fmt.Printf("query=%v\n", string(queryTemplate))
 	if err != nil {
 		return errors.Wrap(err, "reading query template")
 	}
@@ -69,26 +73,38 @@ func SiteMapPageHandler(c buffalo.Context) error {
 	}
 	client := graphql.NewClient(endpoint)
 
+	fmt.Printf("trying to run: %v\n", query)
 	req := graphql.NewRequest(query)
-	
+
+	// FIXME: for some reason I have to set one variable
+	// even though the query has no variables
+	// otherwise:
+	// ... graphql.AssertException: Object required to be not null]
+	req.Var("bogus", "variable")
+
 	var results map[string]interface{}
 
 	if err := client.Run(ctx, req, &results); err != nil {
 		return errors.Wrap(err, "running query")
 	}
-	
-	c.Set("data", results)
 
+	fmt.Printf("got results=%v\n", results)
 
 	viewTemplate, err := ioutil.ReadFile(viewTemplatePath)
+
+	fmt.Printf("view=%v\n", string(viewTemplate))
+
+	//ctx.Set("data", results)
 
 	ctx2 := plush.NewContext()
 	// if err ???
 	v, err := envy.MustGet("SITE_URL")
 	ctx2.Set("siteUrl", v)
-    
+	ctx2.Set("data", results)
+
 	xml, err := plush.Render(string(viewTemplate), ctx2)
 
+	fmt.Printf("xml=%v\n", xml)
 	renderer := func(w io.Writer, d render.Data) error {
 		_, err = w.Write([]byte(xml))
 		return err

@@ -1,10 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
+  <!--
+
+Sitemap index files can't contain other index files – each sitemap 
+index can contain links to regular sitemaps. Multiple sitemap indexes 
+can be submitted to Google individually, though.
+
+Each individual sitemap index can include up to 1,000 references 
+to another <sitemap>. If you need to reference more than that, 
+   create multiple sitemap indexes and submit each one.
+
+Each individual sitemap can include up to 50,000 page references. 
+If you need more than that, split them across multiple sitemaps.
+
+  -->
    <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <!-- FIXME: this will need to ba a valid list -->
    <sitemap>
-      <loc><%= siteUrl %>/sitemap_people.xml</loc>
-      <!-- FIXME: how to figure this out? -->
-      <lastmod>2018-01-02T15:11:46+06:00</lastmod>
+      <loc><%= siteUrl %>/sitemaps/people.xml</loc>
+      <!-- FIXME: how to figure this out? technically it's optional -->
+      <!-- <lastmod>2018-01-02T15:11:46+06:00</lastmod> -->
    </sitemap>
    <!-- FIXME: etc... -->
    </sitemapindex>

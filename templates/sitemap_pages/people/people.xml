@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <%= for (person) in data["personsSorted"] { %>
+   <url>
+      <loc><%= siteUrl %>/entity_pages/person/<%= person["id"] %></loc>
+      <%= if (person["modTime"]) { %>
+         <% let h = {dateTime: person["modTime"], "resolution": "yearMonthDay"} %>
+         <!-- FIXME: not sure how to format -->
+         <!-- looks like this: "Mon Apr 18 21:46:34 UTC 2016" -->
+         <lastmod><%= person["modTime"] %></lastmod>
+         <!--  cant get helper function to work
+         <lastmod><%#= FormatGraphqlDateForSitemap(person["modTime"]) %></lastmod>
+         -->
+      <% } else { %>
+        <lastmod>2005-01-01</lastmod>
+      <% } %>
+      <changefreq>monthly</changefreq>
+      <priority>0.8</priority>
+   </url>
+   <% } %>
+</urlset> 

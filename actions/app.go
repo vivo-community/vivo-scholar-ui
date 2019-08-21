@@ -53,10 +53,7 @@ func App() *buffalo.App {
 
 		app.GET("/", HomeHandler)
 		app.GET("/sitemap.xml", SiteMapHandler)
-		//app.GET("/sitemap/{type}", SiteMapPageHandler)
-		// FIXME: need a way to break up publications into
-		// MAX 50,000 at a time
-		//app.GET("/sitemap/{type}/{start}", SiteMapRangePageHandler)
+		app.GET("/sitemaps/{type}.xml", SiteMapPageHandler)
 		app.GET("/pages/{type}", AnyPageHandler)
 		app.GET("/search/{type}", SearchPageHandler)
 		// TODO: should we even have list pages (since there is search)

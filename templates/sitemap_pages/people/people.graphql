@@ -1,0 +1,32 @@
+query {
+    personsSorted(
+        sort:{ 
+          orders: [{direction: ASC, property:"modTime"}]
+        }
+    ) {
+    id
+    modTime
+  }
+}
+#query {
+#    personsPaged(paging: {
+#        pageNumber: 0, 
+#        pageSize: 100,
+#        sort:{ 
+#          orders: [{direction: ASC, property:"name"}]
+#        }
+#    })
+#      {
+#      content {
+#        id
+#        name
+#        thumbnail
+#      }
+#      page {
+#        totalElements
+#        totalPages
+#        number
+#        size
+#      }
+#    }
+#}
