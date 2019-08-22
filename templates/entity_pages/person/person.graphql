@@ -18,6 +18,8 @@ query($id: String!) {
       organization {
         label
       }
+      startDate
+      endDate
     }    
     positions {
       id

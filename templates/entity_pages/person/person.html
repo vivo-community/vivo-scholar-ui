@@ -153,8 +153,19 @@
                        <%= if (e["organization"]) { %>
                          <%= e["organization"]["label"] %>
                         <% } %>
-                       <!-- can't seem to get organization in here -->
                        <%= e["field"] %>
+                     </span>
+                     <span>
+                        <!-- should always be a start date -->
+                        <%= if (e["startDate"]) { %> 
+                          <% let start = {"dateTime": e["startDate"], "resolution": "yearMonth"}
+                          <%= FormatDateTime(start) %>
+                        <% } %>
+                        <%= if (e["endDate"]) { %> 
+                           <span> to </span>
+                          <% let end = {"dateTime": e["endDate"], "resolution": "yearMonth"}
+                          <%= FormatDateTime(end) %>
+                        <% } %>
                      </span>
                   </div>
                <% } %>
