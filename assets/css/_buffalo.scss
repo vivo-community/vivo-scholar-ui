@@ -1,9 +1,9 @@
-/* global (all pages) */
+/****** global (all pages) */
 body {
   font-family: 'ArialMT', 'Arial';
   font-weight: 400;
   font-style: normal;
-  font-size: 13px;
+  /* font-size: 13px; */
   font-size: 1em;
   color: #333333;
   line-height: normal;
@@ -13,12 +13,51 @@ section {
   margin-bottom: .5em;
 }
 
+/**** headings ****/
+h1 {
+	font-family: Arial-BoldMT, "Arial Bold", Arial; 
+	font-weight: 700; 
+	font-size: 72px; 
+	color: rgb(18, 89, 124);
+}
 
- /*  header main page */
+h2 {
+	font-family: Arial-BoldMT, "Arial Bold", Arial; 
+	font-weight: 700; 
+	font-size: 40px; 
+	color: rgb(18, 89, 124);
+}
+h3 {
+	font-family: Arial-BoldMT, "Arial Bold", Arial; 
+	font-weight: 700; 
+	font-size: 38px; 
+	color: rgb(18, 89, 124);
+}
+
+h4 {
+  transform-origin: 77px 18.5px;
+  font-family: Arial-BoldMT, "Arial Bold", Arial; 
+  font-weight: 700; 
+  font-size: 36px; 
+  color: rgb(18, 89, 124);
+}
+
+h5 {
+  transform-origin: 77px 18px;
+  font-size: 21px; 
+  line-height: 24px;
+  font-family: Arial-BoldMT, "Arial Bold", Arial; 
+  font-weight: 700; 
+  font-size: 21px; 
+  color: rgb(47, 61, 79)
+}
+
+/******  header  ******/
 #main-menu { 
   background-color: rgba(47, 61, 79, 1); 
   padding: 0 0 0 0;
 }
+
 .navbar-brand {
   padding: 0 0 0 0;
 }
@@ -34,41 +73,21 @@ span.logo-secondary {
   color: rgb(38, 169, 224);
   font-family: 'ArialMT', 'Arial';
   font-weight: 400;
-  font-style: normal;
-  font-size: 72px;
   display: inline;
   line-height: 1;
 }
-  
-span.divider {
-  color: #FFFFFF;
-}
-  
+
 #main-menu {
-    /* text-align: right;*/
   margin-bottom: 1em;
-  line-height: 72px;
 }
   
 #main-menu .nav-link {
   font-size: 24px;
-  color: #FFFFFF;
+  color: rgb(255, 255, 255);
   text-align: right;
 }
   
-#navbarSupportedContent {
-  text-align: justify;
-  border: none;
-}
-  
-#main-nav {
-  text-align: justify;
-  text-align: right;
-}
-.main-menu li {
-	margin-left: 1em;
-}
-
+/**** person profile *****/
 /* profile nav-bar */
 .nav-tabs .nav-link.active, .nav-tabs .nav-item.show .nav-link {
   color: #495057;
@@ -89,10 +108,9 @@ span.divider {
 .nav-tabs>li>a:hover{
   border: 1px solid transparent;
 }
-   
-   
+  
 .nav>li>a:focus, .nav>li>a:hover{
-  /* background-color: #d4d4d4; */
+  border: 1px solid transparent; 
   background-color: rgb(165, 213, 238);
 }
    
@@ -104,7 +122,7 @@ span.divider {
 .tabbable{
   text-align: center;
 }
-   
+
 .nav-tabs>li{
   vertical-align: bottom;
   display: inline-block;
@@ -113,18 +131,15 @@ span.divider {
 
 .nav-tabs{
   border-bottom: 8px solid rgb(165, 213, 238);
-  /* border-bottom: none; */ /* remove the "grey" underline from ul */
   display: inline-block; /* needed to center the list items */
 }
 
 .nav-item {
-  font-family: 'ArialMT', 'Arial';
-  font-weight: 400;
-  font-style: normal;
   font-size: 18px;
   color: #000000;
   text-align: left;
 }
+
 .nav-link {
 	padding: .25rem .5rem;
 }
@@ -139,6 +154,9 @@ div.profile-column>ul.nav>li.nav-item a {
 	color: #495057;
 }
 
+/** seems to be necessary to make person profile nav 100% */
+#myTab { width: 100%; }
+
 @media (max-width: 768px) {
 	.nav-justified > li {
 	  display: table-cell;
@@ -149,35 +167,9 @@ div.profile-column>ul.nav>li.nav-item a {
 	  border-radius: 4px 4px 0 0 !important;
 	  margin-bottom: 0 !important;
 	}
-  }
+}
 
 /* person profile page */
-#search-button { 
-  background-color: rgba(38, 169, 224, 1); 
-  color: #FFFFFF;
-  border: 0px;
-}
-
-.search-button {
-	background-color: rgba(38, 169, 224, 1); 
-	color: #FFFFFF;
-	border: 0px;
-}
- 
-div.input-group.search { width: 100%; margin-bottom: 2em; }
- 
-h5.side-bar {
-  font-size: 13px;
-  font-family: Arial-BoldMT, "Arial Bold", Arial; 
-  font-weight: 700;
-  background-color: rgba(165, 213, 238, 1);
-  display: block;
-  margin-block-start: 1em;
-  margin-block-end: 1em;
-  margin-inline-start: 0px;
-  margin-inline-end: 0px;
-  padding-left: 0.4em;
-}
 
 .contact>div>span.label, .contact>div>span.data {
   font-size: 13px;
@@ -189,12 +181,7 @@ span.label {
   font-weight: 700;
   font-size: 13px;
 }
- 
-span.info {
-  font-family: ArialMT, Arial; 
-  font-weight: 400;	
-}
- 
+
 span.data {
   font-family: ArialMT, Arial; 
   font-weight: 400;	
@@ -209,60 +196,47 @@ div.address-block {
 }
 
 a.prof-link {
-  font-size: 13px; line-height: 20px;
+  font-size: 13px; 
+  line-height: 20px;
   font-family: Arial-BoldMT, "Arial Bold", Arial; 
   font-weight: 700; 
-  font-size: 13px;
   text-decoration: none;
 }
-h2 {
-	font-family: Arial-BoldMT, "Arial Bold", Arial; 
-	font-weight: 700; 
-	font-size: 40px; 
-	color: rgb(18, 89, 124);
-}
-h3 {
-	font-family: Arial-BoldMT, "Arial Bold", Arial; 
-	font-weight: 700; 
-	font-size: 38px; 
-	color: rgb(18, 89, 124);
-}
-h4, h4.profile-name {
-  transform-origin: 77px 18.5px;
-  font-family: Arial-BoldMT, "Arial Bold", Arial; 
-  font-weight: 700; 
-  font-size: 36px; 
-  color: rgb(18, 89, 124);
-}
 
-h5, h5.preferred-title {
-  transform-origin: 77px 18px;
-  font-size: 21px; line-height: 24px;
-  font-family: Arial-BoldMT, "Arial Bold", Arial; 
-  font-weight: 700; 
-  font-size: 21px; 
-  color: rgb(47, 61, 79)
-}
-   
-
-#myTab { width: 100%; }
-
+/**** headings (person profile) ****/
 h4.tab-content {
   transform-origin: 47.5px 12px; 
   left: 0px; 
   font-size: 22px;
-  font-family: Arial-BoldMT, "Arial Bold", Arial; 
-  font-weight: 700;
-  color: rgb(18, 89, 124);
 }
   
 h5.tab-content {
   transform-origin: 47.5px 12px; 
   left: 0px; 
-  font-size: 21px;
-  font-family: Arial-BoldMT, "Arial Bold", Arial; 
-  font-weight: 700;
   color: rgb(18, 89, 124);
+}
+
+h5.side-bar {
+  font-size: 13px;
+  background-color: rgba(165, 213, 238, 1);
+  display: block;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  padding-left: 0.4em;
+}
+
+/**** search ****/
+div.input-group.search { 
+  width: 100%; 
+  margin-bottom: 2em; 
+}
+
+.search-button {
+	background-color: rgba(38, 169, 224, 1); 
+	color: #FFFFFF;
+	border: 0px;
 }
 
 /* paging */
