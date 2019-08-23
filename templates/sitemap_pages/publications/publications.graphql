@@ -1,0 +1,11 @@
+query {
+    documentsSorted(
+        sort:{ 
+          orders: [{direction: ASC, property:"modTime"}]
+        }
+    ) {
+    # note: this will return too many
+    id
+    modTime
+  }
+}

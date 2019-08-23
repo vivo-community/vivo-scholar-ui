@@ -179,10 +179,12 @@
             <h5 class="tab-content">Subject Headings</h5>
             <section class="keyword-list">
                   <ul class="list-group">
-                  <%= for (k) in person["keywords"] { %>
+                  <%= for (k) in person["researchAreas"] { %>
                      <li class="list-group-item">
                            <span class="keyword">
-                                <%= k %>
+                                <a href="/entities/concepts/<%= k["id"] %>">
+                                 <%= k["label"] %>
+                              </a>
                            </span>
                      </li>
                   <% } %>  
