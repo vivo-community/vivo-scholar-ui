@@ -6,7 +6,6 @@ body {
   font-size: 16px;
   line-height: 24px;
   color: #333333;
-  line-height: normal;
  }
 
 section {
@@ -118,6 +117,10 @@ span.logo-secondary {
   background-color: rgb(165, 213, 238);
   color: #495057;
 }
+
+.nav-tabs>li>a {
+  background-color: rgb(232,232,232);
+}
    
 .nav-tabs>li>a:hover{
   border: 1px solid transparent;
@@ -165,7 +168,7 @@ div.profile-column>ul.nav-tabs > li {
 }
 
 div.profile-column>ul.nav>li.nav-item a {
-	color: #495057;
+  color: #495057;
 }
 
 /** seems to be necessary to make person profile nav 100% */
@@ -186,6 +189,15 @@ div.profile-column>ul.nav>li.nav-item a {
 /* person profile page */
 .contact>div>span.label, .contact>div>span.data {
   font-size: 11px;
+}
+section.contact {
+  line-height: 13px;
+  background-color:rgb(232,232,232);
+}
+
+section.websites {
+  line-height: 13px;
+  background-color:rgb(232,232,232);
 }
  
 /* more general */
@@ -239,6 +251,7 @@ h5.side-bar {
   margin-inline-start: 0px;
   margin-inline-end: 0px;
   padding-left: 0.4em;
+  margin-bottom: 0;
 }
 
 h5.tab-content {
