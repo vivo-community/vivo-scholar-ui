@@ -19,6 +19,7 @@ func FormatGraphqlDateForSitemap(dateTime string) string {
 	fmt.Printf("trying to return :%v\n", result)
 	return result
 }
+
 func FormatDateTime(dateTime map[string]interface{}) string {
 	isoDateTime, error := time.Parse("2006-01-02T15:04:05", dateTime["dateTime"].(string))
 	if error != nil {

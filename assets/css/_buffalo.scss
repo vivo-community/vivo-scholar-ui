@@ -52,6 +52,20 @@ h5 {
   color: rgb(47, 61, 79)
 }
 
+h6 {
+  transform-origin: 77px 18px;
+  font-size: 18px; 
+  line-height: 20px;
+  font-family: Arial-BoldMT, "Arial Bold", Arial; 
+  font-weight: 700; 
+  font-size: 19px; 
+  color: rgb(47, 61, 79)
+}
+
+h6>a {
+  color: rgb(47, 61, 79)
+}
+
 /******  header  ******/
 #main-menu { 
   background-color: rgba(47, 61, 79, 1); 
@@ -227,6 +241,24 @@ h5.side-bar {
   padding-left: 0.4em;
 }
 
+h5.tab-content {
+  transform-origin: 47.5px 12px; 
+  left: 0px; 
+  color: rgb(18, 89, 124);
+  margin-bottom: 1em;
+}
+
+/** publications ***/
+.publication-citation {
+  margin-bottom: 8px;
+}
+.publication-authors {
+  font-style: italic;
+}
+
+.publication-abstract {
+  margin-bottom: 1em;
+}
 /**** search ****/
 div.input-group.search { 
   width: 100%; 

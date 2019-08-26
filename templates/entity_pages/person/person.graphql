@@ -38,6 +38,14 @@ query($id: String!) {
     selectedPublications {
       id
       title
+      abstractText
+      doi
+      authorList
+      authors {
+        id
+        label
+      }   
+      publicationDate   
     }
     # no data
     geographicFocus {

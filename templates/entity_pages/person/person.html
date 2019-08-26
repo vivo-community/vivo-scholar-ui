@@ -196,17 +196,33 @@
            <h5 class="tab-content">Selected Publications</h5>
             <section class="publication-list">
 
-            <ul class="list-group">
             <%= for (p) in person["selectedPublications"] { %>
-               <li class="list-group-item">
-                   <span class="publication-title">
-                      <a href=/entities/publication/<%= p["id"] %>>
-                        <%= p["title"] %>
-                      </a> 
-                   </span>
-               </li>
+                 <h6>
+                  <span class="publication-title">
+                   <a href=/entities/publication/<%= p["id"] %>>
+                     <%= p["title"] %>
+                   </a> 
+                  </span>
+                 </h6>
+                 <div class="publication-citation">
+                    <span class="publication-authors">
+                      <%= for (a) in p["authors"] { %>
+                        <span><%= a["label"] %></span>
+                      <% } %>
+                    </span>
+                    <span class="publication-date">
+                       <%= if (p["publicationDate"]) { %>
+                       <%= FormatGraphqlDateForSitemap(p["publicationDate"]) %>
+                       <% } %>
+                     </span>
+                 </div>
+                 <div class="publication-abstract">
+                     <%= raw(p["abstractText"]) %>
+                 </div>
+      
+               
             <% } %>
-            </ul>
+           
             </section>
             
             <h4 class="tab-content">Publications (via Web Components)</h4>
