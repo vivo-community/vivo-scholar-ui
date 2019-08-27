@@ -139,6 +139,7 @@ const PersonSearch = (props) => {
       setIsError(false)
 
       try {
+        console.log("trying to hit grapqhl")
         // supposed to be adding filters
         const { data } = await client.query({
           query: peopleQuery,
