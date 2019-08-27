@@ -4,6 +4,8 @@ FROM gobuffalo/buffalo:v0.14.3
 #as builder
 
 RUN mkdir -p $GOPATH/src/vivo_scholar
+RUN mkdir /bin
+
 WORKDIR $GOPATH/src/vivo_scholar
 
 # this will cache the npm install step, unless package.json changes
@@ -12,7 +14,7 @@ ADD yarn.lock .
 RUN yarn install --no-progress
 ADD . .
 RUN go get $(go list ./... | grep -v /vendor/)
-RUN buffalo build --static -o /bin/app
+RUN buffalo build -o /bin/app
 
 # multi-stage build ...
 #FROM alpine
@@ -20,6 +22,8 @@ RUN buffalo build --static -o /bin/app
 #RUN apk add --no-cache ca-certificates
 
 WORKDIR /bin/
+
+ADD ./templates templates
 
 #COPY --from=builder /bin/app .
 
