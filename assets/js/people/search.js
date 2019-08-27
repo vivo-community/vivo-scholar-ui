@@ -76,7 +76,7 @@ const PeopleList = ({ people }) => {
   )
 }
 
-const PeopleFacets = ({ facets, filters }) => {
+const PeopleFacets = ({ facets, filters, onFacet }) => {
   return (
     <Fragment>
     { facets.map((facet, index) => (
@@ -223,7 +223,7 @@ const PersonSearch = (props) => {
   if (facets != undefined && facets.length > 0) {
     facetsFragment = (
     <div className="col-sm">
-      <PeopleFacets facets={ facets } filters={ filters } />
+      <PeopleFacets facets={ facets } filters={ filters } onFacet={ onFacet } />
     </div>
     )
   }
