@@ -193,7 +193,9 @@
 
             
            <h4 class="tab-content">Publications &amp; Artistic Works</h4>
-           <h5 class="tab-content">Selected Publications</h5>
+           
+           <%= if (person["selectedPublications"]) { %>
+            <h5 class="tab-content">Selected Publications</h5>
             <section class="publication-list">
 
             <%= for (p) in person["selectedPublications"] { %>
@@ -224,7 +226,7 @@
             <% } %>
            
             </section>
-            
+            <% } %>
             <h4 class="tab-content">Publications (via Web Components)</h4>
             <section class="publication-list">
 

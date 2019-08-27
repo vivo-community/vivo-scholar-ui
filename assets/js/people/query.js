@@ -21,6 +21,8 @@ query($search: String!, $pageNumber: Int!, $filters: [FilterArgInput])  {
         id
         name
         keywords
+        thumbnail
+        preferredTitle
       }
       page {
           totalElements

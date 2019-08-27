@@ -125,7 +125,20 @@ const PersonSearch = (props) => {
       pathname: '/search/people',
       search: params
     })
- }
+  }
+
+  //class="card-img-top" 
+  // http://openvivo.org/images/placeholders/person.bordered.thumbnail.jpg
+  let personImage = (person) => {
+    if (person.thumbnail) { 
+      let url = `http://openvivo.org/${person.thumbnail}`
+      return (<img className="img-thumbnail" width="90" src={ url } />)
+    } else { 
+      // TODO: how to get 'assetPath' in here?
+      let url = "http://openvivo.org/images/placeholders/person.bordered.thumbnail.jpg"
+      return (<img className="img-thumbnail" width="90" src={ url } />)
+    } 
+  }
 
   let facetsFragment = ""
   if (facets != undefined && facets.length > 0) {
@@ -134,20 +147,26 @@ const PersonSearch = (props) => {
     {facets.map((facet, index) => (
         /* NOTE: needed a key here */
         <div key={`div-${facet.field}`}>
-            <h3>{ facet.field }</h3>
+            <h3>{ _.startCase(facet.field) }</h3>
             
             <ul className="list-group">
                 {facet.entries.content.map((e, index2) => (
                                     
-                 <li className="list-group-item" 
+                 <li className="list-group-item d-flex justify-content-between align-items-center" 
                    key={`lgi-${facet.field}+${e.value}`}>
-                    <input
-                      defaultChecked={!!_.find(filters, { "field": facet.field, "value": e.value}) } 
-                      onChange={(evt) => onFacet(facet.field, e.value, evt)}
-                      type="checkbox" 
-                      name={`filters[${facet.field}]`}
-                      value={e.value} />
-                    {e.value} ({e.count})
+                    
+                    <span>
+                      <input
+                        defaultChecked={!!_.find(filters, { "field": facet.field, "value": e.value}) } 
+                        onChange={(evt) => onFacet(facet.field, e.value, evt)}
+                        type="checkbox" 
+                        name={`filters[${facet.field}]`}
+                        value={e.value} />
+                      {e.value} 
+                     </span>
+                     <span className="badge badge-primary badge-pill">{e.count}</span>
+                    
+                    
                  </li>
                  
                 ))}
@@ -180,6 +199,11 @@ const PersonSearch = (props) => {
     )
   }
 
+  const cardStyle = {
+    /* width: "4em",*/
+    /* display: "inline-block" */
+  }
+
   return (
       <div>
         <h3>People { pageSummary }</h3>
@@ -209,18 +233,21 @@ const PersonSearch = (props) => {
         <div>
           <div className="row" key={`form-search-row`}>
 
-            <div className="col-sm"> 
-              <ul className="list-group">
-                     
+              <div className="col-sm-8">
               {people.map(item => (
-                <li className="list-group-item" key={item.id}>
-                  <a href={'/entities/person/'+item.id}>{item.name}</a>
-                </li>
+                <div className="card" key={item.id} style={ cardStyle }>
+                  <div className="card-body">
+                    <h5 className="card-title">
+                      <a href={'/entities/person/'+item.id}>{item.name}</a>
+                    </h5>
+                    { personImage (item) }
+                    <p>{ item.preferredTitle }</p>
+                  </div>
+                </div>
               ))}
-          
-              </ul>
+              
             </div>
-            <div className="col-sm"> 
+            <div className="col-sm-4"> 
                 { facetsFragment }
             </div>  { /* end col-sm */ }
           </div> { /* end row */ }
@@ -234,18 +261,3 @@ const PersonSearch = (props) => {
 }
   
 export default PersonSearch
-/*
-<div class="row">
-   <div class="col-lg-1"></div>
-   <div class="col-lg-11">
-<form class="form-inline" method="GET" action="/search/people">
-   <div class="input-group search">
-      <input name="search" id="search" type="text" class="form-control" placeholder="Search" aria-label="Search" aria-describedby="basic-addon2">
-      <div class="input-group-append">
-        <button id="search-button" class="btn btn-outline-success" type="button">Search</button>
-      </div>
-    </div>
- </form>
-</div>
-</div>
-*/
