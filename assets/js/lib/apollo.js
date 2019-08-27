@@ -15,10 +15,11 @@ const link = onError(({ graphQLErrors, networkError }) => {
 console.log(`GRAPHQL_ENDPOINT=${process.env.GRAPHQL_ENDPOINT}`,)
 // message: Content type 'text/plain;charset=UTF-8' not supported
 // TODO: get url from env
+const endpoint = `${process.env.GRAPHQL_ENDPOINT}` || "https://scholars-discovery-scholars.cloud.duke.edu/graphql"
 const client = new ApolloClient({
   //uri: 'http://localhost:9000/graphql',
   // NOTE: this is not working ->
-  uri: `${process.env.GRAPHQL_ENDPOINT}`,
+  uri: endpoint,
   /// NOTE: bug right now, doesn't actually send GET
   // https://github.com/apollographql/apollo-link/issues/236
   fetchOptions: {

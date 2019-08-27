@@ -56,7 +56,7 @@ const PersonGroup = ({ grouped }) => {
   return (
     <div className="card-group">
      { grouped.map(single => (
-           <PersonCard person={ single } cardStyle={ cardStyle } />  
+           <PersonCard key={single.id} person={ single } cardStyle={ cardStyle } />  
       ))}
     </div>
   )
@@ -69,8 +69,8 @@ const PeopleList = ({ people }) => {
   console.log(chunked)
   return (
     <Fragment>
-    { chunked.map(grouped => (
-      <PersonGroup grouped={ grouped } />
+    { chunked.map((grouped, index) => (
+      <PersonGroup key={`people${index}`} grouped={ grouped } />
     ))}
     </Fragment>
   )
