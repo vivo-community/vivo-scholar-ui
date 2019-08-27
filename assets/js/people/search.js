@@ -18,6 +18,79 @@ function parseQuery(qryString) {
   return qs.parse(qryString)
 }
 
+const PersonImage = ({person}) => {
+    if (person.thumbnail) { 
+      let url = `http://openvivo.org/${person.thumbnail}`
+      return (<img className="img-thumbnail" width="90" src={ url } />)
+    } else { 
+      // TODO: how to get 'assetPath' in here?
+      let url = "http://openvivo.org/images/placeholders/person.bordered.thumbnail.jpg"
+      return (<img className="img-thumbnail" width="90" src={ url } />)
+    } 
+}
+
+const PersonCard = ({person, cardStyle}) => {
+  let title = person.preferredTitle || person.id
+  return (
+  <div className="card" key={person.id} style={ cardStyle }>
+      <h6 className="card-header">
+        <a href={'/entities/person/'+person.id}>{person.name}</a>
+      </h6>
+    
+      <div className="card-body">
+          <p className="card-text">{ title }</p>
+        <div className="card-footer">
+          <PersonImage person={ person } />
+       </div>
+    </div>
+
+  </div>
+  )
+}
+
+const PersonGroup = ({ grouped }) => {
+  const cardStyle = {
+    width: "33%",
+  }
+  let results = ""
+  return (
+    <div className="card-group">
+     { grouped.map(single => (
+           <PersonCard person={ single } cardStyle={ cardStyle } />  
+      ))}
+    </div>
+  )
+  return results
+}
+
+const PeopleList = ({ people }) => {
+  let chunked = _.chunk(people, 3)
+  console.log("*** chunked ***")
+  console.log(chunked)
+  return (
+    <span>
+    { chunked.map(grouped => (
+      <PersonGroup grouped={ grouped } />
+    ))}
+    </span>
+  )
+}
+
+/*
+<div className="card-group">
+              {people.map(item => (
+                <div className="card" key={item.id} style={ cardStyle }>
+                  <div className="card-body">
+                    <h5 className="card-title">
+                      <a href={'/entities/person/'+item.id}>{item.name}</a>
+                    </h5>
+                    { personImage (item) }
+                    <p>{ item.preferredTitle }</p>
+                  </div>
+                </div>
+              ))}
+              </div>
+              */
 const PersonSearch = (props) => {
   const [ people, setPeople ] = useState([])
   const [ facets, setFacets ] = useState([])
@@ -181,11 +254,7 @@ const PersonSearch = (props) => {
   if (page != undefined) {
     pagesFragment = (
       <div>
-      { 
-       /* <h3>page {page.number+1} of {page.totalPages} pages</h3> */
-      }
-      
-      <PagingPanel page={page} callback={onPage} />
+        <PagingPanel page={page} callback={onPage} />
       </div>
     )
   }
@@ -199,10 +268,27 @@ const PersonSearch = (props) => {
     )
   }
 
+  /*
   const cardStyle = {
-    /* width: "4em",*/
-    /* display: "inline-block" */
+    width: "25%",
   }
+
+  let personCard = (item) => {
+    return (
+    <div className="card" key={item.id} style={ cardStyle }>
+      <div className="card-body">
+        <h5 className="card-title">
+          <a href={'/entities/person/'+item.id}>{item.name}</a>
+        </h5>
+        { personImage (item) }
+        <p>{ item.preferredTitle }</p>
+      </div>
+    </div>
+    )
+  }
+  */
+
+
 
   return (
       <div>
@@ -233,19 +319,12 @@ const PersonSearch = (props) => {
         <div>
           <div className="row" key={`form-search-row`}>
 
-              <div className="col-sm-8">
-              {people.map(item => (
-                <div className="card" key={item.id} style={ cardStyle }>
-                  <div className="card-body">
-                    <h5 className="card-title">
-                      <a href={'/entities/person/'+item.id}>{item.name}</a>
-                    </h5>
-                    { personImage (item) }
-                    <p>{ item.preferredTitle }</p>
-                  </div>
-                </div>
-              ))}
               
+              <div className="col-sm-8">
+
+              <PeopleList people={ people } />
+              
+                
             </div>
             <div className="col-sm-4"> 
                 { facetsFragment }
