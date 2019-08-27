@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, Fragment } from "react"
 import _ from 'lodash'
 import { useRouter } from '../lib/react-router-hooks'
 // NOTE: tried 'query-string' and 'querystring'
@@ -68,29 +68,48 @@ const PeopleList = ({ people }) => {
   console.log("*** chunked ***")
   console.log(chunked)
   return (
-    <span>
+    <Fragment>
     { chunked.map(grouped => (
       <PersonGroup grouped={ grouped } />
     ))}
-    </span>
+    </Fragment>
   )
 }
 
-/*
-<div className="card-group">
-              {people.map(item => (
-                <div className="card" key={item.id} style={ cardStyle }>
-                  <div className="card-body">
-                    <h5 className="card-title">
-                      <a href={'/entities/person/'+item.id}>{item.name}</a>
-                    </h5>
-                    { personImage (item) }
-                    <p>{ item.preferredTitle }</p>
-                  </div>
-                </div>
-              ))}
-              </div>
-              */
+const PeopleFacets = ({ facets, filters }) => {
+  return (
+    <Fragment>
+    { facets.map((facet, index) => (
+    /* NOTE: needed a key here */
+    <div key={`div-${facet.field}`}>
+        <h3>{ _.startCase(facet.field) }</h3>
+        
+        <ul className="list-group">
+            {facet.entries.content.map((e, index2) => (
+                                
+             <li className="list-group-item d-flex justify-content-between align-items-center" 
+               key={`lgi-${facet.field}+${e.value}`}>
+                
+                <span>
+                  <input
+                    defaultChecked={!!_.find(filters, { "field": facet.field, "value": e.value}) } 
+                    onChange={(evt) => onFacet(facet.field, e.value, evt)}
+                    type="checkbox" 
+                    name={`filters[${facet.field}]`}
+                    value={e.value} />
+                  {e.value} 
+                 </span>
+                 <span className="badge badge-primary badge-pill">{e.count}</span>
+             </li>
+            ))}
+        </ul>
+    </div>
+   ))}
+  </Fragment>
+  )
+}
+
+
 const PersonSearch = (props) => {
   const [ people, setPeople ] = useState([])
   const [ facets, setFacets ] = useState([])
@@ -200,52 +219,11 @@ const PersonSearch = (props) => {
     })
   }
 
-  //class="card-img-top" 
-  // http://openvivo.org/images/placeholders/person.bordered.thumbnail.jpg
-  let personImage = (person) => {
-    if (person.thumbnail) { 
-      let url = `http://openvivo.org/${person.thumbnail}`
-      return (<img className="img-thumbnail" width="90" src={ url } />)
-    } else { 
-      // TODO: how to get 'assetPath' in here?
-      let url = "http://openvivo.org/images/placeholders/person.bordered.thumbnail.jpg"
-      return (<img className="img-thumbnail" width="90" src={ url } />)
-    } 
-  }
-
   let facetsFragment = ""
   if (facets != undefined && facets.length > 0) {
     facetsFragment = (
     <div className="col-sm">
-    {facets.map((facet, index) => (
-        /* NOTE: needed a key here */
-        <div key={`div-${facet.field}`}>
-            <h3>{ _.startCase(facet.field) }</h3>
-            
-            <ul className="list-group">
-                {facet.entries.content.map((e, index2) => (
-                                    
-                 <li className="list-group-item d-flex justify-content-between align-items-center" 
-                   key={`lgi-${facet.field}+${e.value}`}>
-                    
-                    <span>
-                      <input
-                        defaultChecked={!!_.find(filters, { "field": facet.field, "value": e.value}) } 
-                        onChange={(evt) => onFacet(facet.field, e.value, evt)}
-                        type="checkbox" 
-                        name={`filters[${facet.field}]`}
-                        value={e.value} />
-                      {e.value} 
-                     </span>
-                     <span className="badge badge-primary badge-pill">{e.count}</span>
-                    
-                    
-                 </li>
-                 
-                ))}
-            </ul>
-        </div>
-    ))}
+      <PeopleFacets facets={ facets } filters={ filters } />
     </div>
     )
   }
@@ -267,28 +245,6 @@ const PersonSearch = (props) => {
       </span>
     )
   }
-
-  /*
-  const cardStyle = {
-    width: "25%",
-  }
-
-  let personCard = (item) => {
-    return (
-    <div className="card" key={item.id} style={ cardStyle }>
-      <div className="card-body">
-        <h5 className="card-title">
-          <a href={'/entities/person/'+item.id}>{item.name}</a>
-        </h5>
-        { personImage (item) }
-        <p>{ item.preferredTitle }</p>
-      </div>
-    </div>
-    )
-  }
-  */
-
-
 
   return (
       <div>
@@ -318,13 +274,8 @@ const PersonSearch = (props) => {
       ) : (
         <div>
           <div className="row" key={`form-search-row`}>
-
-              
-              <div className="col-sm-8">
-
+            <div className="col-sm-8">
               <PeopleList people={ people } />
-              
-                
             </div>
             <div className="col-sm-4"> 
                 { facetsFragment }
