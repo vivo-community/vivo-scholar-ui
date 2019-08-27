@@ -4,7 +4,6 @@ FROM gobuffalo/buffalo:v0.14.3
 #as builder
 
 RUN mkdir -p $GOPATH/src/vivo_scholar
-RUN mkdir /bin
 
 WORKDIR $GOPATH/src/vivo_scholar
 
