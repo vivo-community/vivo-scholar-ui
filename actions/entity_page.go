@@ -2,13 +2,12 @@ package actions
 
 import (
 	"fmt"
-	"io/ioutil"
 
-	"github.com/pkg/errors"
-	"github.com/gobuffalo/envy"
 	"github.com/gobuffalo/buffalo"
+	"github.com/gobuffalo/envy"
 	"github.com/gobuffalo/plush"
 	"github.com/machinebox/graphql"
+	"github.com/pkg/errors"
 )
 
 // EntityPageHandler - Use naming convention to load a template and
@@ -19,13 +18,12 @@ import (
 func EntityPageHandler(c buffalo.Context) error {
 	entityType := c.Params().Get("type")
 	entityID := c.Params().Get("id")
-	
-	// could do something like this:
-	// theme := envy.Get("THEME", "") 
-	viewTemplatePath := fmt.Sprintf("entity_pages/%s/%s.html", entityType, entityType)
-	queryTemplatePath := fmt.Sprintf("templates/entity_pages/%s/%s.graphql", entityType, entityType)
 
-	queryTemplate, err := ioutil.ReadFile(queryTemplatePath)
+	viewTemplatePath := fmt.Sprintf("entity_pages/%s/%s.html", entityType, entityType)
+	queryTemplatePath := fmt.Sprintf("entity_pages/%s/%s.graphql", entityType, entityType)
+
+	queryTemplate, err := graphqlBox.FindString(queryTemplatePath)
+
 	if err != nil {
 		return errors.Wrap(err, "finding query")
 	}

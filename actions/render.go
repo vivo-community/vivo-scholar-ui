@@ -9,6 +9,9 @@ import (
 var r *render.Engine
 var assetsBox = packr.New("app:assets", "../public")
 
+// NOTE: same as templates
+var graphqlBox = packr.New("app:gql", "../templates")
+
 func init() {
 	r = render.New(render.Options{
 		// HTML layout to be used for all HTML requests:

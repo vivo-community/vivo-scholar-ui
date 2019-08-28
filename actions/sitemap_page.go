@@ -3,7 +3,6 @@ package actions
 import (
 	"fmt"
 	"io"
-	"io/ioutil"
 
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/buffalo/render"
@@ -16,9 +15,11 @@ import (
 // this is effectivily a sitemap index
 // could run a query that gets max modTimes or something
 func SiteMapHandler(c buffalo.Context) error {
-	viewTemplatePath := "templates/sitemap_pages/sitemap.xml"
-	viewTemplate, err := ioutil.ReadFile(viewTemplatePath)
-
+	viewTemplatePath := "sitemap_pages/sitemap.xml"
+	viewTemplate, err := graphqlBox.FindString(viewTemplatePath)
+	if err != nil {
+		return errors.Wrap(err, "reading sitemap template")
+	}
 	ctx := plush.NewContext()
 	v, err := envy.MustGet("SITE_URL")
 	ctx.Set("siteUrl", v)
@@ -49,13 +50,13 @@ func SiteMapPageHandler(c buffalo.Context) error {
 	//fmt.Printf("extension=%s\n", extension)
 	// might be good to index by beginning letter, or pub date filter
 	// or something like that ???
-	viewTemplatePath := fmt.Sprintf("templates/sitemap_pages/%s/%s.xml", listType, listType)
-	queryTemplatePath := fmt.Sprintf("templates/sitemap_pages/%s/%s.graphql", listType, listType)
+	viewTemplatePath := fmt.Sprintf("sitemap_pages/%s/%s.xml", listType, listType)
+	queryTemplatePath := fmt.Sprintf("sitemap_pages/%s/%s.graphql", listType, listType)
 
 	fmt.Printf("view path=%v\n", viewTemplatePath)
 	fmt.Printf("query path=%v\n", queryTemplatePath)
 
-	queryTemplate, err := ioutil.ReadFile(queryTemplatePath)
+	queryTemplate, err := graphqlBox.FindString(queryTemplatePath)
 	fmt.Printf("query=%v\n", string(queryTemplate))
 	if err != nil {
 		return errors.Wrap(err, "reading query template")
@@ -90,7 +91,8 @@ func SiteMapPageHandler(c buffalo.Context) error {
 
 	fmt.Printf("got results=%v\n", results)
 
-	viewTemplate, err := ioutil.ReadFile(viewTemplatePath)
+	//viewTemplate, err := ioutil.ReadFile(viewTemplatePath)
+	viewTemplate, err := graphqlBox.FindString(viewTemplatePath)
 
 	fmt.Printf("view=%v\n", string(viewTemplate))
 
@@ -104,7 +106,6 @@ func SiteMapPageHandler(c buffalo.Context) error {
 
 	xml, err := plush.Render(string(viewTemplate), ctx2)
 
-	fmt.Printf("xml=%v\n", xml)
 	renderer := func(w io.Writer, d render.Data) error {
 		_, err = w.Write([]byte(xml))
 		return err
