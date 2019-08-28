@@ -1,0 +1,10 @@
+FROM gobuffalo/buffalo:v0.14.10
+
+RUN mkdir -p /vivo-scholar
+WORKDIR /vivo-scholar
+
+ADD package.json .
+ADD yarn.lock .
+RUN yarn install --no-progress
+ENV GO111MODULE=on
+ENV ADDR=0.0.0.0

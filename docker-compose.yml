@@ -1,0 +1,18 @@
+version: '3.7'
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    command: /bin/sh -c "buffalo dev"
+    entrypoint: /vivo-scholar/docker-entrypoint.sh
+    env_file:
+      - ./.env
+    volumes:
+      - .:/vivo-scholar
+      - go:/go
+    ports:
+      - "4200:4200"
+    network_mode: "host"
+volumes:
+ go:
