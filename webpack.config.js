@@ -48,7 +48,9 @@ const configurator = {
       new ManifestPlugin({
         fileName: "manifest.json"
       }),
-      new Dotenv()
+      new Dotenv({
+        systemvars: true // load all the predefined 'process.env' variables
+      })
     ];
 
     return plugins
