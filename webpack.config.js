@@ -6,7 +6,6 @@ const ManifestPlugin = require("webpack-manifest-plugin");
 const CleanObsoleteChunks = require('webpack-clean-obsolete-chunks');
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const LiveReloadPlugin = require('webpack-livereload-plugin');
-const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const Dotenv = require('dotenv-webpack');
 
 const configurator = {
@@ -49,7 +48,6 @@ const configurator = {
       new ManifestPlugin({
         fileName: "manifest.json"
       }),
-      new VueLoaderPlugin(),
       new Dotenv()
     ];
 
@@ -59,23 +57,20 @@ const configurator = {
   moduleOptions: function() {
     return {
       rules: [
-        {test: /\.vue/, loader: "vue-loader"},
         {
           test: /\.s[ac]ss$/,
           use: [
             MiniCssExtractPlugin.loader,
             { loader: "css-loader", options: {sourceMap: true}},
-            { loader: "sass-loader", options: {sourceMap: true}}//,
-            //{ loader: "vue-style-loader" }
+            { loader: "sass-loader", options: {sourceMap: true}}
           ]
         },
-        { test: /\.tsx?$/, use: "ts-loader", exclude: /node_modules/},
+        //{ test: /\.tsx?$/, use: "ts-loader", exclude: /node_modules/},
         { test: /\.jsx?$/,loader: "babel-loader",exclude: /node_modules/ },
         { test: /\.js?$/,loader: "babel-loader",exclude: /node_modules/ },
         { test: /\.(woff|woff2|ttf|svg)(\?v=\d+\.\d+\.\d+)?$/,use: "url-loader"},
         { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,use: "file-loader" },
         { test: require.resolve("jquery"),use: "expose-loader?jQuery!expose-loader?$"},
-        { test: /\.go$/, use: "gopherjs-loader"}
       ]
     }
   },
@@ -93,11 +88,7 @@ const configurator = {
       plugins: configurator.plugins(),
       module: configurator.moduleOptions(),
       resolve: {
-        extensions: ['.ts', '.js', '.json'],
-        alias: {
-          vue$: `${__dirname}/node_modules/vue/dist/vue.esm.js`,
-          router$: `${__dirname}/node_modules/vue-router/dist/vue-router.esm.js`
-        }
+        extensions: ['.ts', '.js', '.json']
       }
     }
 
