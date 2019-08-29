@@ -1,11 +1,28 @@
+$base-font: "Red+Hat+Text";
+$bold-font: "Red+Hat+Text";
+
+$blueish: rgba(38, 169, 224, 1);
+$light-blueish: rgb(165, 213, 238);
+$white: rgb(255, 255, 255);
+
+$theme-colors: (
+  "primary": rgba(38, 169, 224, 1)
+);
+
+// should be better way to override - above
+// doesn't work though
+.badge-primary {
+  background-color: rgba(38, 169, 224, 1);
+}
 /****** global (all pages) */
 body {
-  font-family: 'ArialMT', 'Arial';
+  font-family: $base-font; 
   font-weight: 400;
   font-style: normal;
   font-size: 16px;
   line-height: 24px;
   color: #333333;
+  padding: 4px;
  }
 
 section {
@@ -236,18 +253,35 @@ a.prof-link {
 }
 
 /**** headings (person profile) ****/
+h3.tab-content {
+  margin-top: 1em;
+  transform-origin: 47.5px 12px; 
+  left: 0px; 
+  font-size: 28px;
+}
+
 h4.tab-content {
+  margin-top: 4px;
   transform-origin: 47.5px 12px; 
   left: 0px; 
   font-size: 22px;
+  margin-bottom: 8px;
 }
   
 h5.tab-content {
+  margin-top: 8px;
   transform-origin: 47.5px 12px; 
   left: 0px; 
   color: rgb(18, 89, 124);
+  transform-origin: 47.5px 12px; 
+  left: 0px; 
+  color: rgb(18, 89, 124);
+  margin-bottom: 8px;
 }
 
+h6.tab-content {
+  margin-bottom: 4px;
+}
 h5.side-bar {
   font-size: 13px;
   background-color: rgba(165, 213, 238, 1);
@@ -260,12 +294,6 @@ h5.side-bar {
   margin-bottom: 0;
 }
 
-h5.tab-content {
-  transform-origin: 47.5px 12px; 
-  left: 0px; 
-  color: rgb(18, 89, 124);
-  margin-bottom: 1em;
-}
 
 /** publications ***/
 .publication-citation {
@@ -298,4 +326,22 @@ div.input-group.search {
 
 .page-item:hover {
 	cursor: pointer;
+}
+
+/*** facets */
+div.facets> h3 {
+  font-size: 22px; 
+  margin-top: 8px;
+}
+
+label.facet-click> input {
+  margin-right: 4px;
+  // can't seem to get border
+  /* border: 1px solid #000000; */
+}
+
+div.facets>ul>li.list-group-item:hover {
+  /* maybe should be color */
+  color: $white;
+  background-color: $blueish;
 }

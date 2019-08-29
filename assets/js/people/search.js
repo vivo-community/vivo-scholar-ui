@@ -9,6 +9,10 @@ import PagingPanel from '../components/paging'
 import peopleQuery from './query'
 import client from '../lib/apollo'
 
+//import DefaultImage from './assets/images/profile_picture_u39_a.png'
+//import DefaultImage from 'profile_picture_u39_a.png'
+//import assets from './assets'
+
 function stringifyQuery(params) {
   let result = qs.stringify(params);
   return result ? ('?' + result) : '';
@@ -24,6 +28,9 @@ const PersonImage = ({person}) => {
       return (<img className="img-thumbnail" width="90" src={ url } />)
     } else { 
       // TODO: how to get 'assetPath' in here?
+      //const default = new Image()
+      //default.src = DefaultImage
+      //return (<img className="img-thumbnail" width="90" src={ DefaultImage } />)
       let url = "http://openvivo.org/images/placeholders/person.bordered.thumbnail.jpg"
       return (<img className="img-thumbnail" width="90" src={ url } />)
     } 
@@ -81,7 +88,7 @@ const PeopleFacets = ({ facets, filters, onFacet }) => {
     <Fragment>
     { facets.map((facet, index) => (
     /* NOTE: needed a key here */
-    <div key={`div-${facet.field}`}>
+    <div key={`div-${facet.field}`} className="facets">
         <h3>{ _.startCase(facet.field) }</h3>
         
         <ul className="list-group">
@@ -90,15 +97,16 @@ const PeopleFacets = ({ facets, filters, onFacet }) => {
              <li className="list-group-item d-flex justify-content-between align-items-center" 
                key={`lgi-${facet.field}+${e.value}`}>
                 
-                <span>
+                <label className="facet-click" htmlFor={`filters[${facet.field}+${e.value}]`}>
                   <input
+                    id={`filters[${facet.field}+${e.value}]`}
                     defaultChecked={!!_.find(filters, { "field": facet.field, "value": e.value}) } 
                     onChange={(evt) => onFacet(facet.field, e.value, evt)}
                     type="checkbox" 
                     name={`filters[${facet.field}]`}
                     value={e.value} />
                   {e.value} 
-                 </span>
+                 </label>
                  <span className="badge badge-primary badge-pill">{e.count}</span>
              </li>
             ))}
