@@ -38,7 +38,12 @@ const PersonImage = ({person}) => {
 
 const PersonCard = ({person, cardStyle}) => {
   let title = person.preferredTitle || person.id
+  // NOTE: terrible way to do this
   let personName = person.name.replace("@en-US", "")
+  personName = personName.replace("@en-GB", "")
+  personName = personName.replace("@de-DE", "")
+  personName = personName.replace("@en", "")
+
   return (
   <div className="card" key={person.id} style={ cardStyle }>
       <h6 className="card-header">

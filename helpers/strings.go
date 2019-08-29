@@ -5,6 +5,10 @@ import (
 )
 
 func RemoveLanguageTag(value string) string {
-	result:= strings.Replace(value, "@en-US", "", -1)
+	//TODO: probably better to use regexp
+	result := strings.Replace(value, "@en-US", "", -1)
+	result = strings.Replace(result, "@en-GB", "", -1)
+	result = strings.Replace(result, "@de-DE", "", -1)
+	result = strings.Replace(result, "@en", "", -1)
 	return result
 }
