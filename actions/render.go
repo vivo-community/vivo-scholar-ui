@@ -29,6 +29,7 @@ func init() {
 			"FigurePagingInfo":            helpers.FigurePagingInfo,
 			"HasKey":                      helpers.HasKey,
 			"FormatGraphqlDateForSitemap": helpers.FormatGraphqlDateForSitemap,
+			"RemoveLanguageTag":           helpers.RemoveLanguageTag,
 			// uncomment for non-Bootstrap form helpers:
 			// "form":     plush.FormHelper,
 			// "form_for": plush.FormForHelper,

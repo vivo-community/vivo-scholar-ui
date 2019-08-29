@@ -38,10 +38,11 @@ const PersonImage = ({person}) => {
 
 const PersonCard = ({person, cardStyle}) => {
   let title = person.preferredTitle || person.id
+  let personName = person.name.replace("@en-US", "")
   return (
   <div className="card" key={person.id} style={ cardStyle }>
       <h6 className="card-header">
-        <a href={'/entities/person/'+person.id}>{person.name}</a>
+        <a href={'/entities/person/'+person.id}>{personName}</a>
       </h6>
     
       <div className="card-body">

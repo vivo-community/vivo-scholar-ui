@@ -1,5 +1,5 @@
-$base-font: "Red+Hat+Text";
-$bold-font: "Red+Hat+Text";
+$base-font: "Red Hat Text";
+$bold-font: "Red Hat Text";
 
 $blueish: rgba(38, 169, 224, 1);
 $light-blueish: rgb(165, 213, 238);
@@ -31,20 +31,20 @@ section {
 
 /**** headings ****/
 h1 {
-	font-family: Arial-BoldMT, "Arial Bold", Arial; 
+  font-family: $bold-font; 
 	font-weight: 700; 
 	font-size: 72px; 
 	color: rgb(18, 89, 124);
 }
 
 h2 {
-	font-family: Arial-BoldMT, "Arial Bold", Arial; 
+  font-family: $bold-font; 
 	font-weight: 700; 
 	font-size: 40px; 
 	color: rgb(18, 89, 124);
 }
 h3 {
-	font-family: Arial-BoldMT, "Arial Bold", Arial; 
+  font-family: $bold-font; 
 	font-weight: 700; 
 	font-size: 38px; 
 	color: rgb(18, 89, 124);
@@ -52,7 +52,7 @@ h3 {
 
 h4 {
   transform-origin: 77px 18.5px;
-  font-family: Arial-BoldMT, "Arial Bold", Arial; 
+  font-family: $bold-font; 
   font-weight: 700; 
   font-size: 36px; 
   color: rgb(18, 89, 124);
@@ -62,7 +62,7 @@ h5 {
   transform-origin: 77px 18px;
   font-size: 21px; 
   line-height: 24px;
-  font-family: Arial-BoldMT, "Arial Bold", Arial; 
+  font-family: $bold-font; 
   font-weight: 700; 
   font-size: 21px; 
   color: rgb(47, 61, 79)
@@ -72,7 +72,7 @@ h6 {
   transform-origin: 77px 18px;
   font-size: 18px; 
   line-height: 20px;
-  font-family: Arial-BoldMT, "Arial Bold", Arial; 
+  font-family: $bold-font; 
   font-weight: 700; 
   font-size: 19px; 
   color: rgb(47, 61, 79)
@@ -94,14 +94,16 @@ h6>a {
 
 span.logo {
   color: rgb(255, 255, 255);
-  font-family: "CenturyGothic", "Century Gothic";
+  font-family: $bold-font; 
+  /* font-family: "CenturyGothic", "Century Gothic"; */
   font-weight: 700;
   font-size: 72px;
+  padding-left: 4px;
 }
   
 span.logo-secondary {
   color: rgb(38, 169, 224);
-  font-family: 'ArialMT', 'Arial';
+  font-family: $base-font; 
   font-weight: 400;
   display: inline;
   line-height: 1;
@@ -225,13 +227,13 @@ section.websites {
  
 /* more general */
 span.label {
-  font-family: Arial-BoldMT, "Arial Bold", Arial;
+  font-family: $bold-font; 
   font-weight: 700;
   font-size: 11px;
 }
 
 span.data {
-  font-family: ArialMT, Arial; 
+  font-family: $base-font; 
   font-weight: 400;	
 }
 
@@ -246,7 +248,7 @@ div.address-block {
 a.prof-link {
   font-size: 13px; 
   line-height: 20px;
-  font-family: Arial-BoldMT, "Arial Bold", Arial; 
+  font-family: $bold-font; 
   font-weight: 700; 
   text-decoration: none;
   color: #333333;
@@ -280,7 +282,7 @@ h5.tab-content {
 }
 
 h6.tab-content {
-  margin-bottom: 4px;
+  margin-bottom: 8px;
 }
 h5.side-bar {
   font-size: 13px;
