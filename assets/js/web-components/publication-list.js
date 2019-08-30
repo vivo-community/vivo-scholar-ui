@@ -6,7 +6,6 @@ class PublicationList extends HTMLElement {
 
   connectedCallback() {
     this.shadowRoot.innerHTML =  `
-      </style>
         <ul>
           <slot />
         </ul>
