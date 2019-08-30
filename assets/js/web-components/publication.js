@@ -11,21 +11,38 @@ class Publication extends HTMLElement {
           display: block;
         }
         .title {
-          font-size: 20px;
-          background-color: lightblue;
-          color: white;
+          transform-origin: 77px 18px;
+          font-size: 18px;
+          line-height: 20px;
+          font-family: "Red Hat Text";
+          font-weight: 700;
+          font-size: 19px;
+          color: #2f3d4f;
+          margin-bottom: 8px;
+        }
+        .title a {
+          color: #007bff;
+          text-decoration: none;
+          background-color: transparent;
         }
         .abstract {
           padding: 0.5em;
+        }
+        .date {
+          font-size: 13px;
+          font-style: italic;
         }
       </style>
         <div class="title">
           <a href="/entities/publication/${this.getAttribute("id")}">
            <slot name="title"/>
-           </a>
+          </a>
+       </div>
+       <div class="date">
+         <slot name="date"/>
        </div>
        <div class="abstract">
-        <slot name="abstract"/>
+          <slot name="abstract"/>
        </div>
     `;
   }

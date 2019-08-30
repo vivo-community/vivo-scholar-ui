@@ -235,7 +235,9 @@
                 <%= for (p) in person["selectedPublications"] { %>
                   <vivo-publication id="<%= p["id"] %>">
                     <div slot="title"><%= p["title"] %></div>
-                    <div slot="abstract"><%= p["abstractText"] %></div>
+                    <div slot="abstract"><%= raw(p["abstractText"]) %></div>
+                    <div slot="date"><%= FormatGraphqlDateForSitemap(p["publicationDate"]) %></div>
+                    
                   </vivo-publication>
                 <% } %>
             </vivo-publication-list>

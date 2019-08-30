@@ -3,8 +3,8 @@ import './web-components/publication-list'
 import gql from 'graphql-tag'
 import ApolloClient from 'apollo-boost'
 
-let endpoint = "https://scholars-discovery-scholars.cloud.duke.edu/graphql"
-//let endpoint = "http://localhost:9000/graphql"
+//let endpoint = "https://scholars-discovery-scholars.cloud.duke.edu/graphql"
+let endpoint = "http://localhost:9000/graphql"
 
 const client = new ApolloClient({
   uri: endpoint,
@@ -50,8 +50,11 @@ class EmbeddedPublicationList extends HTMLElement {
       let publicationElements = publications.map(p => {
         let pub = document.createElement('vivo-publication');
         pub.setAttribute('id',p.id);
+        // authors might need to be attribute too
+        // since it's an array
         pub.innerHTML = `
           <div slot="title">${p.title}</div>
+          <div slot="date">${p.date}</div>
           <div slot="abstract">${p.abstractText}</div>
         `
         return pub;
