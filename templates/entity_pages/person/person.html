@@ -233,7 +233,9 @@
 
             <vivo-publication-list>
                 <%= for (p) in person["selectedPublications"] { %>
-                  <vivo-publication id="<%= p["id"] %>" title="<%= p["title"] %>">
+                  <vivo-publication id="<%= p["id"] %>">
+                    <div slot="title"><%= p["title"] %></div>
+                    <div slot="abstract"><%= p["abstractText"] %></div>
                   </vivo-publication>
                 <% } %>
             </vivo-publication-list>

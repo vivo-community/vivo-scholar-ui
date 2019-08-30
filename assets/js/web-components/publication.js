@@ -6,13 +6,27 @@ class Publication extends HTMLElement {
 
   connectedCallback() {
     this.shadowRoot.innerHTML = `
-      <li>
-        <span class="title">
+      <style>
+        :host {
+          display: block;
+        }
+        .title {
+          font-size: 20px;
+          background-color: lightblue;
+          color: white;
+        }
+        .abstract {
+          padding: 0.5em;
+        }
+      </style>
+        <div class="title">
           <a href="/entities/publication/${this.getAttribute("id")}">
-           ${ this.getAttribute("title") }
-          </a> 
-        </span>
-      </li>
+           <slot name="title"/>
+           </a>
+       </div>
+       <div class="abstract">
+        <slot name="abstract"/>
+       </div>
     `;
   }
 }

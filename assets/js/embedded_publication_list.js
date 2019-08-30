@@ -1,7 +1,17 @@
 import './web-components/publication'
 import './web-components/publication-list'
 import gql from 'graphql-tag'
-import client from './lib/apollo'
+import ApolloClient from 'apollo-boost'
+
+let endpoint = "https://scholars-discovery-scholars.cloud.duke.edu/graphql"
+//let endpoint = "http://localhost:9000/graphql"
+
+const client = new ApolloClient({
+  uri: endpoint,
+  fetchOptions: {
+    useGETForQueries: true
+  }
+});
 
 const PUBLICATION_QUERY = gql`
   query($id: String) {
@@ -40,7 +50,10 @@ class EmbeddedPublicationList extends HTMLElement {
       let publicationElements = publications.map(p => {
         let pub = document.createElement('vivo-publication');
         pub.setAttribute('id',p.id);
-        pub.setAttribute('title',p.title);
+        pub.innerHTML = `
+          <div slot="title">${p.title}</div>
+          <div slot="abstract">${p.abstractText}</div>
+        `
         return pub;
       })
       let publicationList = document.createElement('vivo-publication-list');
