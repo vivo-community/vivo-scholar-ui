@@ -26,7 +26,7 @@ class EmbeddedPublicationList extends HTMLElement {
 
   constructor() {
     super();
-    const shadowRoot = this.attachShadow({mode: 'open'})
+    const shadowRoot = this.attachShadow({mode: 'open'});
   }
 
   connectedCallback() {

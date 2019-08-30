@@ -1,16 +1,16 @@
-import '@webcomponents/webcomponentsjs/custom-elements-es5-adapter'
-import '@webcomponents/webcomponentsjs/webcomponents-loader.js'
-import React from 'react'
+class PublicationList extends HTMLElement {
+  constructor() {
+    super();
+    const shadowRoot = this.attachShadow({mode: 'open'});
+  }
 
-import Element, { h } from '@skatejs/element-react';
-
-class PublicationList extends Element {
-  render() {
-    return (
+  connectedCallback() {
+    this.shadowRoot.innerHTML =  `
+      </style>
         <ul>
           <slot />
         </ul>
-    );
+    `;
   }
 }
 
