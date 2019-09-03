@@ -11,7 +11,7 @@ class PublicationList extends HTMLElement {
             margin-bottom: 1em;
           }
           ::slotted(vivo-publication) {
-            font-size: 20px;
+            font-size: var(--publication-font-size, 18px);
             border: 1px solid lightgray;
           }
         </style>

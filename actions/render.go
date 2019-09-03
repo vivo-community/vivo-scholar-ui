@@ -30,6 +30,7 @@ func init() {
 			"HasKey":                      helpers.HasKey,
 			"FormatGraphqlDateForSitemap": helpers.FormatGraphqlDateForSitemap,
 			"RemoveLanguageTag":           helpers.RemoveLanguageTag,
+			"MakeJSONString":              helpers.MakeJSONString,
 			// uncomment for non-Bootstrap form helpers:
 			// "form":     plush.FormHelper,
 			// "form_for": plush.FormForHelper,

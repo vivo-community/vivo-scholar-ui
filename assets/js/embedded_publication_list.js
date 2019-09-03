@@ -3,6 +3,8 @@ import './web-components/publication-list'
 import gql from 'graphql-tag'
 import ApolloClient from 'apollo-boost'
 
+// TODO: parsing datetime?
+// Thu Sep 17 00:00:00 UTC 2015
 //let endpoint = "https://scholars-discovery-scholars.cloud.duke.edu/graphql"
 let endpoint = "http://localhost:9000/graphql"
 
@@ -47,14 +49,24 @@ class EmbeddedPublicationList extends HTMLElement {
       }
     }).then(({data}) =>  {
       let publications = data.person.selectedPublications
+
       let publicationElements = publications.map(p => {
-        let pub = document.createElement('vivo-publication');
-        pub.setAttribute('id',p.id);
+        let pubDate = new Date(p.publicationDate)
+        // TODO: would probably want to get locale from something
+        let dateFormatted = pubDate.toLocaleDateString("en-US")
+        let pub = document.createElement('vivo-publication')
+        pub.setAttribute("link-decorate", 
+        this.getAttribute("link-decorate") || false)
+        pub.setAttribute('id',p.id)
+        // TODO: not crazy about this
+        pub.setAttribute("authors", JSON.stringify(p.authors))
+
+        //let authorList = p.authors.map(a => a.label).join(",")
         // authors might need to be attribute too
         // since it's an array
         pub.innerHTML = `
           <div slot="title">${p.title}</div>
-          <div slot="date">${p.date}</div>
+          <span slot="date">${dateFormatted}</span>
           <div slot="abstract">${p.abstractText}</div>
         `
         return pub;
