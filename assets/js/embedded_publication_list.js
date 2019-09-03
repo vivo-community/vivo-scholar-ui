@@ -3,10 +3,8 @@ import './web-components/publication-list'
 import gql from 'graphql-tag'
 import ApolloClient from 'apollo-boost'
 
-// TODO: parsing datetime?
-// Thu Sep 17 00:00:00 UTC 2015
-//let endpoint = "https://scholars-discovery-scholars.cloud.duke.edu/graphql"
-let endpoint = "http://localhost:9000/graphql"
+let endpoint = "https://scholars-discovery-scholars.cloud.duke.edu/graphql"
+//let endpoint = "http://localhost:9000/graphql"
 
 const client = new ApolloClient({
   uri: endpoint,
