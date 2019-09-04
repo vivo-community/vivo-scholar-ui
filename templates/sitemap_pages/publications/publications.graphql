@@ -1,11 +1,13 @@
 query {
-    documentsSorted(
+    documentsPaged(paging: {
+        pageNumber: 0 pageSize: 10000,
         sort:{ 
           orders: [{direction: ASC, property:"modTime"}]
         }
+      }
     ) {
-    # note: this will return too many
-    id
-    modTime
+    content {
+        id
+    }
   }
 }

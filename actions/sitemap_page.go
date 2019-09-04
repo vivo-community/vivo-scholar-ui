@@ -45,11 +45,6 @@ func SiteMapHandler(c buffalo.Context) error {
 // size of any particular sitemap file)
 func SiteMapPageHandler(c buffalo.Context) error {
 	listType := c.Params().Get("type")
-	// different view template based on content-type??
-	//extension := TemplateExtension(c.Request())
-	//fmt.Printf("extension=%s\n", extension)
-	// might be good to index by beginning letter, or pub date filter
-	// or something like that ???
 	viewTemplatePath := fmt.Sprintf("sitemap_pages/%s/%s.xml", listType, listType)
 	queryTemplatePath := fmt.Sprintf("sitemap_pages/%s/%s.graphql", listType, listType)
 
@@ -91,12 +86,9 @@ func SiteMapPageHandler(c buffalo.Context) error {
 
 	fmt.Printf("got results=%v\n", results)
 
-	//viewTemplate, err := ioutil.ReadFile(viewTemplatePath)
 	viewTemplate, err := graphqlBox.FindString(viewTemplatePath)
 
 	fmt.Printf("view=%v\n", string(viewTemplate))
-
-	//ctx.Set("data", results)
 
 	ctx2 := plush.NewContext()
 	// if err ???
