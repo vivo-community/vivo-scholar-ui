@@ -8,6 +8,8 @@ const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const LiveReloadPlugin = require('webpack-livereload-plugin');
 const Dotenv = require('dotenv-webpack');
 
+const vivoRegex = RegExp('vivo*');
+
 const configurator = {
   entries: function(){
     var entries = {
@@ -86,7 +88,21 @@ const configurator = {
     var config = {
       mode: env,
       entry: configurator.entries(),
-      output: {filename: "[name].[hash].js", path: `${__dirname}/public/assets`},
+      output: {
+        filename: (chunkData) => {
+          console.log(`name=${chunkData.chunk.name}`)
+          //console.log(chunkData.chunk)
+          // TODO: need a way to match web-components only
+          // name? 
+          // e.g. 
+          return vivoRegex.test(chunkData.chunk.name)
+          //return chunkData.chunk.name === 'loader'
+              ? '[name].js'
+              : '[name].[hash].js';
+        },
+        //filename: "[name].[hash].js", 
+        path: `${__dirname}/public/assets`
+      },
       plugins: configurator.plugins(),
       module: configurator.moduleOptions(),
       resolve: {
