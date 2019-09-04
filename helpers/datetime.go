@@ -1,7 +1,6 @@
 package helpers
 
 import (
-	"fmt"
 	"log"
 	"time"
 )
@@ -13,14 +12,12 @@ func FormatGraphqlDateForSitemap(dateTime string) string {
 	if len(dateTime) == 0 {
 		return ""
 	}
-	fmt.Printf("trying to parse: %v\n", dateTime)
 	isoDateTime, error := time.Parse("Mon Jan 2 15:04:05 MST 2006", dateTime)
 	if error != nil {
 		log.Fatal(error)
 	}
 	layout := "2006-01-02"
 	result := isoDateTime.Format(layout)
-	fmt.Printf("trying to return :%v\n", result)
 	return result
 }
 
