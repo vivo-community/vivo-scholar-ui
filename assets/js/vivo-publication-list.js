@@ -1,3 +1,4 @@
+import { LitElement, html, css } from 'lit-element';
 import './elements/publication'
 import './elements/publication-list'
 import gql from 'graphql-tag'
@@ -34,46 +35,53 @@ const PUBLICATION_QUERY = gql`
   }
 `
 
-class EmbeddedPublicationList extends HTMLElement {
+class EmbeddedPublicationList extends LitElement {
+
+  static get properties() {
+    return {
+      publications: { type: Array },
+      linkDecorate: { attribute: 'link-decorate', type: Boolean }
+    }
+  }
 
   constructor() {
     super();
-    const shadowRoot = this.attachShadow({mode: 'open'});
+    this.publications = [];
+    this.linkDecorate = false;
   }
 
   connectedCallback() {
+    super.connectedCallback();
     const data = client.query({
       query: PUBLICATION_QUERY,
       variables: {
         id: this.getAttribute("person_id")
       }
     }).then(({data}) =>  {
-      let publications = data.personById.publications
-
-      let publicationElements = publications.map(p => {
-        let pubDate = new Date(p.publicationDate)
-        // TODO: would probably want to get locale from something
-        let dateFormatted = pubDate.toLocaleDateString("en-US")
-        let pub = document.createElement('vivo-publication')
-        pub.setAttribute("link-decorate", 
-        this.getAttribute("link-decorate") || false)
-        pub.publicationId = p.id
-        pub.authors = p.authors
-
-        //let authorList = p.authors.map(a => a.label).join(",")
-        // authors might need to be attribute too
-        // since it's an array
-        pub.innerHTML = `
-          <div slot="title">${p.title}</div>
-          <span slot="date">${dateFormatted}</span>
-          <div slot="abstract">${p.abstractText}</div>
-        `
-        return pub;
-      })
-      let publicationList = document.createElement('vivo-publication-list');
-      publicationElements.forEach(p => publicationList.appendChild(p));
-      this.shadowRoot.appendChild(publicationList);
+      this.publications = data.personById.publications
     });
+  }
+
+  publicationElement(p) {
+    let pubDate = new Date(p.publicationDate);
+    // TODO: would probably want to get locale from something
+    let dateFormatted = pubDate.toLocaleDateString("en-US");
+    return html`
+      <vivo-publication publication-id="${p.id}" authors="${JSON.stringify(p.authors)}" link-decorate="${this.linkDecorate}">
+        <div slot="title">${p.title}</div>
+        <span slot="date">${dateFormatted}</span>
+        <div slot="abstract">${p.abstractText}</div>
+      </vivo-publication>
+    `
+  }
+
+  render() {
+    let publicationElements = this.publications.map((p) => this.publicationElement(p));
+    return html`
+      <vivo-publication-list>
+        ${publicationElements}
+      </vivo-publication-list>
+    `
   }
 
 }
