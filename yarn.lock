@@ -1018,24 +1018,6 @@
   resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-0.7.0.tgz#9a06f4f137ee84d7df0460c1fdb1135ffa6c50fd"
   integrity sha512-ONhaKPIufzzrlNbqtWFFd+jlnemX6lJAgq9ZeiZtS7I1PIf/la7CW4m83rTXRnVnsMbW2k56pGYu7AUFJD9Pow==
 
-"@skatejs/define@^0.0.0":
-  version "0.0.0"
-  resolved "https://registry.yarnpkg.com/@skatejs/define/-/define-0.0.0.tgz#5387a74732c26c80d6092a002636eef6a8de4c81"
-  integrity sha512-4N07trLW6EcWUdCUpKU1zlghkpYQ7VulzEpZcimT6h21rSFnV1MGV39SiYBjEMMe52518KS/bb9DpEtpUfxrrw==
-
-"@skatejs/element-react@^0.0.1":
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/@skatejs/element-react/-/element-react-0.0.1.tgz#36a406d330ee9cb4f8a415b6c03987dbbca0d90f"
-  integrity sha512-jnX0gJulc86UxS7Ky99pFso9jo+BBcjVPayTN3mOJ7jF8WU6XRV8LNC7f8el7TKpmWNbsfZ10UWIq33Vc3Tebw==
-  dependencies:
-    "@skatejs/define" "^0.0.0"
-    "@skatejs/element" "^0.0.0"
-
-"@skatejs/element@^0.0.0":
-  version "0.0.0"
-  resolved "https://registry.yarnpkg.com/@skatejs/element/-/element-0.0.0.tgz#07010b71cc37788baeddd41211418d361e476fa2"
-  integrity sha512-bZFtJ/W3HuC3p15coRBbdyXI2/qEO6TyiBSepGWrGChKSxSvq9POfTolHjYDo/pNK9ENZbUXifgYCbnwvVrCfg==
-
 "@types/fs-extra@^5.0.2":
   version "5.1.0"
   resolved "https://registry.yarnpkg.com/@types/fs-extra/-/fs-extra-5.1.0.tgz#2a325ef97901504a3828718c390d34b8426a10a1"
