@@ -198,7 +198,7 @@
 
             <vivo-publication-list>
                 <%= for (p) in person["publications"] { %>
-                  <vivo-publication id="<%= p["id"] %>" authors="<%= MakeJSONString(p["authors"]) %>">
+                  <vivo-publication publication-id="<%= p["id"] %>" authors="<%= MakeJSONString(p["authors"]) %>">
                     <div slot="title"><%= p["title"] %></div>
                     <div slot="abstract"><%= raw(p["abstractText"]) %></div>
                     <span slot="date"><%= FormatGraphqlDateForSitemap(p["publicationDate"]) %></span>

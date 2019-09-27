@@ -17,9 +17,9 @@ const client = new ApolloClient({
 
 const PUBLICATION_QUERY = gql`
   query($id: String) {
-    person(id: $id) {
+    personById(id: $id) {
       id
-      selectedPublications {
+      publications {
         id
         title
         abstractText
@@ -48,7 +48,7 @@ class EmbeddedPublicationList extends HTMLElement {
         id: this.getAttribute("person_id")
       }
     }).then(({data}) =>  {
-      let publications = data.person.selectedPublications
+      let publications = data.personById.publications
 
       let publicationElements = publications.map(p => {
         let pubDate = new Date(p.publicationDate)
@@ -57,9 +57,8 @@ class EmbeddedPublicationList extends HTMLElement {
         let pub = document.createElement('vivo-publication')
         pub.setAttribute("link-decorate", 
         this.getAttribute("link-decorate") || false)
-        pub.setAttribute('id',p.id)
-        // TODO: not crazy about this
-        pub.setAttribute("authors", JSON.stringify(p.authors))
+        pub.publicationId = p.id
+        pub.authors = p.authors
 
         //let authorList = p.authors.map(a => a.label).join(",")
         // authors might need to be attribute too

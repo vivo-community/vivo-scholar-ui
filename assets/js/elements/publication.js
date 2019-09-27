@@ -4,8 +4,8 @@ class Publication extends LitElement {
 
   static get properties() {
     return {
-      id: { type: Number },
-      authors: { type: Array },
+      publicationId: { attribute: 'publication-id', type: String, reflect: true },
+      authors: { type: Array, reflect: true },
     }
   }
 
@@ -50,7 +50,7 @@ class Publication extends LitElement {
         }
       </style>
       <div class="title">
-          <a href="/entities/publication/${this.id}">
+          <a href="/entities/publication/${this.publicationId}">
            <slot name="title"/>
           </a>
        </div>
