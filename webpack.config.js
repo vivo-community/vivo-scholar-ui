@@ -1,4 +1,5 @@
 const Webpack = require("webpack");
+const { resolve } = require('path');
 const Glob = require("glob");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
@@ -9,6 +10,26 @@ const LiveReloadPlugin = require('webpack-livereload-plugin');
 const Dotenv = require('dotenv-webpack');
 
 const vivoRegex = RegExp('vivo*');
+
+const webcomponentsjs = './node_modules/@webcomponents/webcomponentsjs';
+
+const polyfills = [
+  {
+    from: resolve(`${webcomponentsjs}/webcomponents-*.{js,map}`),
+    to: 'vendor',
+    flatten: true
+  },
+  {
+    from: resolve(`${webcomponentsjs}/bundles/*.{js,map}`),
+    to: 'vendor/bundles',
+    flatten: true
+  },
+  {
+    from: resolve(`${webcomponentsjs}/custom-elements-es5-adapter.js`),
+    to: 'vendor',
+    flatten: true
+  }
+];
 
 const configurator = {
   entries: function(){
@@ -46,6 +67,7 @@ const configurator = {
       new Webpack.ProvidePlugin({$: "jquery",jQuery: "jquery"}),
       new MiniCssExtractPlugin({filename: "[name].[contenthash].css"}),
       new CopyWebpackPlugin([{from: "./assets",to: ""}], {copyUnmodified: true,ignore: ["css/**", "js/**", "src/**"] }),
+      new CopyWebpackPlugin([...polyfills]),
       new Webpack.LoaderOptionsPlugin({minimize: true,debug: false}),
       new ManifestPlugin({
         fileName: "manifest.json"
