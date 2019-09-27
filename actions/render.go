@@ -12,6 +12,13 @@ var assetsBox = packr.New("app:assets", "../public")
 // NOTE: same as templates
 var graphqlBox = packr.New("app:gql", "../templates")
 
+// https://gobuffalo.io/en/docs/template-engines
+/*
+    TemplateEngines: map[string]render.TemplateEngine{
+      ".tmpl": GoTemplateEngine,
+	},
+
+*/
 func init() {
 	r = render.New(render.Options{
 		// HTML layout to be used for all HTML requests:
@@ -31,9 +38,6 @@ func init() {
 			"FormatGraphqlDateForSitemap": helpers.FormatGraphqlDateForSitemap,
 			"RemoveLanguageTag":           helpers.RemoveLanguageTag,
 			"MakeJSONString":              helpers.MakeJSONString,
-			// uncomment for non-Bootstrap form helpers:
-			// "form":     plush.FormHelper,
-			// "form_for": plush.FormForHelper,
 		},
 	})
 }

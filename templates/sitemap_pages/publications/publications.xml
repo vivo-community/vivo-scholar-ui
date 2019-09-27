@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <!-- NOTE: with list pages could just do this, and it 
+         would take care of pagination - wouldn't have to
+         feature list pages in site
+    -->
+    <url>
+      <loc><%= siteUrl %>/list_pages/publications</loc>
+    </url>
+
     <%= for (document) in data["documentsPaged"]["content"] { %>
    <url>
       <loc><%= siteUrl %>/entity_pages/publications/<%= document["id"] %></loc>

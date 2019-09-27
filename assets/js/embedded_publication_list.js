@@ -4,7 +4,9 @@ import gql from 'graphql-tag'
 import ApolloClient from 'apollo-boost'
 
 let endpoint = "https://scholars-discovery-scholars.cloud.duke.edu/graphql"
-//let endpoint = "http://localhost:9000/graphql"
+if (process.env.GRAPHQL_ENDPOINT != undefined) {
+  endpoint = `${process.env.GRAPHQL_ENDPOINT}`
+}
 
 const client = new ApolloClient({
   uri: endpoint,

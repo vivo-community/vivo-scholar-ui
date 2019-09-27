@@ -1,5 +1,5 @@
 query($id: String!) {
-  person(id: $id) {
+  personById(id: $id) {
     id
     type
     name
@@ -24,7 +24,6 @@ query($id: String!) {
     positions {
       id
       type
-      label
     } 
     researchAreas {
       id
@@ -34,8 +33,7 @@ query($id: String!) {
     additionalEmails
     scopusId
     preferredTitle
-    publications { label }
-    selectedPublications {
+    publications {
       id
       title
       abstractText

@@ -18,8 +18,6 @@ If you need more than that, split them across multiple sitemaps.
    <sitemap>
       <loc><%= siteUrl %>/sitemaps/people.xml</loc>
       <loc><%= siteUrl %>/sitemaps/publications.xml</loc>
-      <!-- FIXME: how to figure this out? technically it's optional -->
-      <!-- <lastmod>2018-01-02T15:11:46+06:00</lastmod> -->
    </sitemap>
    <!-- FIXME: etc... -->
    </sitemapindex>
