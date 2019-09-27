@@ -6,12 +6,12 @@
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css?family=Red+Hat+Text">
 
-
     <title>Buffalo - Vivo Scholar</title>
     <%= stylesheetTag("application.css") %>
     <meta name="csrf-param" content="authenticity_token" />
     <meta name="csrf-token" content="<%= authenticity_token %>" />
     <link rel="icon" href="<%= assetPath("images/favicon.ico") %>">    
+    <%= javascriptTag("elements.js") %>
   </head>
   <body>
     <%= partial("header.html") %>
@@ -19,10 +19,6 @@
       <%= partial("flash.html") %>
       <%= yield %>
     </div>
-
     <%= javascriptTag("application.js") %>
-
-
-
   </body>
 </html>

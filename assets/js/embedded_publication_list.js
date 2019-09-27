@@ -1,5 +1,5 @@
-import './web-components/publication'
-import './web-components/publication-list'
+import './elements/publication'
+import './elements/publication-list'
 import gql from 'graphql-tag'
 import ApolloClient from 'apollo-boost'
 
