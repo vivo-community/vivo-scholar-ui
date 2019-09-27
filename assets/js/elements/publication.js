@@ -1,15 +1,22 @@
-class Publication extends HTMLElement {
-  constructor() {
-    super();
-    const shadowRoot = this.attachShadow({mode: 'open'});
+import { LitElement, html, css } from 'lit-element';
+
+class Publication extends LitElement {
+
+  static get properties() {
+    return {
+      id: { type: Number },
+      authors: { type: Array },
+    }
   }
 
-  connectedCallback() {
-    // NOTE: a little convoluted - since attribute can *only*
-    // store a string - storing as JSON, then parsing ...
-    let authors = JSON.parse(this.getAttribute("authors"))
-    let authorList = authors.map(a => a.label ).join(";")
-    this.shadowRoot.innerHTML = `
+  constructor() {
+    super();
+    this.authors = [];
+  }
+
+  render() {
+    let authorList = this.authors.map(a => a.label ).join(";")
+    return html`
       <style>
         :host {
           display: block;
@@ -43,7 +50,7 @@ class Publication extends HTMLElement {
         }
       </style>
       <div class="title">
-          <a href="/entities/publication/${this.getAttribute("id")}">
+          <a href="/entities/publication/${this.id}">
            <slot name="title"/>
           </a>
        </div>
