@@ -1,6 +1,8 @@
 import { LitElement, html, css } from 'lit-element';
-import './elements/publication'
-import './elements/publication-list'
+import './elements/publication';
+import './elements/publication-list';
+import './elements/publication-author-list';
+import './elements/publication-author';
 import gql from 'graphql-tag'
 import ApolloClient from 'apollo-boost'
 
@@ -62,13 +64,24 @@ class EmbeddedPublicationList extends LitElement {
     });
   }
 
-  publicationElement(p) {
+  authorTemplate(author) {
+    return html`
+      <vivo-publication-author profile-url="/entities/person/${author.id}">
+        ${author.label}
+      </vivo-publication-author>
+    `
+  }
+
+  publicationTemplate(p) {
     let pubDate = new Date(p.publicationDate);
     // TODO: would probably want to get locale from something
     let dateFormatted = pubDate.toLocaleDateString("en-US");
     return html`
-      <vivo-publication publication-id="${p.id}" authors="${JSON.stringify(p.authors)}" link-decorate="${this.linkDecorate}">
+      <vivo-publication publication-url="/entities/publication/${p.id}" link-decorate="${this.linkDecorate}">
         <div slot="title">${p.title}</div>
+        <vivo-publication-author-list slot="authors">
+        ${p.authors.map((a) => this.authorTemplate(a))}
+        </vivo-publication-author-list>
         <span slot="date">${dateFormatted}</span>
         <div slot="abstract">${p.abstractText}</div>
       </vivo-publication>
@@ -76,7 +89,7 @@ class EmbeddedPublicationList extends LitElement {
   }
 
   render() {
-    let publicationElements = this.publications.map((p) => this.publicationElement(p));
+    let publicationElements = this.publications.map((p) => this.publicationTemplate(p));
     return html`
       <vivo-publication-list>
         ${publicationElements}

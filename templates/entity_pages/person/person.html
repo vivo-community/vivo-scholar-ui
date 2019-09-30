@@ -198,18 +198,17 @@
 
             <vivo-publication-list>
                 <%= for (p) in person["publications"] { %>
-                  <vivo-publication publication-id="<%= p["id"] %>" authors="<%= MakeJSONString(p["authors"]) %>">
+                  <vivo-publication publication-url="/entities/publication/<%= p["id"] %>">
                     <div slot="title"><%= p["title"] %></div>
                     <div slot="abstract"><%= raw(p["abstractText"]) %></div>
                     <span slot="date"><%= FormatGraphqlDateForSitemap(p["publicationDate"]) %></span>
-                    <span slot="authors">
-                       <vivo-publication-author-list>
-                       <%= for (a) in p["authors"] { %>
-                        <vivo-publication-author author-id="<%= a["id"] %>" author-name="<%= a["label"] %>">
-                        </vivo-publication-author>
-                       <% } %>
-                     </vivo-publication-author-list>
-                    </span>
+                    <vivo-publication-author-list slot="authors">
+                      <%= for (a) in p["authors"] { %>
+                       <vivo-publication-author profile-url="/entities/person/<%= a["id"] %>">
+                         <%= a["label"] %>
+                       </vivo-publication-author>
+                      <% } %>
+                    </vivo-publication-author-list>
                   </vivo-publication>
                 <% } %>
             </vivo-publication-list>

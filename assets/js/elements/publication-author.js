@@ -4,35 +4,30 @@ class PublicationAuthor extends LitElement {
 
     static get properties() {
         return {
-          authorId: { attribute: 'author-id', type: String, reflect: true },
-          authorName: { attribute: 'author-name', type: String, reflect: true }
+          profileUrl: { attribute: 'profile-url', type: String }
         }
-    }
-    
-    constructor() {
-      super();
     }
 
     static get styles() {
         return css`
-          li {
+         :host {
             display: inline;
           }
-          li::after {
-            content: "; ";
-          }
-          li:last-child::after {
-              content: "";
-          }`
+        `
     }
 
     render() {
+      if (this.profileUrl) {
         return html`
-        <li>
-          <a href="/entities/people/${this.authorId}">
-          ${this.authorName}
+          <a href="${this.profileUrl}">
+            <slot></slot>
           </a>
-        </li>`;
+       `
+      } else {
+        return html`
+          <slot></slot>
+        `
+      }
     }
 }
 

@@ -4,20 +4,12 @@ class Publication extends LitElement {
 
   static get properties() {
     return {
-      publicationId: { attribute: 'publication-id', type: String, reflect: true },
-      //authors: { type: Array, reflect: true },
+      publicationUrl: { attribute: 'publication-url', type: String, reflect: true },
     }
   }
 
-  constructor() {
-    super();
-    this.authors = [];
-  }
-
-  render() {
-    //let authorList = this.authors.map(a => a.label ).join(";")
-    return html`
-      <style>
+  static get styles() {
+    return css`
         :host {
           display: block;
           padding: 4px;
@@ -36,39 +28,31 @@ class Publication extends LitElement {
           text-decoration: none;
           background-color: transparent;
         }
-        .abstract {
-          padding: 0.5em;
-          font-size: var(--publication-abstract-font-size, inherit);
-        }
-        .pub-authors {
+        ::slotted([slot="authors"]) {
           font-weight: var(--publication-authors-font-weight, bold);
           font-size: var(--publication-authors-font-size, inherit);
-          /*no effect margin: 0px; */
         }
-        .pub-date {
+        ::slotted([slot="date"]) {
           font-style: var(--publication-date-font-style, italic);
           font-size: var(--publication-date-font-size, inherit);
         }
-        ::slotted(vivo-publication-author-list) {
-          /* no effect margin:0px;*/
+        ::slotted([slot="abstract"]) {
+          padding: 0.5em;
+          font-size: var(--publication-abstract-font-size, inherit);
         }
-      </style>
+      `
+  }
+
+  render() {
+    return html`
       <div class="title">
-          <a href="/entities/publication/${this.publicationId}">
-           <slot name="title"/>
+          <a href="${this.publicationUrl}">
+            <slot name="title"></slot>
           </a>
        </div>
-       <div>
-         <span class="pub-authors">
-           <slot name="authors" />
-         </span>
-         <span class="pub-date">
-           <slot name="date"/>
-         </span>
-       </div>
-       <div class="abstract">
-         <slot name="abstract">[Placeholder Abstract]</slot>
-       </div>
+       <slot name="authors"></slot>
+       <slot name="date"></slot>
+       <slot name="abstract">[Placeholder Abstract]</slot>
     `;
   }
 }
