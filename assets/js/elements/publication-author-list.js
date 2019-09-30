@@ -10,8 +10,7 @@ class PublicationAuthorList extends LitElement {
         padding: 0; 
         font-size: 13px;
       }
-      ul { list-style: none; display: inline; }
-      ::slotted(*) { margin: 0; }
+      ul { list-style: none; display: inline; padding: 0; margin: 0;}
     `
   }
 
