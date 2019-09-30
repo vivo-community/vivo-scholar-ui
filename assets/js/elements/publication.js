@@ -5,7 +5,7 @@ class Publication extends LitElement {
   static get properties() {
     return {
       publicationId: { attribute: 'publication-id', type: String, reflect: true },
-      authors: { type: Array, reflect: true },
+      //authors: { type: Array, reflect: true },
     }
   }
 
@@ -15,7 +15,7 @@ class Publication extends LitElement {
   }
 
   render() {
-    let authorList = this.authors.map(a => a.label ).join(";")
+    //let authorList = this.authors.map(a => a.label ).join(";")
     return html`
       <style>
         :host {
@@ -43,10 +43,14 @@ class Publication extends LitElement {
         .pub-authors {
           font-weight: var(--publication-authors-font-weight, bold);
           font-size: var(--publication-authors-font-size, inherit);
+          /*no effect margin: 0px; */
         }
         .pub-date {
           font-style: var(--publication-date-font-style, italic);
           font-size: var(--publication-date-font-size, inherit);
+        }
+        ::slotted(vivo-publication-author-list) {
+          /* no effect margin:0px;*/
         }
       </style>
       <div class="title">
@@ -56,14 +60,14 @@ class Publication extends LitElement {
        </div>
        <div>
          <span class="pub-authors">
-         ${authorList}
+           <slot name="authors" />
          </span>
          <span class="pub-date">
            <slot name="date"/>
          </span>
        </div>
        <div class="abstract">
-         <slot name="abstract"/>
+         <slot name="abstract">[Placeholder Abstract]</slot>
        </div>
     `;
   }

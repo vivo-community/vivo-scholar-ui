@@ -202,6 +202,14 @@
                     <div slot="title"><%= p["title"] %></div>
                     <div slot="abstract"><%= raw(p["abstractText"]) %></div>
                     <span slot="date"><%= FormatGraphqlDateForSitemap(p["publicationDate"]) %></span>
+                    <span slot="authors">
+                       <vivo-publication-author-list>
+                       <%= for (a) in p["authors"] { %>
+                        <vivo-publication-author author-id="<%= a["id"] %>" author-name="<%= a["label"] %>">
+                        </vivo-publication-author>
+                       <% } %>
+                     </vivo-publication-author-list>
+                    </span>
                   </vivo-publication>
                 <% } %>
             </vivo-publication-list>
