@@ -30,7 +30,7 @@
  </form>
 </div>
 </div>
-<!-- 
+<!--
    tabs like this (so back button might be able to go back to last tab)
    https://hashnode.com/post/building-flexible-components-with-react-hooks-cjth4fdlk000jzls1krpou422
    +
@@ -51,7 +51,7 @@
          </div>
       </section>
 
-      <!-- info --> 
+      <!-- info -->
       <h5 class="side-bar">Contact</h5>
       <section class="contact">
          <div>
@@ -62,12 +62,12 @@
          <div>
             <span class="label">Telephone</span>
             <span class="data"><%= person["phone"] %></span>
-         </div>    
-         
+         </div>
+
          <div class="address-block">
             <span class="label">Address 1</span>
             <div>
-               
+
             </div>
          </div>
       </section>
@@ -86,8 +86,8 @@
 
    </div><!-- end col-4 -->
 
-   <div class="col-12 col-md-10 col-sm-10 profile-column">  
-         <h4 class="profile-name"><%= RemoveLanguageTag(person["name"]) %></h4> 
+   <div class="col-12 col-md-10 col-sm-10 profile-column">
+         <h4 class="profile-name"><%= RemoveLanguageTag(person["name"]) %></h4>
 
          <div>
             <h5 class="preferred-title"><%= person["preferredTitle"] %></h5>
@@ -112,9 +112,9 @@
           </li>
       <li class="nav-item">
          <a class="nav-link rounded-0" id="research-tab" data-toggle="tab" href="#professional" role="tab" aria-controls="professional" aria-selected="false">Professional Activities</a>
-      </li>    
+      </li>
     </ul>
-    
+
     <!-- Tab panes -->
     <div class="tab-content">
       <div class="tab-pane active" id="about" role="tabpanel" aria-labelledby="about-tab">
@@ -138,7 +138,7 @@
       </div><!-- end about -->
 
       <div class="tab-pane" id="background" role="tabpanel" aria-labelledby="background-tab">
-      
+
          <h4 class="tab-content">Education & Credentials</h4>
 
          <h5 class="tab-content">Education</h5>
@@ -155,11 +155,11 @@
                      </span>
                      <span>
                         <!-- should always be a start date -->
-                        <%= if (e["startDate"]) { %> 
+                        <%= if (e["startDate"]) { %>
                           <% let start = {"dateTime": e["startDate"], "resolution": "yearMonth"}
                           <%= FormatDateTime(start) %>
                         <% } %>
-                        <%= if (e["endDate"]) { %> 
+                        <%= if (e["endDate"]) { %>
                            <span> to </span>
                           <% let end = {"dateTime": e["endDate"], "resolution": "yearMonth"}
                           <%= FormatDateTime(end) %>
@@ -168,14 +168,14 @@
                   </div>
                <% } %>
          </section>
-         
+
 
       </div> <!-- end background -->
       <div class="tab-pane" id="research" role="tabpanel" aria-labelledby="research-tab">
-     
+
             <h4 class="tab-content">Expertise</h4>
 
-            <%= if (person["researchAreas"]) { %>  
+            <%= if (person["researchAreas"]) { %>
             <h5 class="tab-content">Subject Headings</h5>
             <section class="keyword-list">
                   <ul class="list-group">
@@ -187,68 +187,40 @@
                               </a>
                            </span>
                      </li>
-                  <% } %>  
+                  <% } %>
                   </ul>
             </section>
             <% } %>
 
-            
-           <h5 class="tab-content">Publications &amp; Artistic Works</h5>
-           
-           <%= if (person["selectedPublications"]) { %>
-            <h6 class="tab-content">Selected Publications</h6>
-            <section class="publication-list">
 
-            <%= for (p) in person["selectedPublications"] { %>
-                 <h6>
-                  <span class="publication-title">
-                   <a href=/entities/publication/<%= p["id"] %>>
-                     <%= p["title"] %>
-                   </a> 
-                  </span>
-                 </h6>
-                 <div class="publication-citation">
-                    <span class="publication-authors">
-                      <%= for (a) in p["authors"] { %>
-                        <span><%= a["label"] %></span>
-                      <% } %>
-                    </span>
-                    <span class="publication-date">
-                       <%= if (p["publicationDate"]) { %>
-                       <%= FormatGraphqlDateForSitemap(p["publicationDate"]) %>
-                       <% } %>
-                     </span>
-                 </div>
-                 <div class="publication-abstract">
-                     <%= raw(p["abstractText"]) %>
-                 </div>
-      
-               
-            <% } %>
-           
-            </section>
-            <% } %>
-            <h4 class="tab-content">Publications (via Web Components)</h4>
+           <h5 class="tab-content">Publications &amp; Artistic Works</h5>
             <section class="publication-list">
 
             <vivo-publication-list>
-                <%= for (p) in person["selectedPublications"] { %>
-                  <vivo-publication id="<%= p["id"] %>" authors="<%= MakeJSONString(p["authors"]) %>">
+                <%= for (p) in person["publications"] { %>
+                  <vivo-publication publication-url="/entities/publication/<%= p["id"] %>">
                     <div slot="title"><%= p["title"] %></div>
                     <div slot="abstract"><%= raw(p["abstractText"]) %></div>
                     <span slot="date"><%= FormatGraphqlDateForSitemap(p["publicationDate"]) %></span>
+                    <vivo-publication-author-list slot="authors">
+                      <%= for (a) in p["authors"] { %>
+                       <vivo-publication-author profile-url="/entities/person/<%= a["id"] %>">
+                         <%= a["label"] %>
+                       </vivo-publication-author>
+                      <% } %>
+                    </vivo-publication-author-list>
                   </vivo-publication>
                 <% } %>
             </vivo-publication-list>
-            
+
             <%= for (p) in person["publications"] { %>
               <div class="d-none"><%= p["label"] %></div>
-            <% } %>   
-            
-            
+            <% } %>
+
+
       </div><!-- end research-tab -->
       <div class="tab-pane" id="teaching" role="tabpanel" aria-labelledby="teaching-tab">
-         
+
       </div><!-- end teaching-tab -->
 
       <div class="tab-pane" id="professional" role="tabpanel" aria-labelledby="professional-tab">
@@ -256,7 +228,6 @@
 
     </div><!-- end tab content -->
 
-         
    </div><!-- end col-12 -->
 
 </div>

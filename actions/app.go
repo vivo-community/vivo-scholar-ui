@@ -59,6 +59,7 @@ func App() *buffalo.App {
 		// TODO: should we even have list pages (since there is search)
 		app.GET("/lists/{type}", ListPageHandler)
 		app.GET("/entities/{type}/{id}", EntityPageHandler)
+		app.GET("/docs/elements/{element}", ElementDocPageHandler)
 
 		app.ServeFiles("/", assetsBox) // serve files from the public directory
 	}

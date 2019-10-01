@@ -1,5 +1,5 @@
-import './web-components/publication'
-import './web-components/publication-list'
+import './elements/publication'
+import './elements/publication-list'
 import gql from 'graphql-tag'
 import ApolloClient from 'apollo-boost'
 
@@ -57,7 +57,7 @@ class EmbeddedPublicationList extends HTMLElement {
         let pub = document.createElement('vivo-publication')
         pub.setAttribute("link-decorate", 
         this.getAttribute("link-decorate") || false)
-        pub.setAttribute('id',p.id)
+        pub.setAttribute('publication-id',p.id)
         // TODO: not crazy about this
         pub.setAttribute("authors", JSON.stringify(p.authors))
 

@@ -1,5 +1,8 @@
-import './web-components/publication'
-import './web-components/publication-list'
+import { LitElement, html, css } from 'lit-element';
+import './elements/publication';
+import './elements/publication-list';
+import './elements/publication-author-list';
+import './elements/publication-author';
 import gql from 'graphql-tag'
 import ApolloClient from 'apollo-boost'
 
@@ -17,9 +20,9 @@ const client = new ApolloClient({
 
 const PUBLICATION_QUERY = gql`
   query($id: String) {
-    person(id: $id) {
+    personById(id: $id) {
       id
-      selectedPublications {
+      publications {
         id
         title
         abstractText
@@ -34,47 +37,64 @@ const PUBLICATION_QUERY = gql`
   }
 `
 
-class EmbeddedPublicationList extends HTMLElement {
+class EmbeddedPublicationList extends LitElement {
+
+  static get properties() {
+    return {
+      publications: { type: Array },
+      linkDecorate: { attribute: 'link-decorate', type: Boolean }
+    }
+  }
 
   constructor() {
     super();
-    const shadowRoot = this.attachShadow({mode: 'open'});
+    this.publications = [];
+    this.linkDecorate = false;
   }
 
   connectedCallback() {
+    super.connectedCallback();
     const data = client.query({
       query: PUBLICATION_QUERY,
       variables: {
         id: this.getAttribute("person_id")
       }
     }).then(({data}) =>  {
-      let publications = data.person.selectedPublications
-
-      let publicationElements = publications.map(p => {
-        let pubDate = new Date(p.publicationDate)
-        // TODO: would probably want to get locale from something
-        let dateFormatted = pubDate.toLocaleDateString("en-US")
-        let pub = document.createElement('vivo-publication')
-        pub.setAttribute("link-decorate", 
-        this.getAttribute("link-decorate") || false)
-        pub.setAttribute('id',p.id)
-        // TODO: not crazy about this
-        pub.setAttribute("authors", JSON.stringify(p.authors))
-
-        //let authorList = p.authors.map(a => a.label).join(",")
-        // authors might need to be attribute too
-        // since it's an array
-        pub.innerHTML = `
-          <div slot="title">${p.title}</div>
-          <span slot="date">${dateFormatted}</span>
-          <div slot="abstract">${p.abstractText}</div>
-        `
-        return pub;
-      })
-      let publicationList = document.createElement('vivo-publication-list');
-      publicationElements.forEach(p => publicationList.appendChild(p));
-      this.shadowRoot.appendChild(publicationList);
+      this.publications = data.personById.publications
     });
+  }
+
+  authorTemplate(author) {
+    return html`
+      <vivo-publication-author profile-url="/entities/person/${author.id}">
+        ${author.label}
+      </vivo-publication-author>
+    `
+  }
+
+  publicationTemplate(p) {
+    let pubDate = new Date(p.publicationDate);
+    // TODO: would probably want to get locale from something
+    let dateFormatted = pubDate.toLocaleDateString("en-US");
+    return html`
+      <vivo-publication publication-url="/entities/publication/${p.id}" link-decorate="${this.linkDecorate}">
+        <div slot="title">${p.title}</div>
+        <vivo-publication-author-list slot="authors">
+        ${p.authors.map((a) => this.authorTemplate(a))}
+        </vivo-publication-author-list>
+        <span slot="date">${dateFormatted}</span>
+        <div slot="abstract">${p.abstractText}</div>
+      </vivo-publication>
+    `
+  }
+
+  render() {
+    let publicationElements = this.publications.map((p) => this.publicationTemplate(p));
+    return html`
+      <vivo-publication-list>
+        ${publicationElements}
+      </vivo-publication-list>
+    `
   }
 
 }
