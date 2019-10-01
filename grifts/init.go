@@ -1,8 +1,8 @@
 package grifts
 
 import (
-	//"vivo_scholar/actions"
-	//"github.com/gobuffalo/buffalo"
+//"vivo_scholar/actions"
+//"github.com/gobuffalo/buffalo"
 )
 
 // NOTE: have not installed grift yet

@@ -1,13 +1,16 @@
-import { LitElement, html, css } from 'lit-element';
+import { LitElement, html, css } from "lit-element";
 
 class PublicationAuthorList extends LitElement {
-
   static get properties() {
     return {
-      displayedAuthorCount: { attribute: 'displayed-author-count', type: Number, reflect: true },
+      displayedAuthorCount: {
+        attribute: "displayed-author-count",
+        type: Number,
+        reflect: true
+      },
       authorCount: { type: Number },
       truncatedAuthorCount: { type: Number }
-    }
+    };
   }
 
   constructor() {
@@ -18,10 +21,9 @@ class PublicationAuthorList extends LitElement {
     this.slotChanged = this.slotChanged.bind(this);
   }
 
-
   firstUpdated() {
-    let slot = this.shadowRoot.querySelector('slot');
-    slot.addEventListener('slotchange',this.slotChanged)
+    let slot = this.shadowRoot.querySelector("slot");
+    slot.addEventListener("slotchange", this.slotChanged);
   }
 
   slotChanged(e) {
@@ -37,32 +39,37 @@ class PublicationAuthorList extends LitElement {
     return css`
       :host {
         display: inline-block;
-        margin: 0; 
-        padding: 0; 
+        margin: 0;
+        padding: 0;
       }
       ::slotted(vivo-publication-author):after {
         content: "; ";
       }
-    `
+    `;
   }
 
   render() {
     return html`
       <style type="text/css">
-        ::slotted(vivo-publication-author:nth-child(n+${this.displayedAuthorCount})):after {
+        ::slotted(vivo-publication-author:nth-child(n
+              + ${this.displayedAuthorCount})):after {
           content: "";
         }
-        ::slotted(vivo-publication-author:nth-child(n+${this.displayedAuthorCount + 1})) {
+        ::slotted(vivo-publication-author:nth-child(n
+              + ${this.displayedAuthorCount + 1})) {
           display: none;
         }
       </style>
       <slot></slot>
-      ${this.truncatedAuthorCount > 0 ?
-        html`<span class="truncated-authors">+ ${this.truncatedAuthorCount} authors</span>`
-      : null }
+      ${this.truncatedAuthorCount > 0
+        ? html`
+            <span class="truncated-authors"
+              >+ ${this.truncatedAuthorCount} authors</span
+            >
+          `
+        : null}
     `;
   }
-
 }
 
-customElements.define('vivo-publication-author-list', PublicationAuthorList);
+customElements.define("vivo-publication-author-list", PublicationAuthorList);
