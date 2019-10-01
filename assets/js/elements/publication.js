@@ -46,9 +46,13 @@ class Publication extends LitElement {
   render() {
     return html`
       <div class="title">
+        ${this.publicationUrl ? html`
           <a href="${this.publicationUrl}">
             <slot name="title"></slot>
           </a>
+        ` : html`
+          <slot name="title"></slot>
+        `}
        </div>
        <slot name="authors"></slot>
        <slot name="date"></slot>
