@@ -5,15 +5,15 @@ import (
 	"io/ioutil"
 	"net/url"
 
-	"github.com/pkg/errors"
-	"github.com/gobuffalo/envy"
 	"github.com/gobuffalo/buffalo"
+	"github.com/gobuffalo/envy"
 	"github.com/gobuffalo/plush"
 	"github.com/machinebox/graphql"
+	"github.com/pkg/errors"
 )
 
 // AnyPageHandler - Use naming convention to load a template and
-// (optional) corresponding graphql query. 
+// (optional) corresponding graphql query.
 // Execute the query and use results as
 // the model for the template. File locations are:
 // Template: any_pages/{Type}.html
@@ -31,7 +31,7 @@ func AnyPageHandler(c buffalo.Context) error {
 
 	// if there is a query run it - but it's okay to not have one
 	// (unlike entity pages)
-	if (queryExists) {
+	if queryExists {
 		ctx := plush.NewContext()
 		endpoint, err := envy.MustGet("GRAPHQL_ENDPOINT")
 		if err != nil {
@@ -43,27 +43,27 @@ func AnyPageHandler(c buffalo.Context) error {
 		if err != nil {
 			return errors.Wrap(err, "rendering query template")
 		}
-		
+
 		req := graphql.NewRequest(query)
 		if m, ok := c.Params().(url.Values); ok {
 			for k, v := range m {
-			  if (len(v) == 1) {
-				// I don't know how GraphQL handles array parameters
-				req.Var(k, v[0])
-			  }
+				if len(v) == 1 {
+					// I don't know how GraphQL handles array parameters
+					req.Var(k, v[0])
+				}
 			}
 		}
 		var results map[string]interface{}
 		if err := client.Run(ctx, req, &results); err != nil {
 			return errors.Wrap(err, "running query template")
 		}
-		c.Set("data", results)	
+		c.Set("data", results)
 	}
 
-	// NOTE: slightly ineffecient to iterate twice 
+	// NOTE: slightly ineffecient to iterate twice
 	if m, ok := c.Params().(url.Values); ok {
 		for k, v := range m {
-		  c.Set(k, v)
+			c.Set(k, v)
 		}
 	}
 

@@ -6,12 +6,12 @@ import (
 )
 
 func FloatToInt(value float64) int {
-	result:= int(value)
+	result := int(value)
 	return result
 }
 
 func StringToInt(value string) int {
-	result, err:= strconv.Atoi(value)
+	result, err := strconv.Atoi(value)
 	if err != nil {
 		log.Print(err)
 		result = 0 // default to 0?

@@ -5,21 +5,22 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	"github.com/pkg/errors"
-	"github.com/gobuffalo/envy"
 	"github.com/gobuffalo/buffalo"
+	"github.com/gobuffalo/envy"
 	"github.com/gobuffalo/plush"
 	"github.com/machinebox/graphql"
+	"github.com/pkg/errors"
 )
 
 func TemplateExtension(request *http.Request) string {
 	contentType := request.Header.Get("Content-type")
-	if (contentType == "application/json") {
+	if contentType == "application/json" {
 		return "json"
 	} else {
 		return "html"
 	}
 }
+
 // ListPageHandler - Use naming convention to load a template and
 // corresponding graphql query. Execute the query and use results as
 // the model for the template. File locations are:
@@ -51,7 +52,7 @@ func ListPageHandler(c buffalo.Context) error {
 	client := graphql.NewClient(endpoint)
 
 	req := graphql.NewRequest(query)
-	
+
 	// how to determine defaults? query itself should also
 	// be taking nulls and have defaults too
 	req.Var("pageSize", "100")
@@ -61,18 +62,18 @@ func ListPageHandler(c buffalo.Context) error {
 	// check null or "" ??
 	if pageNumber != "" {
 		req.Var("pageNumber", pageNumber)
-	} 
+	}
 	pageSize := c.Params().Get("pageSize")
 	if pageSize != "" {
 		req.Var("pageSize", pageSize)
-	} 
+	}
 
 	var results map[string]interface{}
 
 	if err := client.Run(ctx, req, &results); err != nil {
 		return errors.Wrap(err, "running query")
 	}
-	
+
 	c.Set("data", results)
 	// how to change content type returned?
 	//contentType := c.request.Header.Get("Content-type")

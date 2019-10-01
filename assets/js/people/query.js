@@ -1,20 +1,21 @@
-import gql from 'graphql-tag'
+import gql from "graphql-tag";
 
 const peopleQuery = gql`
-query($search: String!, $pageNumber: Int!, $filters: [FilterArgInput])  {
+  query($search: String!, $pageNumber: Int!, $filters: [FilterArgInput]) {
     personsFacetedSearch(
-      facets: [{field: "keywords"},
-        {field: "researchAreas"},
-        {field: "selectedPublicationVenue"},
-        {field: "selectedPublicationPublisher"},
-        {field: "positions"}
-      ],
-      filters: $filters,
-      paging: { pageSize:100, pageNumber: $pageNumber,
-          sort:{ 
-            orders: [{direction: ASC, property:"name"}]
-          }  
-      },
+      facets: [
+        { field: "keywords" }
+        { field: "researchAreas" }
+        { field: "selectedPublicationVenue" }
+        { field: "selectedPublicationPublisher" }
+        { field: "positions" }
+      ]
+      filters: $filters
+      paging: {
+        pageSize: 100
+        pageNumber: $pageNumber
+        sort: { orders: [{ direction: ASC, property: "name" }] }
+      }
       query: $search
     ) {
       content {
@@ -25,21 +26,22 @@ query($search: String!, $pageNumber: Int!, $filters: [FilterArgInput])  {
         preferredTitle
       }
       page {
-          totalElements
-          totalPages
-          number
-          size
+        totalElements
+        totalPages
+        number
+        size
       }
       facets {
         field
         entries {
-          content { 
+          content {
             value
-            count 
+            count
           }
         }
       }
     }
-  }`
+  }
+`;
 
-export default peopleQuery
+export default peopleQuery;

@@ -1,7 +1,6 @@
-import { LitElement, html, css } from 'lit-element';
+import { LitElement, html, css } from "lit-element";
 
 class PublicationList extends LitElement {
-
   static get styles() {
     return css`
       :host {
@@ -14,7 +13,7 @@ class PublicationList extends LitElement {
         font-size: var(--publication-font-size, 18px);
         border: 1px solid lightgray;
       }
-    `
+    `;
   }
 
   render() {
@@ -22,7 +21,6 @@ class PublicationList extends LitElement {
       <slot />
     `;
   }
-
 }
 
-customElements.define('vivo-publication-list', PublicationList);
+customElements.define("vivo-publication-list", PublicationList);
