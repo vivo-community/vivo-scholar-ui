@@ -131,7 +131,6 @@ const PagingPanel = ({
   // so example might be [['+', 1][16...30]['+', 31]]
 
   let [previous, current, next] = pageMap;
-  console.log(pageMap);
 
   let flip = (dir, direction) => {
     if (dir != undefined && dir[0] == "+") {

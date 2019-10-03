@@ -112,8 +112,6 @@ const configurator = {
       entry: configurator.entries(),
       output: {
         filename: (chunkData) => {
-          console.log(`name=${chunkData.chunk.name}`)
-          //console.log(chunkData.chunk)
           // TODO: need a way to match web-components only
           // name? 
           // e.g. 

@@ -1,0 +1,27 @@
+.site-header {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 10;
+}
+
+.site-sub-header {
+  position: fixed;
+  left: 0;
+  top: 100px;
+  z-index: 10;
+}
+
+.site-search {
+  width: 75%;
+  margin: 0 auto;
+}
+
+#main {
+  width: 95%;
+  margin: 210px auto 0 auto;
+}
+
+.highlight {
+  color: var(--highlightColor);
+}

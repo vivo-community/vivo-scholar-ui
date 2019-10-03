@@ -17,8 +17,16 @@
     <%= javascriptTag("elements.js") %>
   </head>
   <body>
-    <%= partial("header.html") %>
-    <div class="container-fluid">
+    <vivo-site-header class="site-header">
+      <h1 slot="title">VIVO | <span class="highlight">Scholar</span></h1>
+      <a slot="nav-item" href="/pages/about">About</a>
+      <a slot="nav-item" href="/search/people?search=*">Browse</a>
+      <a slot="nav-item" href="">Sign In</a>
+    </vivo-site-header>
+    <vivo-site-sub-header class="site-sub-header">
+      <vivo-site-search-box class="site-search" action="/search/people"></vivo-site-search-box>
+    </vivo-site-sub-header>
+    <div id="main">
       <%= partial("flash.html") %>
       <%= yield %>
     </div>

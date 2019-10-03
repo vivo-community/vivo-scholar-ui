@@ -12,7 +12,6 @@ const link = onError(({ graphQLErrors, networkError }) => {
   if (networkError) console.error(`[Network error]: ${networkError}`);
 });
 
-console.log(`GRAPHQL_ENDPOINT (env)=${process.env.GRAPHQL_ENDPOINT}`);
 // message: Content type 'text/plain;charset=UTF-8' not supported
 // TODO: get url from env
 // `${process.env.GRAPHQL_ENDPOINT}` ||
@@ -20,7 +19,6 @@ let endpoint = "https://scholars-discovery-scholars.cloud.duke.edu/graphql";
 if (process.env.GRAPHQL_ENDPOINT != undefined) {
   endpoint = `${process.env.GRAPHQL_ENDPOINT}`;
 }
-console.log(`GRAPHQL_ENDPOINT (set)=${endpoint}`);
 
 const client = new ApolloClient({
   //uri: 'http://localhost:9000/graphql',
