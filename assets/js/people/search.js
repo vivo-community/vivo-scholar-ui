@@ -1,17 +1,12 @@
 import React, { useState, useEffect, Fragment } from "react";
 import _ from "lodash";
 import { useRouter } from "../lib/react-router-hooks";
-// NOTE: tried 'query-string' and 'querystring'
-// but 'qs' seemed best
 import qs from "qs";
 
 import PagingPanel from "../components/paging";
 import peopleQuery from "./query";
 import client from "../lib/apollo";
-
-//import DefaultImage from './assets/images/profile_picture_u39_a.png'
-//import DefaultImage from 'profile_picture_u39_a.png'
-//import assets from './assets'
+import SearchBox from "./search-box";
 
 function stringifyQuery(params) {
   let result = qs.stringify(params);
@@ -78,8 +73,6 @@ const PersonGroup = ({ grouped }) => {
 
 const PeopleList = ({ people }) => {
   let chunked = _.chunk(people, 3);
-  console.log("*** chunked ***");
-  console.log(chunked);
   return (
     <Fragment>
       {chunked.map((grouped, index) => (
@@ -160,7 +153,6 @@ const PersonSearch = props => {
       setIsError(false);
 
       try {
-        console.log("trying to hit grapqhl");
         // supposed to be adding filters
         const { data } = await client.query({
           query: peopleQuery,
@@ -271,51 +263,28 @@ const PersonSearch = props => {
     <div>
       <h3>People {pageSummary}</h3>
       {pagesFragment}
-      <form id="searchForm" onSubmit={handleSubmit}>
-        <div>Query: </div>
+      <vivo-site-sub-header class="site-sub-header">
+        <SearchBox query={query} action="/search/people" handleSubmit={handleSubmit} handleQueryChange={setQuery}>
+        </SearchBox>
+      </vivo-site-sub-header>
+      {isError && <div>Something went wrong ...</div>}
 
-        <div className="input-group search">
-          <input
-            name="search"
-            type="text"
-            key="search"
-            value={query}
-            onChange={event => setQuery(event.target.value)}
-            className="form-control"
-            placeholder="Search..."
-            aria-label="Search"
-            aria-describedby="basic-addon2"
-          />
-
-          <div className="input-group-append">
-            <button
-              className="btn btn-outline-success search-button"
-              type="button"
-            >
-              Search
-            </button>
-          </div>
+      {isLoading ? (
+        <div>Loading ...</div>
+      ) : (
+        <div>
+          <div className="row" key={`form-search-row`}>
+            <div className="col-sm-8">
+              <PeopleList people={people} />
+            </div>
+            <div className="col-sm-4">{facetsFragment}</div>{" "}
+            {/* end col-sm */}
+          </div>{" "}
+          {/* end row */}
         </div>
-
-        {isError && <div>Something went wrong ...</div>}
-
-        {isLoading ? (
-          <div>Loading ...</div>
-        ) : (
-          <div>
-            <div className="row" key={`form-search-row`}>
-              <div className="col-sm-8">
-                <PeopleList people={people} />
-              </div>
-              <div className="col-sm-4">{facetsFragment}</div>{" "}
-              {/* end col-sm */}
-            </div>{" "}
-            {/* end row */}
-          </div>
-        )}
-      </form>
+      )}
     </div>
   );
-};
+}
 
 export default PersonSearch;
