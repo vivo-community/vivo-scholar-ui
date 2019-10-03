@@ -38,6 +38,7 @@ func init() {
 			"FormatGraphqlDateForSitemap": helpers.FormatGraphqlDateForSitemap,
 			"RemoveLanguageTag":           helpers.RemoveLanguageTag,
 			"MakeJSONString":              helpers.MakeJSONString,
+			"ThemeVariable":               helpers.ThemeVariable,
 		},
 	})
 }
