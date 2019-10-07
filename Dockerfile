@@ -1,18 +1,18 @@
 # This is a multi-stage Dockerfile and requires >= Docker 17.05
 # https://docs.docker.com/engine/userguide/eng-image/multistage-build/
-FROM gobuffalo/buffalo:v0.14.3 
+FROM gobuffalo/buffalo:v0.14.10
 #as builder
 
-RUN mkdir -p $GOPATH/src/vivo_scholar
+RUN mkdir -p /vivo-scholar
+WORKDIR /vivo-scholar
+ENV GO111MODULE=on
 
-WORKDIR $GOPATH/src/vivo_scholar
 
 # this will cache the npm install step, unless package.json changes
 ADD package.json .
 ADD yarn.lock .
 RUN yarn install --no-progress
 ADD . .
-RUN go get $(go list ./... | grep -v /vendor/)
 RUN buffalo build -o /bin/app
 
 # multi-stage build ...
