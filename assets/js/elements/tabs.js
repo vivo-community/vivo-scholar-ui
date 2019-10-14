@@ -2,35 +2,10 @@ import { LitElement, html, css } from 'lit-element';
 
 class Tabs extends LitElement {
 
-  static get styles() {
-    return css`
-      :host {
-        display: block;
-        box-sizing: border-box;
-      }
-      ::slotted(vivo-tab) {
-        cursor: pointer;
-        margin: 0;
-        padding: 1em;
-      }
-      ::slotted(vivo-tab:hover) {
-        background-color: var(--highlightBackgroundColor);
-      }
-      ::slotted(vivo-tab[selected]) {
-        background-color: var(--highlightBackgroundColor);
-      }
-      ::slotted(vivo-tab-panel) {
-        display: none;
-      }
-      ::slotted(vivo-tab-panel[selected]) {
-        display: block;
-      }
-      slot[name="tabs"] {
-        display: block;
-        margin: 0 0 .75em 0;
-        border-bottom: 10px solid var(--highlightBackgroundColor);
-      }
-    `
+  static get properties() {
+    return {
+      vivoTabStyle: { attribute: 'vivo-tab-style', type: String, reflect: true }
+    }
   }
 
   constructor() {
@@ -38,6 +13,7 @@ class Tabs extends LitElement {
     this.tabs = [];
     this.panels = [];
     this._onSlotChange = this._onSlotChange.bind(this);
+    this.vivoTabStyle = "primary";
   }
 
   firstUpdated() {
@@ -64,7 +40,9 @@ class Tabs extends LitElement {
       const panel = this.panels[this.tabs.indexOf(tab)];
       if (panel) {
         tab.setAttribute('aria-controls', panel.id);
+        tab.vivoTabStyle = this.vivoTabStyle;
         panel.setAttribute('aria-labelledby', tab.id);
+        panel.vivoTabStyle = this.vivoTabStyle;
       }
     });
   }
@@ -90,6 +68,31 @@ class Tabs extends LitElement {
       panels.forEach((t) => t.removeAttribute('selected'));
       panels[index].setAttribute('selected','selected');
     }
+  }
+
+  static get styles() {
+    return css`
+      :host {
+        display: block;
+        box-sizing: border-box;
+      }
+      ::slotted(vivo-tab-panel) {
+        display: none;
+      }
+      ::slotted(vivo-tab-panel[selected]) {
+        display: block;
+      }
+      :host([vivo-tab-style="primary"]) slot[name="tabs"] {
+        display: block;
+        margin: 0 0 .75em 0;
+        border-bottom: 10px solid var(--highlightBackgroundColor);
+      }
+      :host([vivo-tab-style="secondary"]) slot[name="tabs"] {
+        display: block;
+        margin: 0 0 .75em 0;
+        border-bottom: 1px solid var(--mediumNeutralColor);
+      }
+    `
   }
 
   render() {
