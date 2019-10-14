@@ -19,7 +19,7 @@ class TabPanel extends LitElement {
 
   render() {
     return html`
-      <slot/>
+      <slot></slot>
     `
   }
 
