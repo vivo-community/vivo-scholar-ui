@@ -1,17 +1,14 @@
 <style type="text/css">
   .colors {
-    display: flex;
-    flex-flow: row wrap;
-    width: 100%;
+    display: grid;
+    grid-template-columns: 200px auto;
+    grid-row-gap: 1em;
   }
   .color {
-    display: block;
     box-sizing: border-box;
     height: 200px;
     width: 200px;
     border: 1px solid lightgrey;
-    margin-right: 10px;
-    margin-bottom: 20px;
   }
   .swatch {
     display: block;
@@ -30,6 +27,25 @@
     font-weight: bold;
     line-height: 50px;
   }
+  .description {
+    box-sizing: border-box;
+    border: 1px solid lightgray;
+    height: 200px;
+    padding: 1em;
+  }
+  dl {
+    display: flex;
+    flex-flow: row wrap;
+  }
+  dt {
+    width: 10%;
+  }
+  dt:after {
+    content: ':';
+  }
+  dd {
+    width: 90%;
+  }
 </style>
 <h2>Color Palette</h2>
 <div class="colors">
@@ -41,6 +57,17 @@
       Primary
     </div>
   </div>
+  <div class="description">
+    <p>Used for site header background color and main header text color.</p>
+    <dl>
+      <dt>CSS</dt>
+      <dd>var(--primaryColor)</dd>
+      <dt>Template</dt>
+      <dd><%= "<%= " %>ThemeVariable("primaryColor")<%= " %>" %></dd>
+      <dt>ENV</dt>
+      <dd>THEME_PRIMARY_COLOR</dd>
+    </dl>
+  </div>
   <div class="color">
     <div class="swatch" style="background-color: var(--highlightColor)">
       <%= ThemeVariable("highlightColor") %>
@@ -48,6 +75,17 @@
     <div class="title">
       Highlight
     </div>
+  </div>
+  <div class="description">
+    <p>Used for visually accented text, borders or buttons.</p>
+    <dl>
+      <dt>CSS</dt>
+      <dd>var(--highlightColor)</dd>
+      <dt>Template</dt>
+      <dd><%= "<%= " %>ThemeVariable("highlightColor")<%= " %>" %></dd>
+      <dt>ENV</dt>
+      <dd>THEME_HIGLIGHT_COLOR</dd>
+    </dl>
   </div>
   <div class="color">
     <div class="swatch" style="background-color: var(--highlightBackgroundColor)">
@@ -57,6 +95,17 @@
       Highlight Background
     </div>
   </div>
+  <div class="description">
+    <p>Used for visually accented backgrounds.</p>
+    <dl>
+      <dt>CSS</dt>
+      <dd>var(--highlightBackgroundColor)</dd>
+      <dt>Template</dt>
+      <dd><%= "<%= " %>ThemeVariable("highlightBackgroundColor")<%= " %>" %></dd>
+      <dt>ENV</dt>
+      <dd>THEME_HIGHLIGHT_BACKGROUND_COLOR</dd>
+    </dl>
+  </div>
   <div class="color">
     <div class="swatch" style="background-color: var(--secondaryHighlightColor)">
       <%= ThemeVariable("secondaryHighlightColor") %>
@@ -64,6 +113,17 @@
     <div class="title">
       Secondary Highlight
     </div>
+  </div>
+  <div class="description">
+    <p>Used for visually accented labels.</p>
+    <dl>
+      <dt>CSS</dt>
+      <dd>var(--secondaryHighlightColor)</dd>
+      <dt>Template</dt>
+      <dd><%= "<%= " %>ThemeVariable("secondaryHighlightColor")<%= " %>" %></dd>
+      <dt>ENV</dt>
+      <dd>THEME_SECONDARY_HIGHLIGHT_COLOR</dd>
+    </dl>
   </div>
   <div class="color">
     <div class="swatch" style="background-color: var(--linkColor)">
@@ -73,6 +133,17 @@
       Link
     </div>
   </div>
+  <div class="description">
+    <p>Used for regular document links.</p>
+    <dl>
+      <dt>CSS</dt>
+      <dd>var(--linkColor)</dd>
+      <dt>Template</dt>
+      <dd><%= "<%= " %>ThemeVariable("linkColor")<%= " %>" %></dd>
+      <dt>ENV</dt>
+      <dd>THEME_LINK_COLOR</dd>
+    </dl>
+  </div>
   <div class="color">
     <div class="swatch" style="background-color: var(--textColor)">
       <%= ThemeVariable("textColor") %>
@@ -80,6 +151,17 @@
     <div class="title">
       Text
     </div>
+  </div>
+  <div class="description">
+    <p>Used for main site text and secondary tab and dropdown borders.</p>
+    <dl>
+      <dt>CSS</dt>
+      <dd>var(--textColor)</dd>
+      <dt>Template</dt>
+      <dd><%= "<%= " %>ThemeVariable("textColor")<%= " %>" %></dd>
+      <dt>ENV</dt>
+      <dd>THEME_TEXT_COLOR</dd>
+    </dl>
   </div>
   <div class="color">
     <div class="swatch" style="background-color: var(--darkNeutralColor)">
@@ -89,6 +171,17 @@
       Dark Neutral
     </div>
   </div>
+  <div class="description">
+    <p>Used for assorted backgrounds, borders and text.</p>
+    <dl>
+      <dt>CSS</dt>
+      <dd>var(--darkNeutralColor)</dd>
+      <dt>Template</dt>
+      <dd><%= "<%= " %>ThemeVariable("darkNeutralColor")<%= " %>" %></dd>
+      <dt>ENV</dt>
+      <dd>THEME_DARK_NEUTRAL_COLOR</dd>
+    </dl>
+  </div>
   <div class="color">
     <div class="swatch" style="background-color: var(--mediumNeutralColor); color: black;">
       <%= ThemeVariable("mediumNeutralColor") %>
@@ -97,6 +190,17 @@
       Medium Neutral
     </div>
   </div>
+  <div class="description">
+    <p>Used for assorted backgrounds, borders and text.</p>
+    <dl>
+      <dt>CSS</dt>
+      <dd>var(--mediumNeutralColor)</dd>
+      <dt>Template</dt>
+      <dd><%= "<%= " %>ThemeVariable("mediumNeutralColor")<%= " %>" %></dd>
+      <dt>ENV</dt>
+      <dd>THEME_MEDIUM_NEUTRAL_COLOR</dd>
+    </dl>
+  </div>
   <div class="color">
     <div class="swatch" style="background-color: var(--lightNeutralColor); color: black;">
       <%= ThemeVariable("lightNeutralColor") %>
@@ -104,5 +208,17 @@
     <div class="title">
       Light Neutral
     </div>
+  </div>
+  <div class="description">
+    <p>Used for assorted backgrounds and borders.</p>
+    <dl>
+      <dt>CSS</dt>
+      <dd>var(--lightNeutralColor)</dd>
+      <dt>Template</dt>
+      <dd><%= "<%= " %>ThemeVariable("lightNeutralColor")<%= " %>" %></dd>
+      <dt>ENV</dt>
+      <dd>THEME_LIGHT_NEUTRAL_COLOR</dd>
+    </dl>
+  </div>
   </div>
 </div>

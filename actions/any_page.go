@@ -19,9 +19,9 @@ import (
 // Template: any_pages/{Type}.html
 // Query:    any_pages/{Type}.graphql
 func AnyPageHandler(c buffalo.Context) error {
-	entityType := c.Params().Get("type")
-	viewTemplatePath := fmt.Sprintf("any_pages/%s.html", entityType)
-	queryTemplatePath := fmt.Sprintf("templates/any_pages/%s.graphql", entityType)
+	pageName := c.Params().Get("name")
+	viewTemplatePath := fmt.Sprintf("any_pages/%s.html", pageName)
+	queryTemplatePath := fmt.Sprintf("templates/any_pages/%s.graphql", pageName)
 
 	queryExists := true
 	queryTemplate, err := ioutil.ReadFile(queryTemplatePath)
