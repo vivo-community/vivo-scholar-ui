@@ -7,7 +7,7 @@ This a possible front-end to the vivo-scholar-discovery GraphQL endpoint.
 
 [React](https://reactjs.org/) - for client side code
 
-[SkateJS](https://skatejs.netlify.com) - for generating web-components
+[LitElement](https://lit-element.polymer-project.org/) - for generating web-components
 
 ## Quick Start
 * [Install Go Buffalo](http://gobuffalo.io/docs/installation)
