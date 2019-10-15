@@ -28,3 +28,4 @@ generated/
 
 .envrc
 .tool-versions
+/local

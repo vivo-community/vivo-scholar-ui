@@ -1,6 +1,6 @@
 {
   "name": "buffalo",
-  "version": "1.17.3",
+  "version": "1.19.1",
   "main": "index.js",
   "license": "MIT",
   "repository": "github.com/gobuffalo/buffalo",
