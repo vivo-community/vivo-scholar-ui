@@ -1,55 +1,77 @@
-# Vivo-Scholar
-This a possible front-end to the vivo-scholar-discovery GraphQL endpoint.  
+# Scholars React
+A possible front-end to the [Scholars Discovery](https://github.com/vivo-community/scholars-discovery) GraphQL endpoint.  
 
-# Using
+## Technology
+* [Go Buffalo](http://gobuffalo.io) - for server side rendering, and asset pipeline
+* [LitElement](https://lit-element.polymer-project.org/) - for generating web components
+* [React](https://reactjs.org/) - for client side search code - *to be replaced with web components, this project will be renamed at that time*
 
-[Go Buffalo](http://gobuffalo.io) - for server side rendering, and asset pipeline
+## Development Dependencies
 
-[React](https://reactjs.org/) - for client side code
+### Native
+* [Go](https://golang.org/), with [Module Support](https://github.com/golang/go/wiki/Modules)
+* [Go Buffalo](http://gobuffalo.io)
+* [Yarn](https://yarnpkg.com)
 
-[SkateJS](https://skatejs.netlify.com) - for generating web-components
+### OR: Docker Only
+* [Docker](https://www.docker.com/)
+* [Docker Compose](https://docs.docker.com/compose/)
 
-## Quick Start
-* [Install Go Buffalo](http://gobuffalo.io/docs/installation)
-    1. Using `yarn` (over `npm`)
-    2. Can use something like `asdf` for localized golang environments.  But using `go` on GO_PATH is probably the easiest
+## Getting Started
+     cp .env.example .env
 
-* create `.env` (see `.env.example`)
-* run `buffalo dev` (once buffalo is on path)
-* go to [http://localhost:3000](http://localhost:3000)
+Update the value of GRAPHQL_ENDPOINT to the address of a running instance of Scholars Discovery. The default
+value of one running locally has been prepopulated in .env.example.
 
-## Basic Idea
+### Native
+     buffalo dev
 
-There are a few different kinds of routes:
+### Docker Only
+     docker-compose up
 
-* "/" - home page - no data (now)
-* "/pages/{type}" will 
-    * run a template in `templates/any_pages/{type}.html` 
-    * with (optionally) data from `templates/any_pages/{type}.graphql`
-* "/search/{type}" will
-    * run a template in `templates/search_pages/{type}.html` 
-
-* "/lists/{type}" - (NOTE: will probably drop this one)
-    * run a template in `templates/list_pages/{type}.html` 
-    * with (required) data from `templates/list_pages/{type}.graphql`
-    * will send a `pageNumber` parameter
-
-* "/entities/{type}/{id}" - will
-    * run a template in `templates/entity_pages/{type}.html` 
-    * with (required) data from `templates/entity_pages/{type}.graphql`
-    * send in the `id` as a parameter to the quer
+The app will be available at: [http://localhost:4200](http://localhost:4200)
 
 ## Philosophy
+It should be easy to add and/or customize pages with basic knowledge of HTML and GraphQL.
 
-It should be easy to add new pages, it should be clear what data is going to that page, and it should be easy to change what that data is
+Pages are represented by a template file and corresponding GraphQL query file.
+Adding new or edting existing templates and queries are the expected means of customization.
 
-Searches, or other complex UIs, are better done with client side code (over trying to make it all server-side)
+Web Components will be the primary method of encapsulating of core styles and behaviors.
+They can be used to build new templates and will also provide embeddable 'widgets' for
+use on other sites.
 
-It would be good if an organization could have `widgets` or `components` to display data from this
-site in their own site. So starting off we are emphasizing `webcomponents`
+Server side rendering should be used for most pages where primary content is part of the
+document and then progressively enhanced with javascript. Searches and other complex UIs
+will be an exception.
 
-This is just one possible implementation of making a front-end to a GraphQL based api based on Vivo data.  Although this site should be mobile-friendly, a more dedicated mobile client using the GraphQL Api directly
-and in more targeted ways is more likely
+## Pages and Queries
+* "/"
+    * Template: templates/index.html
+    * Query: no query
+* "/entities/{type}/{id}" - fetches data for the given entity by 'id'
+    * Template: templates/entity_pages/{type}.html
+    * Query: templates/entity_pages/{type}.graphql
+    * Query Parameters: id
+* "/search/{type}" - search pages, any html/javascript
+    * Template: templates/search_pages/{type}.html
+    * Query: assumes javascript will query GraphQL endpoint directly
+* "/pages/{name}" - generic pages, any/html javascript with optional GraphQL query
+    * Template: templates/any_pages/{name}.html 
+    * Query (optional): templates/any_pages/{name}.graphql
+    * Query Parameters: Dynamic, derived from query string
 
+## Theme
 
+Theme variables are set using the environment. The default values are populated in .env.example. Configurable theme variables include:
 
+* Site Name - TODO
+* Site Logo - TODO
+* Home Page Background (image or color) - TODO
+* Color Palette: [http://localhost:4200/docs/elements/color-palette](http://localhost:4200/docs/elements/color-palette)
+
+Additionally, custom styles may be added to:
+
+assets/css/theme.scss
+
+This file will be pre-processed with SASS and imported after all default stylesheets to allow specific overrides.
