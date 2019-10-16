@@ -20,7 +20,6 @@ class Sidebar extends LitElement {
         <slot></slot>
       `
     }
-  
   }
   
   customElements.define('vivo-sidebar', Sidebar);
