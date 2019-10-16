@@ -12,9 +12,6 @@ class SidebarItem extends LitElement {
       ::slotted([slot="heading"]) {
         background-color: var(--highlightBackgroundColor);
       }
-      ::slotted([slot="content"]) {
-        font-size: 0.8em;
-      }
     `
   }
 
