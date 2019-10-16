@@ -1,3 +1,4 @@
+/*
 $base-font: "Red Hat Text";
 $bold-font: "Red Hat Text";
 
@@ -8,13 +9,17 @@ $white: rgb(255, 255, 255);
 $theme-colors: (
   "primary": rgba(38, 169, 224, 1)
 );
+*/
 
 // should be better way to override - above
 // doesn't work though
+/*
 .badge-primary {
   background-color: rgba(38, 169, 224, 1);
 }
+*/
 /****** global (all pages) */
+/*
 body {
   font-family: $base-font; 
   font-weight: 400;
@@ -28,8 +33,9 @@ body {
 section {
   margin-bottom: .5em;
 }
-
+*/
 /**** headings ****/
+/*
 h1 {
   font-family: $bold-font; 
 	font-weight: 700; 
@@ -81,8 +87,9 @@ h6 {
 h6>a {
   color: rgb(47, 61, 79)
 }
-
+*/
 /******  header  ******/
+/*
 #main-menu { 
   background-color: rgba(47, 61, 79, 1); 
   padding: 0 0 0 0;
@@ -95,7 +102,6 @@ h6>a {
 span.logo {
   color: rgb(255, 255, 255);
   font-family: $bold-font; 
-  /* font-family: "CenturyGothic", "Century Gothic"; */
   font-weight: 700;
   font-size: 72px;
   padding-left: 4px;
@@ -118,9 +124,11 @@ span.logo-secondary {
   color: rgb(255, 255, 255);
   text-align: right;
 }
-  
+*/
+
 /**** person profile *****/
 /* profile nav-bar */
+/*
 .nav-tabs .nav-link.active, .nav-tabs .nav-item.show .nav-link {
   color: #495057;
   background-color: rgb(165, 213, 238);
@@ -152,7 +160,7 @@ span.logo-secondary {
    
 .nav-tabs{
   border-bottom: none;
-  display: inline-block; /* needed to center the list items */
+  display: inline-block;
 }
    
 .tabbable{
@@ -167,7 +175,7 @@ span.logo-secondary {
 
 .nav-tabs{
   border-bottom: 8px solid rgb(165, 213, 238);
-  display: inline-block; /* needed to center the list items */
+  display: inline-block; 
 }
 
 .nav-item {
@@ -189,8 +197,10 @@ div.profile-column>ul.nav-tabs > li {
 div.profile-column>ul.nav>li.nav-item a {
   color: #495057;
 }
+*/
 
 /** seems to be necessary to make person profile nav 100% */
+/*
 #myTab { width: 100%; }
 
 @media (max-width: 768px) {
@@ -204,8 +214,10 @@ div.profile-column>ul.nav>li.nav-item a {
 	  margin-bottom: 0 !important;
 	}
 }
+*/
 
 /* person profile page */
+/*
 .contact>div>span.label, .contact>div>span.data {
   font-size: 11px;
 }
@@ -224,8 +236,10 @@ section.websites {
   padding-right: 2px;
   padding-bottom: 2px;
 }
- 
+*/
+
 /* more general */
+/*
 span.label {
   font-family: $bold-font; 
   font-weight: 700;
@@ -253,8 +267,10 @@ a.prof-link {
   text-decoration: none;
   color: #333333;
 }
+*/
 
 /**** headings (person profile) ****/
+/*
 h3.tab-content {
   margin-top: 1em;
   transform-origin: 47.5px 12px; 
@@ -296,9 +312,10 @@ h5.side-bar {
   padding-left: 0.4em;
   margin-bottom: 0;
 }
-
+*/
 
 /** publications ***/
+/*
 .publication-citation {
   margin-bottom: 8px;
 }
@@ -309,7 +326,9 @@ h5.side-bar {
 .publication-abstract {
   margin-bottom: 1em;
 }
+*/
 /**** search ****/
+/*
 div.input-group.search { 
   width: 100%; 
   margin-bottom: 2em; 
@@ -320,8 +339,9 @@ div.input-group.search {
 	color: #FFFFFF;
 	border: 0px;
 }
-
+*/
 /* paging */
+/*
 .page-item.active .page-link {
   background-color: rgba(38, 169, 224, 1); 
   border-color: rgba(38, 169, 224, 1);
@@ -330,8 +350,10 @@ div.input-group.search {
 .page-item:hover {
 	cursor: pointer;
 }
+*/
 
 /*** facets */
+/*
 div.facets> h3 {
   font-size: 22px; 
   margin-top: 8px;
@@ -339,16 +361,13 @@ div.facets> h3 {
 
 label.facet-click> input {
   margin-right: 4px;
-  // can't seem to get border
-  /* border: 1px solid #000000; */
 }
 
 div.facets>ul>li.list-group-item:hover {
-  /* maybe should be color */
   color: $white;
   background-color: $blueish;
 }
-
+*/
 vivo-publication {
   /* font-size: 100px; */
 }
