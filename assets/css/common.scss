@@ -80,7 +80,7 @@ vivo-tab h2 {
   font-weight: normal;
 }
 
-/*
+
 vivo-tabs {
   display: flex;
   justify-content: space-between;
@@ -90,7 +90,6 @@ vivo-tabs {
 vivo-tab {
   flex: 1 0 auto; 
 }
-*/
 
 vivo-tab-panel h4 {
   padding: 0;
@@ -106,14 +105,22 @@ vivo-tab-panel h5 {
 .container {
   display: grid;    
   grid-template-columns: repeat(12, 1fr);
+  width: 85%;
+  margin: 0 auto;
 }
 
 aside {
   grid-column: span 2;
+  padding: 0.25em;
 }
 
 main {
   grid-column: span 10;
+  padding: 0.25em;
+}
+
+main h1 {
+  color: var(--primaryColor);
 }
 
 
