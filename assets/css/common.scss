@@ -80,15 +80,21 @@ vivo-tab h2 {
   font-weight: normal;
 }
 
-/* experiment */
+vivo-tabs {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+}
+
+vivo-tab {
+  flex: 1 0 auto; 
+}
+
+
+/* grid experiment */
 .container {
   display: grid;    
   grid-template-columns: repeat(12, 1fr);
-  grid-template-rows: 50px 350px 50px;
-}
-
-header {
-  grid-column: span 12;
 }
 
 aside {
@@ -97,10 +103,6 @@ aside {
 
 main {
   grid-column: span 10;
-}
-
-footer {
-  grid-column: span 12;
 }
 
 * {
