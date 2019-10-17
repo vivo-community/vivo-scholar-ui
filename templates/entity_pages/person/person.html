@@ -3,10 +3,10 @@
   let person = data["personById"]
 %>
 
+
 <div class="container">
 
-   <div class="row">
-      <div class="col-2">
+   <aside>
          <vivo-sidebar>
             <%= if (person["thumbnail"]) { %>
             <img class="img-fluid" src="http://openvivo.org<%= person["thumbnail"] %>" />
@@ -42,10 +42,11 @@
                </div>
             </vivo-sidebar-item>
          </vivo-sidebar>
-      </div><!-- end col-2 -->
-      <div class="col-10">
-         <h2 class="profile-name"><%= person["name"] %></h2>
-         <h3 class="preferred-title"><%= person["preferredTitle"] %></h3>
+     </aside>
+
+      <main>
+         <h1 class="profile-name"><%= person["name"] %></h1>
+         <h1 class="preferred-title"><%= person["preferredTitle"] %></h1>
          <!-- tabs -->
          <vivo-tabs>
             <vivo-tab id="about-tab" slot="tabs" selected>
@@ -152,6 +153,6 @@
 
          </vivo-tabs>
 
-      </div><!-- end col-10 -->
-   </div><!-- end row -->
+      </main><!-- end col-10 -->
+   
 </div><!-- end container -->

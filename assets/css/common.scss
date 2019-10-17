@@ -64,5 +64,22 @@ vivo-sidebar-item h4 {
 
 vivo-tab h2 {
   padding: 0em;
-  font-size: 1em;
+  font-size: 0.9em;
+}
+
+/* experiment */
+.container {
+  display: grid;    
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: 50px 350px 50px;
+}
+
+header {
+  grid-column: span 12;
+}aside {
+  grid-column: span 2;
+}main {
+  grid-column: span 10;
+}footer {
+  grid-column: span 12;
 }
