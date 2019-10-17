@@ -9,9 +9,9 @@
    <aside>
          <vivo-sidebar>
             <%= if (person["thumbnail"]) { %>
-            <img class="img-fluid" src="http://openvivo.org<%= person["thumbnail"] %>" />
+            <img class="profile-image" src="http://openvivo.org<%= person["thumbnail"] %>" />
             <% } else { %>
-            <img class="img-fluid" src="<%= assetPath("images/profile_picture_u39_a.png") %>" />
+            <img class="profile-image" src="<%= assetPath("images/profile_picture_u39_a.png") %>" />
             <% } %>
             <vivo-sidebar-item>
                <h4 slot="heading">Contact</h4>

@@ -34,7 +34,7 @@ class SiteHeader extends LitElement {
         color: white !important;
       }
       ::slotted([slot="nav-item"]:last-child) {
-        margin-right: 0;
+        /* margin-right: 0; */
       }
     `
   }
