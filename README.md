@@ -60,6 +60,7 @@ will be an exception.
     * Template: templates/any_pages/{name}.html 
     * Query (optional): templates/any_pages/{name}.graphql
     * Query Parameters: Dynamic, derived from query string
+    * [Adding an Any Page](http://localhost:4200/docs/elements/any-page)
 
 ## Theme
 
