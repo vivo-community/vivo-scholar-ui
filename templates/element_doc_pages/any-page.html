@@ -1,0 +1,138 @@
+<style type="text/css">
+  blockquote {
+    background-color: black;
+    color: white;
+    padding: 0 1em;
+  }
+  h3 {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: var(--primaryColor);
+  }
+</style>
+<h2>Adding an 'Any Page'</h2>
+
+<p>This example will demonstrate creating an arbitrary new page.</p>
+
+<p>It will list people and documents related to a specified term illustrating:</p>
+<ul>
+  <li>Template and query pairing</li>
+  <li>Use of existing web components</li>
+  <li>Use of custom css</li>
+</ul>
+
+<ol>
+  <li>
+    <h3>Define a Template - <small><em>templates/any_pages/spotlight_on.html</em></small></h3>
+    <blockquote>
+      <xmp><%= raw(`
+<h2>Spotlight on: <%= subject %></h2>
+
+<h3>People</h3>
+<ul class="spotlight-list">
+<%= for (p) in data["personsSearch"]["content"] { %>
+  <li>
+    <a href="/entities/person/<%= p["id"] %>">
+      <strong><%= p["name"] %></strong>,
+      <%= p["preferredTitle"] %>
+    </a>
+  </li>
+<% } %>
+</ul>
+
+<h3>Publications</h3>
+<vivo-publication-list>
+<%= for (d) in data["documentsSearch"]["content"] { %>
+  <vivo-publication publication-url="/entities/publication/<%= d["id"] %>">
+    <div slot="title"><%= d["title"] %></div>
+    <span slot="date"><%= FormatGraphqlDateForSitemap(d["publicationDate"]) %></span>
+    <vivo-publication-author-list slot="authors">
+      <%= for (a) in d["authors"] { %>
+       <vivo-publication-author profile-url="/entities/person/<%= a["id"] %>">
+         <%= a["label"] %>
+       </vivo-publication-author>
+      <% } %>
+    </vivo-publication-author-list>
+  </vivo-publication>
+<% } %>
+</vivo-publication-list>
+        `) %>
+      </xmp>
+    </blockquote>
+  </li>
+  <li>
+    <h3>Define a Query - <small><em>templates/any_pages/spotlight_on.graphql</em></small></h3>
+    <blockquote>
+      <xmp><%= raw(`
+query($subject: String!) {
+  documentsSearch (
+    query: $subject;
+    paging: { pageNumber: 0, pageSize: 10 }
+  ) {
+    content {
+       id
+       title
+       publicationDate
+       authors {
+        id
+        label
+      }
+    }
+  }
+  personsSearch (
+    query: $subject
+    paging: { pageNumber: 0, pageSize: 10 }
+  ) {
+    content {
+       id
+       name
+       preferredTitle
+    }
+  }
+}
+        `) %>
+      </xmp>
+    </blockquote>
+    <p>
+      Then navigate to <a href="/pages/spotlight_on?subject=mustard">/pages/spotlight_on?subject=mustard</a>
+    </p>
+  </li>
+  <li>
+    <h3>Add Custom (S)CSS - <small><em>assets/css/theme.scss</em></small></h3>
+    <blockquote>
+      <xmp><%= raw(`
+.spotlight-list {
+  padding: 0;
+  list-style: none;
+  li {
+    border: 1px solid var(--lightNeutralColor);
+    border-left: 3px solid var(--secondaryHighlightColor);
+    padding-left: 0.5em;
+    margin: 0.25em;
+    strong {
+      color: var(--primaryColor) !important;
+      font-size: 1.2em;
+    }
+  }
+  a {
+    display: block;
+  }
+}
+      `) %>
+      </xmp>
+    </blockquote>
+    <p>
+      Then refresh your new page <a href="/pages/spotlight_on?subject=mustard">/pages/spotlight_on?subject=mustard</a>
+    </p>
+  </li>
+  <li>
+    <h3>Test Parameter Passing</h3>
+    <p>Update the value of 'subject' in the query string to see results for different terms:</p>
+    <ul>
+      <li><a href="/pages/spotlight_on?subject=biochemistry">biochemistry</a></li>
+      <li><a href="/pages/spotlight_on?subject=mathematics">mathematics</a></li>
+      <li><a href="/pages/spotlight_on?subject=public%20policy">public policy</a></li>
+    </ul>
+  </li>
+</ol>
+<br>
