@@ -82,8 +82,8 @@
                <h2>Background</h2>
             </vivo-tab>
             <vivo-tab-panel id="background-panel" slot="panels">
-               <h4 class="tab-content">Education & Credentials</h4>
-               <h5 class="tab-content">Education</h5>
+               <h4>Education & Credentials</h4>
+               <h5>Education</h5>
                <section class="educations">
                   <%= for (e) in person["educationAndTraining"] { %>
                   <div class="education">
@@ -115,16 +115,17 @@
                <h2>Research &amp; Expertise</h2>
             </vivo-tab>
             <vivo-tab-panel id="research-panel" slot="panels">
-               <h4 class="tab-content">Expertise</h4>
+               <h4>Expertise</h4>
                <%= if (person["researchAreas"]) { %>
-               <h5 class="tab-content">Subject Headings</h5>
-               <ul class="list-group">
+               <h5>Subject Headings</h5>
+               <ul>
                   <%= for (k) in person["researchAreas"] { %>
-                  <li class="list-group-item">
+                  <li>
                      <a href="/entities/concepts/<%= k["id"] %>">
                         <%= k["label"] %>
                      </a>
-                     <% } %>
+                  </li>
+                  <% } %>
                </ul>
                <% } %>
 
