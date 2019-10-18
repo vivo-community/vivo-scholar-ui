@@ -3,16 +3,6 @@
   let person = data["personById"]
 %>
 
-<script type="application/ld+json">
-   {
-     "@context": "https://schema.org",
-     "@type": "Person",
-     "email": "<%= person["primaryEmail"] %>",
-     "jobTitle": "<%= person["preferredTitle"] %>",
-     "name": "<%= person["name"] %>"
-   }
-</script>
-
 <div class="container">
 
    <aside>
