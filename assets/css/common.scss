@@ -80,27 +80,6 @@ vivo-tab h2 {
   font-weight: normal;
 }
 
-
-vivo-tabs {
-  display: flex;
-  justify-content: space-between;
-  flex-direction: column;
-}
-
-vivo-tab {
-  flex: 1 0 auto; 
-}
-
-vivo-tab-panel h4 {
-  padding: 0;
-  margin: 0 0 1em 0;
-}
-
-vivo-tab-panel h5 {
-  padding: 0;
-  margin: 1em 0 1em 0;
-}
-
 /* grid experiment */
 .container {
   display: grid;    
