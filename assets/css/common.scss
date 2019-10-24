@@ -26,11 +26,82 @@
   color: var(--highlightColor);
 }
 
+.profile-image {
+  max-width: 100%;
+  height: auto;
+  vertical-align: middle;
+  border-style: none;
+}
+
+/* headings */
+h1 {
+  font-weight: 700;
+  font-size: 1.5em;
+}
+
+h2 {
+  font-weight: 700;
+  font-size: 1.4em;
+}
+
+h3 {
+  font-weight: 700;
+  font-size: 1.25em;
+}
+
+h4 {
+  font-weight: 700;
+  font-size: 1.1em;
+}
+
+h5 {
+  font-weight: 700;
+  font-size: 1em;
+}
+
+/* elements */
+vivo-sidebar {
+  margin: 0.25em;
+}
+
 vivo-sidebar-item div {
   font-size: 0.75em;
 }
 
-vivo-sidebar-item h1, h2, h3, h4 {
-  padding: 0.5em;
+vivo-sidebar-item h4 {
+  padding: 0.25em;
+  font-size: 0.8em;
+}
+
+vivo-tab h2 {
+  padding: 0em;
   font-size: 0.9em;
+  margin: 0;
+  font-weight: normal;
+}
+
+/* grid experiment */
+.container {
+  display: grid;    
+  grid-template-columns: repeat(12, 1fr);
+  width: 100%;
+  margin: 0 auto;
+}
+
+aside {
+  grid-column: span 2;
+  padding: 0.25em;
+}
+
+main {
+  grid-column: span 10;
+  padding: 0.25em;
+}
+
+main h1 {
+  color: var(--primaryColor);
+}
+
+* {
+  font-family:"Arial";
 }
