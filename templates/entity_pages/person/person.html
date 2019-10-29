@@ -3,191 +3,151 @@
   let person = data["personById"]
 %>
 
-<script type="application/ld+json">
-   {
-     "@context": "https://schema.org",
-     "@type": "Person",
-     "url": "http://vivo.org",
-     "name": "<%= person["name"] %>"",
-     "contactPoint": {
-       "@type": "ContactPoint",
-       "telephone": "+1-401-555-1212",
-       "contactType": "<%= person["type"] %>"
-     }
-   }
-</script>
+<div class="container">
 
-<div class="row">
-
-   <div class="col-4 col-md-2 col-sm-2 profile-column">
-      <section class="image">
-         <div>
+   <aside>
+         <vivo-sidebar>
             <%= if (person["thumbnail"]) { %>
-               <img class="img-fluid" src="http://openvivo.org<%= person["thumbnail"] %>" />
+               <!-- FIXME: should get base image path some other way -->
+            <img class="profile-image" src="http://openvivo.org<%= person["thumbnail"] %>" />
             <% } else { %>
-               <img class="img-fluid" src="<%= assetPath("images/profile_picture_u39_a.png") %>" />
+            <img class="profile-image" src="<%= assetPath("images/profile_picture_u39_a.png") %>" />
             <% } %>
-         </div>
-      </section>
-
-      <!-- info -->
-      <h5 class="side-bar">Contact</h5>
-      <section class="contact">
-         <div>
-            <span class="label">Email</span>
-            <span class="data"><%= person["primaryEmail"] %></span>
-         </div>
-
-         <div>
-            <span class="label">Telephone</span>
-            <span class="data"><%= person["phone"] %></span>
-         </div>
-
-         <div class="address-block">
-            <span class="label">Address 1</span>
-            <div>
-
-            </div>
-         </div>
-      </section>
-
-
-      <h5 class="side-bar">Professional Links</h5>
-      <section class="websites">
-      <%= for (w) in person["websites"] { %>
-         <div class="website">
-               <a class="prof-link" href="<%= w["url"] %>">
-                  <%= w["label"] %>
-               </a>
-         </div>
-      <% } %>
-      </section>
-
-   </div><!-- end col-4 -->
-
-   <div class="col-12 col-md-10 col-sm-10 profile-column">
-         <h4 class="profile-name"><%= RemoveLanguageTag(person["name"]) %></h4>
-
-         <div>
-            <h5 class="preferred-title"><%= person["preferredTitle"] %></h5>
-         </div>
-
-
-     <!-- tabs -->
-     <vivo-tabs>
-
-       <vivo-tab id="about-tab" slot="tabs" selected>
-         <h2>About</h2>
-       </vivo-tab>
-       <vivo-tab-panel id="about-panel" slot="panels" selected>
-         <h4>Overview</h4>
-         <div>
-            <%= raw(person["overview"]) %>
-         </div>
-         <h5>Current Appointments &amp; Affiliations</h5>
-         <section class="positions">
-               <%= for (p) in person["positions"] { %>
-                  <div class="position">
-                    <span class="position-type"><%= p["label"] %></span>
+            <vivo-sidebar-item>
+               <h3 slot="heading">Contact</h3>
+               <div slot="content">
+                  <%= if (person["primaryEmail"]) { %>
+                     <h4>Email:</h4>
+                     <span><%= person["primaryEmail"] %></span>
+                  <% } %>
+                  <%= if (person["phone"]) { %>
+                     <h4>Telephone:</h4>
+                     <span><%= person["phone"] %></span>
+                  <% } %>
+                  <%= if (person["streetAddress"]) { %>
+                     <h4>Address 1:</h4>
+                     <div><%= person["streetAddress"] %></div>
+                  <% } %>
+               </div>
+            </vivo-sidebar-item>
+            <vivo-sidebar-item>
+               <h3 slot="heading">Professional Links</h3>
+               <div slot="content">
+                  <%= for (w) in person["websites"] { %>
+                  <div class="website">
+                     <a class="prof-link" href="<%= w["url"] %>">
+                        <%= w["label"] %>
+                     </a>
                   </div>
+                  <% } %>
+               </div>
+            </vivo-sidebar-item>
+         </vivo-sidebar>
+      </aside>
+
+      <main>
+         <h2 class="profile-name"><%= person["name"] %></h2>
+         <h2 class="preferred-title"><%= person["preferredTitle"] %></h2>
+         <!-- tabs -->
+         <vivo-tabs>
+            <vivo-tab id="about-tab" slot="tabs" selected>
+               <h3>About</h3>
+            </vivo-tab>
+            <vivo-tab-panel id="about-panel" slot="panels" selected>
+               <h4>Overview</h4>
+               <div>
+                  <%= raw(person["overview"]) %>
+               </div>
+               
+               <%= if (person["positions"] && len(person["positions"]) > 0) { %>
+               <h4>Current Appointments &amp; Affiliations</h4>
+               <section class="positions">
+                  <%= for (p) in person["positions"] { %>
+                  <div class="position">
+                     <span class="position-type"><%= p["title"] %></span>
+                  </div>
+                  <% } %>
+               </section>
                <% } %>
-         </section>
-         <div><b>Orcid</b> <%= person["id"] %></div>
-         <div><b>Scopus</b> <%= person["scopusId"] %></div>
-       </vivo-tab-panel>
 
-       <vivo-tab id="background-tab" slot="tabs">
-         <h2>Background</h2>
-       </vivo-tab>
-       <vivo-tab-panel id="background-panel" slot="panels">
-         <h4 class="tab-content">Education & Credentials</h4>
-         <h5 class="tab-content">Education</h5>
-         <section class="educations">
-           <%= for (e) in person["educationAndTraining"] { %>
-              <div class="education">
-                <span class="education-label">
-                   <%= e["abbreviation"] %>
-                   <%= if (e["organization"]) { %>
-                     <%= e["organization"]["label"] %>
-                    <% } %>
-                   <%= e["field"] %>
-                 </span>
-                 <span>
-                    <!-- should always be a start date -->
-                    <%= if (e["startDate"]) { %>
-                      <% let start = {"dateTime": e["startDate"], "resolution": "yearMonth"}
-                      <%= FormatDateTime(start) %>
-                    <% } %>
-                    <%= if (e["endDate"]) { %>
-                       <span> to </span>
-                      <% let end = {"dateTime": e["endDate"], "resolution": "yearMonth"}
-                      <%= FormatDateTime(end) %>
-                    <% } %>
-                 </span>
-              </div>
-           <% } %>
-         </section>
-       </vivo-tab-panel>
+               <h4>Education</h4>
+               <section class="educations">
+                  <%= for (e) in person["educationAndTraining"] { %>
+                  <div class="education">
+                     <span class="education-label">
+                        <%= e["abbreviation"] %>
+                        <%= if (e["organization"]) { %>
+                          <%= e["organization"]["label"] %>
+                        <% } %>
+                        <%= e["field"] %>
+                     </span>
+                     <span>
+                        <!-- should always be a start date -->
+                        <%= if (e["startDate"]) { %>
+                          <% let start = {"dateTime": e["startDate"], "resolution": "yearMonth"}
+                          <%= FormatDateTime(start) %>
+                        <% } %>
+                        <%= if (e["endDate"]) { %>
+                          <span> to </span>
+                          <% let end = {"dateTime": e["endDate"], "resolution": "yearMonth"}
+                          <%= FormatDateTime(end) %>
+                        <% } %>
+                     </span>
+                  </div>
+                  <% } %>
+               </section>
 
-       <vivo-tab id="research-tab" slot="tabs">
-         <h2>Research &amp; Expertise</h2>
-       </vivo-tab>
-       <vivo-tab-panel id="research-panel" slot="panels">
-          <h4 class="tab-content">Expertise</h4>
-          <%= if (person["researchAreas"]) { %>
-          <h5 class="tab-content">Subject Headings</h5>
-          <section class="keyword-list">
-                <ul class="list-group">
-                <%= for (k) in person["researchAreas"] { %>
-                   <li class="list-group-item">
-                         <span class="keyword">
-                              <a href="/entities/concepts/<%= k["id"] %>">
-                               <%= k["label"] %>
-                            </a>
-                         </span>
-                   </li>
-                <% } %>
-                </ul>
-          </section>
-          <% } %>
+            </vivo-tab-panel>
 
-         <h5 class="tab-content">Publications &amp; Artistic Works</h5>
+            <vivo-tab id="research-tab" slot="tabs">
+               <h3>Research &amp; Expertise</h3>
+            </vivo-tab>
+            <vivo-tab-panel id="research-panel" slot="panels">
+               <%= if (person["researchAreas"]) { %>
+               <h4>Subject Headings</h4>
+               <ul>
+                  <%= for (k) in person["researchAreas"] { %>
+                  <li>
+                     <a href="/entities/concepts/<%= k["id"] %>">
+                        <%= k["label"] %>
+                     </a>
+                  </li>
+                  <% } %>
+               </ul>
+               <% } %>
 
-           <vivo-publication-list>
-              <%= for (p) in person["publications"] { %>
-                <vivo-publication publication-url="/entities/publication/<%= p["id"] %>">
-                  <div slot="title"><%= p["title"] %></div>
-                  <div slot="abstract"><%= raw(p["abstractText"]) %></div>
-                  <span slot="date"><%= FormatGraphqlDateForSitemap(p["publicationDate"]) %></span>
-                  <vivo-publication-author-list slot="authors">
-                    <%= for (a) in p["authors"] { %>
-                     <vivo-publication-author profile-url="/entities/person/<%= a["id"] %>">
-                       <%= a["label"] %>
-                     </vivo-publication-author>
-                    <% } %>
-                  </vivo-publication-author-list>
-                </vivo-publication>
-              <% } %>
-         </vivo-publication-list>
-       </vivo-tab-panel>
+               <h4>Publications &amp; Artistic Works</h4>
 
-       <vivo-tab id="teaching-tab" slot="tabs">
-         <h2>Teaching &amp; Mentoring</h2>
-       </vivo-tab>
-       <vivo-tab-panel id="teaching-panel" slot="panels">
-       </vivo-tab-panel>
-
-       <vivo-tab id="activities-tab" slot="tabs">
-         <h2>Professional Activities</h2>
-       </vivo-tab>
-       <vivo-tab-panel id="activities-panel" slot="panels">
-       </vivo-tab-panel>
-
-     </vivo-tabs>
-
-   </div><!-- end col-12 -->
-
-</div>
+               <vivo-publication-list>
+                  <%= for (p) in person["publications"] { %>
+                  <vivo-publication publication-url="/entities/publication/<%= p["id"] %>">
+                     <div slot="title"><%= p["title"] %></div>
+                     <div slot="abstract"><%= raw(p["abstractText"]) %></div>
+                     <span slot="date"><%= FormatGraphqlDateForSitemap(p["publicationDate"]) %></span>
+                     <vivo-publication-author-list slot="authors">
+                        <%= for (a) in p["authors"] { %>
+                        <vivo-publication-author profile-url="/entities/person/<%= a["id"] %>">
+                           <%= a["label"] %>
+                        </vivo-publication-author>
+                        <% } %>
+                     </vivo-publication-author-list>
+                  </vivo-publication>
+                  <% } %>
+               </vivo-publication-list>
+            </vivo-tab-panel>
 
 
+            <%= if (person["courses"]) { %>
+            <vivo-tab id="teaching-tab" slot="tabs">
+               <h3>Teaching &amp; Mentoring</h3>
+            </vivo-tab>
+            <vivo-tab-panel id="teaching-panel" slot="panels">
+               <h4>Courses</h4>
+            </vivo-tab-panel>
+            <% } %>
 
+         </vivo-tabs>
+
+      </main>
+   
+</div><!-- end container -->

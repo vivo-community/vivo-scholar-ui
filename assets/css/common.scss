@@ -26,11 +26,112 @@
   color: var(--highlightColor);
 }
 
+.profile-image {
+  max-width: 100%;
+  height: auto;
+  vertical-align: middle;
+  border-style: none;
+}
+
+/* headings */
+h1 {
+  font-weight: 700;
+  font-size: 1.5em;
+}
+
+h2 {
+  font-weight: 700;
+  font-size: 1.4em;
+}
+
+h3 {
+  font-weight: 700;
+  font-size: 1.25em;
+}
+
+h4 {
+  font-weight: 700;
+  font-size: 1.1em;
+}
+
+h5 {
+  font-weight: 700;
+  font-size: 1em;
+}
+
+/* elements */
+vivo-sidebar {
+  margin: 0.25em;
+}
+
+vivo-sidebar img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 vivo-sidebar-item div {
+  font-size: 0.75em;
+  background-color: var(--lightNeutralColor);
+  padding: 0.25em;
+}
+
+vivo-sidebar-item h3 {
+  padding: 0.25em;
+  font-size: 0.8em;
+  margin-bottom: 0;
+}
+
+vivo-sidebar-item h4 {
+  display: inline;
+  font-weight: bold;
   font-size: 0.75em;
 }
 
-vivo-sidebar-item h1, h2, h3, h4 {
-  padding: 0.5em;
+vivo-tab h3 {
+  padding: 0em;
   font-size: 0.9em;
+  margin: 0;
+  font-weight: normal;
+}
+
+vivo-tab-panel h4 {
+  color: var(--primaryColor);
+}
+
+
+/* grid experiment */
+.container {
+  display: grid;    
+  grid-template-columns: repeat(12, 1fr);
+  width: 100%;
+  margin: 0 auto;
+}
+
+aside {
+  grid-column: span 2;
+  padding: 0.25em;
+}
+
+main {
+  grid-column: span 10;
+  padding: 0.25em;
+}
+
+main h2 {
+  color: var(--primaryColor);
+}
+
+h2.profile-name {
+  font-size: 1.5em;
+  margin-bottom: 0;
+}
+
+h2.preferred-title {
+  font-size: 1em;
+  margin-top: 0;
+}
+
+* {
+  font-family:"Arial";
 }

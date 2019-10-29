@@ -12,18 +12,77 @@
 </style>
 <h2>Adding an 'Any Page'</h2>
 
-<p>This example will demonstrate creating an arbitrary new page.</p>
+<p>This example will demonstrate creating a new page called 'Spotlight On'.</p>
 
-<p>It will list people and documents related to a specified term illustrating:</p>
+<p>It will list people and documents related to a term specified in the 'subject' query parameter. It will illustrate:</p>
 <ul>
-  <li>Template and query pairing</li>
+  <li>Query and template pairing</li>
   <li>Use of existing web components</li>
   <li>Use of custom css</li>
 </ul>
 
+<p>
+  Both the template and query files will live in 'templates/any_pages'. Their filenames must match and use the following extensions:
+  <ul>
+    <li>Query: .graphql</li>
+    <li>Template: .html</li>
+  </ul>
+</p>
+
+<p>In our case, they will be: spotlight_on.graphql and spotlight_on.html</p>
+
 <ol>
+<li>
+    <h3>Define a Query</h3>
+    <p>
+      Use the GraphQL Playground in scholars-discovery to develop a query containing the data that you'd like to display.
+    </p>
+    <p>
+      For the demonstration, place the following in <em>templates/any_pages/spotlight_on.graphql</em>:
+    </p>
+    <blockquote>
+      <xmp><%= raw(`
+query($subject: String!) {
+  documentsSearch (
+    query: $subject;
+    paging: { pageNumber: 0, pageSize: 10 }
+  ) {
+    content {
+       id
+       title
+       publicationDate
+       authors {
+        id
+        label
+      }
+    }
+  }
+  personsSearch (
+    query: $subject
+    paging: { pageNumber: 0, pageSize: 10 }
+  ) {
+    content {
+       id
+       name
+       preferredTitle
+    }
+  }
+}
+        `) %>
+      </xmp>
+    </blockquote>
+  </li>
   <li>
-    <h3>Define a Template - <small><em>templates/any_pages/spotlight_on.html</em></small></h3>
+    <h3>Define a Template</h3>
+    <p>
+      Templates are processed with <a href="https://gobuffalo.io/en/docs/templating/">Plush</a>.
+    </p>
+    <p>
+      The query result will be available in the 'data' variable. Data is a Go map structured identically to the GraphQL query result. Any query parameters will be available in String variables with matching names ('subject' in our case).
+    </p>
+    <p>
+      Place the following in <em>templates/any_pages/spotlight_on.html</em>:
+    </p>
     <blockquote>
       <xmp><%= raw(`
 <h2>Spotlight on: <%= subject %></h2>
@@ -59,46 +118,21 @@
         `) %>
       </xmp>
     </blockquote>
-  </li>
-  <li>
-    <h3>Define a Query - <small><em>templates/any_pages/spotlight_on.graphql</em></small></h3>
-    <blockquote>
-      <xmp><%= raw(`
-query($subject: String!) {
-  documentsSearch (
-    query: $subject;
-    paging: { pageNumber: 0, pageSize: 10 }
-  ) {
-    content {
-       id
-       title
-       publicationDate
-       authors {
-        id
-        label
-      }
-    }
-  }
-  personsSearch (
-    query: $subject
-    paging: { pageNumber: 0, pageSize: 10 }
-  ) {
-    content {
-       id
-       name
-       preferredTitle
-    }
-  }
-}
-        `) %>
-      </xmp>
-    </blockquote>
     <p>
       Then navigate to <a href="/pages/spotlight_on?subject=mustard">/pages/spotlight_on?subject=mustard</a>
     </p>
   </li>
   <li>
-    <h3>Add Custom (S)CSS - <small><em>assets/css/theme.scss</em></small></h3>
+    <h3>Add Custom (S)CSS</h3>
+    <p>
+      Custom styles can be specified in 'assets/css/theme.scss'
+    </p>
+    <p>
+      This file is processed with <a href="https://sass-lang.com/">SASS</a> and can accept CSS or SASS style directives. It will be loaded after all default styles to allow both additions and overrides.
+    </p>
+    <p>
+      Place the following in <small><em>assets/css/theme.scss</em></small>:
+    </p>
     <blockquote>
       <xmp><%= raw(`
 .spotlight-list {

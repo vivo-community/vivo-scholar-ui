@@ -30,7 +30,7 @@ class SiteSearchBox extends LitElement {
       input[name="search"] {
         flex: 1;
         padding: 1em;
-        font-size: 1.2em;
+        font-size: 1em;
       }
       button[type="submit"] {
         cursor: pointer;
@@ -38,7 +38,7 @@ class SiteSearchBox extends LitElement {
         border: none;
         color: white;
         background-color: var(--highlightColor);
-        font-size: 1.2em;
+        font-size: 1em;
         font-weight: bold;
       }
     `

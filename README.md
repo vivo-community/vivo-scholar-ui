@@ -9,8 +9,8 @@ A possible front-end to the [Scholars Discovery](https://github.com/vivo-communi
 ## Development Dependencies
 
 ### Native
-* [Go](https://golang.org/), with [Module Support](https://github.com/golang/go/wiki/Modules)
-* [Go Buffalo](http://gobuffalo.io)
+* [Go](https://golang.org/) (>= version 1.12)
+* [Go Buffalo](http://gobuffalo.io) (>= version 0.14.10)
 * [Yarn](https://yarnpkg.com)
 
 ### OR: Docker Only
