@@ -67,3 +67,9 @@ class Publication extends LitElement {
 }
 
 customElements.define("vivo-publication", Publication);
+/*
+TODO:
+1. abstract needs (More...) link - > ? # of characters?
+2. publication Full Text, Open Access, Link to Item, Cite links
+3. journal name?
+*/
