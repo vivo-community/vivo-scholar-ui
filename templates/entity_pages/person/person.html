@@ -8,28 +8,30 @@
    <aside>
          <vivo-sidebar>
             <%= if (person["thumbnail"]) { %>
+               <!-- FIXME: should get base image path some other way -->
             <img class="profile-image" src="http://openvivo.org<%= person["thumbnail"] %>" />
             <% } else { %>
             <img class="profile-image" src="<%= assetPath("images/profile_picture_u39_a.png") %>" />
             <% } %>
             <vivo-sidebar-item>
-               <h4 slot="heading">Contact</h4>
+               <h3 slot="heading">Contact</h3>
                <div slot="content">
-                  <div>
-                     <span class="label">Email</span>
-                     <span class="data"><%= person["primaryEmail"] %></span>
-                  </div>
-                  <div>
-                     <span class="label">Telephone</span>
-                     <span class="data"><%= person["phone"] %></span>
-                  </div>
-                  <div class="address-block">
-                     <span class="label">Address 1</span>
-                  </div>
+                  <%= if (person["primaryEmail"]) { %>
+                     <h4>Email:</h4>
+                     <span><%= person["primaryEmail"] %></span>
+                  <% } %>
+                  <%= if (person["phone"]) { %>
+                     <h4>Telephone:</h4>
+                     <span><%= person["phone"] %></span>
+                  <% } %>
+                  <%= if (person["streetAddress"]) { %>
+                     <h4>Address 1:</h4>
+                     <div><%= person["streetAddress"] %></div>
+                  <% } %>
                </div>
             </vivo-sidebar-item>
             <vivo-sidebar-item>
-               <h4 slot="heading">Professional Links</h4>
+               <h3 slot="heading">Professional Links</h3>
                <div slot="content">
                   <%= for (w) in person["websites"] { %>
                   <div class="website">
@@ -41,21 +43,22 @@
                </div>
             </vivo-sidebar-item>
          </vivo-sidebar>
-     </aside>
+      </aside>
 
       <main>
-         <h1 class="profile-name"><%= person["name"] %></h1>
+         <h2 class="profile-name"><%= person["name"] %></h2>
          <h2 class="preferred-title"><%= person["preferredTitle"] %></h2>
          <!-- tabs -->
          <vivo-tabs>
             <vivo-tab id="about-tab" slot="tabs" selected>
-               <h2>About</h2>
+               <h3>About</h3>
             </vivo-tab>
             <vivo-tab-panel id="about-panel" slot="panels" selected>
                <h4>Overview</h4>
                <div>
                   <%= raw(person["overview"]) %>
                </div>
+               <%= if (person["positions"]) { %>
                <h5>Current Appointments &amp; Affiliations</h5>
                <section class="positions">
                   <%= for (p) in person["positions"] { %>
@@ -64,16 +67,9 @@
                   </div>
                   <% } %>
                </section>
-               <div><b>Orcid</b> <%= person["id"] %></div>
-               <div><b>Scopus</b> <%= person["scopusId"] %></div>
-            </vivo-tab-panel>
+               <% } %>
 
-            <vivo-tab id="background-tab" slot="tabs">
-               <h2>Background</h2>
-            </vivo-tab>
-            <vivo-tab-panel id="background-panel" slot="panels">
-               <h4>Education & Credentials</h4>
-               <h5>Education</h5>
+               <h4>Education</h4>
                <section class="educations">
                   <%= for (e) in person["educationAndTraining"] { %>
                   <div class="education">
@@ -99,15 +95,15 @@
                   </div>
                   <% } %>
                </section>
+
             </vivo-tab-panel>
 
             <vivo-tab id="research-tab" slot="tabs">
-               <h2>Research &amp; Expertise</h2>
+               <h3>Research &amp; Expertise</h3>
             </vivo-tab>
             <vivo-tab-panel id="research-panel" slot="panels">
-               <h4>Expertise</h4>
                <%= if (person["researchAreas"]) { %>
-               <h5>Subject Headings</h5>
+               <h4>Subject Headings</h4>
                <ul>
                   <%= for (k) in person["researchAreas"] { %>
                   <li>
@@ -119,7 +115,7 @@
                </ul>
                <% } %>
 
-               <h5 class="tab-content">Publications &amp; Artistic Works</h5>
+               <h4>Publications &amp; Artistic Works</h4>
 
                <vivo-publication-list>
                   <%= for (p) in person["publications"] { %>
@@ -139,20 +135,18 @@
                </vivo-publication-list>
             </vivo-tab-panel>
 
+
+            <%= if (person["courses"]) { %>
             <vivo-tab id="teaching-tab" slot="tabs">
-               <h2>Teaching &amp; Mentoring</h2>
+               <h3>Teaching &amp; Mentoring</h3>
             </vivo-tab>
             <vivo-tab-panel id="teaching-panel" slot="panels">
+               <h4>Courses</h4>
             </vivo-tab-panel>
-
-            <vivo-tab id="activities-tab" slot="tabs">
-               <h2>Professional Activities</h2>
-            </vivo-tab>
-            <vivo-tab-panel id="activities-panel" slot="panels">
-            </vivo-tab-panel>
+            <% } %>
 
          </vivo-tabs>
 
-      </main><!-- end col-10 -->
+      </main>
    
 </div><!-- end container -->
