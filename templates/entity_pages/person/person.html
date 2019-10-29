@@ -58,12 +58,13 @@
                <div>
                   <%= raw(person["overview"]) %>
                </div>
+               <%= inspect(person["positions"]) %>
                <%= if (person["positions"] && len(person["positions"]) > 0) { %>
-               <h5>Current Appointments &amp; Affiliations</h5>
+               <h4>Current Appointments &amp; Affiliations</h4>
                <section class="positions">
                   <%= for (p) in person["positions"] { %>
                   <div class="position">
-                     <span class="position-type"><%= p["label"] %></span>
+                     <span class="position-type"><%= p["title"] %></span>
                   </div>
                   <% } %>
                </section>

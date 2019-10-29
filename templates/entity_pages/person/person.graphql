@@ -24,6 +24,7 @@ query($id: String!) {
     positions {
       id
       type
+      title
     } 
     researchAreas {
       id
