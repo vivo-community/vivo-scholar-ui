@@ -24,3 +24,9 @@ class PublicationList extends LitElement {
 }
 
 customElements.define("vivo-publication-list", PublicationList);
+/*
+TODO:
+mock-up has 
+1. "Showing 3 featured publications" text
+2. + "Show all 16 publications >" button (aligned right) 
+*/
