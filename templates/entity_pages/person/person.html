@@ -58,7 +58,7 @@
                <div>
                   <%= raw(person["overview"]) %>
                </div>
-               <%= if (person["positions"]) { %>
+               <%= if (person["positions"] && len(person["positions"]) > 0) { %>
                <h5>Current Appointments &amp; Affiliations</h5>
                <section class="positions">
                   <%= for (p) in person["positions"] { %>
