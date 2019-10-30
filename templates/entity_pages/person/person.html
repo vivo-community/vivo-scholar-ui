@@ -122,7 +122,16 @@
                <%= for (p) in person["publications"] { %>
                <vivo-publication publication-url="/entities/publication/<%= p["id"] %>">
                   <div slot="title"><%= p["title"] %></div>
-                  <div slot="abstract"><%= raw(p["abstractText"]) %></div>
+                  <vivo-publication-abstract slot="abstract">
+                     <%= if (p["abstractText"]) { %>
+                       <%= raw(p["abstractText"]) %>
+                     <% } else { %>
+                        Answering the question as to why we age is tantamount to answering the question 
+                        of what is life itself. There are countless theories as to why and how we age, 
+                        but, until recently, the very definition of aging – senescence – was still 
+                        uncertain ... (<a href="#">More</a>)
+                     <% } %>
+                  </vivo-publication-abstract>
                   <span slot="date"><%= FormatGraphqlDateForSitemap(p["publicationDate"]) %></span>
                   <vivo-publication-author-list slot="authors">
                      <%= for (a) in p["authors"] { %>
