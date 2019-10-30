@@ -116,22 +116,12 @@
             </ul>
             <% } %>
 
-            <h4>Publications &amp; Artistic Works</h4>
+            <h4>Publications</h4>
 
             <vivo-publication-list>
                <%= for (p) in person["publications"] { %>
                <vivo-publication publication-url="/entities/publication/<%= p["id"] %>">
                   <div slot="title"><%= p["title"] %></div>
-                  <vivo-publication-abstract slot="abstract">
-                     <%= if (p["abstractText"]) { %>
-                       <%= raw(p["abstractText"]) %>
-                     <% } else { %>
-                        Answering the question as to why we age is tantamount to answering the question 
-                        of what is life itself. There are countless theories as to why and how we age, 
-                        but, until recently, the very definition of aging – senescence – was still 
-                        uncertain ... (<a href="#">More</a>)
-                     <% } %>
-                  </vivo-publication-abstract>
                   <span slot="date"><%= FormatGraphqlDateForSitemap(p["publicationDate"]) %></span>
                   <vivo-publication-author-list slot="authors">
                      <%= for (a) in p["authors"] { %>
@@ -140,6 +130,19 @@
                      </vivo-publication-author>
                      <% } %>
                   </vivo-publication-author-list>
+                  <span slot="publisher">
+                     <span>&middot; Placeholder Journal Name &middot;</span>
+                  </span>
+                  <vivo-publication-abstract slot="abstract">
+                        <%= if (p["abstractText"]) { %>
+                          <%= raw(p["abstractText"]) %>
+                        <% } else { %>
+                           Answering the question as to why we age is tantamount to answering the question 
+                           of what is life itself. There are countless theories as to why and how we age, 
+                           but, until recently, the very definition of aging – senescence – was still 
+                           uncertain ... (<a href="#">More</a>)
+                        <% } %>
+                  </vivo-publication-abstract>
                   <span slot="links">
                      <ul class="publication-links">
                         <li class="minimal-icon">
@@ -155,7 +158,6 @@
                            <i class="fas fa-quote-left"></i> Cite
                         </li>
                      </ul>
-
                   </span>
                </vivo-publication>
                <% } %>

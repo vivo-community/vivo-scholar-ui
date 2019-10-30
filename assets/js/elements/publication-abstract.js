@@ -27,10 +27,16 @@ customElements.define("vivo-publication-abstract", PublicationAbstract);
 TODO: 
 1. if text? in slot more than max-length characters - or slot takes up
    some amount of height/width ???
+ 
+   width.value = textbox.offsetWidth
+   height.value = textbox.offsetHeight
+
 2. hide with ... and a (More) button link
 3. click button to show rest (toggle? or not)
 
 e.g.
 html`<span>...</span><a @click="${this.clickHandler}">(More)</a>`
+
+
 
 */

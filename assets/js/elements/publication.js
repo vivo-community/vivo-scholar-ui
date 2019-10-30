@@ -46,6 +46,9 @@ class Publication extends LitElement {
       ::slotted([slot="links"]) {
         padding: 0em;
       }
+      ::slotted([slot="publisher"]) {
+        padding: 0.5em;
+      }
     `;
   }
 
@@ -63,6 +66,7 @@ class Publication extends LitElement {
             `}
       </div>
       <slot name="authors"></slot>
+      <slot name="publisher"></slot>
       <slot name="date"></slot>
       <slot name="abstract">[Placeholder Abstract]</slot>
       <slot name="links"></slot>
