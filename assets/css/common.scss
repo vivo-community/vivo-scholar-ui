@@ -99,6 +99,18 @@ vivo-tab-panel h4 {
   color: var(--primaryColor);
 }
 
+vivo-publication ul.publication-links {
+  list-style: none;
+  font-size: 0.75em; 
+  color: gray; 
+  padding: 0;
+}
+
+vivo-publication ul.publication-links li {
+  margin-right: 2em;
+  display: inline;
+  padding: 0;
+}
 
 /* grid experiment */
 .container {

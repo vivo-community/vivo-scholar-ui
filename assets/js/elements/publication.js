@@ -43,6 +43,9 @@ class Publication extends LitElement {
         padding: 0.5em;
         font-size: var(--publication-abstract-font-size, inherit);
       }
+      ::slotted([slot="links"]) {
+        padding: 0em;
+      }
     `;
   }
 
@@ -62,6 +65,7 @@ class Publication extends LitElement {
       <slot name="authors"></slot>
       <slot name="date"></slot>
       <slot name="abstract">[Placeholder Abstract]</slot>
+      <slot name="links"></slot>
     `;
   }
 }
