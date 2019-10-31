@@ -41,4 +41,6 @@
   translation: "Sign In"
 - id: scholar
   translation: "Scholar"
+- id: search
+  translation: "Search"
 
