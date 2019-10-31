@@ -77,6 +77,7 @@ class PublicationList extends LitElement {
          color: white;
          background-color: var(--highlightColor);
          padding: 0.5em;
+         cursor: pointer;
       }
       </style>
     ${this.truncatedPubCount > 0

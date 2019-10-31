@@ -12,13 +12,17 @@ class PublicationAuthor extends LitElement {
       :host {
         display: inline;
       }
+      a.author {
+        color: var(--darkNeutralColor);
+        text-decoration: none;
+      }
     `;
   }
 
   render() {
     if (this.profileUrl) {
       return html`
-        <a href="${this.profileUrl}">
+        <a class="author" href="${this.profileUrl}">
           <slot></slot>
         </a>
       `;
