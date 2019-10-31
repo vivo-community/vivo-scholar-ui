@@ -10,5 +10,11 @@
 - id: tab_background
   translation: "Background"
 - id: tab_research_expertise
-  translation: "Research And Expertise"
+  translation: "Research & Expertise"
+- id: tab_teaching_mentoring
+  translation: "Teaching & Mentoring"
+- id: tab_professional_activities
+  translation: "Professional Activites"
+- id: publications
+  translation: "Publications"
 
