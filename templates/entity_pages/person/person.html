@@ -17,15 +17,15 @@
                <h3 slot="heading"><%= t("profile_contact") %></h3>
                <div slot="content">
                   <%= if (person["primaryEmail"]) { %>
-                     <h4>Email:</h4>
+                     <h4><%= t("email") %></h4>
                      <span><%= person["primaryEmail"] %></span>
                   <% } %>
                   <%= if (person["phone"]) { %>
-                     <h4>Telephone:</h4>
+                     <h4><%= t("telephone") %></h4>
                      <span><%= person["phone"] %></span>
                   <% } %>
                   <%= if (person["streetAddress"]) { %>
-                     <h4>Address 1:</h4>
+                     <h4><%= t("address_1") %></h4>
                      <div><%= person["streetAddress"] %></div>
                   <% } %>
                </div>
@@ -54,13 +54,13 @@
                <h3><%= t("tab_about") %></h3>
             </vivo-tab>
             <vivo-tab-panel id="about-panel" slot="panels" selected>
-               <h4>Overview</h4>
+               <h4><%= t("overview") %></h4>
                <div>
                   <%= raw(person["overview"]) %>
                </div>
                
                <%= if (person["positions"] && len(person["positions"]) > 0) { %>
-               <h4>Current Appointments &amp; Affiliations</h4>
+               <h4><%= t("profile_current_appointments") %></h4>
                <section class="positions">
                   <%= for (p) in person["positions"] { %>
                   <div class="position">
@@ -70,7 +70,7 @@
                </section>
                <% } %>
 
-               <h4>Education</h4>
+               <h4><%= t("education") %></h4>
                <section class="educations">
                   <%= for (e) in person["educationAndTraining"] { %>
                   <div class="education">
@@ -104,7 +104,7 @@
             </vivo-tab>
             <vivo-tab-panel id="research-panel" slot="panels">
                <%= if (person["researchAreas"]) { %>
-               <h4>Subject Headings</h4>
+               <h4><%= t("subject_headings") %></h4>
                <ul>
                   <%= for (k) in person["researchAreas"] { %>
                   <li>
@@ -116,7 +116,7 @@
                </ul>
                <% } %>
 
-               <h4>Publications &amp; Artistic Works</h4>
+               <h4><%= t("publications") %></h4>
 
                <vivo-publication-list>
                   <%= for (p) in person["publications"] { %>
@@ -142,7 +142,7 @@
                <h3><%= t("tab_teaching_mentoring") %></h3>
             </vivo-tab>
             <vivo-tab-panel id="teaching-panel" slot="panels">
-               <h4>Courses</h4>
+               <h4><%= t("courses") %></h4>
             </vivo-tab-panel>
             <% } %>
 

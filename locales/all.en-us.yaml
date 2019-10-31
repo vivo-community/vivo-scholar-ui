@@ -17,4 +17,28 @@
   translation: "Professional Activites"
 - id: publications
   translation: "Publications"
+- id: email
+  translation: "Email"
+- id: telephone
+  translation: "Telephone"
+- id: address_1
+  translation: "Address 1"
+- id: overview
+  translation: "Overview"
+- id: profile_current_appointments
+  translation: "Current Appointments & Affiliations"
+- id: education
+  translation: "Education"
+- id: subject_headings
+  translation: "Subject Headings"
+- id: courses
+  translation: "Courses"
+- id: about
+  translation: "About"
+- id: browse
+  translation: "Browse"
+- id: sign_in
+  translation: "Sign In"
+- id: scholar
+  translation: "Scholar"
 
