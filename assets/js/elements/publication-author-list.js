@@ -43,7 +43,7 @@ class PublicationAuthorList extends LitElement {
         padding: 0;
       }
       ::slotted(vivo-publication-author):after {
-        content: "; ";
+        content: ", ";
       }
     `;
   }
@@ -58,6 +58,9 @@ class PublicationAuthorList extends LitElement {
         ::slotted(vivo-publication-author:nth-child(n
               + ${this.displayedAuthorCount + 1})) {
           display: none;
+        }
+        .truncated-authors {
+          background-color: var(--lightNeutralColor, inherit);
         }
       </style>
       <slot></slot>
