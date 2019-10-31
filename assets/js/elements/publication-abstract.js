@@ -15,8 +15,6 @@ class PublicationAbstract extends LitElement {
     this.truncatedText = "this should be the truncated text";
     this.maxLength = 5; // low just to make it obvious
     this.slotChanged = this.slotChanged.bind(this);
-    // doesn't seem to be called with window resize
-    this.onResize = this.onResize.bind(this);
   }
 
   firstUpdated(props) {
@@ -28,10 +26,6 @@ class PublicationAbstract extends LitElement {
         // abstract can have html in them though ...
         this.fullText = slot.assignedNodes()[0].textContent;
     }
-  }
-
-  onResize(e) {
-    console.log("publication-abstract resized");
   }
 
   slotChanged(e) {
@@ -71,27 +65,13 @@ TODO:
 1. if text? in slot more than max-length characters - or slot takes up
    some amount of height/width ???
  
-   width.value = textbox.offsetWidth
-   height.value = textbox.offsetHeight
+   width.value = slot.offsetWidth
+   height.value = slot.offsetHeight
 
 2. hide with ... and a (More) button link
 3. click button to show rest (toggle? or not)
 
 e.g.
 html`<span>...</span><a @click="${this.clickHandler}">(More)</a>`
-
-    ${this.truncatedPubCount > 0
-        ? html`
-          <div class="pub-summary">
-          <span class="pubs-shown-message"
-            >Showing ${this.displayedPubCount} featured publications
-          </span>
-          <span class="show-all-pubs" @click="${this.showAllPubs}"
-            >Show all ${this.truncatedPubCount} publications ></span
-          >
-          </div>
-        `
-        : null}
-
 
 */
