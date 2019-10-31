@@ -39,6 +39,7 @@ func init() {
 			"RemoveLanguageTag":           helpers.RemoveLanguageTag,
 			"MakeJSONString":              helpers.MakeJSONString,
 			"ThemeVariable":               helpers.ThemeVariable,
+			"Trim":                        helpers.Trim,
 		},
 	})
 }

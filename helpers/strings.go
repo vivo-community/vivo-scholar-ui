@@ -16,8 +16,11 @@ func RemoveLanguageTag(value string) string {
 
 func MakeJSONString(obj interface{}) string {
 	out, _ := json.Marshal(&obj)
-	//fmt.Printf("out=%s\n", out)
 	result := string(out)
-	//fmt.Printf("string=%s\n", result)
+	return result
+}
+
+func Trim(value string) string {
+	result := strings.TrimSpace(value)
 	return result
 }
