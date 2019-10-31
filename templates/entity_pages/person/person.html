@@ -122,7 +122,6 @@
                <%= for (p) in person["publications"] { %>
                <vivo-publication publication-url="/entities/publication/<%= p["id"] %>">
                   <div slot="title"><%= p["title"] %></div>
-                  <span slot="date"><%= FormatGraphqlDateForSitemap(p["publicationDate"]) %></span>
                   <vivo-publication-author-list slot="authors">
                      <%= for (a) in p["authors"] { %>
                      <vivo-publication-author profile-url="/entities/person/<%= a["id"] %>">
@@ -131,8 +130,9 @@
                      <% } %>
                   </vivo-publication-author-list>
                   <span slot="publisher">
-                     <span>&middot; Placeholder Journal Name &middot;</span>
+                     <span>&middot; Placeholder Journal Name</span>
                   </span>
+                  <span slot="date"> &middot; <%= FormatGraphqlDateForSitemap(p["publicationDate"]) %></span>
                   <vivo-publication-abstract slot="abstract">
                         <%= if (p["abstractText"]) { %>
                           <%= raw(p["abstractText"]) %>
