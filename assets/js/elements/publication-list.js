@@ -55,7 +55,6 @@ class PublicationList extends LitElement {
   }
 
   render() {
-    //console.log(`pubCount=${this.pubCount}`);
     return html`
       <style type="text/css">
       ::slotted(vivo-publication:nth-child(n
