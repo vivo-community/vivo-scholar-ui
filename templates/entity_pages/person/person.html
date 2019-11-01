@@ -119,7 +119,7 @@
             <h4>Publications</h4>
 
             <vivo-publication-list>
-               <%= for (p) in person["publications"] { %>
+               <%= for (idx, p) in person["publications"] { %>
                <vivo-publication publication-url="/entities/publication/<%= p["id"] %>">
                   <div slot="title"><%= p["title"] %></div>
                   <vivo-publication-author-list slot="authors">
@@ -137,10 +137,14 @@
                         <%= if (p["abstractText"]) { %>
                           <%= raw(p["abstractText"]) %>
                         <% } else { %>
+                           <%= if (idx < 1) { %> 
+                               Short one
+                           <% } else { %>
                            Answering the question as to why we age is tantamount to answering the question 
                            of what is life itself. There are countless theories as to why and how we age, 
                            but, until recently, the very definition of aging – senescence – was still 
                            uncertain AFTER THIS THE TEXT SHOULD CUT OFF
+                           <% } %>
                         <% } %>
                   </vivo-publication-abstract>
                   <span slot="links">
