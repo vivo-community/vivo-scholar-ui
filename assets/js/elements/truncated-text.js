@@ -5,7 +5,7 @@ NOTE: trying to combine ideas from these two pages:
 https://css-tricks.com/line-clampin/
 https://paulbakaus.com/tutorials/css/multiline-truncated-text-with-show-more-button-with-just-css/
 */
-class PublicationAbstract extends LitElement {
+class TruncatedText extends LitElement {
 
     firstUpdated(props) {
         var shadow = this.shadowRoot
@@ -98,7 +98,7 @@ class PublicationAbstract extends LitElement {
     }
 }
 
-customElements.define("vivo-publication-abstract", PublicationAbstract);
+customElements.define("vivo-truncated-text", TruncatedText);
 /*
 
 TODO:

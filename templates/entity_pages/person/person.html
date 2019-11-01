@@ -133,7 +133,7 @@
                      <span>&middot; Placeholder Journal Name</span>
                   </span>
                   <span slot="date"> &middot; <%= FormatGraphqlDateForSitemap(p["publicationDate"]) %></span>
-                  <vivo-publication-abstract slot="abstract">
+                  <vivo-truncated-text slot="abstract">
                         <%= if (p["abstractText"]) { %>
                           <%= raw(p["abstractText"]) %>
                         <% } else { %>
@@ -146,7 +146,7 @@
                            uncertain AFTER THIS THE TEXT SHOULD CUT OFF
                            <% } %>
                         <% } %>
-                  </vivo-publication-abstract>
+                  </vivo-truncated-text>
                   <span slot="links">
                      <ul class="publication-links">
                         <li class="minimal-icon">
