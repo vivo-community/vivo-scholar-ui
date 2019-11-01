@@ -36,11 +36,17 @@ class PublicationAbstract extends LitElement {
         position: absolute;
         pointer-events: none;
       }
+      label {
+          color: var(--linkColor);
+      }
       input:focus ~ label {
         outline: -webkit-focus-ring-color auto 5px;
       }
       div.full-text + label.read-more { display: none; }
       div:truncated + label.read-more { display: block; }
+      div.full-text::before {
+        content: "";
+      }
       input:checked + div {
         overflow: revert;
       }
@@ -67,6 +73,7 @@ class PublicationAbstract extends LitElement {
         content: "...";
         inset-block-end: 0; 
         inset-inline-end: 0; 
+        right: 36px;
       }
 
       .truncate-overflow::after {
@@ -77,7 +84,6 @@ class PublicationAbstract extends LitElement {
         height: 1rem;
         background: white;
      }
-
     `;
     }
 
@@ -96,7 +102,7 @@ customElements.define("vivo-publication-abstract", PublicationAbstract);
 /*
 
 TODO:
-1. Make 'Show More' color like link
-2. Have 'Show More' button hide when text is not truncated
-3. Fix ellipsis placement - far to right - too much space etc...
+1. Ideally (More) button would be right next to ellipsis, and position
+   of ellipsis would be always right after last character of truncated
+   text
 */
