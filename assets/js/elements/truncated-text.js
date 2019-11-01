@@ -73,7 +73,6 @@ class TruncatedText extends LitElement {
         content: "...";
         inset-block-end: 0; 
         inset-inline-end: 0; 
-        right: 36px;
       }
 
       .truncate-overflow::after {
