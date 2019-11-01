@@ -48,7 +48,7 @@ class TruncatedText extends LitElement {
         content: "";
       }
       input:checked + div {
-        overflow: revert;
+        overflow: unset;
       }
       input:checked ~ label {
         display: none;
