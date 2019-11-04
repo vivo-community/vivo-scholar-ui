@@ -92,7 +92,9 @@ class TruncatedText extends LitElement {
     <div class="truncate-overflow full-text">
       <slot id="pub-abstract"></slot>
     </div>
-    <label for="expanded" role="button" class="read-more">(More)</label>
+    <label for="expanded" role="button" 
+      aria-label="Show full abstract of publication" 
+      class="read-more">(More)</label>
     `;
     }
 }
