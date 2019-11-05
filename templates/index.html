@@ -1,10 +1,8 @@
-<header>
-    <h1><%= t("welcome_greeting") %></h1>
-</header>
-
-<h2>Index Page</h2>
-<div>
-  <p>Stuff ...</p>
-</div>
-
-
+<style>
+  body {
+    background-image: url('<%= assetPath("images/"+ThemeVariable("backgroundImage")) %>');
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+</style>
+<vivo-site-search-box class="site-search" action="/search/people"></vivo-site-search-box>

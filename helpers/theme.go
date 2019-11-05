@@ -14,6 +14,8 @@ var theme = map[string]string{
 	"darkNeutralColor":         envy.Get("THEME_DARK_NEUTRAL_COLOR", "#7f7f7f"),
 	"mediumNeutralColor":       envy.Get("THEME_MEDIUM_NEUTRAL_COLOR", "#cbced3"),
 	"lightNeutralColor":        envy.Get("THEME_LIGHT_NEUTRAL_COLOR", "#e2e6ed"),
+	"backgroundImage":          envy.Get("THEME_BACKGROUND_IMAGE", "002119_abele_plaque_004.jpg"),
+	"backgroundColor":          envy.Get("THEME_BACKGROUND_COLOR", "#7f7f7f"),
 }
 
 func ThemeVariable(varname string) string {
