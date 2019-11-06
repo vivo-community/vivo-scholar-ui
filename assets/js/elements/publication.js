@@ -30,9 +30,6 @@ class Publication extends LitElement {
         background-color: transparent;
         color: var(--linkColor);
       }
-      ::slotted([slot="abstract"]) {
-        padding: 0.5em;
-      }
     `;
   }
 
@@ -59,35 +56,3 @@ class Publication extends LitElement {
 }
 
 customElements.define("vivo-publication", Publication);
-/*
-TODO:
-1. abstract needs (More...) link - > ? # of characters? 318?
-2. publication Full Text, Open Access, Link to Item, Cite links
-3. journal name?
-
-      .title {
-        font-size: var(--publication-title-font-size, 19px);
-        font-weight: bold;
-        color: var(--publication-title-color, #2f3d4f);
-        margin-bottom: 8px;
-      }
-      .title a {
-        color: var(--publication-title-link-color, #007bff);
-        text-decoration: none;
-        background-color: transparent;
-      }
-      ::slotted([slot="abstract"]) {
-        padding: 0.5em;
-        font-size: var(--publication-abstract-font-size, inherit);
-      }
-
-      ::slotted([slot="authors"]) {
-        font-weight: var(--publication-authors-font-weight, bold);
-        font-size: var(--publication-authors-font-size, inherit);
-      }
-      ::slotted([slot="date"]) {
-        font-style: var(--publication-date-font-style, italic);
-        font-size: var(--publication-date-font-size, inherit);
-      }
-
-*/
