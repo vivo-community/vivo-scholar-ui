@@ -1,8 +1,15 @@
+<!-- TODO: still need to take into account if no theme
+     background image (just background color)
+-->
 <style>
     html, body { height: 100%; width: 100%; margin: 0; }
     .content {
+        <%= if (ThemeVariable("backgroundImage") != "") { %>
         background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ),
         url('<%= assetPath("images/"+ThemeVariable("backgroundImage")) %>');
+        <% } else { %>
+        background: "<%= ThemeVariable("backgroundColor") %>";
+        <% } %>
         background-repeat: no-repeat;
         background-size: cover;
         height: 100%;
