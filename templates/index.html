@@ -1,7 +1,30 @@
+<style>
+    .content {
+        background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ),
+        url('<%= assetPath("images/"+ThemeVariable("backgroundImage")) %>');
+        background-repeat: no-repeat;
+        background-size: cover;
+        height: 1200px;/* doesn't take 100%? */
+        width: 100%;
+        padding: 0;
+    }
+
+    .middle {
+        position: fixed;
+        top: 50%;
+        left: 12.5%; /* NOTE: not actually centering */
+    }
+
+    h2 {
+        font-weight: bold;
+        color: #FFFFFF;
+        font-size: 2em;
+    }
+</style>
 
 <div class="content">
-  <div class="middle">
-    <h2>Discover the world of research and scholarship.</h2>
-    <vivo-site-search-box class="site-search" action="/search/people"></vivo-site-search-box>
-  </div>
+    <div class="middle">
+        <h2>Discover the world of research and scholarship.</h2>
+        <vivo-site-search-box class="site-search" action="/search/people"></vivo-site-search-box>
+    </div>
 </div>
