@@ -88,6 +88,10 @@ vivo-sidebar-item h4 {
   font-size: 0.85em;
 }
 
+vivo-sidebar-item h4:after {
+  content: ":";
+}
+
 vivo-tab h3 {
   padding: 0em;
   font-size: 0.9em;

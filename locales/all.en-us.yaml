@@ -1,3 +1,46 @@
 # For more information on using i18n see: https://github.com/nicksnyder/go-i18n
 - id: welcome_greeting
   translation: "Welcome to VIVO-Scholar (EN)"
+- id: profile_contact
+  translation: "Contact"
+- id: profile_professional_links
+  translation: "Professional Links"
+- id: tab_about
+  translation: "About"
+- id: tab_background
+  translation: "Background"
+- id: tab_research_expertise
+  translation: "Research & Expertise"
+- id: tab_teaching_mentoring
+  translation: "Teaching & Mentoring"
+- id: tab_professional_activities
+  translation: "Professional Activites"
+- id: publications
+  translation: "Publications"
+- id: email
+  translation: "Email"
+- id: telephone
+  translation: "Telephone"
+- id: address_1
+  translation: "Address 1"
+- id: overview
+  translation: "Overview"
+- id: profile_current_appointments
+  translation: "Current Appointments & Affiliations"
+- id: education
+  translation: "Education"
+- id: subject_headings
+  translation: "Subject Headings"
+- id: courses
+  translation: "Courses"
+- id: about
+  translation: "About"
+- id: browse
+  translation: "Browse"
+- id: sign_in
+  translation: "Sign In"
+- id: scholar
+  translation: "Scholar"
+- id: search
+  translation: "Search"
+

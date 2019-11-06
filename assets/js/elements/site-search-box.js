@@ -6,6 +6,7 @@ class SiteSearchBox extends LitElement {
     return {
       action: { type: String },
       query: { type: String },
+      label: { type: String },
       externalSubmit: { attribute: 'external-submit', type: Boolean }
     }
   }
@@ -13,6 +14,7 @@ class SiteSearchBox extends LitElement {
   constructor() {
     super();
     this.query = "";
+    this.label = "Search"; //default
     this.externalSubmit = false;
   }
 
@@ -55,8 +57,8 @@ class SiteSearchBox extends LitElement {
   render() {
     return html`
       <form method="GET" action="${this.action}" @submit="${this.handleSubmit}">
-        <input name="search" id="search" type="text" placeholder="Search" value="${this.query}"/>
-        <button type="submit">Search</button>
+        <input name="search" id="search" type="text" placeholder="${this.label}" value="${this.query}"/>
+        <button type="submit">${this.label}</button>
       </form>
     `
   }
