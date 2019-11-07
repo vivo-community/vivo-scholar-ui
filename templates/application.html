@@ -15,10 +15,14 @@
   </head>
   <body>
     <vivo-site-header class="site-header">
-      <h1 slot="title">VIVO | <span class="highlight"><%= t("scholar") %></span></h1>
-      <a slot="nav-item" href="/pages/about"><%= t("about") %></a>
-      <a slot="nav-item" href="/search/people?search=*"><%= t("browse") %></a>
-      <a slot="nav-item" href=""><%= t("sign_in") %></a>
+      <h1 slot="title">VIVO | 
+        <span class="highlight">
+          <a href="/">Scholar</a>
+        </span>
+      </h1>
+      <a slot="nav-item" href="/pages/about">About</a>
+      <a slot="nav-item" href="/search/people?search=*">Browse</a>
+      <a slot="nav-item" href="">Sign In</a>
     </vivo-site-header>
     <vivo-site-sub-header class="site-sub-header">
       <vivo-site-search-box class="site-search" 

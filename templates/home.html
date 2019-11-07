@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8">
+  <title>Buffalo - Vivo Scholar</title>
+  <%= partial("theme_variables") %>
+  <%= stylesheetTag("application.css") %>
+  <meta name="csrf-param" content="authenticity_token" />
+  <meta name="csrf-token" content="<%= authenticity_token %>" />
+  <link rel="icon" href="<%= assetPath("images/favicon.ico") %>">
+  <%= javascriptTag("vendor/custom-elements-es5-adapter.js") %>
+  <%= javascriptTag("vendor/webcomponents-bundle.js") %>
+  <%= javascriptTag("elements.js") %>
+
+
+</head>
+
+<body>
+  <!-- TODO: should probably make this shareable snippet -->
+  <vivo-site-header class="site-header">
+      <h1 slot="title">VIVO | 
+          <span class="highlight">
+            <a href="/">Scholar</a>
+          </span>
+        </h1>
+    <a slot="nav-item" href="/pages/about">About</a>
+    <a slot="nav-item" href="/search/people?search=*">Browse</a>
+    <a slot="nav-item" href="">Sign In</a>
+  </vivo-site-header>
+
+  <%= yield %>
+  <%= javascriptTag("application.js") %>
+</body>
+
+</html>

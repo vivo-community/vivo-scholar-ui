@@ -22,8 +22,9 @@
   margin: 210px auto 0 auto;
 }
 
-.highlight {
+.highlight, .highlight a {
   color: var(--highlightColor);
+  text-decoration: none;
 }
 
 .profile-image {
@@ -154,5 +155,9 @@ h2.preferred-title {
 }
 
 * {
+  font-family:"Verdana";
+}
+
+aside {
   font-family:"Arial";
 }
