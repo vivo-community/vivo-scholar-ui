@@ -26,10 +26,14 @@ class SiteSearchBox extends LitElement {
         margin: 0;
         width: 100%;
       }
-      form {
-        border: 1px solid var(--highlightColor);
+      #search-box {
         display: flex;
         flex-flow: row-nowrap;
+      }
+      form {
+        display: flex;
+        width: 100%;
+        border: 1px solid var(--highlightColor);
       }
       input[name="search"] {
         flex: 1;
@@ -45,6 +49,9 @@ class SiteSearchBox extends LitElement {
         font-size: 1em;
         font-weight: bold;
       }
+      ::slotted([slot="after"]) {
+        flex: 1;
+      }
     `
   }
 
@@ -58,10 +65,14 @@ class SiteSearchBox extends LitElement {
 
   render() {
     return html`
-      <form method="GET" action="${this.action}" @submit="${this.handleSubmit}">
-        <input name="search" id="search" type="text" placeholder="${this.placeholder}" value="${this.query}"/>
-        <button type="submit">${this.label}</button>
-      </form>
+      <div id="search-box">
+        <form method="GET" action="${this.action}" @submit="${this.handleSubmit}">
+          <input name="search" id="search" type="text" placeholder="${this.placeholder}" value="${this.query}"/>
+          <button type="submit">${this.label}</button>
+        </form>
+        <slot name="after"></slot>
+      </div>
+      
     `
   }
 

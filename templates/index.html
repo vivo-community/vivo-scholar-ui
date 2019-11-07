@@ -24,6 +24,13 @@
         color: #FFFFFF;
         font-size: 2em;
     }
+    i {
+        color: #FFFFFF;
+        font-size: 2em;
+        padding-top: 0.5em; /* tricked into aligning */
+        border: none;
+        display: inline;
+    }
 </style>
 
 <div class="content">
@@ -34,6 +41,7 @@
             label="<%= t("search") %>" 
             placeholder="<%= t("home_search_text") %>"
         >
+        <i slot="after" class="fas fa-info-circle"></i>
         </vivo-site-search-box>
     </div>
 </div>
