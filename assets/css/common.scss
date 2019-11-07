@@ -128,6 +128,7 @@ vivo-truncated-text {
   grid-template-columns: repeat(12, 1fr);
   width: 100%;
   margin: 0 auto;
+  grid-auto-flow: dense
 }
 
 aside {
@@ -138,6 +139,16 @@ aside {
 main {
   grid-column: span 10;
   padding: 0.25em;
+}
+
+@media screen and (max-width: 800px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+  }
+  .container div:first-child {
+    order: 2;
+  }
 }
 
 main h2 {

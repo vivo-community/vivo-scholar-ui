@@ -40,6 +40,17 @@ class Tab extends LitElement {
         color: var(--textColor);
         border-bottom: 1px solid var(--textColor);
       }
+
+      @media screen and (max-width: 800px) {
+        :host {
+          display:flex;
+          flex-direction: column;
+          
+        }
+        :host(vivo-tab-panel:first-child) {
+          order: 2;
+        }
+      }
     `
   }
 
