@@ -29,6 +29,11 @@
 <div class="content">
     <div class="middle">
         <h2>Discover the world of research and scholarship.</h2>
-        <vivo-site-search-box class="site-search" action="/search/people"></vivo-site-search-box>
+        <vivo-site-search-box class="site-search"
+            action="/search/people"
+            label="<%= t("search") %>" 
+            placeHolder="<%= t("home_search_text") %>"
+        >
+        </vivo-site-search-box>
     </div>
 </div>
