@@ -141,16 +141,6 @@ main {
   padding: 0.25em;
 }
 
-@media screen and (max-width: 800px) {
-  .container {
-    display: flex;
-    flex-direction: column;
-  }
-  .container div:first-child {
-    order: 2;
-  }
-}
-
 main h2 {
   color: var(--primaryColor);
 }
@@ -171,4 +161,15 @@ h2.preferred-title {
 
 aside {
   font-family:"Arial";
+}
+
+/* responsive css */
+@media screen and (max-width: 800px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+  }
+  .container div:first-child {
+    order: 2;
+  }
 }
