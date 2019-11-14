@@ -110,7 +110,7 @@ class Tabs extends LitElement {
         flex-grow: 1;
         width: 100%;
         display: none;
-        padding: 1rem;
+        padding: 0;
         background: #fafafa;
         border-top: 10px solid var(--highlightBackgroundColor);
       }
