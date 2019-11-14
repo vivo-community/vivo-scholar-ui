@@ -17,16 +17,13 @@ class Tabs extends LitElement {
   }
 
   firstUpdated() {
-    this._tabSlot = this.shadowRoot.querySelector('slot[name="tabs"]');
-    this._panelSlot = this.shadowRoot.querySelector('slot[name="panels"]');
-    this._tabSlot.addEventListener('slotchange',this._onSlotChange);
-    this._panelSlot.addEventListener('slotchange',this._onSlotChange);
+    this._slot = this.shadowRoot.querySelector("slot");
+    this._slot.addEventListener('slotchange', this._onSlotChange);
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
-    this._tabSlot.removeEventListener('slotchange',this._onSlotChange);
-    this._panelSlot.removeEventListener('slotchange',this._onSlotChange);
+    this._slot.removeEventListener('slotchange', this._onSlotChange);
   }
 
   _onSlotChange() {
@@ -62,43 +59,26 @@ class Tabs extends LitElement {
     if (tab) {
       let tabs = this.querySelectorAll('vivo-tab');
       tabs.forEach((t) => t.removeAttribute('selected'));
-      tab.setAttribute('selected','selected');
+      tab.setAttribute('selected', 'selected');
       let index = Array.from(tabs).indexOf(tab);
       let panels = this.querySelectorAll('vivo-tab-panel');
       panels.forEach((t) => t.removeAttribute('selected'));
-      panels[index].setAttribute('selected','selected');
+      panels[index].setAttribute('selected', 'selected');
     }
   }
 
   static get styles() {
     return css`
       :host {
-        display: block;
-        box-sizing: border-box;
-      }
-      ::slotted(vivo-tab-panel) {
-        display: none;
-      }
-      ::slotted(vivo-tab-panel[selected]) {
-        display: block;
-      }
-      :host([vivo-tab-style="primary"]) slot[name="tabs"] {
-        display: block;
-        margin: 0 0 .75em 0;
-        border-bottom: 10px solid var(--highlightBackgroundColor);
-      }
-      :host([vivo-tab-style="secondary"]) slot[name="tabs"] {
-        display: block;
-        margin: 0 0 .75em 0;
-        border-bottom: 1px solid var(--mediumNeutralColor);
-      }
+        display: flex;
+        flex-wrap: wrap;
+      }   
     `
   }
 
   render() {
     return html`
-      <slot name="tabs" @click="${this.selectTab}"></slot>
-      <slot name="panels"></slot>
+        <slot @click="${this.selectTab}"/>
     `
   }
 }
