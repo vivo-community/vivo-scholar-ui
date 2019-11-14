@@ -118,18 +118,20 @@ class Tabs extends LitElement {
         border-top: 1px solid var(--mediumNeutralColor);
       }
       @media (max-width: 45em) {
-        ::slotted(vivo-tab2) {
+        ::slotted(vivo-tab) {
           order: initial;
+        }
+        ::slotted(vivo-tab[selected]) {
+          background-color: transparent;
         }
         ::slotted(vivo-tab) {
           width: 100%;
           margin-right: 0;
           margin-top: 0.2rem;
-          background-color: var(--highlightBackgroundColor);
+          border-bottom: 1px solid var(--highlightBackgroundColor);
         }
         :host([vivo-tab-style="secondary"]) ::slotted(vivo-tab) {
           color: var(--textColor);
-          border-bottom: 1px solid var(--textColor);
         }
         ::slotted(vivo-tab-panel), ::slotted(vivo-tab) {
             order: initial;
@@ -151,4 +153,7 @@ class Tabs extends LitElement {
   }
 }
 
+// TODO:
+// <i class="fas fa-chevron-down"></i>
+// selected: <i class="fas fa-chevron-up"></i>
 customElements.define('vivo-tabs', Tabs);
