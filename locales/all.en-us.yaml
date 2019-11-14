@@ -45,4 +45,6 @@
   translation: "Search"
 - id: home_search_text
   translation: "Search for scholar names or research topics"
+- id: keywords
+  translation: "Keywords"
 
