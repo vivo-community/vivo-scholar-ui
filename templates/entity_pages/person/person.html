@@ -42,7 +42,21 @@
                <% } %>
             </div>
          </vivo-sidebar-item>
+
+         <%= if (person["researchAreas"]) { %>
+            <vivo-sidebar-item>
+                  <h3 slot="heading"><%= t("keywords") %></h3>
+                  <div slot="content">
+                        <%= for (k) in person["researchAreas"] { %>
+                           <div>
+                              <a href="/entities/concepts/<%= k["id"] %>">
+                                 <%= k["label"] %>
+                              </a>
+                           </div>
+                           <% } %>
+                  </div>
       </vivo-sidebar>
+      <% } %>
    </aside>
 
    <main>
@@ -103,19 +117,6 @@
             <h3><%= t("tab_research_expertise") %></h3>
          </vivo-tab>
          <vivo-tab-panel id="research-panel">
-            <%= if (person["researchAreas"]) { %>
-            <h4><%= t("subject_headings") %></h4>
-            <ul>
-               <%= for (k) in person["researchAreas"] { %>
-               <li>
-                  <a href="/entities/concepts/<%= k["id"] %>">
-                     <%= k["label"] %>
-                  </a>
-               </li>
-               <% } %>
-            </ul>
-            <% } %>
-
             <h4><%= t("publications") %></h4>
 
             <vivo-publication-list>
