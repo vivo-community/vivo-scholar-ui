@@ -50,10 +50,10 @@
       <h2 class="preferred-title"><%= person["preferredTitle"] %></h2>
       <!-- tabs -->
       <vivo-tabs>
-         <vivo-tab id="about-tab" slot="tabs" selected>
+         <vivo-tab id="about-tab" selected>
             <h3><%= t("about") %></h3>
          </vivo-tab>
-         <vivo-tab-panel id="about-panel" slot="panels" selected>
+         <vivo-tab-panel id="about-panel" selected>
             <h4><%= t("overview") %></h4>
             <div>
                <%= raw(person["overview"]) %>
@@ -70,7 +70,7 @@
             </section>
             <% } %>
 
-            <h4><%= t("profile_education") %></h4>
+            <h4><%= t("education") %></h4>
             <section class="educations">
                <%= for (e) in person["educationAndTraining"] { %>
                <div class="education">
@@ -99,10 +99,10 @@
 
          </vivo-tab-panel>
 
-         <vivo-tab id="research-tab" slot="tabs">
+         <vivo-tab id="research-tab">
             <h3><%= t("tab_research_expertise") %></h3>
          </vivo-tab>
-         <vivo-tab-panel id="research-panel" slot="panels">
+         <vivo-tab-panel id="research-panel">
             <%= if (person["researchAreas"]) { %>
             <h4><%= t("subject_headings") %></h4>
             <ul>
@@ -170,10 +170,10 @@
 
 
          <%= if (person["courses"]) { %>
-         <vivo-tab id="teaching-tab" slot="tabs">
+         <vivo-tab id="teaching-tab">
             <h3><%= t("tab_teaching") %></h3>
          </vivo-tab>
-         <vivo-tab-panel id="teaching-panel" slot="panels">
+         <vivo-tab-panel id="teaching-panel">
             <h4><%= t("courses") %></h4>
          </vivo-tab-panel>
          <% } %>

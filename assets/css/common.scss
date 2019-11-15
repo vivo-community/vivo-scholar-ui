@@ -94,6 +94,7 @@ vivo-sidebar-item h4:after {
 }
 
 vivo-tab h3 {
+  display: inline;
   padding: 0em;
   font-size: 0.9em;
   margin: 0;
@@ -128,6 +129,7 @@ vivo-truncated-text {
   grid-template-columns: repeat(12, 1fr);
   width: 100%;
   margin: 0 auto;
+  grid-auto-flow: dense
 }
 
 aside {
@@ -160,4 +162,15 @@ h2.preferred-title {
 
 aside {
   font-family:"Arial";
+}
+
+/* responsive css */
+@media screen and (max-width: 800px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+  }
+  .container div:first-child {
+    order: 2;
+  }
 }
