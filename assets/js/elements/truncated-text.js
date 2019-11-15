@@ -60,7 +60,7 @@ class TruncatedText extends LitElement {
 
       .truncate-overflow {
         --max-lines: 2;
-        --lh: 1.2rem;
+        --lh: 1.25;
         line-height: var(--lh);
         position: relative;
         max-height: calc(var(--lh) * var(--max-lines));
