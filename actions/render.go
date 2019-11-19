@@ -30,16 +30,23 @@ func init() {
 
 		// Add template helpers here:
 		Helpers: render.Helpers{
-			"FormatDateTime": helpers.FormatDateTime,
-			"FloatToInt":     helpers.FloatToInt,
+			"FormatDateTime":    helpers.FormatDateTime,
+			"FormatISODate":     helpers.FormatISODate,
+			"FormatGraphqlDate": helpers.FormatGraphqlDate,
+			"FloatToInt":        helpers.FloatToInt,
 			// TODO: not sure about this
-			"FigurePagingInfo":            helpers.FigurePagingInfo,
-			"HasKey":                      helpers.HasKey,
-			"FormatGraphqlDateForSitemap": helpers.FormatGraphqlDateForSitemap,
-			"RemoveLanguageTag":           helpers.RemoveLanguageTag,
-			"MakeJSONString":              helpers.MakeJSONString,
-			"ThemeVariable":               helpers.ThemeVariable,
-			"Trim":                        helpers.Trim,
+			"FigurePagingInfo":           helpers.FigurePagingInfo,
+			"HasKey":                     helpers.HasKey,
+			"RemoveLanguageTag":          helpers.RemoveLanguageTag,
+			"MakeJSONString":             helpers.MakeJSONString,
+			"ThemeVariable":              helpers.ThemeVariable,
+			"Trim":                       helpers.Trim,
+			"SortByStringField":          helpers.SortByStringField,
+			"SortByStringFieldDesc":      helpers.SortByStringFieldDesc,
+			"SortByISODateField":         helpers.SortByISODateField,
+			"SortByISODateFieldDesc":     helpers.SortByISODateFieldDesc,
+			"SortByGraphqlDateField":     helpers.SortByGraphqlDateField,
+			"SortByGraphqlDateFieldDesc": helpers.SortByGraphqlDateFieldDesc,
 		},
 	})
 }

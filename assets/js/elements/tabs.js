@@ -42,9 +42,24 @@ class Tabs extends LitElement {
         panel.vivoTabStyle = this.vivoTabStyle;
       }
     });
+    if (this.tabs.length >= 1 && this.panels.length >= 1 && this.tabs.filter((t) => t.selected).length == 0) {
+      this.selectTab(this.tabs[0]);
+    }
   }
 
-  selectTab(e) {
+  selectTab(tab) {
+    if (tab) {
+      let tabs = this.querySelectorAll('vivo-tab');
+      tabs.forEach((t) => t.removeAttribute('selected'));
+      tab.setAttribute('selected', 'selected');
+      let index = Array.from(tabs).indexOf(tab);
+      let panels = this.querySelectorAll('vivo-tab-panel');
+      panels.forEach((t) => t.removeAttribute('selected'));
+      panels[index].setAttribute('selected', 'selected');
+    }
+  }
+
+  handleSelectTab(e) {
     let tab = e.target;
     while (tab) {
       if (tab.matches('vivo-tab')) {
@@ -56,15 +71,7 @@ class Tabs extends LitElement {
         tab = tab.parentElement;
       }
     }
-    if (tab) {
-      let tabs = this.querySelectorAll('vivo-tab');
-      tabs.forEach((t) => t.removeAttribute('selected'));
-      tab.setAttribute('selected', 'selected');
-      let index = Array.from(tabs).indexOf(tab);
-      let panels = this.querySelectorAll('vivo-tab-panel');
-      panels.forEach((t) => t.removeAttribute('selected'));
-      panels[index].setAttribute('selected', 'selected');
-    }
+    this.selectTab(tab);
   }
 
   static get styles() {
@@ -78,7 +85,7 @@ class Tabs extends LitElement {
 
   render() {
     return html`
-        <slot @click="${this.selectTab}"/>
+        <slot @click="${this.handleSelectTab}"/>
     `
   }
 }

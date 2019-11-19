@@ -10,7 +10,7 @@ query($id: String!) {
     websites {
       label
       url
-    }    
+    }
     educationAndTraining {
       id
       field
@@ -20,12 +20,18 @@ query($id: String!) {
       }
       startDate
       endDate
-    }    
+    }
     positions {
       id
       type
       title
-    } 
+      dateTimeIntervalStart
+      dateTimeIntervalEnd
+      organization {
+        id
+        label
+      }
+    }
     researchAreas {
       id
       label
@@ -43,8 +49,8 @@ query($id: String!) {
       authors {
         id
         label
-      }   
-      publicationDate   
+      }
+      publicationDate
     }
     # no data
     geographicFocus {

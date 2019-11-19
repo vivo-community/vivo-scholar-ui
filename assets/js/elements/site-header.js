@@ -33,6 +33,17 @@ class SiteHeader extends LitElement {
         text-decoration: none;
         color: white !important;
       }
+      @media (min-height: 400px) {
+        :host([large]) {
+          height: 150px;
+          align-items: flex-end;
+          padding-bottom: 20px;
+        }
+        :host([large]) ::slotted([slot="title"]) {
+          font-size: 5em !important;
+          padding-bottom: 20px;
+        }
+      }
     `
   }
 
