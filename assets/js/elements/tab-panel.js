@@ -15,7 +15,6 @@ class TabPanel extends LitElement {
       width: 100%;
       display: none;
       padding: 0;
-      background: #fafafa;
       border-top: 10px solid var(--highlightBackgroundColor);
     }
     :host([selected]) {

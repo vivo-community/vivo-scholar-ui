@@ -4,7 +4,8 @@ class Tab extends LitElement {
         
   static get properties() {
     return {
-      vivoTabStyle: { attribute: 'vivo-tab-style', type: String, reflect: true }
+      vivoTabStyle: { attribute: 'vivo-tab-style', type: String, reflect: true },
+      selected: { type: Boolean }
     }
   }
 
@@ -14,7 +15,7 @@ class Tab extends LitElement {
         order: 1;
         display: block;
         cursor: pointer;
-        padding: 1rem 2rem;
+        padding: 1rem;
       }
       :host([selected]) {
         background-color: var(--highlightBackgroundColor);
@@ -25,6 +26,7 @@ class Tab extends LitElement {
       :host([vivo-tab-style="secondary"]) {
         color: var(--darkNeutralColor);
         background-color: transparent;
+        padding: .5rem 1rem;
       }
       :host([vivo-tab-style="secondary"]:hover) {
         color: var(--textColor);

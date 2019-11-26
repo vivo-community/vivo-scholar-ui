@@ -1,36 +1,32 @@
 package helpers
 
 import (
-	"fmt"
-	"log"
 	"time"
 )
 
-func FormatGraphqlDateForSitemap(dateTime string) string {
-	// Mon Apr 18 21:46:34 UTC 2016
-	// Mon Jan 2 15:04:05 MST 2006
-	// don't try to parse empty string
+func FormatGraphqlDate(dateTime string, resolution string) string {
 	if len(dateTime) == 0 {
 		return ""
 	}
-	isoDateTime, error := time.Parse("Mon Jan 2 15:04:05 UTC 2006", dateTime)
+	graphqlDateTime, error := parseGraphqlDateTime(dateTime)
 	if error != nil {
-		errorMsg := fmt.Sprintf("%v\n", error)
-		fmt.Printf("error=%s\n", errorMsg)
-		return errorMsg
-		//log.Fatal(error)
+		return "datetime parse error"
 	}
-	layout := "2006-01-02"
-	result := isoDateTime.Format(layout)
-	return result
+	return FormatDateTime(graphqlDateTime, resolution)
 }
 
-func FormatDateTime(dateTime map[string]interface{}) string {
-	isoDateTime, error := time.Parse("2006-01-02T15:04:05", dateTime["dateTime"].(string))
-	if error != nil {
-		log.Fatal(error)
+func FormatISODate(dateTime string, resolution string) string {
+	if len(dateTime) == 0 {
+		return ""
 	}
-	resolution := dateTime["resolution"]
+	isoDateTime, error := parseISODateTime(dateTime)
+	if error != nil {
+		return "datetime parse error"
+	}
+	return FormatDateTime(isoDateTime, resolution)
+}
+
+func FormatDateTime(dateTime time.Time, resolution string) string {
 	layout := "2006-01-02"
 	switch resolution {
 	case "year":
@@ -40,5 +36,13 @@ func FormatDateTime(dateTime map[string]interface{}) string {
 	case "yearMonthDay":
 		layout = "2006-01-02"
 	}
-	return isoDateTime.Format(layout)
+	return dateTime.Format(layout)
+}
+
+func parseISODateTime(dateTime string) (time.Time, error) {
+	return time.Parse("2006-01-02T15:04:05", dateTime)
+}
+
+func parseGraphqlDateTime(dateTime string) (time.Time, error) {
+	return time.Parse("Mon Jan 2 15:04:05 UTC 2006", dateTime)
 }

@@ -8,10 +8,6 @@ class Sidebar extends LitElement {
             display: block;
             box-sizing: border-box;
         }
-        ::slotted(vivo-sidebar-item) {
-            display: block;
-            margin: 0.25em 0 0.25em 0;
-        }
       `
     }
   

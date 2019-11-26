@@ -5,12 +5,18 @@ class SidebarItem extends LitElement {
   static get styles() {
     return css`
       :host {
-        display: inline-block;
+        display: block;
         box-sizing: border-box;
         margin: 0;
       }
       ::slotted([slot="heading"]) {
+        padding: .25em .5em;
         background-color: var(--highlightBackgroundColor);
+      }
+      ::slotted([slot="content"]) {
+        padding: 0 .5em;
+        font-size: 0.85em;
+        background-color: var(--lightNeutralColor);
       }
     `
   }

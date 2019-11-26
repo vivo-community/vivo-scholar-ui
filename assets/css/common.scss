@@ -1,8 +1,27 @@
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  font-family: Verdana, sans-serif;
+  line-height: 1.6em;
+}
+
 .site-header {
   position: fixed;
   left: 0;
   top: 0;
   z-index: 10;
+}
+
+.site-header h1 {
+  font-family: Arial, sans-serif;
+  font-weight: normal;
+}
+
+.site-header h1 a, site-header h1 a:hover {
+  color: white;
+  text-decoration: none;
 }
 
 .site-sub-header {
@@ -17,14 +36,47 @@
   margin: 0 auto;
 }
 
+.position {
+  margin-bottom: 0.75em;
+  .position-title {
+    font-weight: bold;
+    margin-bottom: 0;
+  }
+  .position-organization {
+    margin-top: 0;
+  }
+}
+
+.education {
+  margin-bottom: 0.75em;
+  .education-organization {
+    font-weight: bold;
+  }
+}
+
+@media (max-width: 800px) {
+  .site-search {
+    width: 85%;
+  }
+}
+
+@media (max-width: 500px) {
+  .site-search {
+    width: 90%;
+  }
+}
+
+aside {
+  font-family: Arial, sans-serif;
+}
+
 #main {
   width: 95%;
   margin: 210px auto 0 auto;
 }
 
-.highlight, .highlight a {
+.highlight {
   color: var(--highlightColor);
-  text-decoration: none;
 }
 
 .profile-image {
@@ -35,29 +87,37 @@
 }
 
 /* headings */
-h1 {
-  font-weight: 700;
-  font-size: 1.5em;
+
+.page-title {
+  color: var(--primaryColor);
+  font-weight: bold;
+  font-size: 2em;
+  margin-top: 1em;
+  margin-bottom: .3em;
 }
 
-h2 {
-  font-weight: 700;
+.page-subtitle {
+  color: var(--textColor);
+  font-weight: normal;
   font-size: 1.4em;
+  margin-top: 0;
+  margin-bottom: 1em;
 }
 
-h3 {
-  font-weight: 700;
-  font-size: 1.25em;
+.section-title {
+  color: var(--primaryColor);
+  font-weight: bold;
+  font-size: 1.4em;
+  margin-top: 1.4em;
+  margin-bottom: .7em;
 }
 
-h4 {
-  font-weight: 700;
-  font-size: 1.1em;
-}
-
-h5 {
-  font-weight: 700;
-  font-size: 1em;
+.subsection-title {
+  color: var(--primaryColor);
+  font-weight: bold;
+  font-size: 1.2em;
+  margin-top: 1.2em;
+  margin-bottom: .6em;
 }
 
 /* elements */
@@ -71,32 +131,32 @@ vivo-sidebar img {
   margin-right: auto;
 }
 
-vivo-sidebar-item div {
-  font-size: 0.85em;
-  background-color: var(--lightNeutralColor);
-  padding: 0.25em;
-}
-
 vivo-sidebar-item h3 {
-  padding: 0.25em;
-  font-size: 0.85em;
+  font-size: 1em;
   margin-bottom: 0;
 }
 
 vivo-sidebar-item h4 {
   display: inline;
   font-weight: bold;
-  font-size: 0.85em;
+  font-size: 1em;
 }
 
 vivo-sidebar-item h4:after {
   content: ":";
 }
 
+vivo-sidebar-item a {
+  color: black;
+  font-weight: bold;
+  text-decoration: none;
+  border-bottom: 1px dotted currentColor;
+}
+
 vivo-tab h3 {
   display: inline;
   padding: 0em;
-  font-size: 0.9em;
+  font-size: 1.4em;
   margin: 0;
   font-weight: normal;
 }
@@ -125,43 +185,22 @@ vivo-truncated-text {
 
 /* grid experiment */
 .container {
-  display: grid;    
+  display: grid;
   grid-template-columns: repeat(12, 1fr);
   width: 100%;
   margin: 0 auto;
-  grid-auto-flow: dense
+  grid-auto-flow: dense;
+  grid-column-gap: .5em;
 }
 
-aside {
+.container aside {
   grid-column: span 2;
   padding: 0.25em;
 }
 
-main {
+.container main {
   grid-column: span 10;
   padding: 0.25em;
-}
-
-main h2 {
-  color: var(--primaryColor);
-}
-
-h2.profile-name {
-  font-size: 1.5em;
-  margin-bottom: 0;
-}
-
-h2.preferred-title {
-  font-size: 1em;
-  margin-top: 0;
-}
-
-* {
-  font-family:"Verdana";
-}
-
-aside {
-  font-family:"Arial";
 }
 
 /* responsive css */

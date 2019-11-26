@@ -3,7 +3,7 @@
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="utf-8">
-    <title>Buffalo - Vivo Scholar</title>
+    <title>Vivo Scholar</title>
     <%= partial("theme_variables") %>
     <%= stylesheetTag("application.css") %>
     <meta name="csrf-param" content="authenticity_token" />
@@ -15,14 +15,7 @@
   </head>
   <body>
     <vivo-site-header class="site-header">
-      <h1 slot="title">VIVO | 
-        <span class="highlight">
-          <a href="/">Scholar</a>
-        </span>
-      </h1>
-      <a slot="nav-item" href="/pages/about">About</a>
-      <a slot="nav-item" href="/search/people?search=*">Browse</a>
-      <a slot="nav-item" href="">Sign In</a>
+      <%= partial("header_content.html") %>
     </vivo-site-header>
     <vivo-site-sub-header class="site-sub-header">
       <vivo-site-search-box class="site-search" 
