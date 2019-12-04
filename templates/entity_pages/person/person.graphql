@@ -51,6 +51,9 @@ query($id: String!) {
         label
       }
       publicationDate
+      publisher {
+        label
+      }
     }
     # no data
     geographicFocus {

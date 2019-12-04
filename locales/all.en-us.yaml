@@ -7,8 +7,8 @@
   translation: "Professional Links"
 - id: tab_about
   translation: "About"
-- id: tab_background
-  translation: "Background"
+- id: tab_publications
+  translation: "Publications"
 - id: tab_research_expertise
   translation: "Research & Expertise"
 - id: tab_teaching_mentoring
