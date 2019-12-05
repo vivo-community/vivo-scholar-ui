@@ -74,8 +74,13 @@ class SiteSearchBox extends LitElement {
   }
 
   handleSubmit(e) {
-    let query = this.shadowRoot.querySelector('input[name="search"]').value;
-    this.dispatchEvent(new CustomEvent('searchSubmitted', { detail: query }));
+    let query = this.shadowRoot.querySelector('input[name="search"]').value;    
+    let event = new CustomEvent('searchSubmitted', {
+      detail: query,
+      bubbles: true,
+      composed: true })
+    
+    this.dispatchEvent(event);
     if (this.externalSubmit) {
       e.preventDefault();
     }
