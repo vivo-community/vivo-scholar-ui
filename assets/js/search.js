@@ -24,6 +24,66 @@ function parseQuery(qryString) {
     return qs.parse(qryString);
 }
 
+/*
+    <div className="card" key={person.id} style={cardStyle}>
+      <h6 className="card-header">
+        <a href={"/entities/person/" + person.id}>{personName}</a>
+      </h6>
+
+      <div className="card-body">
+        <p className="card-text">{title}</p>
+        <div className="card-footer">
+          <PersonImage person={person} />
+        </div>
+      </div>
+    </div>
+
+      let title = person.preferredTitle || person.id;
+  // NOTE: terrible way to do this
+  let personName = person.name.replace("@en-US", "");
+    */
+
+class PersonImage extends LitElement {
+   static get properties() {
+        return {
+            thumbnail: { type: String }
+        }
+    }
+
+    render() {
+        // TODO: how to get 'assetPath' in here?
+        var url = "http://openvivo.org/images/placeholders/person.bordered.thumbnail.jpg";
+
+        if (this.thumbnail != "null") {
+            console.log(this.thumbnail);
+            url = `http://openvivo.org/${this.thumbnail}`;
+        }
+        return html`
+        <img className="img-thumbnail" width="90" src="${url}" />
+        `
+    }
+}
+customElements.define('vivo-search-person-image', PersonImage);
+
+class PersonCard extends LitElement {
+
+    constructor() {
+        super();
+    }
+
+    render() {
+        return html`
+        <h6>          
+            <slot name="name" />
+        </h6>
+        <slot name="title" />
+        <slot name="image"/>
+        `
+    }
+}
+
+customElements.define('vivo-search-person', PersonCard);
+
 // make a PeopleSearch, PublicationSearch etc... (each tab)
 class Search extends LitElement {
 
@@ -87,6 +147,25 @@ class Search extends LitElement {
         this.runSearch()
     }
 
+    static get styles() {
+        return css`
+          div#results {
+            display: block;
+          }
+          vivo-search-person-image {
+              display: block;
+              float: left;
+              width: 10%;
+          }
+          vivo-search-person {
+              display: block;
+              float: left;
+              width: 90%;
+          }
+          
+        `
+      }
+
     render() {
         var results = [];
         if (this.data && this.data.personsFacetedSearch.content) {
@@ -95,8 +174,24 @@ class Search extends LitElement {
                 results.push(item);
             });
         }
+
         var list = html`<ul>
-            ${results.map(i => html`<li><a target="_blank" href="/entities/person/${i.id}">${i.name}</a></li>`)}
+            ${_.map(results, function(i) { 
+                let title = i.preferredTitle || i.id;
+                return html`<div>
+                  <vivo-search-person-image thumbnail="${i.thumbnail}">
+                  </vivo-search-person-image>
+                  <vivo-search-person>
+                    <div slot="title">${title}</div>
+                    <a slot="name" target="_blank" href="/entities/person/${i.id}">
+                    ${i.name}
+                    </a>
+                  </div>
+                  </vivo-search-person>
+                </div>
+                `
+              })
+            }
         </ul>`
 
         return html`
@@ -112,7 +207,10 @@ class Search extends LitElement {
 
             <p>query:${this.query}</p>
         </div>
+
+        <div id="results">
         ${list}
+        </div>
         `
     }
 }
