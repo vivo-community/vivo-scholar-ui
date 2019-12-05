@@ -2,6 +2,7 @@ import { Router } from '@vaadin/router';
 import { LitElement, html, css } from "lit-element";
 import qs from "qs";
 import _ from "lodash";
+import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 
 const search = document.getElementById('search');
 const router = new Router(search, {baseUrl: '/search/'});
@@ -73,11 +74,13 @@ class PersonCard extends LitElement {
 
     render() {
         return html`
-        <h6>          
+        <h2>          
             <slot name="name" />
-        </h6>
-        <slot name="title" />
-        <slot name="image"/>
+        </h2>
+        <h3>
+          <slot name="title" />
+        </h3>
+        <slot />
         `
     }
 }
@@ -149,18 +152,17 @@ class Search extends LitElement {
 
     static get styles() {
         return css`
-          div#results {
-            display: block;
-          }
           vivo-search-person-image {
-              display: block;
-              float: left;
+              float:left;
               width: 10%;
           }
           vivo-search-person {
-              display: block;
               float: left;
               width: 90%;
+          }
+          :host {
+              display: block;
+              clear: both;
           }
           
         `
@@ -178,16 +180,22 @@ class Search extends LitElement {
         var list = html`<ul>
             ${_.map(results, function(i) { 
                 let title = i.preferredTitle || i.id;
+                
                 return html`<div>
                   <vivo-search-person-image thumbnail="${i.thumbnail}">
                   </vivo-search-person-image>
                   <vivo-search-person>
                     <div slot="title">${title}</div>
-                    <a slot="name" target="_blank" href="/entities/person/${i.id}">
-                    ${i.name}
-                    </a>
-                  </div>
+                      <a slot="name" target="_blank" href="/entities/person/${i.id}">
+                      ${i.name}
+                      </a>
+                    </div>
+                    ${i.overview?
+                        html`<vivo-truncated-text>${unsafeHTML(i.overview)}</vivo-truncated-text>`:
+                        html``
+                      } 
                   </vivo-search-person>
+
                 </div>
                 `
               })
@@ -195,22 +203,24 @@ class Search extends LitElement {
         </ul>`
 
         return html`
-        <vivo-site-sub-header class="site-sub-header"></vivo-site-sub-header>
+        <vivo-site-sub-header class="site-sub-header">
+        </vivo-site-sub-header>
 
         <div id="main">
-            <vivo-site-search-box id="sitewide-search" 
+            <vivo-site-search-box 
+                id="sitewide-search" 
                 class="site-search" 
                 action="/search" label="search" 
                 external-submit="true" 
                 query="${this.query}">
             </vivo-site-search-box>
 
-            <p>query:${this.query}</p>
+            <p><b>Searching</b>:<i>${this.query}</i></p>
         </div>
 
-        <div id="results">
+        
         ${list}
-        </div>
+        
         `
     }
 }
