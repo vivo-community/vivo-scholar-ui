@@ -205,7 +205,6 @@ class Search extends LitElement {
         return html`
         <vivo-site-sub-header class="site-sub-header">
         </vivo-site-sub-header>
-
         <div id="main">
             <vivo-site-search-box 
                 id="sitewide-search" 
@@ -215,11 +214,12 @@ class Search extends LitElement {
                 query="${this.query}">
             </vivo-site-search-box>
 
-            <p><b>Searching</b>:<i>${this.query}</i></p>
-        </div>
+            <p><strong>Searching</strong>:<em>${this.query}</em></p>
 
+            ${list}
+        </div>
         
-        ${list}
+        
         
         `
     }
