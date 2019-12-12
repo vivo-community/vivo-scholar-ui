@@ -130,7 +130,7 @@
          <vivo-tab-panel id="publications-panel">
             <vivo-publication-list>
                <%= for (idx, p) in person["publications"] { %>
-               <vivo-publication publication-url="/entities/publication/<%= p["id"] %>">
+               <vivo-publication publication-url="/entities/publication/<%= p["id"] %>" published-date="<%= p["publicationDate"] %>">
                   <div slot="title"><%= p["title"] %></div>
                   <vivo-publication-author-list slot="authors">
                      <%= for (a) in p["authors"] { %>
@@ -144,7 +144,9 @@
                      <span><%= p["publisher"]["label"] %></span>
                   </span>
                   <% } %>
-                  <span slot="date"><%= FormatGraphqlDate(p["publicationDate"],"yearMonthDay") %></span>
+                  <%= if (p["publicationDate"]) { %>
+                    <span slot="date"><%= FormatGraphqlDate(p["publicationDate"],"yearMonthDay") %></span>
+                  <% } %>
                   <%= if (p["abstractText"]) { %>
                   <vivo-truncated-text slot="abstract">
                     <%= raw(p["abstractText"]) %>

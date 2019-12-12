@@ -1,3 +1,4 @@
+import './elements/vaadin-theme.js'
 import './elements/publication-list.js'
 import './elements/publication.js'
 import './elements/publication-author.js'
@@ -12,4 +13,4 @@ import './elements/sidebar.js'
 import './elements/sidebar-item.js'
 import './elements/truncated-text.js'
 import './elements/interval.js'
-
+import '@vaadin/vaadin-select'

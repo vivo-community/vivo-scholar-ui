@@ -7,6 +7,22 @@ class Publication extends LitElement {
         attribute: "publication-url",
         type: String,
         reflect: true
+      },
+      publishedDate: {
+        attribute: "published-date",
+        converter: {
+          fromAttribute: (value, type) => {
+            if (value) {
+              return new Date(value);
+            }
+          },
+          toAttribute: (value, type) => {
+            if (value) {
+              return value.toISO8601;
+            }
+          }
+        },
+        reflect: true
       }
     };
   }

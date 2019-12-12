@@ -75,7 +75,7 @@ class TruncatedText extends LitElement {
     firstUpdated() {
       const slot = this.shadowRoot.querySelector('slot');
       this.initialHeight = slot.offsetHeight;
-      const observer = new ResizeObserver(entries => {
+      this.observer = new ResizeObserver(entries => {
         for (let entry of entries) {
           if (entry.target.scrollHeight > Math.round(entry.contentRect.height)) {
             this.truncateRequired = true;
@@ -87,7 +87,14 @@ class TruncatedText extends LitElement {
           }
         }
       });
-      observer.observe(slot);
+      this.observer.observe(slot);
+    }
+
+    disconnectedCallBack() {
+      super.disconnectedCallBack();
+      if (this.observer) {
+        this.observer.disconnect();
+      }
     }
 
     render() {
