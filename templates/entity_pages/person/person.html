@@ -124,12 +124,10 @@
          <% } %>
 
          <%= if (person["publications"]) { %>
-         <vivo-tab id="research-tab">
-            <h3><%= t("tab_research_expertise") %></h3>
+         <vivo-tab id="publications-tab">
+            <h3><%= t("tab_publications") %></h3>
          </vivo-tab>
-         <vivo-tab-panel id="research-panel">
-            <h4 class="section-title"><%= t("publications") %></h4>
-
+         <vivo-tab-panel id="publications-panel">
             <vivo-publication-list>
                <%= for (idx, p) in person["publications"] { %>
                <vivo-publication publication-url="/entities/publication/<%= p["id"] %>">
@@ -141,40 +139,17 @@
                      </vivo-publication-author>
                      <% } %>
                   </vivo-publication-author-list>
+                  <%= if (p["publisher"]) { %>
                   <span slot="publisher">
-                     <span>&middot; Placeholder Journal Name</span>
+                     <span><%= p["publisher"]["label"] %></span>
                   </span>
-                  <span slot="date"> &middot; <%= FormatGraphqlDate(p["publicationDate"],"yearMonthDay") %></span>
+                  <% } %>
+                  <span slot="date"><%= FormatGraphqlDate(p["publicationDate"],"yearMonthDay") %></span>
+                  <%= if (p["abstractText"]) { %>
                   <vivo-truncated-text slot="abstract">
-                        <%= if (p["abstractText"]) { %>
-                          <%= raw(p["abstractText"]) %>
-                        <% } else { %>
-                           <%= if (idx < 1) { %> 
-                               Short one
-                           <% } else { %>
-                           Answering the question as to why we age is tantamount to answering the question 
-                           of what is life itself. There are countless theories as to why and how we age, 
-                           but, until recently, the very definition of aging – senescence – was still 
-                           uncertain AFTER THIS THE TEXT SHOULD CUT OFF
-                           <% } %>
-                        <% } %>
+                    <%= raw(p["abstractText"]) %>
                   </vivo-truncated-text>
-                  <span slot="links">
-                     <ul class="publication-links">
-                        <li class="minimal-icon">
-                           <i class="fas fa-file-alt"></i> Full Text
-                        </li>
-                        <li class="minimal-icon">
-                           <i class="fas fa-unlock-alt"></i> Open Access
-                        </li>
-                        <li class="minimal-icon">
-                           <i class="fas fa-link"></i> Link to Item
-                        </li>
-                        <li class="minimal-icon">
-                           <i class="fas fa-quote-left"></i> Cite
-                        </li>
-                     </ul>
-                  </span>
+                  <% } %>
                </vivo-publication>
                <% } %>
             </vivo-publication-list>

@@ -45,6 +45,9 @@ class PublicationAuthorList extends LitElement {
       ::slotted(vivo-publication-author):after {
         content: ", ";
       }
+      .truncated-authors {
+        white-space: nowrap;
+      }
     `;
   }
 
