@@ -1,109 +1,103 @@
 import { LitElement, html, css } from "lit-element";
 
-/*
-NOTE: trying to combine ideas from these two pages:
-https://css-tricks.com/line-clampin/
-https://paulbakaus.com/tutorials/css/multiline-truncated-text-with-show-more-button-with-just-css/
-*/
 class TruncatedText extends LitElement {
 
-    firstUpdated(props) {
-        var shadow = this.shadowRoot
-        const ps = shadow.querySelectorAll('div');
-        const observer = new ResizeObserver(entries => {
-            for (let entry of entries) {
-                const action = entry.target.scrollHeight > Math.round(entry.contentRect.height) ? 'add' : 'remove';
-                entry.target.classList[action]('truncated');
-                if (action == 'remove') {
-                    entry.target.classList['add']('full-text');
-                } else {
-                    entry.target.classList['remove']('full-text');
-                }
-            }
-        });
-        ps.forEach(p => {
-          observer.observe(p);
-        });
+    static get properties() {
+      return {
+        truncateRequired: { attribute: 'truncate-required', type: Boolean, reflect: true }
+      }
+    }
+
+    constructor() {
+      super();
+      this.truncateRequired = true;
     }
 
     static get styles() {
-        return css`
-      :host {
-        display: block;
-      }
-      input {
-        opacity: 0;
-        position: absolute;
-        pointer-events: none;
-      }
-      label {
+      return css`
+        slot {
+          display: block;
+          position: relative;
+          box-sizing: border-box;
+          --max-lines: 2;
+          --lh: 1.6rem;
+          line-height: var(--lh);
+          max-height: calc(var(--lh) * var(--max-lines));
+          overflow: hidden;
+          padding-right: 1rem;
+        }
+        ::slotted(*:first-child) {
+          margin-top: 0;
+          padding-top: 0;
+        }
+        ::slotted(*:last-child) {
+          margin-bottom: 0;
+          padding-bottom: 0;
+        }
+        :host([expanded]) slot {
+          max-height: initial;
+        }
+        slot::before {
+          display: none;
+        }
+        :host([truncate-required]) slot::before {
+          display: block;
+          content: '...';
+          position: absolute;
+          bottom: 0;
+          right: 0;
+        }
+        a.show {
+          display: none;
           color: var(--linkColor);
-      }
-      input:focus ~ label {
-        outline: -webkit-focus-ring-color auto 5px;
-      }
-      div.full-text + label.read-more { display: none; }
-      div:truncated + label.read-more { display: block; }
-      div.full-text::before {
-        content: "";
-      }
-      input:checked + div {
-        overflow: unset;
-      }
-      input:checked ~ label {
-        display: none;
-      }
+          cursor: pointer;
+        }
+        :host([truncate-required]) a.show.more {
+          display: inline-block;
+        }
+        :host([expanded]) a.show.less {
+          display: inline-block;
+        }
+        :host([expanded]) a.show.more {
+          display: none;
+        }
+      `
+    }
 
-      input:checked + div::before {
-        content: "";
-      }
+    expand() {
+      this.setAttribute('expanded', true);
+    }
 
-      .truncate-overflow {
-        --max-lines: 2;
-        --lh: 1.3em;
-        line-height: var(--lh);
-        position: relative;
-        max-height: calc(var(--lh) * var(--max-lines));
-        overflow: hidden;
-        padding-right: 1rem;
-      }
+    collapse() {
+      this.removeAttribute('expanded');
+    }
 
-      .truncate-overflow::before {
-        position: absolute;
-        content: "...";
-        inset-block-end: 0; 
-        inset-inline-end: 0;
-      }
-
-      .truncate-overflow::after {
-        content: "";
-        position: absolute;
-        inset-inline-end: 0;
-        width: 1rem;
-        height: 1rem;
-        background: white;
-     }
-    `;
+    firstUpdated() {
+      const slot = this.shadowRoot.querySelector('slot');
+      this.initialHeight = slot.offsetHeight;
+      const observer = new ResizeObserver(entries => {
+        for (let entry of entries) {
+          if (entry.target.scrollHeight > Math.round(entry.contentRect.height)) {
+            this.truncateRequired = true;
+          } else {
+            this.truncateRequired = false;
+          }
+          if (entry.target.scrollHeight <= this.initialHeight) {
+            this.collapse();
+          }
+        }
+      });
+      observer.observe(slot);
     }
 
     render() {
-        return html`
-    <input type="checkbox" id="expanded">
-    <div class="truncate-overflow full-text">
-      <slot id="pub-abstract"></slot>
-    </div>
-    <label for="expanded" role="button" 
-      aria-label="Show full abstract of publication" 
-      class="read-more">(More)</label>
-    `;
+      return html`
+        <slot></slot>
+        <a class="show more" @click="${this.expand}">(More)</a>
+        <a class="show less" @click="${this.collapse}">(Less)</a>
+      `
     }
+
 }
 
 customElements.define("vivo-truncated-text", TruncatedText);
-/*
-
-TODO:
-1. Ideally (More) button would be right next to ellipsis, and position
-   of ellipsis would be always right after last character of truncated
-   text
-*/

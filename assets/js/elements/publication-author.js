@@ -15,6 +15,10 @@ class PublicationAuthor extends LitElement {
       a.author {
         color: var(--darkNeutralColor);
         text-decoration: none;
+        white-space: nowrap;
+      }
+      slot {
+        display: inline;
       }
     `;
   }
