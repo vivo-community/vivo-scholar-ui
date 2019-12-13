@@ -1,5 +1,7 @@
 import { LitElement, html, css } from "lit-element";
 
+import EventBus from "../lib/event-bus.js";
+
 class SiteSearchBox extends LitElement {
 
   static get properties() {
@@ -78,9 +80,14 @@ class SiteSearchBox extends LitElement {
     let event = new CustomEvent('searchSubmitted', {
       detail: query,
       bubbles: true,
-      composed: true })
+      cancelable: false,
+      composed: true 
+    })
     
     this.dispatchEvent(event);
+
+    EventBus.fire(event);
+
     if (this.externalSubmit) {
       e.preventDefault();
     }

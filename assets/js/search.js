@@ -10,6 +10,8 @@ const router = new Router(search, {baseUrl: '/search/'});
 import peopleQuery from "./people/query";
 import client from "./lib/apollo";
 
+import EventBus from "./lib/event-bus.js";
+
 router.setRoutes([
     { path: '', component: 'vivo-search' },
     { path: 'people', component: 'vivo-search' }//,
@@ -56,7 +58,7 @@ class PersonImage extends LitElement {
         var url = "http://openvivo.org/images/placeholders/person.bordered.thumbnail.jpg";
 
         if (this.thumbnail != "null") {
-            console.log(this.thumbnail);
+            //console.log(this.thumbnail);
             url = `http://openvivo.org/${this.thumbnail}`;
         }
         return html`
@@ -88,6 +90,8 @@ class PersonCard extends LitElement {
 customElements.define('vivo-search-person', PersonCard);
 
 // make a PeopleSearch, PublicationSearch etc... (each tab)
+// const subscription = eventBus.subscribe('event', arg => console.log(arg))
+
 class Search extends LitElement {
 
     static get properties() {
@@ -105,6 +109,7 @@ class Search extends LitElement {
         this.query = defaultSearch;
 
         this.runSearch()
+        this.doSearch = this.doSearch.bind(this);
     }
 
     onAfterEnter(location, commands, router) {
@@ -115,9 +120,9 @@ class Search extends LitElement {
 
 
     connectedCallback() {
-        super.connectedCallback();
-        this.addEventListener('searchSubmitted', this.doSearch);
+        super.connectedCallback();        
         this.addEventListener('vaadin-router-location-changed', this.locationChanged);
+        EventBus.register("searchSubmitted", this.doSearch);
     }
 
     runSearch() {
@@ -203,20 +208,9 @@ class Search extends LitElement {
         </ul>`
 
         return html`
-        <vivo-site-sub-header class="site-sub-header">
-        </vivo-site-sub-header>
         <div id="main">
-            <vivo-site-search-box 
-                id="sitewide-search" 
-                class="site-search" 
-                action="/search" label="search" 
-                external-submit="true" 
-                query="${this.query}">
-            </vivo-site-search-box>
-
-            <p><strong>Searching</strong>:<em>${this.query}</em></p>
-
-            ${list}
+          <p><strong>Searching</strong>:<em>${this.query}</em></p>
+          ${list}
         </div>
         
         

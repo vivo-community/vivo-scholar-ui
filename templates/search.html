@@ -17,7 +17,19 @@
     <vivo-site-header class="site-header">
       <%= partial("header_content.html") %>
     </vivo-site-header>
-    <%= yield %>      
+
+    <vivo-site-sub-header class="site-sub-header">
+        <vivo-site-search-box id="sitewide-search" 
+          class="site-search" 
+          action="/search/people" 
+          external-submit="true"
+          label="<%= t("search") %>">
+        </vivo-site-search-box>
+      </vivo-site-sub-header>
+
+      <div id="main">
+          <%= yield %>      
+      </div>
     <%= javascriptTag("application.js") %>
   </body>
 </html>

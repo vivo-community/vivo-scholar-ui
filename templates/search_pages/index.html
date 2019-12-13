@@ -1,4 +1,25 @@
 
 <div id="search"></div>
 
+<prism-event-bus />
+
 <%= javascriptTag("search.js") %>
+
+<vivo-tabs id="secondary-example" vivo-tab-style="secondary">
+    <vivo-tab id="person-search-tab" selected>
+      People (count)
+    </vivo-tab>
+
+    <vivo-tab-panel selected>  
+      <p>People search goes here</p>
+    </vivo-tab-panel>
+  
+    <vivo-tab id="publication-search-tab">
+      Publications (count)
+    </vivo-tab>
+
+    <vivo-tab-panel>
+      <p>Publication search goes here</p>
+    </vivo-tab-panel>
+  
+  </vivo-tabs>
