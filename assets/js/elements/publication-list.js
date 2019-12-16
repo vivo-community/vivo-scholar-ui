@@ -1,5 +1,4 @@
 import { LitElement, html, css } from "lit-element";
-import { unsafeHTML } from "lit-html/directives/unsafe-html.js";
 import '@vaadin/vaadin-select';
 
 class PublicationList extends LitElement {
@@ -30,37 +29,25 @@ class PublicationList extends LitElement {
     this.truncatedPubCount = 0;
     this.sortProperty = 'publishedDate';
     this.sortDirection = 'desc';
+    this.slotChanged = this.slotChanged.bind(this);
+  }
+
+  slotChanged(e) {
+    const pubElements = Array.from(e.target.assignedNodes()).filter((n) => n.tagName === 'VIVO-PUBLICATION').map((n) => n.cloneNode(true));
+    this.publications = pubElements;
+    this.setPublications();
   }
 
   firstUpdated() {
-    this.setPublications();
-    this.observer = new MutationObserver((mutationList, observer) => {
-      for(let mutation of mutationList) {
-        if (mutation.type === 'childList') {
-          const { addedNodes, removedNodes } = mutation;
-          if ((addedNodes && addedNodes[0] && addedNodes[0].tagName == 'VIVO-PUBLICATION') || (removedNodes && removedNodes[0] && removedNodes[0].tagName == 'VIVO-PUBLICATION')) {
-            this.setPublications();
-          }
-        }
-      }
-    });
-    this.observer.observe(this, {
-      attributes: false,
-      childList: true,
-      subtree: false
-    });
+    this.shadowRoot.addEventListener("slotchange",this.slotChanged);
   }
 
   disconnectedCallBack() {
     super.disconnectedCallBack();
-    if (this.observer) {
-      this.observer.disconnect();
-    }
   }
 
   setPublications() {
-    const pubElements = Array.from(this.querySelectorAll('vivo-publication'));
-    this.publications = this.sortBy(pubElements, this.sortProperty, this.sortDirection);
+    this.publications = this.sortBy(this.publications, this.sortProperty, this.sortDirection);
     this.setTruncation();
     this.refreshHides();
   }
@@ -87,10 +74,18 @@ class PublicationList extends LitElement {
   }
 
   selectSort({detail: {value}}) {
+    this.setSort(value);
+  }
+
+  setSort(value) {
     const [property, direction] = value.split("-");
     this.sortProperty = property;
     this.sortDirection = direction;
     this.setPublications();
+  }
+
+  getSort() {
+    return `${this.sortProperty}-${this.sortDirection}`;
   }
 
   sortBy(pubs, sortProperty, sortDirection) {
@@ -107,6 +102,12 @@ class PublicationList extends LitElement {
         return b[sortProperty] - a[sortProperty];
       }
     });
+    this.dispatchEvent(new CustomEvent('publicationsSorted', {
+      detail: this,
+      bubbles: true,
+      cancelable: false,
+      composed: true
+    }));
     return sortPubs;
   }
 
@@ -124,10 +125,24 @@ class PublicationList extends LitElement {
     });
   }
 
+  showPublication(publicationUrl) {
+    const pub = this.publications.find((p) => p.publicationUrl === publicationUrl)
+    if (pub) {
+      const isVisible = pub.getClientRects().length > 0;
+      if (!isVisible) {
+        this.showTruncatedPubs();
+      }
+      pub.scrollIntoView();
+    }
+  }
+
   static get styles() {
     return css`
       :host {
         display: block;
+      }
+      slot {
+        display: none;
       }
       vivo-publication {
         margin-bottom: 1em;
@@ -202,8 +217,9 @@ class PublicationList extends LitElement {
         </span>
       </div>
       <div id="publications">
-        ${this.publications.map((p) => unsafeHTML(p.outerHTML))}
+        ${this.publications}
       </div>
+      <slot></slot>
     `;
   }
 

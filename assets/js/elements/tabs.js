@@ -47,6 +47,10 @@ class Tabs extends LitElement {
     }
   }
 
+  selectTabById(tabId) {
+    this.selectTab(this.querySelector(`vivo-tab#${tabId}`));
+  }
+
   selectTab(tab) {
     if (tab) {
       let tabs = this.querySelectorAll('vivo-tab');
@@ -56,6 +60,12 @@ class Tabs extends LitElement {
       let panels = this.querySelectorAll('vivo-tab-panel');
       panels.forEach((t) => t.removeAttribute('selected'));
       panels[index].setAttribute('selected', 'selected');
+      this.dispatchEvent(new CustomEvent('tabSelected', {
+        detail: tab,
+        bubbles: true,
+        cancelable: false,
+        composed: true
+      }));
     }
   }
 
@@ -79,7 +89,7 @@ class Tabs extends LitElement {
       :host {
         display: flex;
         flex-wrap: wrap;
-      }   
+      }
     `
   }
 

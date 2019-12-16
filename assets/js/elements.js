@@ -1,4 +1,5 @@
 import './elements/vaadin-theme.js'
+import './elements/person-navigation.js'
 import './elements/publication-list.js'
 import './elements/publication.js'
 import './elements/publication-author.js'
