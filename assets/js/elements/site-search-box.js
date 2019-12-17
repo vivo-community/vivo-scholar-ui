@@ -1,7 +1,5 @@
 import { LitElement, html, css } from "lit-element";
 
-import EventBus from "../lib/event-bus.js";
-
 class SiteSearchBox extends LitElement {
 
   static get properties() {

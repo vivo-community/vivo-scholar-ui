@@ -10,8 +10,6 @@ const router = new Router(search, { baseUrl: '/search/' });
 import peopleQuery from "./people/query";
 import client from "./lib/apollo";
 
-import EventBus from "./lib/event-bus.js";
-
 /*
   <vaadin-router baseUrl="/search/" routes=[{ path: ... }]>
 
