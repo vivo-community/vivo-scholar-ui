@@ -91,10 +91,10 @@ class Search extends LitElement {
     constructor() {
         super();
         const parsed = parseQuery(location.search.substring(1));
-        const defaultSearch = parsed.search ? parsed.search : "*";
+        const defaultSearch = (parsed.search && parsed.search.trim().length > 0) ? parsed.search : "*";
         this.query = defaultSearch;
 
-        // maybe just throw 'searchSubmitted' event?
+        // should this throw 'searchSubmitted' event?
         this.runSearch()
         this.doSearch = this.doSearch.bind(this);
         // decide what tab to show here?
@@ -102,18 +102,18 @@ class Search extends LitElement {
 
     onAfterEnter(location, commands, router) {
         const parsed = parseQuery(location.search.substring(1));
-        const defaultSearch = parsed.search ? parsed.search : "*";
+        const defaultSearch = (parsed.search && parsed.search.trim().length > 0) ? parsed.search : "*";
         this.query = defaultSearch;
     }
 
 
     connectedCallback() {
         super.connectedCallback();
-        //this.addEventListener('vaadin-router-location-changed', this.locationChanged);
+        window.addEventListener('vaadin-router-location-changed', this.locationChanged);
+        //this.addEventListener('searchSubmitted', this.doSearch);
         //EventBus.register("searchSubmitted", this.doSearch);
 
         window.addEventListener('searchSubmitted', this.doSearch);
-        //this.addEventListener('searchSubmitted', this.doSearch);
         // NOTE: doSearch might need to be called/initiated by other events
         // such as searchChooseFacet or searchTabSelected etc...
     }
