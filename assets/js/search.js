@@ -5,17 +5,24 @@ import _ from "lodash";
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 
 const search = document.getElementById('search');
-const router = new Router(search, {baseUrl: '/search/'});
+const router = new Router(search, { baseUrl: '/search/' });
 
 import peopleQuery from "./people/query";
 import client from "./lib/apollo";
 
 import EventBus from "./lib/event-bus.js";
 
+/*
+  <vaadin-router baseUrl="/search/" routes=[{ path: ... }]>
+
+  ... ?
+
+  </vaadin-router>
+*/
 router.setRoutes([
     { path: '', component: 'vivo-search' },
     { path: 'people', component: 'vivo-search' }//,
-    //{path: '/entities/person/:id+', redirect: '/entities/person/:id+'},
+    //{ path: 'publications', component: 'vivo-publication-search' }//,
 ]);
 
 function stringifyQuery(params) {
@@ -27,27 +34,8 @@ function parseQuery(qryString) {
     return qs.parse(qryString);
 }
 
-/*
-    <div className="card" key={person.id} style={cardStyle}>
-      <h6 className="card-header">
-        <a href={"/entities/person/" + person.id}>{personName}</a>
-      </h6>
-
-      <div className="card-body">
-        <p className="card-text">{title}</p>
-        <div className="card-footer">
-          <PersonImage person={person} />
-        </div>
-      </div>
-    </div>
-
-      let title = person.preferredTitle || person.id;
-  // NOTE: terrible way to do this
-  let personName = person.name.replace("@en-US", "");
-    */
-
 class PersonImage extends LitElement {
-   static get properties() {
+    static get properties() {
         return {
             thumbnail: { type: String }
         }
@@ -58,7 +46,6 @@ class PersonImage extends LitElement {
         var url = "http://openvivo.org/images/placeholders/person.bordered.thumbnail.jpg";
 
         if (this.thumbnail != "null") {
-            //console.log(this.thumbnail);
             url = `http://openvivo.org/${this.thumbnail}`;
         }
         return html`
@@ -77,7 +64,7 @@ class PersonCard extends LitElement {
     render() {
         return html`
         <h2>          
-            <slot name="name" />
+          <slot name="name" />
         </h2>
         <h3>
           <slot name="title" />
@@ -89,8 +76,7 @@ class PersonCard extends LitElement {
 
 customElements.define('vivo-search-person', PersonCard);
 
-// make a PeopleSearch, PublicationSearch etc... (each tab)
-// const subscription = eventBus.subscribe('event', arg => console.log(arg))
+// TODO?: make a PeopleSearch, PublicationSearch etc... (each tab)
 
 class Search extends LitElement {
 
@@ -108,8 +94,10 @@ class Search extends LitElement {
         const defaultSearch = parsed.search ? parsed.search : "*";
         this.query = defaultSearch;
 
+        // maybe just throw 'searchSubmitted' event?
         this.runSearch()
         this.doSearch = this.doSearch.bind(this);
+        // decide what tab to show here?
     }
 
     onAfterEnter(location, commands, router) {
@@ -120,9 +108,14 @@ class Search extends LitElement {
 
 
     connectedCallback() {
-        super.connectedCallback();        
-        this.addEventListener('vaadin-router-location-changed', this.locationChanged);
-        EventBus.register("searchSubmitted", this.doSearch);
+        super.connectedCallback();
+        //this.addEventListener('vaadin-router-location-changed', this.locationChanged);
+        //EventBus.register("searchSubmitted", this.doSearch);
+
+        window.addEventListener('searchSubmitted', this.doSearch);
+        //this.addEventListener('searchSubmitted', this.doSearch);
+        // NOTE: doSearch might need to be called/initiated by other events
+        // such as searchChooseFacet or searchTabSelected etc...
     }
 
     runSearch() {
@@ -148,6 +141,11 @@ class Search extends LitElement {
     }
 
     doSearch(e) {
+        // NOTE: 'type' of event switch?
+        // case 'searchSubmitted' -> { }
+        // case 'tabSelected' -> { }
+        // case 'facetSelected' -> { }
+        // etc ...
         this.query = e.detail;
         const qry = stringifyQuery({ search: e.detail });
         // add it to the url
@@ -171,7 +169,7 @@ class Search extends LitElement {
           }
           
         `
-      }
+    }
 
     render() {
         var results = [];
@@ -183,10 +181,10 @@ class Search extends LitElement {
         }
 
         var list = html`<ul>
-            ${_.map(results, function(i) { 
-                let title = i.preferredTitle || i.id;
-                
-                return html`<div>
+            ${_.map(results, function (i) {
+            let title = i.preferredTitle || i.id;
+
+            return html`<div>
                   <vivo-search-person-image thumbnail="${i.thumbnail}">
                   </vivo-search-person-image>
                   <vivo-search-person>
@@ -195,15 +193,15 @@ class Search extends LitElement {
                       ${i.name}
                       </a>
                     </div>
-                    ${i.overview?
-                        html`<vivo-truncated-text>${unsafeHTML(i.overview)}</vivo-truncated-text>`:
-                        html``
-                      } 
+                    ${i.overview ?
+                    html`<vivo-truncated-text>${unsafeHTML(i.overview)}</vivo-truncated-text>` :
+                    html``
+                } 
                   </vivo-search-person>
 
                 </div>
                 `
-              })
+        })
             }
         </ul>`
 

@@ -1,10 +1,22 @@
 
 <div id="search"></div>
 
-<prism-event-bus />
-
 <%= javascriptTag("search.js") %>
 
+<!--
+possible idea:
+1. tab select sends event: "tab-selected" { value = people }
+2. search results respond to "tab-selected" toggle
+   a) if value = person
+   b) show results else
+   c) only count is fine ...
+3. searchSubmitted?
+
+sidebar?
+1. also respond to tab select?
+2. and searchSubmitted?
+
+-->
 <vivo-tabs id="secondary-example" vivo-tab-style="secondary">
     <vivo-tab id="person-search-tab" selected>
       People (count)
@@ -12,6 +24,11 @@
 
     <vivo-tab-panel selected>  
       <p>People search goes here</p>
+      <!--
+        <vivo-people-search-results />
+      -->
+      <!-- how to get people search results here -->
+
     </vivo-tab-panel>
   
     <vivo-tab id="publication-search-tab">
@@ -20,6 +37,9 @@
 
     <vivo-tab-panel>
       <p>Publication search goes here</p>
+      <!--
+        <vivo-publication-search-results />
+      -->
     </vivo-tab-panel>
   
   </vivo-tabs>
