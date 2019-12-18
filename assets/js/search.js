@@ -41,10 +41,11 @@ class PersonImage extends LitElement {
 
     render() {
         // TODO: how to get 'assetPath' in here?
-        var url = "http://openvivo.org/images/placeholders/person.bordered.thumbnail.jpg";
+        var url = `${defaultProfileImage}`;
 
+        // baseImageUrl
         if (this.thumbnail != "null") {
-            url = `http://openvivo.org/${this.thumbnail}`;
+            url = `${baseImageUrl}${this.thumbnail}`;
         }
         return html`
         <img className="img-thumbnail" width="90" src="${url}" />
