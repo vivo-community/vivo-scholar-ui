@@ -9,9 +9,9 @@
       <vivo-sidebar>
          <%= if (person["thumbnail"]) { %>
          <!-- FIXME: should get base image path some other way -->
-         <img class="profile-image" src="http://openvivo.org<%= person["thumbnail"] %>" />
+         <img class="profile-image" src="<%= ThemeVariable("baseImageUrl") %><%= person["thumbnail"] %>" />
          <% } else { %>
-         <img class="profile-image" src="<%= assetPath("images/profile_picture_u39_a.png") %>" />
+         <img class="profile-image" src="<%= assetPath("images/" + ThemeVariable("defaultProfileImage")) %>" />
          <% } %>
          <%= if (person["primaryEmail"] || person["phone"] || person["streetAddress"]) { %>
          <vivo-sidebar-item>
