@@ -24,6 +24,7 @@ const peopleQuery = gql`
         keywords
         thumbnail
         preferredTitle
+        overview
       }
       page {
         totalElements

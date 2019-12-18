@@ -5,9 +5,8 @@
   "license": "MIT",
   "repository": "github.com/gobuffalo/buffalo",
   "dependencies": {
-    "@apollo/react-hooks": "^3.0.0",
-    "@babel/preset-react": "^7.0.0",
     "@fortawesome/fontawesome-free": "^5.8.1",
+    "@vaadin/router": "^1.5.2",
     "@vaadin/vaadin-select": "^2.1.6",
     "@webcomponents/webcomponentsjs": "^2.2.10",
     "apollo": "^2.17.3",
@@ -27,10 +26,6 @@
     "lodash": "^4.17.13",
     "popper.js": "^1.14.4",
     "qs": "^6.7.0",
-    "react": "^16.9.0",
-    "react-apollo": "^3.0.0",
-    "react-dom": "^16.9.0",
-    "react-router-dom": "^5.0.1",
     "yarn": "^1.17.3"
   },
   "devDependencies": {

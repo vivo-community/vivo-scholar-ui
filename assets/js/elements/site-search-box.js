@@ -14,6 +14,7 @@ class SiteSearchBox extends LitElement {
 
   constructor() {
     super();
+    // initiate value from query string?
     this.query = "";
     this.label = "Search"; //default
     this.placeholder = "Search";
@@ -74,8 +75,19 @@ class SiteSearchBox extends LitElement {
   }
 
   handleSubmit(e) {
-    let query = this.shadowRoot.querySelector('input[name="search"]').value;
-    this.dispatchEvent(new CustomEvent('searchSubmitted', { detail: query }));
+    let query = this.shadowRoot.querySelector('input[name="search"]').value;    
+    let event = new CustomEvent('searchSubmitted', {
+      detail: query.trim(),
+      bubbles: true,
+      cancelable: false,
+      composed: true 
+    })
+    
+    this.dispatchEvent(event);
+
+    //EventBus.fire(event);
+    //window.dispatchEvent(event);
+
     if (this.externalSubmit) {
       e.preventDefault();
     }

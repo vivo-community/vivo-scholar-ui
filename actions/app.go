@@ -55,6 +55,9 @@ func App() *buffalo.App {
 		app.GET("/sitemap.xml", SiteMapHandler)
 		app.GET("/sitemaps/{type}.xml", SiteMapPageHandler)
 		app.GET("/pages/{name}", AnyPageHandler)
+		app.GET("/search", SearchPageHandler)
+		// even though {type} is not used, this makes
+		// search/people, search/publications etc... possible
 		app.GET("/search/{type}", SearchPageHandler)
 		// TODO: should we even have list pages (since there is search)
 		app.GET("/lists/{type}", ListPageHandler)
