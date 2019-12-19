@@ -1,32 +1,13 @@
-import { Router } from '@vaadin/router';
 import { LitElement, html, css } from "lit-element";
 import qs from "qs";
 import _ from "lodash";
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 
-const search = document.getElementById('search');
-const router = new Router(search, { baseUrl: '/search/' });
-
 import peopleQuery from "./people/query";
 import client from "./lib/apollo";
 
-/*
-  <vaadin-router baseUrl="/search/" routes=[{ path: ... }]>
-
-  ... ?
-
-  </vaadin-router>
-*/
-router.setRoutes([
-    { path: '', component: 'vivo-search' },
-    { path: 'people', component: 'vivo-search' }//,
-    //{ path: 'publications', component: 'vivo-publication-search' }//,
-]);
-
-function stringifyQuery(params) {
-    let result = qs.stringify(params);
-    return result ? "?" + result : "";
-}
+// use history instead of routing?
+//https://medium.com/@george.norberg/history-api-getting-started-36bfc82ddefc
 
 function parseQuery(qryString) {
     return qs.parse(qryString);
@@ -94,33 +75,34 @@ class Search extends LitElement {
         this.query = defaultSearch;
 
         // should this throw 'searchSubmitted' event?
-        this.runSearch()
+        this.peopleSearch()
+        
         this.doSearch = this.doSearch.bind(this);
-        // decide what tab to show here?
     }
 
-    onAfterEnter(location, commands, router) {
-        const parsed = parseQuery(location.search.substring(1));
-        const defaultSearch = (parsed.search && parsed.search.trim().length > 0) ? parsed.search : "*";
-        this.query = defaultSearch;
+    handlePopState(e) {
+       // NOTE: not actually doing anything now
+       // var searchParams = new URLSearchParams(window.location.search);
+       // console.log(`searchParams=${searchParams.toString()}`);
     }
-
-
+    
+    // lit-element callback
     connectedCallback() {
         super.connectedCallback();
-        window.addEventListener('vaadin-router-location-changed', this.locationChanged);
-        //this.addEventListener('searchSubmitted', this.doSearch);
-        //EventBus.register("searchSubmitted", this.doSearch);
-
         window.addEventListener('searchSubmitted', this.doSearch);
+
+        window.addEventListener("popstate", this.handlePopState);
         // NOTE: doSearch might need to be called/initiated by other events
         // such as searchChooseFacet or searchTabSelected etc...
     }
 
+    // NOTE: just running 'peopleQuery' now - there will be
+    // other queries (publications etc...)
     runSearch() {
         const fetchData = async () => {
             try {
-                // supposed to be adding filters
+                // supposed to be adding facets, filters here (from sidebar)
+                // also paging ...
                 const { data } = await client.query({
                     query: peopleQuery,
                     variables: {
@@ -130,26 +112,37 @@ class Search extends LitElement {
                     }
                 });
                 this.data = data;
-                // then update component properties?
             } catch (error) {
                 console.error(error);
+                throw error;
             }
         };
-
-        fetchData();
+        return fetchData();
     }
 
-    doSearch(e) {
-        // NOTE: 'type' of event switch?
-        // case 'searchSubmitted' -> { }
-        // case 'tabSelected' -> { }
-        // case 'facetSelected' -> { }
-        // etc ...
-        this.query = e.detail;
-        const qry = stringifyQuery({ search: e.detail });
-        // add it to the url
-        Router.go(`/search/${qry}`);
+    // just a method to combine all UI side-effects of search ...
+    peopleSearch() {
         this.runSearch()
+          .then(() => {
+            var personCount = this.data ? this.data.personsFacetedSearch.page.totalElements : 0;
+            let tab = document.querySelector('#person-search-tab'); 
+            tab.textContent = `People (${personCount})`;
+          })
+          .catch((e) => console.error(`Error running search:${e}`));
+    }
+    
+    doSearch(e) {
+        this.query = e.detail;
+        /*
+        https://javascriptplayground.com/url-search-params/
+        */
+        var searchParams = new URLSearchParams(window.location.search);
+        searchParams.set("search", e.detail);
+        var newRelativePathQuery = window.location.pathname + '?' + searchParams.toString();
+        history.pushState(null, '', newRelativePathQuery);
+
+        // TODO: switch search here based on tab?
+        this.peopleSearch()
     }
 
     static get styles() {
@@ -179,39 +172,31 @@ class Search extends LitElement {
             });
         }
 
-        var list = html`<ul>
+        var resultsDisplay = html`<div>
             ${_.map(results, function (i) {
             let title = i.preferredTitle || i.id;
 
-            return html`<div>
-                  <vivo-search-person-image thumbnail="${i.thumbnail}">
-                  </vivo-search-person-image>
+            // NOTE: the custom elements here might be better named with 'results'
+            // e.g. vivo-search-person-results, or maybe just search-person-results?
+            return html`<vivo-search-person-image thumbnail="${i.thumbnail}"></vivo-search-person-image>
                   <vivo-search-person>
                     <div slot="title">${title}</div>
-                      <a slot="name" target="_blank" href="/entities/person/${i.id}">
+                    <a slot="name" href="/entities/person/${i.id}">
                       ${i.name}
-                      </a>
-                    </div>
+                    </a>
                     ${i.overview ?
                     html`<vivo-truncated-text>${unsafeHTML(i.overview)}</vivo-truncated-text>` :
                     html``
                 } 
                   </vivo-search-person>
-
-                </div>
                 `
         })
             }
-        </ul>`
+        </div>`
 
-        return html`
-        <div id="main">
+        return html`        
           <p><strong>Searching</strong>:<em>${this.query}</em></p>
-          ${list}
-        </div>
-        
-        
-        
+          ${resultsDisplay}
         `
     }
 }

@@ -85,9 +85,6 @@ class SiteSearchBox extends LitElement {
     
     this.dispatchEvent(event);
 
-    //EventBus.fire(event);
-    //window.dispatchEvent(event);
-
     if (this.externalSubmit) {
       e.preventDefault();
     }
