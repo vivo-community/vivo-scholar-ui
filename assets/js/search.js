@@ -6,15 +6,8 @@ import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 import peopleQuery from "./people/query";
 import client from "./lib/apollo";
 
-// use history?
+// use history instead of routing?
 //https://medium.com/@george.norberg/history-api-getting-started-36bfc82ddefc
-
-/*
-function stringifyQuery(params) {
-    let result = qs.stringify(params);
-    return result ? "?" + result : "";
-}
-*/
 
 function parseQuery(qryString) {
     return qs.parse(qryString);
@@ -82,18 +75,15 @@ class Search extends LitElement {
         this.query = defaultSearch;
 
         // should this throw 'searchSubmitted' event?
-        //this.runSearch()
         this.peopleSearch()
         
         this.doSearch = this.doSearch.bind(this);
-        // catch all clicks? 
-        //window.addEventListener("click", handleButtonClick);
     }
 
     handlePopState(e) {
        // NOTE: not actually doing anything now
        // var searchParams = new URLSearchParams(window.location.search);
-       //console.log(`searchParams=${searchParams.toString()}`);
+       // console.log(`searchParams=${searchParams.toString()}`);
     }
     
     // lit-element callback
