@@ -17,6 +17,15 @@ sidebar?
   <aside>
      <vivo-sidebar>
       <vivo-sidebar-item>
+        <!-- 
+        TODO:  
+        a) populate from current search
+        b) send parameter to current search
+        c) change depending on current tab
+
+        <vivo-search-facets></vivo-search-facets> ?
+        
+        -->
         <h3 slot="heading">Facets (will go here)</h3>
         </vivo-sidebar-item>
      </vivo-sidebar>
@@ -32,7 +41,6 @@ sidebar?
       <vivo-tab-panel selected>  
         <!-- NOTE: this is not correct, long-term -->
         <vivo-search></vivo-search>
-
       </vivo-tab-panel>
     
       <vivo-tab id="publication-search-tab">
@@ -43,6 +51,7 @@ sidebar?
         <p>Publication search goes here</p>
         <!--
           <vivo-publication-search-results />
+          <vivo-search query="publications/query.js" />
         -->
       </vivo-tab-panel>
     

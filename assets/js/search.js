@@ -82,18 +82,18 @@ class Search extends LitElement {
         this.query = defaultSearch;
 
         // should this throw 'searchSubmitted' event?
-        this.runSearch()
+        //this.runSearch()
+        this.peopleSearch()
+        
         this.doSearch = this.doSearch.bind(this);
-        // decide what tab to show here?
         // catch all clicks? 
         //window.addEventListener("click", handleButtonClick);
     }
 
     handlePopState(e) {
-       //console.log(e);
-       //console.log(history);
-       var searchParams = new URLSearchParams(window.location.search);
-       console.log(`searchParams=${searchParams.toString()}`);
+       // NOTE: not actually doing anything now
+       // var searchParams = new URLSearchParams(window.location.search);
+       //console.log(`searchParams=${searchParams.toString()}`);
     }
     
     // lit-element callback
@@ -122,35 +122,37 @@ class Search extends LitElement {
                     }
                 });
                 this.data = data;
-                // then update component properties?
             } catch (error) {
                 console.error(error);
+                throw error;
             }
         };
-
-        fetchData();
+        return fetchData();
     }
 
+    // just a method to combine all UI side-effects of search ...
+    peopleSearch() {
+        this.runSearch()
+          .then(() => {
+            var personCount = this.data ? this.data.personsFacetedSearch.page.totalElements : 0;
+            let tab = document.querySelector('#person-search-tab'); 
+            tab.textContent = `People (${personCount})`;
+          })
+          .catch((e) => console.error(`Error running search:${e}`));
+    }
+    
     doSearch(e) {
-        // NOTE: 'type' of event switch?
-        // case 'searchSubmitted' -> { }
-        // case 'tabSelected' -> { }
-        // case 'facetSelected' -> { }
-        // etc ...
         this.query = e.detail;
-        //const qry = stringifyQuery({ search: e.detail });
-        // add it to the url
-        // this would change
         /*
         https://javascriptplayground.com/url-search-params/
         */
-
         var searchParams = new URLSearchParams(window.location.search);
         searchParams.set("search", e.detail);
         var newRelativePathQuery = window.location.pathname + '?' + searchParams.toString();
         history.pushState(null, '', newRelativePathQuery);
 
-        this.runSearch()
+        // TODO: switch search here based on tab?
+        this.peopleSearch()
     }
 
     static get styles() {
@@ -180,7 +182,6 @@ class Search extends LitElement {
             });
         }
 
-        var count = this.data ? this.data.personsFacetedSearch.page.totalElements : 0;
         var resultsDisplay = html`<div>
             ${_.map(results, function (i) {
             let title = i.preferredTitle || i.id;
@@ -204,7 +205,7 @@ class Search extends LitElement {
         </div>`
 
         return html`        
-          <p><strong>Searching</strong>:<em>${this.query};count=${count}</em></p>
+          <p><strong>Searching</strong>:<em>${this.query}</em></p>
           ${resultsDisplay}
         `
     }
