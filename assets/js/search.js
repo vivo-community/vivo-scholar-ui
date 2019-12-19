@@ -1,55 +1,20 @@
-import { Router } from '@vaadin/router';
 import { LitElement, html, css } from "lit-element";
 import qs from "qs";
 import _ from "lodash";
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 
-//const search = document.getElementById('search');
-//const router = new Router(search, { baseUrl: '/search/' });
-
 import peopleQuery from "./people/query";
 import client from "./lib/apollo";
 
+// use history?
 //https://medium.com/@george.norberg/history-api-getting-started-36bfc82ddefc
 
 /*
-let state = { 
-    buttonText: "Initial text"
-};
-
-window.history.replaceState(state, null, "");
-
-// Update state, history, and user interface
-function handleButtonClick() {
-  state.buttonText = "I clicked the button!"
-  window.history.pushState(state, null, "");
-  render(state);
-}
-
-window.onpopstate = function (event) {
-  if (event.state) { state = event.state; }
-  render(state);
-};
-
-// Connect your button to the handler above to trigger on click
-button.addEventListener("click", handleButtonClick)
-
-<vivo-search></vivo-search>
-
-*/
-
-/*
-router.setRoutes([
-    { path: '', component: 'vivo-search' },
-    { path: 'people', component: 'vivo-search' }//,
-    //{ path: 'publications', component: 'vivo-publication-search' }//,
-]);
-*/
-
 function stringifyQuery(params) {
     let result = qs.stringify(params);
     return result ? "?" + result : "";
 }
+*/
 
 function parseQuery(qryString) {
     return qs.parse(qryString);
@@ -120,7 +85,6 @@ class Search extends LitElement {
         this.runSearch()
         this.doSearch = this.doSearch.bind(this);
         // decide what tab to show here?
-
         // catch all clicks? 
         //window.addEventListener("click", handleButtonClick);
     }
@@ -128,21 +92,11 @@ class Search extends LitElement {
     handlePopState(e) {
        //console.log(e);
        //console.log(history);
-
        var searchParams = new URLSearchParams(window.location.search);
        console.log(`searchParams=${searchParams.toString()}`);
     }
     
-    // vaadin router callback ?
-    /*
-    onAfterEnter(location, commands, router) {
-        const parsed = parseQuery(location.search.substring(1));
-        const defaultSearch = (parsed.search && parsed.search.trim().length > 0) ? parsed.search : "*";
-        this.query = defaultSearch;
-    }
-    */
-
-    // lit-element thing
+    // lit-element callback
     connectedCallback() {
         super.connectedCallback();
         window.addEventListener('searchSubmitted', this.doSearch);
@@ -189,12 +143,6 @@ class Search extends LitElement {
         // this would change
         /*
         https://javascriptplayground.com/url-search-params/
-        
-        var searchParams = new URLSearchParams(window.location.search);
-        searchParams.set("search", e.detail);
-        var newRelativePathQuery = window.location.pathname + '?' + searchParams.toString();
-        history.pushState(null, '', newRelativePathQuery);
-        
         */
 
         var searchParams = new URLSearchParams(window.location.search);
@@ -202,7 +150,6 @@ class Search extends LitElement {
         var newRelativePathQuery = window.location.pathname + '?' + searchParams.toString();
         history.pushState(null, '', newRelativePathQuery);
 
-        //Router.go(`/search/${qry}`);
         this.runSearch()
     }
 
