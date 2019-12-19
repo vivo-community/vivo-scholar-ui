@@ -186,7 +186,7 @@ class Search extends LitElement {
                   </vivo-search-person-image>
                   <vivo-search-person>
                     <div slot="title">${title}</div>
-                      <a slot="name" target="_blank" href="/entities/person/${i.id}">
+                      <a slot="name" href="/entities/person/${i.id}">
                       ${i.name}
                       </a>
                     </div>
