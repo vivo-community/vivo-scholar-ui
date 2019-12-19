@@ -10,13 +10,6 @@ const router = new Router(search, { baseUrl: '/search/' });
 import peopleQuery from "./people/query";
 import client from "./lib/apollo";
 
-/*
-  <vaadin-router baseUrl="/search/" routes=[{ path: ... }]>
-
-  ... ?
-
-  </vaadin-router>
-*/
 router.setRoutes([
     { path: '', component: 'vivo-search' },
     { path: 'people', component: 'vivo-search' }//,
@@ -105,13 +98,12 @@ class Search extends LitElement {
         this.query = defaultSearch;
     }
 
+    locationChanged(location) {
+        console.log(`location changed=${location}`);
+    }
 
     connectedCallback() {
         super.connectedCallback();
-        window.addEventListener('vaadin-router-location-changed', this.locationChanged);
-        //this.addEventListener('searchSubmitted', this.doSearch);
-        //EventBus.register("searchSubmitted", this.doSearch);
-
         window.addEventListener('searchSubmitted', this.doSearch);
         // NOTE: doSearch might need to be called/initiated by other events
         // such as searchChooseFacet or searchTabSelected etc...
