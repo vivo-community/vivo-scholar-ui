@@ -180,37 +180,32 @@ class Search extends LitElement {
             });
         }
 
-        var list = html`<ul>
+        var count = this.data ? this.data.personsFacetedSearch.page.totalElements : 0;
+        var resultsDisplay = html`<div>
             ${_.map(results, function (i) {
             let title = i.preferredTitle || i.id;
 
-            // NOTE: elements here might be better named with 'results'
-            // e.g. vivo-search-person-results ... that's long though
-            // maybe just search-person-results?
-            return html`<div>
-                  <vivo-search-person-image thumbnail="${i.thumbnail}">
-                  </vivo-search-person-image>
+            // NOTE: the custom elements here might be better named with 'results'
+            // e.g. vivo-search-person-results, or maybe just search-person-results?
+            return html`<vivo-search-person-image thumbnail="${i.thumbnail}"></vivo-search-person-image>
                   <vivo-search-person>
                     <div slot="title">${title}</div>
-                      <a slot="name" href="/entities/person/${i.id}">
+                    <a slot="name" href="/entities/person/${i.id}">
                       ${i.name}
-                      </a>
-                    </div>
+                    </a>
                     ${i.overview ?
                     html`<vivo-truncated-text>${unsafeHTML(i.overview)}</vivo-truncated-text>` :
                     html``
                 } 
                   </vivo-search-person>
-
-                </div>
                 `
         })
             }
-        </ul>`
+        </div>`
 
         return html`        
-          <p><strong>Searching</strong>:<em>${this.query}</em></p>
-          ${list}
+          <p><strong>Searching</strong>:<em>${this.query};count=${count}</em></p>
+          ${resultsDisplay}
         `
     }
 }
