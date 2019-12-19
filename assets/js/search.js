@@ -109,10 +109,13 @@ class Search extends LitElement {
         // such as searchChooseFacet or searchTabSelected etc...
     }
 
+    // NOTE: just running 'peopleQuery' now - there will be
+    // other queries (publications etc...)
     runSearch() {
         const fetchData = async () => {
             try {
-                // supposed to be adding filters
+                // supposed to be adding facets, filters here (from sidebar)
+                // also paging ...
                 const { data } = await client.query({
                     query: peopleQuery,
                     variables: {
@@ -175,6 +178,9 @@ class Search extends LitElement {
             ${_.map(results, function (i) {
             let title = i.preferredTitle || i.id;
 
+            // NOTE: elements here might be better named with 'results'
+            // e.g. vivo-search-person-results ... that's long though
+            // maybe just search-person-results?
             return html`<div>
                   <vivo-search-person-image thumbnail="${i.thumbnail}">
                   </vivo-search-person-image>
@@ -196,14 +202,9 @@ class Search extends LitElement {
             }
         </ul>`
 
-        return html`
-        <div id="main">
+        return html`        
           <p><strong>Searching</strong>:<em>${this.query}</em></p>
           ${list}
-        </div>
-        
-        
-        
         `
     }
 }
