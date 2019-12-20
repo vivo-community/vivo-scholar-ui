@@ -12,23 +12,21 @@ sidebar?
 2. and searchSubmitted?
 
 -->
+<vivo-search-navigation></vivo-search-navigation>
+
 <div class="container">
 
   <aside>
      <vivo-sidebar>
-      <vivo-sidebar-item>
-        <!-- 
-        TODO:  
-        a) populate from current search
-        b) send parameter to current search
-        c) change depending on current tab
-
-        <vivo-search-facets></vivo-search-facets> ?
-        
-        -->
-        <h3 slot="heading">Facets (will go here)</h3>
-        </vivo-sidebar-item>
-     </vivo-sidebar>
+        <vivo-search-facets>
+          <vivo-sidebar-item>
+            <h3 slot="heading">Some Facets</h3>
+            <div slot="content">
+              <vivo-search-facet>            
+              </vivo-search-facet>
+            </div>
+          </vivo-sidebar-item>
+        </vivo-search-facets>
   </aside>
 
   <main>
@@ -36,10 +34,22 @@ sidebar?
     <vivo-tabs id="secondary-example" vivo-tab-style="secondary">
       <vivo-tab id="person-search-tab" selected>
         People (count)
+        <!--
+          <vivo-people-search-count />
+        -->
       </vivo-tab>
   
       <vivo-tab-panel selected>  
-        <!-- NOTE: this is not correct, long-term -->
+        <!-- 
+        NOTE: how to do this eventually?
+        goals:
+        1. make it easy to add another search tab?
+        2. 
+        <vivo-search for="person-search-tab">
+         <vivo-people-search-results query="people/query.js"/>
+         <vivo-pagination />
+        </vivo-search>
+        -->
         <vivo-search></vivo-search>
       </vivo-tab-panel>
     

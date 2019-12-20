@@ -13,6 +13,115 @@ function parseQuery(qryString) {
     return qs.parse(qryString);
 }
 
+class SearchFacet extends LitElement {
+    
+    render() {
+        return html`
+          <label><input type="checkbox">Facet 1</label>
+          <slot />
+        `
+    }
+}
+
+customElements.define('vivo-search-facet', SearchFacet);
+
+class SearchFacets extends LitElement {
+ 
+    selectFacetById(facetId) {
+        this.selectFacet(this.querySelector(`vivo-facet#${facetId}`));
+    }
+    
+    selectFacet(facet) {
+        if (facet) {
+          let facets = this.querySelectorAll('vivo-facet');
+          facets.forEach((t) => t.removeAttribute('selected'));
+          facets.setAttribute('selected', 'selected');
+          this.dispatchEvent(new CustomEvent('facetSelected', {
+            detail: facet,
+            bubbles: true,
+            cancelable: false,
+            composed: true
+          }));
+        }
+      }
+
+    render() {
+        return html`
+          <slot />
+        `
+    }
+}
+
+customElements.define('vivo-search-facets', SearchFacets);
+
+class SearchNavigation extends LitElement {
+    constructor() {
+        super();
+        this.browsingState = {};
+        this.navFrom = this.navFrom.bind(this);
+        this.navTo = this.navTo.bind(this);
+    }
+
+    firstUpdated() {
+        document.addEventListener('DOMContentLoaded',this.navFrom);
+        document.addEventListener('tabSelected',this.handleTabSelected);
+    }
+    
+    disconnectedCallback() {
+        super.disconnectedCallback();
+        document.removeEventListener('DOMContentLoaded',this.navFrom);
+        //document.removeEventListener('tabSelected',this.handleTabSelected);
+    }
+
+    handleTabSelected(e) {
+        const tab = e.detail;
+        this.browsingState.currentTab = tab.id
+        // switch facets here?
+        // run different query?
+        //searchResults.selectTabById(currentTab);
+        //searchFacets.selectTabById(currentTab);
+    }
+
+    navTo() {
+        const searchParams = new URLSearchParams(this.browsingState);
+        window.history.replaceState({},'', `${window.location.pathname}?${searchParams.toString()}`);
+        window.location.href = this.browsingState.to;
+    }
+
+    navFrom() {
+        const url = new URL(window.location.href);
+        const incomingBrowsingState = {};
+        for(let key of url.searchParams.keys()) {
+          incomingBrowsingState[key] = url.searchParams.get(key);
+        }
+        const { currentTab } = incomingBrowsingState;
+        if (currentTab) {
+          const tabs = this.getMainTabs();
+          if (tabs) {
+            tabs.selectTabById(currentTab);
+          }
+          // const facets = this.getMainFacets();
+          // if (facets) {
+          //   // like this? maybe not cause it has to run search 
+          //   facets.selectFacetById(currentTab);   
+          // }
+        }
+
+        // if currentFacet ... 
+        // if currentResults ...
+    }
+
+    getMainTabs() {
+        return document.querySelector('vivo-tabs');
+    } 
+    
+    getFacets() {
+        return document.querySelector('vivo-search-facets');
+    }  
+}
+
+customElements.define('vivo-search-navigation', SearchNavigation);
+
 class PersonImage extends LitElement {
     static get properties() {
         return {
