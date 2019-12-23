@@ -9,10 +9,6 @@ import client from "./lib/apollo";
 // use history instead of routing?
 //https://medium.com/@george.norberg/history-api-getting-started-36bfc82ddefc
 
-function parseQuery(qryString) {
-    return qs.parse(qryString);
-}
-
 class SearchFacet extends LitElement {
     
     render() {
@@ -117,7 +113,7 @@ class SearchNavigation extends LitElement {
         // switch facets here?
         // run different query?
         //searchResults.selectTabById(currentTab);
-        //searchFacets.selectTabById(currentTab);
+        //searchFacets.selectFacetById(currentTab);
     }
 
     handleSearchSubmitted(e) {
@@ -144,7 +140,7 @@ class SearchNavigation extends LitElement {
         // switch facets here?
         // run different query?
         //searchResults.selectTabById(currentTab);
-        //searchFacets.selectTabById(currentTab);
+        //searchFacets.selectFacetById(currentTab);
     }
 
     handleFacetSelected(e) {
@@ -243,20 +239,82 @@ class PersonCard extends LitElement {
 customElements.define('vivo-search-person', PersonCard);
 
 // TODO?: make a PeopleSearch, PublicationSearch etc... (each tab)
+// not sure about 'extends' ....
+// 
+// class PersonSearch extends Search {
+//  constructor() {
+//    search = peopleQuery;
+// }
+// render() {
+//     for(each results) { -> <vivo-search-person /> }   
+// }
+//}
 
+// class PublicationSearch extends Search {
+//  constructor() {
+//    search = publicationQuery;
+// }
+// render() {
+//     for(each results) { -> <vivo-search-publication /> }   
+// }
+//}
+
+// or something like this?: (seems better, no 'extends')
+// each tab can have it's own search:
+// <tab-panel><person-search></tab-panel>
+// ...
+// <tab-panel><publication-search></tab-panel>
+// ...
+// if on people tab, publicationsFacetedSearch in 'data' is 
+// empty so it has nothing to iterate anyway
+// 'count' would not have to be empty though
+// 'mixin'?
+// https://justinfagnani.com/2015/12/21/real-mixins-with-javascript-classes/
+/*
+let MyMixin = (superclass) => class extends superclass {
+  runSearch() {
+    console.log('runSearch from MyMixin');
+  }
+};
+
+class PersonSearch extends VivoSearch(LitElement) {
+  ...
+}
+*/
+// class PersonSearch extends LitElement {
+//  constructor() {
+//    search = peopleQuery;
+//    count = ?? how to just get count (when not current tab)
+//  }
+//  runSearch()->
+//  render() {
+//     <vivo-search query=${this.search}>
+//     for(each results) { -> <vivo-search-person /> } 
+//     </vivo-search>  
+// }
+//}
+
+// what varies per tab?
+// a) the graphql query 
+// b) the results 'card'
+// c) the facets (but that's just the data anyway)
+// d) pagination (also data too)
+
+// should this have blank render() method and delegate down to tab or something?
+// e.g. another 'utility' component - the thing that runs queries
 class Search extends LitElement {
 
     static get properties() {
         return {
             query: { type: String },
-            location: { type: Object },
             data: { type: Object }
         }
     }
 
     constructor() {
         super();
-        const parsed = parseQuery(location.search.substring(1));
+
+        const parsed = this.parseQuery(window.location.search.substring(1));
         const defaultSearch = (parsed.search && parsed.search.trim().length > 0) ? parsed.search : "*";
         this.query = defaultSearch;
 
@@ -264,6 +322,10 @@ class Search extends LitElement {
         this.peopleSearch()
         
         this.doSearch = this.doSearch.bind(this);
+    }
+
+    parseQuery(qryString) {
+        return qs.parse(qryString);
     }
 
     handlePopState(e) {
