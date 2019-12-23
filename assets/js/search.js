@@ -54,25 +54,63 @@ class SearchFacets extends LitElement {
 
 customElements.define('vivo-search-facets', SearchFacets);
 
+// class PeopleFacets extends LitElement {
+// NOTE: these would be populated from query results
+// var facets ="
+//       <vivo-search-facet>
+//         <label><input type="checkbox">Facet 1</label>
+//       </vivo-search-facet>
+//       <vivo-search-facet>
+//         <label><input type="checkbox">Facet 2</label>
+//      </vivo-search-facet>"
+//  render() {
+//  return html`
+//    <vivo-search-facets>
+//    ${facets}
+//    </vivo-search-facets>
+//  `    
+// }
+//}
+
+// global sort of object
 class SearchNavigation extends LitElement {
     constructor() {
         super();
         this.browsingState = {};
         this.navFrom = this.navFrom.bind(this);
         this.navTo = this.navTo.bind(this);
+        this.handleSearchResultsObtained = this.handleSearchResultsObtained.bind(this);
+        this.handleSearchSubmitted = this.handleSearchSubmitted.bind(this);
     }
 
     firstUpdated() {
         document.addEventListener('DOMContentLoaded',this.navFrom);
         document.addEventListener('tabSelected',this.handleTabSelected);
+        document.addEventListener('searchSubmitted',this.handleSearchSubmitted);
+        // 
+        document.addEventListener('facetSelected',this.handleFacetSelected);
+        document.addEventListener('searchResultsObtained',this.handleSearchResultsObtained);
+
     }
     
     disconnectedCallback() {
         super.disconnectedCallback();
         document.removeEventListener('DOMContentLoaded',this.navFrom);
-        //document.removeEventListener('tabSelected',this.handleTabSelected);
+        document.removeEventListener('tabSelected',this.handleTabSelected);
+        document.removeEventListener('searchSubmitted',this.handleSearchSubmitted);
+        document.removeEventListener('facetSelected',this.handleFacetSelected);
+        document.removeEventListener('searchResultsObtained',this.handleSearchResultsObtained);
     }
 
+    // handleNewSearch(e) {
+    //    updateFacets ... (e.g. setFacets(search.results.facets))
+    //    tabs?  update counts?
+    //    reset paging ... (e.g. setPaging(search.results.paging))
+    //  
+    //}
+
+    // ??
+    // handlePagination(e) { }
     handleTabSelected(e) {
         const tab = e.detail;
         this.browsingState.currentTab = tab.id
@@ -80,6 +118,50 @@ class SearchNavigation extends LitElement {
         // run different query?
         //searchResults.selectTabById(currentTab);
         //searchFacets.selectTabById(currentTab);
+    }
+
+    handleSearchSubmitted(e) {
+        const search = e.detail;
+        
+        this.browsingState.currentSearch = search;
+        
+        const { currentTab } = this.browsingState;
+        if (currentTab) {
+            const facets = this.getFacets();
+            if (facets) {
+              // have tab and facetids match?
+              // send in search - or how to pass 'data' from
+              // executed search?
+              facets.selectFacetById(currentTab, search);
+              //
+            }
+        }
+
+        // depending on 'tab'
+        // 1. update facets
+        // 2. update results
+        // 3. update pagination
+        // switch facets here?
+        // run different query?
+        //searchResults.selectTabById(currentTab);
+        //searchFacets.selectTabById(currentTab);
+    }
+
+    handleFacetSelected(e) {
+        const facet = e.detail;
+        console.log(`facet selected: ${facet}`);
+        this.browsingState.currentFacet = facet;
+    }
+
+    handleSearchResultsObtained(e) {
+        const data = e.detail;
+        //console.log(`received search: ${JSON.stringify(data)}`);
+        console.log("received search results:");
+        console.log(data);
+        this.browsingState.currentData = data;
+
+        // update facets ...
+        // update pagingation ...
     }
 
     navTo() {
@@ -96,22 +178,17 @@ class SearchNavigation extends LitElement {
         }
         const { currentTab } = incomingBrowsingState;
         if (currentTab) {
-          const tabs = this.getMainTabs();
+          const tabs = this.getTabs();
           if (tabs) {
             tabs.selectTabById(currentTab);
           }
-          // const facets = this.getMainFacets();
-          // if (facets) {
-          //   // like this? maybe not cause it has to run search 
-          //   facets.selectFacetById(currentTab);   
-          // }
         }
 
         // if currentFacet ... 
         // if currentResults ...
     }
 
-    getMainTabs() {
+    getTabs() {
         return document.querySelector('vivo-tabs');
     } 
     
@@ -233,9 +310,17 @@ class Search extends LitElement {
     peopleSearch() {
         this.runSearch()
           .then(() => {
+            // TODO: should delegate up and then back down to tabs
             var personCount = this.data ? this.data.personsFacetedSearch.page.totalElements : 0;
             let tab = document.querySelector('#person-search-tab'); 
             tab.textContent = `People (${personCount})`;
+
+            this.dispatchEvent(new CustomEvent('searchResultsObtained', {
+                detail: this.data,
+                bubbles: true,
+                cancelable: false,
+                composed: true
+              }));
           })
           .catch((e) => console.error(`Error running search:${e}`));
     }
@@ -252,6 +337,7 @@ class Search extends LitElement {
 
         // TODO: switch search here based on tab?
         this.peopleSearch()
+        // 
     }
 
     static get styles() {
