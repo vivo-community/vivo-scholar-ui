@@ -147,6 +147,7 @@ class SearchNavigation extends LitElement {
         //searchFacets.selectFacetById(currentTab);
     }
 
+    // run search again? send back down?
     handleFacetSelected(e) {
         const facet = e.detail;
         console.log(`facet selected: ${facet}`);
@@ -254,6 +255,24 @@ class PersonSearch extends LitElement {
         data: { type: Object }
     }
   }
+
+  static get styles() {
+    return css`
+      vivo-search-person-image {
+          float:left;
+          width: 10%;
+      }
+      vivo-search-person {
+          float: left;
+          width: 90%;
+      }
+      :host {
+          display: block;
+          clear: both;
+      }
+      
+    `
+}
 
   constructor() {
     super();
@@ -435,19 +454,10 @@ class Search extends LitElement {
 
     static get styles() {
         return css`
-          vivo-search-person-image {
-              float:left;
-              width: 10%;
-          }
-          vivo-search-person {
-              float: left;
-              width: 90%;
-          }
           :host {
               display: block;
               clear: both;
           }
-          
         `
     }
 
