@@ -8,9 +8,34 @@ import client from "./lib/apollo";
 
 class SearchFacet extends LitElement {
     
+    static get properties() {
+        return {
+            value: { type: String }
+        }
+    }
+
+    constructor() {
+        super();
+        this.handleFacetSelected = this.handleFacetSelected.bind(this);
+    }
+
+    handleFacetSelected(e) {
+      console.log(`facet selected (in vivo-facet)`);
+      console.log(e);
+      // if checked == true + add
+      // if checked == false - remove
+      // getAttribute("value") is returning facet1
+      this.dispatchEvent(new CustomEvent('facetSelected', {
+        detail: { checked: e.target.checked, value: e.target.getAttribute("value") },
+        bubbles: true,
+        cancelable: false,
+        composed: true
+      }));
+    }
+
     render() {
         return html`
-          <label><input type="checkbox">Facet 1</label>
+          <label><input type="checkbox" value="facet1" @click=${this.handleFacetSelected}>Facet 1</label>
           <slot />
         `
     }
@@ -55,24 +80,6 @@ class SearchFacets extends LitElement {
 
 customElements.define('vivo-search-facets', SearchFacets);
 
-// class PeopleFacets extends LitElement {
-// NOTE: these would be populated from query results
-// var facets ="
-//       <vivo-search-facet>
-//         <label><input type="checkbox">Facet 1</label>
-//       </vivo-search-facet>
-//       <vivo-search-facet>
-//         <label><input type="checkbox">Facet 2</label>
-//      </vivo-search-facet>"
-//  render() {
-//  return html`
-//    <vivo-search-facets>
-//    ${facets}
-//    </vivo-search-facets>
-//  `    
-// }
-//}
-
 // global sort of object
 class SearchNavigation extends LitElement {
     constructor() {
@@ -82,13 +89,13 @@ class SearchNavigation extends LitElement {
         this.navTo = this.navTo.bind(this);
         this.handleSearchResultsObtained = this.handleSearchResultsObtained.bind(this);
         this.handleSearchSubmitted = this.handleSearchSubmitted.bind(this);
+        this.handleFacetSelected = this.handleFacetSelected.bind(this);
     }
 
     firstUpdated() {
         document.addEventListener('DOMContentLoaded',this.navFrom);
         document.addEventListener('tabSelected',this.handleTabSelected);
         document.addEventListener('searchSubmitted',this.handleSearchSubmitted);
-        // 
         document.addEventListener('facetSelected',this.handleFacetSelected);
         document.addEventListener('searchResultsObtained',this.handleSearchResultsObtained);
     }
@@ -118,6 +125,7 @@ class SearchNavigation extends LitElement {
         // run different query?
         //searchResults.selectTabById(currentTab);
         //searchFacets.selectFacetById(currentTab);
+        // set current search? e.g. <vivo-person-search />
     }
 
     handleSearchSubmitted(e) {
@@ -150,20 +158,22 @@ class SearchNavigation extends LitElement {
     // run search again? send back down?
     handleFacetSelected(e) {
         const facet = e.detail;
-        console.log(`facet selected: ${facet}`);
+        console.log(`facet selected (in vivo-search-navigation):`);
+        console.log(facet);
         this.browsingState.currentFacet = facet;
+        // how to call search again?
+        // search.search()?
     }
 
     handleSearchResultsObtained(e) {
         const data = e.detail;
-        //console.log(`received search: ${JSON.stringify(data)}`);
         //console.log("received search results:");
         //console.log(data);
         this.browsingState.currentData = data;
 
-        // send to search components?
+        // send to search results data display components?
         // update facets ...
-        // update pagingation ...
+        // update pagination ...
     }
 
     navTo() {
@@ -197,6 +207,7 @@ class SearchNavigation extends LitElement {
     getFacets() {
         return document.querySelector('vivo-search-facets');
     }  
+
 }
 
 customElements.define('vivo-search-navigation', SearchNavigation);
@@ -346,6 +357,8 @@ customElements.define('vivo-person-search', PersonSearch);
 
 // should this have blank render() method and delegate down to tab or something?
 // e.g. another 'utility' component - the thing that runs queries
+// NOTE: a page would have multiple of these (in shadow dom)...
+// so *all* would listening to window.searchSubmitted (the way it is now)
 class Search extends LitElement {
 
     // sorting, pageSize too?
@@ -363,6 +376,7 @@ class Search extends LitElement {
     constructor() {
         super();
         this.doSearch = this.doSearch.bind(this);
+        this.facetSelected = this.facetSelected.bind(this);
     }
 
     firstUpdated() {
@@ -394,6 +408,17 @@ class Search extends LitElement {
         window.addEventListener("popstate", this.handlePopState);
         // NOTE: doSearch might need to be called/initiated by other events
         // such as searchChooseFacet or searchTabSelected etc...
+        // ??
+        window.addEventListener('facetSelected', this.handleFacetSelected);
+    }
+
+    facetSelected(e) {
+      console.log(`facet selected (in vivo-search)`);
+      console.log(e);
+      // 1. set filters?
+      //this.filters = e.details.
+      // 2. re-run search?
+      // this.doSearch();
     }
 
     // NOTE: just running 'peopleQuery' now - there will be
@@ -424,11 +449,6 @@ class Search extends LitElement {
     search() {
         this.runSearch()
           .then(() => {
-            // TODO: should delegate up and then back down to tabs
-            //var personCount = this.data ? this.data.personsFacetedSearch.page.totalElements : 0;
-            //let tab = document.querySelector('#person-search-tab'); 
-            //tab.textContent = `People (${personCount})`;
-
             this.dispatchEvent(new CustomEvent('searchResultsObtained', {
                 detail: this.data,
                 bubbles: true,
