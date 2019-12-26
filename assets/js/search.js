@@ -6,9 +6,6 @@ import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 import peopleQuery from "./people/query";
 import client from "./lib/apollo";
 
-// use history instead of routing?
-//https://medium.com/@george.norberg/history-api-getting-started-36bfc82ddefc
-
 class SearchFacet extends LitElement {
     
     render() {
@@ -21,8 +18,16 @@ class SearchFacet extends LitElement {
 
 customElements.define('vivo-search-facet', SearchFacet);
 
+// listen for 'searchResultsObtained'?
 class SearchFacets extends LitElement {
  
+    static get properties() {
+        return {
+            data: { type: Object }
+        }
+    }
+
+    // TODO: add 'data' property (for rendering results?)
     selectFacetById(facetId) {
         this.selectFacet(this.querySelector(`vivo-facet#${facetId}`));
     }
@@ -86,7 +91,6 @@ class SearchNavigation extends LitElement {
         // 
         document.addEventListener('facetSelected',this.handleFacetSelected);
         document.addEventListener('searchResultsObtained',this.handleSearchResultsObtained);
-
     }
     
     disconnectedCallback() {
@@ -152,10 +156,11 @@ class SearchNavigation extends LitElement {
     handleSearchResultsObtained(e) {
         const data = e.detail;
         //console.log(`received search: ${JSON.stringify(data)}`);
-        console.log("received search results:");
-        console.log(data);
+        //console.log("received search results:");
+        //console.log(data);
         this.browsingState.currentData = data;
 
+        // send to search components?
         // update facets ...
         // update pagingation ...
     }
@@ -238,62 +243,82 @@ class PersonCard extends LitElement {
 
 customElements.define('vivo-search-person', PersonCard);
 
-// TODO?: make a PeopleSearch, PublicationSearch etc... (each tab)
-// not sure about 'extends' ....
-// 
-// class PersonSearch extends Search {
-//  constructor() {
-//    search = peopleQuery;
-// }
-// render() {
-//     for(each results) { -> <vivo-search-person /> }   
-// }
-//}
+// check current tab? or if visible do something else?
+class PersonSearch extends LitElement {
 
-// class PublicationSearch extends Search {
-//  constructor() {
-//    search = publicationQuery;
-// }
-// render() {
-//     for(each results) { -> <vivo-search-publication /> }   
-// }
-//}
-
-// or something like this?: (seems better, no 'extends')
-// each tab can have it's own search:
-// <tab-panel><person-search></tab-panel>
-// ...
-// <tab-panel><publication-search></tab-panel>
-// ...
-// if on people tab, publicationsFacetedSearch in 'data' is 
-// empty so it has nothing to iterate anyway
-// 'count' would not have to be empty though
-// 'mixin'?
-// https://justinfagnani.com/2015/12/21/real-mixins-with-javascript-classes/
-/*
-let MyMixin = (superclass) => class extends superclass {
-  runSearch() {
-    console.log('runSearch from MyMixin');
+  // NOTE: this 'query' is the graphql statement
+  // not crazy about JSON.stringify below
+  static get properties() {
+    return {
+        query: { type: Object },
+        data: { type: Object }
+    }
   }
-};
 
-class PersonSearch extends VivoSearch(LitElement) {
-  ...
+  constructor() {
+    super();
+    this.query = peopleQuery;
+    this.handleSearchResultsObtained = this.handleSearchResultsObtained.bind(this);
+  }
+
+  firstUpdated() {
+    document.addEventListener('searchResultsObtained',this.handleSearchResultsObtained);
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    document.removeEventListener('searchResultsObtained',this.handleSearchResultsObtained);
+  }
+
+  handleSearchResultsObtained(e) {
+    this.data = e.detail;
+    var personCount = this.data ? this.data.personsFacetedSearch.page.totalElements : 0;
+    let tab = document.querySelector('#person-search-tab'); 
+    tab.textContent = `People (${personCount})`;
+  }
+
+  render() {
+    var results = [];
+    if (this.data && this.data.personsFacetedSearch.content) {
+        let content = this.data.personsFacetedSearch.content;
+        _.each(content, function (item) {
+            results.push(item);
+        });
+    }
+
+    var resultsDisplay = html`<div>
+        ${_.map(results, function (i) {
+        let title = i.preferredTitle || i.id;
+
+        // NOTE: the custom elements here might be better named with 'results'
+        // e.g. vivo-search-person-results, or maybe just search-person-results?
+        return html`<vivo-search-person-image thumbnail="${i.thumbnail}"></vivo-search-person-image>
+              <vivo-search-person>
+                <div slot="title">${title}</div>
+                <a slot="name" href="/entities/person/${i.id}">
+                  ${i.name}
+                </a>
+                ${i.overview ?
+                html`<vivo-truncated-text>${unsafeHTML(i.overview)}</vivo-truncated-text>` :
+                html``
+            } 
+              </vivo-search-person>
+            `
+    })
+        }
+    </div>`
+
+      return html`
+       <vivo-search graphql=${JSON.stringify(this.query)}>
+       ${resultsDisplay}
+       </vivo-search>`  
+  }
+
 }
-*/
-// class PersonSearch extends LitElement {
-//  constructor() {
-//    search = peopleQuery;
-//    count = ?? how to just get count (when not current tab)
-//  }
-//  runSearch()->
-//  render() {
-//     <vivo-search query=${this.search}>
-//     for(each results) { -> <vivo-search-person /> } 
-//     </vivo-search>  
-// }
-//}
 
+// NOTE: don't like name 'vivo-person-search' with also 'vivo-search-person'
+// (they are different)
+customElements.define('vivo-person-search', PersonSearch);
 // what varies per tab?
 // a) the graphql query 
 // b) the results 'card'
@@ -304,24 +329,33 @@ class PersonSearch extends VivoSearch(LitElement) {
 // e.g. another 'utility' component - the thing that runs queries
 class Search extends LitElement {
 
+    // sorting, pageSize too?
     static get properties() {
         return {
+            // NOTE: this is what determines different searches
+            graphql: { type: Object, attribute: true },
             query: { type: String },
-            data: { type: Object }
+            data: { type: Object },
+            page: { type: Number },
+            filters: { type: Array }
         }
     }
 
     constructor() {
         super();
+        this.doSearch = this.doSearch.bind(this);
+    }
 
+    firstUpdated() {
         const parsed = this.parseQuery(window.location.search.substring(1));
         const defaultSearch = (parsed.search && parsed.search.trim().length > 0) ? parsed.search : "*";
         this.query = defaultSearch;
-
-        // should this throw 'searchSubmitted' event?
-        this.peopleSearch()
         
-        this.doSearch = this.doSearch.bind(this);
+        // get these from query string too?
+        this.page = 0;
+        this.filters = [];
+
+        this.search();
     }
 
     parseQuery(qryString) {
@@ -338,7 +372,6 @@ class Search extends LitElement {
     connectedCallback() {
         super.connectedCallback();
         window.addEventListener('searchSubmitted', this.doSearch);
-
         window.addEventListener("popstate", this.handlePopState);
         // NOTE: doSearch might need to be called/initiated by other events
         // such as searchChooseFacet or searchTabSelected etc...
@@ -352,7 +385,7 @@ class Search extends LitElement {
                 // supposed to be adding facets, filters here (from sidebar)
                 // also paging ...
                 const { data } = await client.query({
-                    query: peopleQuery,
+                    query: this.graphql,
                     variables: {
                         pageNumber: 0,
                         search: this.query,
@@ -369,13 +402,13 @@ class Search extends LitElement {
     }
 
     // just a method to combine all UI side-effects of search ...
-    peopleSearch() {
+    search() {
         this.runSearch()
           .then(() => {
             // TODO: should delegate up and then back down to tabs
-            var personCount = this.data ? this.data.personsFacetedSearch.page.totalElements : 0;
-            let tab = document.querySelector('#person-search-tab'); 
-            tab.textContent = `People (${personCount})`;
+            //var personCount = this.data ? this.data.personsFacetedSearch.page.totalElements : 0;
+            //let tab = document.querySelector('#person-search-tab'); 
+            //tab.textContent = `People (${personCount})`;
 
             this.dispatchEvent(new CustomEvent('searchResultsObtained', {
                 detail: this.data,
@@ -397,9 +430,7 @@ class Search extends LitElement {
         var newRelativePathQuery = window.location.pathname + '?' + searchParams.toString();
         history.pushState(null, '', newRelativePathQuery);
 
-        // TODO: switch search here based on tab?
-        this.peopleSearch()
-        // 
+        this.search();
     }
 
     static get styles() {
@@ -421,39 +452,9 @@ class Search extends LitElement {
     }
 
     render() {
-        var results = [];
-        if (this.data && this.data.personsFacetedSearch.content) {
-            let content = this.data.personsFacetedSearch.content;
-            _.each(content, function (item) {
-                results.push(item);
-            });
-        }
-
-        var resultsDisplay = html`<div>
-            ${_.map(results, function (i) {
-            let title = i.preferredTitle || i.id;
-
-            // NOTE: the custom elements here might be better named with 'results'
-            // e.g. vivo-search-person-results, or maybe just search-person-results?
-            return html`<vivo-search-person-image thumbnail="${i.thumbnail}"></vivo-search-person-image>
-                  <vivo-search-person>
-                    <div slot="title">${title}</div>
-                    <a slot="name" href="/entities/person/${i.id}">
-                      ${i.name}
-                    </a>
-                    ${i.overview ?
-                    html`<vivo-truncated-text>${unsafeHTML(i.overview)}</vivo-truncated-text>` :
-                    html``
-                } 
-                  </vivo-search-person>
-                `
-        })
-            }
-        </div>`
-
         return html`        
           <p><strong>Searching</strong>:<em>${this.query}</em></p>
-          ${resultsDisplay}
+          <slot />
         `
     }
 }
