@@ -10,6 +10,7 @@ class SearchFacet extends LitElement {
     
     static get properties() {
         return {
+            label: { type : String },
             value: { type: String }
         }
     }
@@ -35,8 +36,10 @@ class SearchFacet extends LitElement {
 
     render() {
         return html`
-          <label><input type="checkbox" value="facet1" @click=${this.handleFacetSelected}>Facet 1</label>
-          <slot />
+          <label>
+            <input type="checkbox" value="${this.value}" @click=${this.handleFacetSelected}>
+            ${this.label}
+          </label>
         `
     }
 }
@@ -52,28 +55,38 @@ class SearchFacets extends LitElement {
         }
     }
 
-    // TODO: add 'data' property (for rendering results?)
-    selectFacetById(facetId) {
-        this.selectFacet(this.querySelector(`vivo-facet#${facetId}`));
+    constructor() {
+        super();
+        this.handleSearchResultsObtained = this.handleSearchResultsObtained.bind(this);
     }
-    
-    selectFacet(facet) {
-        if (facet) {
-          let facets = this.querySelectorAll('vivo-facet');
-          facets.forEach((t) => t.removeAttribute('selected'));
-          facets.setAttribute('selected', 'selected');
-          this.dispatchEvent(new CustomEvent('facetSelected', {
-            detail: facet,
-            bubbles: true,
-            cancelable: false,
-            composed: true
-          }));
-        }
-      }
 
+    firstUpdated() {
+      document.addEventListener('searchResultsObtained',this.handleSearchResultsObtained);
+      // NOTE: would need to 'redraw' facets
+      // (with 'filters' from search)   
+    }
+
+    handleSearchResultsObtained(e) {
+      const data = e.detail;
+      this.data = data;
+      // redraw? facets here
+      // facets = data.facets;
+    }
+    // for filter in filters -> <vivo-search-facet />
     render() {
+        // TODO: gather facets from search data              
+        let fakeFacet = html`
+        <vivo-search-facet value="facet1" label="Facet 1">
+        </vivo-search-facet>`
+
+        // grouping of facets per vivo-sidebar-item
         return html`
-          <slot />
+        <vivo-sidebar-item>
+          <h3 slot="heading">Some Facets</h3>
+          <div slot="content">
+           ${fakeFacet}
+          </div>
+        </vivo-sidebar-item>
         `
     }
 }
@@ -98,6 +111,11 @@ class SearchNavigation extends LitElement {
         document.addEventListener('searchSubmitted',this.handleSearchSubmitted);
         document.addEventListener('facetSelected',this.handleFacetSelected);
         document.addEventListener('searchResultsObtained',this.handleSearchResultsObtained);
+    
+        // wouldn't this select the first one?
+        let defaultSearch = document.querySelector('vivo-person-search');
+        this.browsingState.activeSearch = defaultSearch;
+        console.log(defaultSearch);
     }
     
     disconnectedCallback() {
@@ -109,50 +127,25 @@ class SearchNavigation extends LitElement {
         document.removeEventListener('searchResultsObtained',this.handleSearchResultsObtained);
     }
 
-    // handleNewSearch(e) {
-    //    updateFacets ... (e.g. setFacets(search.results.facets))
-    //    tabs?  update counts?
-    //    reset paging ... (e.g. setPaging(search.results.paging))
-    //  
-    //}
-
     // ??
     // handlePagination(e) { }
     handleTabSelected(e) {
         const tab = e.detail;
         this.browsingState.currentTab = tab.id
-        // switch facets here?
-        // run different query?
-        //searchResults.selectTabById(currentTab);
-        //searchFacets.selectFacetById(currentTab);
-        // set current search? e.g. <vivo-person-search />
+        
+        let selectedTab = document.querySelector(`#${tab.id}`);
+        // should just find the first child of selected tab
+        // NOTE: it's just first child
+        this.browsingState.activeSearch = selectedTab.querySelector(':first-child');
     }
 
     handleSearchSubmitted(e) {
         const search = e.detail;
         
-        this.browsingState.currentSearch = search;
-        
-        const { currentTab } = this.browsingState;
-        if (currentTab) {
-            const facets = this.getFacets();
-            if (facets) {
-              // have tab and facetids match?
-              // send in search - or how to pass 'data' from
-              // executed search?
-              facets.selectFacetById(currentTab, search);
-              //
-            }
-        }
-
-        // depending on 'tab'
-        // 1. update facets
-        // 2. update results
-        // 3. update pagination
-        // switch facets here?
-        // run different query?
-        //searchResults.selectTabById(currentTab);
-        //searchFacets.selectFacetById(currentTab);
+        //this.browsingState.currentSearch = search;
+        this.browsingState.currentQuery = search;
+        let activeSearch = this.browsingState.activeSearch;
+        activeSearch.search();
     }
 
     // run search again? send back down?
@@ -161,8 +154,10 @@ class SearchNavigation extends LitElement {
         console.log(`facet selected (in vivo-search-navigation):`);
         console.log(facet);
         this.browsingState.currentFacet = facet;
-        // how to call search again?
-        // search.search()?
+        let search = this.browsingState.activeSearch;
+        // send in new filters, then re-run active search?
+        // search.setFilters(?);
+        search.search();
     }
 
     handleSearchResultsObtained(e) {
@@ -171,7 +166,11 @@ class SearchNavigation extends LitElement {
         //console.log(data);
         this.browsingState.currentData = data;
 
-        // send to search results data display components?
+        // TODO: instead of having <vivo-person-search />
+        // listen for 'searchResultsObtained' - add an updateResults(data)
+        // method (to each 'activeSearch')?
+        //
+        // also send to search results to other data display components?
         // update facets ...
         // update pagination ...
     }
@@ -307,6 +306,12 @@ class PersonSearch extends LitElement {
     tab.textContent = `People (${personCount})`;
   }
 
+  // need this so we can pass through
+  search() {
+      let search = this.shadowRoot.querySelector('vivo-search');
+      search.search();
+  }
+
   render() {
     var results = [];
     if (this.data && this.data.personsFacetedSearch.content) {
@@ -431,9 +436,9 @@ class Search extends LitElement {
                 const { data } = await client.query({
                     query: this.graphql,
                     variables: {
-                        pageNumber: 0,
+                        pageNumber: this.page,
                         search: this.query,
-                        filters: []
+                        filters: this.filters
                     }
                 });
                 this.data = data;
@@ -445,7 +450,30 @@ class Search extends LitElement {
         return fetchData();
     }
 
+    // something like this? or 
+    setFilters(filters = []) {
+        this.filters = filters;
+    }
+
+    setPage(page = 0) {
+        this.page = page;
+    }
+
+    setQuery(query = "*") {
+        this.query = query;
+    }
+
+    /*
+    setSearchParameters(parameters) {
+        let { filter, page, query } = parameters;
+        this.filter = filter;
+        this.page = page;
+        this.query = query;
+    }
+    */
     // just a method to combine all UI side-effects of search ...
+    // NOTE: assumes parameters have been set
+    // setSearchParameters({filter: [], page:0, query: "*"}) --?
     search() {
         this.runSearch()
           .then(() => {
