@@ -21,8 +21,6 @@ class SearchFacet extends LitElement {
     }
 
     handleFacetSelected(e) {
-      console.log(`facet selected (in vivo-facet)`);
-      console.log(e);
       // if checked == true + add
       // if checked == false - remove
       // getAttribute("value") is returning facet1
@@ -115,7 +113,6 @@ class SearchNavigation extends LitElement {
         // wouldn't this select the first one?
         let defaultSearch = document.querySelector('vivo-person-search');
         this.browsingState.activeSearch = defaultSearch;
-        console.log(defaultSearch);
     }
     
     disconnectedCallback() {
@@ -151,19 +148,16 @@ class SearchNavigation extends LitElement {
     // run search again? send back down?
     handleFacetSelected(e) {
         const facet = e.detail;
-        console.log(`facet selected (in vivo-search-navigation):`);
-        console.log(facet);
         this.browsingState.currentFacet = facet;
         let search = this.browsingState.activeSearch;
         // send in new filters, then re-run active search?
         // search.setFilters(?);
         search.search();
+        // or throw event searchSubmitted?
     }
 
     handleSearchResultsObtained(e) {
         const data = e.detail;
-        //console.log("received search results:");
-        //console.log(data);
         this.browsingState.currentData = data;
 
         // TODO: instead of having <vivo-person-search />
@@ -203,9 +197,13 @@ class SearchNavigation extends LitElement {
         return document.querySelector('vivo-tabs');
     } 
     
+    // might not make sense to emulate hows tabs work,
+    // since facets are a result of search - however they may
+    // need to be (re)selected by queryString when returning
+    // from link
     getFacets() {
         return document.querySelector('vivo-search-facets');
-    }  
+    } 
 
 }
 
@@ -418,8 +416,6 @@ class Search extends LitElement {
     }
 
     facetSelected(e) {
-      console.log(`facet selected (in vivo-search)`);
-      console.log(e);
       // 1. set filters?
       //this.filters = e.details.
       // 2. re-run search?
