@@ -22,6 +22,7 @@ class PersonNavigation extends LitElement {
     super.disconnectedCallback();
     document.removeEventListener('DOMContentLoaded',this.navFrom);
     document.removeEventListener('click',this.trapLinks);
+    document.removeEventListener('tabSelected',this.handleTabSelected);
   }
 
   trapLinks(e) {
