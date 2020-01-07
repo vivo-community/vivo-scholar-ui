@@ -2,7 +2,7 @@ import gql from "graphql-tag";
 
 const peopleQuery = gql`
   query($search: String!, $pageNumber: Int!, $filters: [FilterArgInput]) {
-    personsFacetedSearch(
+    people(
       facets: [
         { field: "keywords" }
         { field: "researchAreas" }
