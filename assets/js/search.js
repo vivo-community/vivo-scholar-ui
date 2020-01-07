@@ -165,8 +165,8 @@ class Search extends LitElement {
 
     render() {
         var results = [];
-        if (this.data && this.data.personsFacetedSearch.content) {
-            let content = this.data.personsFacetedSearch.content;
+        if (this.data && this.data.people.content) {
+            let content = this.data.people.content;
             _.each(content, function (item) {
                 results.push(item);
             });
