@@ -299,7 +299,7 @@ class PersonSearch extends LitElement {
 
   handleSearchResultsObtained(e) {
     this.data = e.detail;
-    var personCount = this.data ? this.data.personsFacetedSearch.page.totalElements : 0;
+    var personCount = this.data ? this.data.people.page.totalElements : 0;
     let tab = document.querySelector('#person-search-tab'); 
     tab.textContent = `People (${personCount})`;
   }
@@ -312,8 +312,8 @@ class PersonSearch extends LitElement {
 
   render() {
     var results = [];
-    if (this.data && this.data.personsFacetedSearch.content) {
-        let content = this.data.personsFacetedSearch.content;
+    if (this.data && this.data.people.content) {
+        let content = this.data.people.content;
         _.each(content, function (item) {
             results.push(item);
         });
