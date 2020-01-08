@@ -1,10 +1,20 @@
 import { LitElement, html, css } from "lit-element";
 
 class PublicationAuthor extends LitElement {
+
   static get properties() {
     return {
       profileUrl: { attribute: "profile-url", type: String }
     };
+  }
+
+  handleAuthorClick(e) {
+    this.dispatchEvent(new CustomEvent('authorClicked', {
+      detail: this,
+      bubbles: true,
+      cancelable: false,
+      composed: true
+    }));
   }
 
   static get styles() {
@@ -12,7 +22,7 @@ class PublicationAuthor extends LitElement {
       :host {
         display: inline;
       }
-      a.author {
+      ::slotted(*) {
         color: var(--darkNeutralColor);
         text-decoration: none;
         white-space: nowrap;
@@ -24,17 +34,9 @@ class PublicationAuthor extends LitElement {
   }
 
   render() {
-    if (this.profileUrl) {
-      return html`
-        <a class="author" href="${this.profileUrl}">
-          <slot></slot>
-        </a>
-      `;
-    } else {
-      return html`
-        <slot></slot>
-      `;
-    }
+    return html`
+      <slot @click="${this.handleAuthorClick}"></slot>
+    `
   }
 }
 
