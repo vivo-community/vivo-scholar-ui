@@ -89,7 +89,7 @@ class Tabs extends LitElement {
       :host {
         display: flex;
         flex-wrap: wrap;
-      }   
+      }
     `
   }
 

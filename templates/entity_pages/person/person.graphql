@@ -1,5 +1,5 @@
 query($id: String!) {
-  personById(id: $id) {
+  person(id: $id) {
     id
     type
     name

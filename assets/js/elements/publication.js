@@ -1,8 +1,10 @@
 import { LitElement, html, css } from "lit-element";
 
 class Publication extends LitElement {
+
   static get properties() {
     return {
+      id: { type: String },
       publicationUrl: {
         attribute: "publication-url",
         type: String,
@@ -23,7 +25,8 @@ class Publication extends LitElement {
           }
         },
         reflect: true
-      }
+      },
+      onSelect: { type: Object }
     };
   }
 
@@ -33,18 +36,11 @@ class Publication extends LitElement {
         display: block;
         padding-top: 1em;
       }
-      :host([link-decorate="true"]) .title a {
-        text-decoration: underline;
-      }
-      .title {
+      ::slotted([slot="title"]) {
         margin-bottom: 0.5em;
         font-weight: bold;
         color: var(--linkColor);
-      }
-      .title a {
         text-decoration: none;
-        background-color: transparent;
-        color: var(--linkColor);
       }
       ::slotted([slot="authors"]), ::slotted([slot="publisher"]) {
         margin-right: 0.5em;
@@ -79,18 +75,19 @@ class Publication extends LitElement {
     `;
   }
 
+  handlePublicationClick(e) {
+    this.dispatchEvent(new CustomEvent('publicationClicked', {
+      detail: this,
+      bubbles: true,
+      cancelable: false,
+      composed: true
+    }));
+  }
+
   render() {
     return html`
       <div class="title">
-        ${this.publicationUrl
-          ? html`
-              <a href="${this.publicationUrl}">
-                <slot name="title"></slot>
-              </a>
-            `
-          : html`
-              <slot name="title"></slot>
-            `}
+        <slot name="title" @click="${this.handlePublicationClick}"></slot>
       </div>
       <slot name="authors"></slot>
       <slot name="publisher"></slot>

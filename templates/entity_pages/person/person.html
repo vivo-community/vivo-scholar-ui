@@ -1,8 +1,7 @@
-<%= javascriptTag("person.js") %>
+<vivo-person-navigation></vivo-person-navigation>
 <%
-  let person = data["personById"]
+  let person = data["person"]
 %>
-
 <div class="container">
 
    <aside>
@@ -131,7 +130,9 @@
             <vivo-publication-list>
                <%= for (idx, p) in person["publications"] { %>
                <vivo-publication publication-url="/entities/publication/<%= p["id"] %>" published-date="<%= p["publicationDate"] %>">
-                  <div slot="title"><%= p["title"] %></div>
+                  <a slot="title" href="/entities/publication/<%= p["id"] %>">
+                    <%= p["title"] %>
+                  </a>
                   <vivo-publication-author-list slot="authors">
                      <%= for (a) in p["authors"] { %>
                      <vivo-publication-author profile-url="/entities/person/<%= a["id"] %>">
@@ -172,3 +173,4 @@
    </main>
 
 </div><!-- end container -->
+<%= javascriptTag("person.js") %>
