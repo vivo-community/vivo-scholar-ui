@@ -165,6 +165,21 @@ vivo-tab-panel h4 {
   color: var(--primaryColor);
 }
 
+/*grant styles*/
+.grants{
+  font-size: 18px;
+  margin-bottom: 1em;
+  margin-top: 1em;
+  border-top: 1px solid var(--lightNeutralColor);
+  padding-top: 1em;
+}
+
+.grants a {
+  color: var(--linkColor);
+  font-weight: bold;
+  text-decoration: none;
+}
+
 /* grid experiment */
 .container {
   display: grid;

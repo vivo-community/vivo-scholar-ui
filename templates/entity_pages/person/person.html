@@ -62,7 +62,7 @@
               </a>
             </div>
             <% } %>
-          </vivo-sidebar>
+          </vivo-sidebar-item>
       <% } %>
    </aside>
 
@@ -159,16 +159,58 @@
          </vivo-tab-panel>
          <% } %>
 
+         <%= if (person["researcherOn"]) { %>
+         <vivo-tab id="research-expertise-tab">
+           <h3><%= t("tab_research_expertise") %></h3>
+         </vivo-tab>
+         <vivo-tab-panel id="research-expertise-panel">
+           <h4 class="section-title"><%= t("courses") %></h4>
+           <section>
+            <% let grants = person["researcherOn"] %>
+            <%= for (g) in grants { %>
+            <div class="grants">
+              <a href="/entities/grant/<%= g["id"] %>">
+               <%= g["label"] %>
+              </a>
+               <%= if (g["awardedBy"]) { %>
+                  &nbsp;awarded by  <%= g["awardedBy"]["label"] %>
+               <% } %>
+               <vivo-interval interval-start="<%= FormatISODate(g["startDate"], "year") %>" interval-end="<%= FormatISODate(g["endDate"], "year") %>"></vivo-interval>
+            <% } %>
+            </div>
+           </section>
+          </vivo-tab-panel>
+          <% } %>
 
-         <%= if (person["courses"]) { %>
-         <vivo-tab id="teaching-tab">
+
+          <%= if (person["teachingActivities"]) { %>
+          <vivo-tab id="teaching-tab">
+             <h3><%= t("tab_teaching_mentoring") %></h3>
+          </vivo-tab>
+          <vivo-tab-panel id="teaching-panel">
+             <h4 class="section-title"><%= t("courses") %></h4>
+             <section>
+             <% let courses = person["teachingActivities"] %>
+             <%= for (c) in courses { %>
+               <div>
+               <%= c["label"] %>
+               <%= c["role"] %>
+               </div>
+             <% } %>
+             </section>
+          </vivo-tab-panel>
+          <% } %>
+
+<!-- original courses tab -->
+         <!-- <%= if (person["courses"]) { %>
+          <vivo-tab id="teaching-tab">
             <h3><%= t("tab_teaching") %></h3>
          </vivo-tab>
          <vivo-tab-panel id="teaching-panel">
             <h4 class="section-title"><%= t("courses") %></h4>
          </vivo-tab-panel>
          <% } %>
-      </vivo-tabs>
+      </vivo-tabs> -->
 
    </main>
 
