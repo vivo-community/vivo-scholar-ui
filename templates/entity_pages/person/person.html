@@ -159,6 +159,8 @@
          </vivo-tab-panel>
          <% } %>
 
+
+<!-- resercherOn without webcomponent -->
          <%= if (person["researcherOn"]) { %>
          <vivo-tab id="research-expertise-tab">
            <h3><%= t("tab_research_expertise") %></h3>
@@ -168,22 +170,43 @@
            <section>
             <% let grants = person["researcherOn"] %>
             <%= for (g) in grants { %>
-            <div class="grants">
-              <a href="/entities/grant/<%= g["id"] %>">
+              <div class="grants">
+              <a  href="/entities/grant/<%= g["id"] %>">
                <%= g["label"] %>
               </a>
                <%= if (g["awardedBy"]) { %>
-                  &nbsp;awarded by  <%= g["awardedBy"]["label"] %>
+                awarded by  <%= g["awardedBy"]["label"] %>
                <% } %>
-               <vivo-interval interval-start="<%= FormatISODate(g["startDate"], "year") %>" interval-end="<%= FormatISODate(g["endDate"], "year") %>"></vivo-interval>
+              <vivo-interval interval-start="<%= FormatISODate(g["startDate"], "year") %>" interval-end="<%= FormatISODate(g["endDate"], "year") %>"></vivo-interval>
             <% } %>
             </div>
            </section>
           </vivo-tab-panel>
           <% } %>
+<!-- researcherOn with Web component -->
+        <%= if (person["researcherOn"]) { %>
+         <vivo-tab id="research-expertise-tab">
+           <h3><%= t("tab_research_expertise") %></h3>
+         </vivo-tab>
+         <vivo-tab-panel id="research-expertise-panel">
+           <h4 class="section-title"><%= t("courses") %></h4>
+            <% let grants = person["researcherOn"] %>
+            <%= for (g) in grants { %>
+              <vivo-grant>
+              <a slot="grantLabel" href="/entities/grant/<%= g["id"] %>">
+               <%= g["label"] %>
+              </a>
+               <%= if (g["awardedBy"]) { %>
+                <span slot="awardedBy">  awarded by  <%= g["awardedBy"]["label"] %></span>
+               <% } %>
+               <span slot="date"><vivo-interval interval-start="<%= FormatISODate(g["startDate"], "year") %>" interval-end="<%= FormatISODate(g["endDate"], "year") %>"></vivo-interval></span>
+             </vivo-grant>
+            <% } %>
+          </vivo-tab-panel>
+          <% } %>
 
 
-          <%= if (person["teachingActivities"]) { %>
+          <!-- <%= if (person["teachingActivities"]) { %>
           <vivo-tab id="teaching-tab">
              <h3><%= t("tab_teaching_mentoring") %></h3>
           </vivo-tab>
@@ -199,7 +222,7 @@
              <% } %>
              </section>
           </vivo-tab-panel>
-          <% } %>
+          <% } %> -->
 
 <!-- original courses tab -->
          <!-- <%= if (person["courses"]) { %>
