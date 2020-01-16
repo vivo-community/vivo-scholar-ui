@@ -5,6 +5,8 @@ import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 
 import peopleQuery from "./people/query";
 import client from "./lib/apollo";
+import gql from "graphql-tag";
+
 
 class SearchFacet extends LitElement {
     
@@ -24,6 +26,7 @@ class SearchFacet extends LitElement {
       // if checked == true + add
       // if checked == false - remove
       // getAttribute("value") is returning facet1
+      // needs to add/remove filter and re-run search ...
       this.dispatchEvent(new CustomEvent('facetSelected', {
         detail: { checked: e.target.checked, value: e.target.getAttribute("value") },
         bubbles: true,
@@ -142,6 +145,8 @@ class SearchNavigation extends LitElement {
         //this.browsingState.currentSearch = search;
         this.browsingState.currentQuery = search;
         let activeSearch = this.browsingState.activeSearch;
+
+        activeSearch.counts();
         activeSearch.search();
     }
 
@@ -260,7 +265,8 @@ class PersonSearch extends LitElement {
   static get properties() {
     return {
         query: { type: Object },
-        data: { type: Object }
+        data: { type: Object },
+        countData: { type: Object }
     }
   }
 
@@ -286,20 +292,28 @@ class PersonSearch extends LitElement {
     super();
     this.query = peopleQuery;
     this.handleSearchResultsObtained = this.handleSearchResultsObtained.bind(this);
+    this.handleCountResultsObtained = this.handleCountResultsObtained.bind(this);
   }
 
   firstUpdated() {
     document.addEventListener('searchResultsObtained',this.handleSearchResultsObtained);
+    document.addEventListener('countResultsObtained',this.handleCountResultsObtained);
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
     document.removeEventListener('searchResultsObtained',this.handleSearchResultsObtained);
+    document.addEventListener('countResultsObtained',this.handleCountResultsObtained);
   }
 
   handleSearchResultsObtained(e) {
     this.data = e.detail;
-    var personCount = this.data ? this.data.people.page.totalElements : 0;
+  }
+
+  handleCountResultsObtained(e) {
+    this.countData = e.detail;
+    // NOTE: alias of 'peopleCount' doesn't seem to work
+    var personCount = this.countData ? this.countData.people.page.totalElements : 0;
     let tab = document.querySelector('#person-search-tab'); 
     tab.textContent = `People (${personCount})`;
   }
@@ -308,6 +322,12 @@ class PersonSearch extends LitElement {
   search() {
       let search = this.shadowRoot.querySelector('vivo-search');
       search.search();
+  }
+
+  // TODO: not sure it's good to have to remember to call search AND counts
+  counts() {
+    let search = this.shadowRoot.querySelector('vivo-search');
+    search.counts();
   }
 
   render() {
@@ -320,7 +340,7 @@ class PersonSearch extends LitElement {
     }
 
     var resultsDisplay = html`<div>
-        ${_.map(results, function (i) {
+      ${_.map(results, function (i) {
         let title = i.preferredTitle || i.id;
 
         // NOTE: the custom elements here might be better named with 'results'
@@ -337,8 +357,8 @@ class PersonSearch extends LitElement {
             } 
               </vivo-search-person>
             `
-    })
-        }
+        })
+      }
     </div>`
 
       return html`
@@ -380,6 +400,15 @@ class Search extends LitElement {
         super();
         this.doSearch = this.doSearch.bind(this);
         this.facetSelected = this.facetSelected.bind(this);
+
+        // TODO: specific implementation would need to add to this
+        // probably a better way to do over constructor variable
+        this.countQuery = gql`
+            query($search: String!) {
+              peopleCount: people(query: $search) { page { totalElements } }
+            }
+            #pubCount: documents(query: $search) { page { totalElements} }
+        `;
     }
 
     firstUpdated() {
@@ -391,6 +420,7 @@ class Search extends LitElement {
         this.page = 0;
         this.filters = [];
 
+        this.counts();
         this.search();
     }
 
@@ -422,8 +452,21 @@ class Search extends LitElement {
       // this.doSearch();
     }
 
-    // NOTE: just running 'peopleQuery' now - there will be
-    // other queries (publications etc...)
+    runCounts() {
+        const fetchData = async () => {
+            try {
+                const { data } = await client.query({
+                    query: this.countQuery
+                });
+                this.data = data;
+            } catch (error) {
+                console.error(error);
+                throw error;
+            }
+        };
+        return fetchData();
+    }
+
     runSearch() {
         const fetchData = async () => {
             try {
@@ -470,6 +513,20 @@ class Search extends LitElement {
     // just a method to combine all UI side-effects of search ...
     // NOTE: assumes parameters have been set
     // setSearchParameters({filter: [], page:0, query: "*"}) --?
+
+    counts() {
+        this.runSearch()
+          .then(() => {
+            this.dispatchEvent(new CustomEvent('countResultsObtained', {
+                detail: this.data,
+                bubbles: true,
+                cancelable: false,
+                composed: true
+              }));
+          })
+          .catch((e) => console.error(`Error running search:${e}`));
+    }
+
     search() {
         this.runSearch()
           .then(() => {
@@ -493,6 +550,7 @@ class Search extends LitElement {
         var newRelativePathQuery = window.location.pathname + '?' + searchParams.toString();
         history.pushState(null, '', newRelativePathQuery);
 
+        this.counts();
         this.search();
     }
 
