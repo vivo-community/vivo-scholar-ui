@@ -7,6 +7,53 @@ import peopleQuery from "./people/query";
 import client from "./lib/apollo";
 import gql from "graphql-tag";
 
+import pageArrays from './lib/paging-helper';
+
+class SearchPagination extends LitElement {
+
+  static get properties() {
+    return {
+        totalElements: { type : Number },
+        totalPages: { type: Number },
+        number: { type: Number },
+        size: { type: Number }
+    }
+  } 
+ 
+  // make <li> for each number in range
+  render() {
+    let paging = pageArrays(this.totalPages, this.number);
+    /* might look like this (for example):
+    [ 
+      [ '-' ],
+      [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 ],
+      [ '+', 16 ] 
+    ]
+    */
+    //let pages = paging[1];
+
+    var pages = html`<div>
+      ${_.map(paging[1], function (i) {
+
+        // NOTE: the custom elements here might be better named with 'results'
+        // e.g. vivo-search-person-results, or maybe just search-person-results?
+        return html`<li>
+            <a href="#">
+              ${i}
+            </a>
+          </li>`
+        })
+      }
+    </div>`
+    
+    return html`
+      <ul>
+        ${pages}
+      </ul>
+    `
+}
+}
+customElements.define('vivo-search-pagination', SearchPagination);
 
 class SearchFacet extends LitElement {
     
@@ -339,6 +386,7 @@ class PersonSearch extends LitElement {
         });
     }
 
+
     var resultsDisplay = html`<div>
       ${_.map(results, function (i) {
         let title = i.preferredTitle || i.id;
@@ -360,10 +408,23 @@ class PersonSearch extends LitElement {
         })
       }
     </div>`
+    //return html`...${thing ? html`...${thing.foo}...${thing.bar}` : null }...`;
+    let pagination = html``;
 
-      return html`
+    if (this.data) { 
+        pagination = html`<vivo-search-pagination 
+            number="${this.data.people.page.number}"
+            size="${this.data.people.page.size}"
+            totalElements="${this.data.people.page.totalElements}"
+            totalPages="${this.data.people.page.totalPages}"
+        />`
+    }
+
+    return html`
        <vivo-search graphql=${JSON.stringify(this.query)}>
        ${resultsDisplay}
+       ${pagination}
+
        </vivo-search>`  
   }
 
@@ -563,6 +624,7 @@ class Search extends LitElement {
         `
     }
 
+    // pagination element here?
     render() {
         return html`        
           <p><strong>Searching</strong>:<em>${this.query}</em></p>
