@@ -14,7 +14,7 @@ class Grant extends LitElement{
         font-size: 18px;
       }
 
-    ::slotted(a) {
+    ::slotted([slot="label"]) {
         color: var(--linkColor);
         font-weight: bold;
         text-decoration: none;
@@ -25,7 +25,7 @@ class Grant extends LitElement{
 
   render() {
     return html `
-      <slot name="grantLabel"></slot>
+      <slot name="label"></slot>
       <slot name="awardedBy"></slot>
       <slot name="date"></slot>
     `;
