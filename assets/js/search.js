@@ -19,8 +19,41 @@ class SearchPagination extends LitElement {
         size: { type: Number }
     }
   } 
- 
-  // make <li> for each number in range
+
+  static get styles() {
+    // TODO: should make link color etc...
+    return css`
+      a:hover {
+          cursor: pointer;
+      }
+      a {
+          text-decoration: underline;
+      }
+      :host {
+        display: block;
+      }
+      div {
+        clear: both;
+      }
+    `
+  }  
+  constructor() {
+    super();
+    this.handlePageSelected = this.handlePageSelected.bind(this);
+  }
+
+  handlePageSelected(e) {
+    var page = e.target.getAttribute("value");
+
+    this.dispatchEvent(new CustomEvent('pageSelected', {
+      detail: { value: page },
+      bubbles: true,
+      cancelable: false,
+      composed: true
+    }));
+  }  
+  // TODO: need some kind of event for paging - which
+  // then sends page to search to re-filter
   render() {
     let paging = pageArrays(this.totalPages, this.number);
     /* might look like this (for example):
@@ -30,15 +63,15 @@ class SearchPagination extends LitElement {
       [ '+', 16 ] 
     ]
     */
-    //let pages = paging[1];
+    let previous = paging[0];
+    let next = paging[2];
+    let pageList = paging[1];
 
+    let callback = this.handlePageSelected;
     var pages = html`<div>
-      ${_.map(paging[1], function (i) {
-
-        // NOTE: the custom elements here might be better named with 'results'
-        // e.g. vivo-search-person-results, or maybe just search-person-results?
+      ${_.map(pageList, function (i) {
         return html`<li>
-            <a href="#">
+            <a value="${i - 1}" @click=${callback}>
               ${i}
             </a>
           </li>`
@@ -151,6 +184,7 @@ class SearchNavigation extends LitElement {
         this.handleSearchResultsObtained = this.handleSearchResultsObtained.bind(this);
         this.handleSearchSubmitted = this.handleSearchSubmitted.bind(this);
         this.handleFacetSelected = this.handleFacetSelected.bind(this);
+        this.handlePageSelected = this.handlePageSelected.bind(this);
     }
 
     firstUpdated() {
@@ -159,7 +193,7 @@ class SearchNavigation extends LitElement {
         document.addEventListener('searchSubmitted',this.handleSearchSubmitted);
         document.addEventListener('facetSelected',this.handleFacetSelected);
         document.addEventListener('searchResultsObtained',this.handleSearchResultsObtained);
-    
+        document.addEventListener('pageSelected',this.handlePageSelected);
         // wouldn't this select the first one?
         let defaultSearch = document.querySelector('vivo-person-search');
         this.browsingState.activeSearch = defaultSearch;
@@ -172,6 +206,7 @@ class SearchNavigation extends LitElement {
         document.removeEventListener('searchSubmitted',this.handleSearchSubmitted);
         document.removeEventListener('facetSelected',this.handleFacetSelected);
         document.removeEventListener('searchResultsObtained',this.handleSearchResultsObtained);
+        document.removeEventListener('pageSelected',this.handlePageSelected);
     }
 
     // ??
@@ -203,9 +238,21 @@ class SearchNavigation extends LitElement {
         this.browsingState.currentFacet = facet;
         let search = this.browsingState.activeSearch;
         // send in new filters, then re-run active search?
-        // search.setFilters(?);
+        // search.setFilters( -- facet --);
         search.search();
         // or throw event searchSubmitted?
+    }
+
+    handlePageSelected(e) {
+      const page = e.detail;
+      console.log(`SearchNavigation:handlePageSelected;page=${page.value}`);
+      this.browsingState.currentPage = page;
+      let search = this.browsingState.activeSearch;
+      // send in new filters, then re-run active search?
+      // search.setFilters( -- page --);
+      search.setPage(page.value);
+      search.search();
+      // or throw event searchSubmitted?
     }
 
     handleSearchResultsObtained(e) {
@@ -333,7 +380,7 @@ class PersonSearch extends LitElement {
       }
       
     `
-}
+  }
 
   constructor() {
     super();
@@ -375,6 +422,11 @@ class PersonSearch extends LitElement {
   counts() {
     let search = this.shadowRoot.querySelector('vivo-search');
     search.counts();
+  }
+
+  setPage(num) {
+    let search = this.shadowRoot.querySelector('vivo-search');
+    search.setPage(num);
   }
 
   render() {
@@ -424,7 +476,6 @@ class PersonSearch extends LitElement {
        <vivo-search graphql=${JSON.stringify(this.query)}>
        ${resultsDisplay}
        ${pagination}
-
        </vivo-search>`  
   }
 
