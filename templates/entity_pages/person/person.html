@@ -127,33 +127,35 @@
             <h3><%= t("tab_publications") %></h3>
          </vivo-tab>
          <vivo-tab-panel id="publications-panel">
-            <vivo-publication-list>
+            <vivo-sortable-list>
                <%= for (idx, p) in person["publications"] { %>
-               <vivo-publication publication-url="/entities/publication/<%= p["id"] %>" published-date="<%= p["publicationDate"] %>">
-                  <a slot="title" href="/entities/publication/<%= p["id"] %>">
-                    <%= p["title"] %>
-                  </a>
-                  <vivo-publication-author-list slot="authors">
-                     <%= for (a) in p["authors"] { %>
-                     <vivo-publication-author profile-url="/entities/person/<%= a["id"] %>">
-                        <%= a["label"] %>
-                     </vivo-publication-author>
-                     <% } %>
-                  </vivo-publication-author-list>
-                  <%= if (p["publisher"]) { %>
-                  <span slot="publisher"><%= p["publisher"]["label"] %></span>
-                  <% } %>
-                  <%= if (p["publicationDate"]) { %>
-                    <span slot="date"><%= FormatGraphqlDate(p["publicationDate"],"yearMonthDay") %></span>
-                  <% } %>
-                  <%= if (p["abstractText"]) { %>
-                  <vivo-truncated-text slot="abstract">
-                    <%= raw(p["abstractText"]) %>
-                  </vivo-truncated-text>
-                  <% } %>
-               </vivo-publication>
+               <vivo-list-item item-url="/entities/publication/<%= p["id"] %>" item-date="<%= p["publicationDate"] %>"
+                 <vivo-publication>
+                    <a slot="title" href="/entities/publication/<%= p["id"] %>">
+                      <%= p["title"] %>
+                    </a>
+                    <vivo-publication-author-list slot="authors">
+                       <%= for (a) in p["authors"] { %>
+                       <vivo-publication-author profile-url="/entities/person/<%= a["id"] %>">
+                          <%= a["label"] %>
+                       </vivo-publication-author>
+                       <% } %>
+                    </vivo-publication-author-list>
+                    <%= if (p["publisher"]) { %>
+                    <span slot="publisher"><%= p["publisher"]["label"] %></span>
+                    <% } %>
+                    <%= if (p["publicationDate"]) { %>
+                      <span slot="date"><%= FormatGraphqlDate(p["publicationDate"],"yearMonthDay") %></span>
+                    <% } %>
+                    <%= if (p["abstractText"]) { %>
+                    <vivo-truncated-text slot="abstract">
+                      <%= raw(p["abstractText"]) %>
+                    </vivo-truncated-text>
+                    <% } %>
+                 </vivo-publication>
+               </vivo-list-item>
                <% } %>
-            </vivo-publication-list>
+            </vivo-sortable-list>
          </vivo-tab-panel>
          <% } %>
 
@@ -163,20 +165,21 @@
          </vivo-tab>
          <vivo-tab-panel id="research-expertise-panel">
            <h4 class="section-title"><%= t("grants") %></h4>
-           <vivo-grant-list>
-            <!-- <% let grants = person["researcherOn"] %> -->
-            <%= for (idx, g) in person["researcherOn"] { %>
-              <vivo-grant grant-url="/entities/grant/<%= g["id"] %>" grant-date="<%= g["startDate"] %>">
-              <a slot="label" href="/entities/grant/<%= g["id"] %>">
-               <%= g["label"] %>
+           <vivo-sortable-list>
+            <%= for (idx, p) in person["researcherOn"] { %>
+            <vivo-list-item item-url="/entities/grant/<%= p["id"] %>" item-date="<%= p["startDate"] %>">
+              <vivo-grant>
+              <a slot="label" href="/entities/grant/<%= p["id"] %>">
+               <%= p["label"] %>
               </a>
-               <%= if (g["awardedBy"]) { %>
-                <span slot="awardedBy">  awarded by  <%= g["awardedBy"]["label"] %></span>
+               <%= if (p["awardedBy"]) { %>
+                <span slot="awardedBy">  awarded by  <%=p["awardedBy"]["label"] %></span>
                <% } %>
-               <span slot="date"><vivo-interval interval-start="<%= FormatISODate(g["startDate"], "year") %>" interval-end="<%= FormatISODate(g["endDate"], "year") %>"></vivo-interval></span>
+               <span slot="date"><vivo-interval interval-start="<%= FormatISODate(p["startDate"], "year") %>" interval-end="<%= FormatISODate(p["endDate"], "year") %>"></vivo-interval></span>
              </vivo-grant>
+            </vivo-list-item>
             <% } %>
-          </vivo-grant-list>
+          </vivo-sortable-list>
           </vivo-tab-panel>
           <% } %>
 
