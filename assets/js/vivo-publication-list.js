@@ -87,7 +87,7 @@ class EmbeddedPublicationList extends LitElement {
   abstractTemplate(abstract) {
     if (abstract) {
       return html`
-      <vivo-truncated-text slot="abstract">${p.abstractText}</vivo-truncated-text>
+      <vivo-truncated-text slot="abstract">${abstract}</vivo-truncated-text>
       `
     }
   }
