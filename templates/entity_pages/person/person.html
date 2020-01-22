@@ -163,9 +163,9 @@
          </vivo-tab>
          <vivo-tab-panel id="research-expertise-panel">
            <h4 class="section-title"><%= t("grants") %></h4>
-            <% let grants = person["researcherOn"] %>
-            <vivo-grant-list>
-            <%= for (g) in grants { %>
+           <vivo-grant-list>
+            <!-- <% let grants = person["researcherOn"] %> -->
+            <%= for (idx, g) in person["researcherOn"] { %>
               <vivo-grant grant-url="/entities/grant/<%= g["id"] %>" grant-date="<%= g["startDate"] %>">
               <a slot="label" href="/entities/grant/<%= g["id"] %>">
                <%= g["label"] %>

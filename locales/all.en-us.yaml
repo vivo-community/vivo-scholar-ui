@@ -47,4 +47,5 @@
   translation: "Search for scholar names or research topics"
 - id: keywords
   translation: "Keywords"
-
+- id: grants
+  translation: "Grants"

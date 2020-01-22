@@ -1,4 +1,4 @@
-import { LitElement, html, css} from "lit-element";
+import { LitElement, html, css } from "lit-element";
 import '@vaadin/vaadin-select';
 
 class GrantList extends LitElement {
@@ -12,7 +12,7 @@ class GrantList extends LitElement {
       grants: { type: Array },
       grantCount: { type: Number },
       truncatedGrantCount: { type: Number },
-      truncate: { type: Boolean, relfect: true },
+      truncate: { type: Boolean, reflect: true },
       truncationRequired: { type: Boolean },
       sortProperty: { type: String },
       sortDirection: { type: String }
@@ -33,13 +33,13 @@ class GrantList extends LitElement {
   }
 
   slotChanged(e) {
-    const grantElements = Array.from(e.target.assignedNodes()).filter((n) => n.tagname === 'VIVO-GRANT').map((n) => n.cloneNode.(true));
+    const grantElements = Array.from(e.target.assignedNodes()).filter((n) => n.tagName === 'VIVO-GRANT').map((n) => n.cloneNode(true));
     this.grants = grantElements;
     this.setGrants();
   }
 
   firstUpdated() {
-    this.shadowRoot.addEventListener("slotchange", this.slotChanged);
+    this.shadowRoot.addEventListener("slotchange",this.slotChanged);
   }
 
   disconnectedCallBack() {
@@ -91,6 +91,7 @@ class GrantList extends LitElement {
   sortBy(grants, sortProperty, sortDirection) {
     const sortGrants = grants.slice();
     sortGrants.sort((a,b) => {
+      // send missing values to the bottom of the list regardless of sort order
       if (!a[sortProperty] && !b[sortProperty]) return 0
       if (!a[sortProperty]) return 1;
       if (!b[sortProperty]) return -1;
@@ -111,7 +112,7 @@ class GrantList extends LitElement {
   }
 
   refreshHides() {
-    this.grants.forEach((g,i) => {
+    this.grants.forEach((p,i) => {
       if (this.truncate) {
         if (i < this.displayedGrantCount) {
           p.style.display = "block";
@@ -129,9 +130,9 @@ class GrantList extends LitElement {
     if (grant) {
       const isVisible = grant.getClientRects().length > 0;
       if (!isVisible) {
-        this.showTruncatedGrants();
+        this.showTruncatedPubs();
       }
-      grant.scrollIntoView();
+      pub.scrollIntoView();
     }
   }
 
@@ -143,17 +144,18 @@ class GrantList extends LitElement {
       slot {
         display: none;
       }
-      vivo-grant{
+      vivo-grant {
         margin-bottom: 1em;
+        padding-top: 1em;
       }
       vivo-grant {
         font-size: 18px;
         border-top: 1px solid var(--lightNeutralColor);
       }
-      .grant-summary{
+      .grant-summary {
         display: flex;
         flex-flow: row wrap;
-        justify-conent: space-between;
+        justify-content: space-between;
         align-items: baseline;
         padding: 0.75em 0;
       }
@@ -169,14 +171,13 @@ class GrantList extends LitElement {
         background-color: var(--highlightColor);
         padding: 0.75em;
         cursor: pointer;
-        white-space: no-wrap;
+        white-space: nowrap;
       }
     `;
   }
 
   render() {
     return html`
-    <p>is this rendering</p>
       <div class="grant-summary">
         ${this.truncationRequired && this.truncate ? html`
           <span>
@@ -203,7 +204,7 @@ class GrantList extends LitElement {
             </template>
           </vaadin-select>
           ${this.truncationRequired && this.truncate ? html`
-            <button @click="${this.showTruncatedGrants}">
+            <button @click="${this.showTruncatedPubs}">
               Show all ${this.grantCount} grants &gt;
             </button>
           `
@@ -213,13 +214,13 @@ class GrantList extends LitElement {
                 &lt; Show fewer grants
               </button>
             ` : null}
-        `}
-      </span>
-    </div>
-    <div id="grants">
-      ${this.grants}
-    </div>
-    <slot></slot>
+          `}
+        </span>
+      </div>
+      <div id="grants">
+        ${this.grants}
+      </div>
+      <slot></slot>
     `;
   }
 
