@@ -112,15 +112,15 @@ class GrantList extends LitElement {
   }
 
   refreshHides() {
-    this.grants.forEach((p,i) => {
+    this.grants.forEach((g,i) => {
       if (this.truncate) {
         if (i < this.displayedGrantCount) {
-          p.style.display = "block";
+          g.style.display = "block";
         } else {
-          p.style.display = "none";
+          g.style.display = "none";
         }
       } else {
-        p.style.display = "block";
+        g.style.display = "block";
       }
     });
   }
@@ -132,7 +132,7 @@ class GrantList extends LitElement {
       if (!isVisible) {
         this.showTruncatedPubs();
       }
-      pub.scrollIntoView();
+      grant.scrollIntoView();
     }
   }
 
@@ -204,7 +204,7 @@ class GrantList extends LitElement {
             </template>
           </vaadin-select>
           ${this.truncationRequired && this.truncate ? html`
-            <button @click="${this.showTruncatedPubs}">
+            <button @click="${this.showTruncatedGrants}">
               Show all ${this.grantCount} grants &gt;
             </button>
           `
