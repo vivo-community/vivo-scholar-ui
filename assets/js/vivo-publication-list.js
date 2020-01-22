@@ -20,16 +20,20 @@ const client = new ApolloClient({
 
 const PUBLICATION_QUERY = gql`
   query($id: String) {
-    personById(id: $id) {
+    person(id: $id) {
       id
       publications {
         id
         title
         abstractText
         doi
-        publicationDate
+        authorList
         authors {
           id
+          label
+        }
+        publicationDate
+        publisher {
           label
         }
       }
@@ -60,7 +64,7 @@ class EmbeddedPublicationList extends LitElement {
         id: this.getAttribute("person_id")
       }
     }).then(({data}) =>  {
-      this.publications = data.personById.publications
+      this.publications = data.person.publications
     });
   }
 
@@ -72,18 +76,36 @@ class EmbeddedPublicationList extends LitElement {
     `
   }
 
+  publisherTemplate(publisher) {
+    if (publisher) {
+      return html`
+        <span slot="publisher">${publisher.label}</span>
+      `
+    }
+  }
+
+  abstractTemplate(abstract) {
+    if (abstract) {
+      return html`
+      <vivo-truncated-text slot="abstract">${p.abstractText}</vivo-truncated-text>
+      `
+    }
+  }
+
   publicationTemplate(p) {
     let pubDate = new Date(p.publicationDate);
     // TODO: would probably want to get locale from something
-    let dateFormatted = pubDate.toLocaleDateString("en-US");
+    let dateFormatted = pubDate.toLocaleDateString("en-US");;
+
     return html`
       <vivo-publication publication-url="/entities/publication/${p.id}" link-decorate="${this.linkDecorate}">
         <div slot="title">${p.title}</div>
         <vivo-publication-author-list slot="authors">
         ${p.authors.map((a) => this.authorTemplate(a))}
         </vivo-publication-author-list>
+        ${this.publisherTemplate(p.publisher)}
         <span slot="date">${dateFormatted}</span>
-        <div slot="abstract">${p.abstractText}</div>
+        ${this.abstractTemplate(p.abstractText)}
       </vivo-publication>
     `
   }
