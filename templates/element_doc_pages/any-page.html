@@ -57,7 +57,7 @@ query($subject: String!) {
       }
     }
   }
-  personsSearch (
+  people (
     query: $subject
     paging: { pageNumber: 0, pageSize: 10 }
   ) {
@@ -89,7 +89,7 @@ query($subject: String!) {
 
 <h3>People</h3>
 <ul class="spotlight-list">
-<%= for (p) in data["personsSearch"]["content"] { %>
+<%= for (p) in data["people"]["content"] { %>
   <li>
     <a href="/entities/person/<%= p["id"] %>">
       <strong><%= p["name"] %></strong>,
