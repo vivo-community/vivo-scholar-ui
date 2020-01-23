@@ -35,7 +35,7 @@ class SortableList extends LitElement {
     this.sortProperty = 'itemDate';
     this.sortDirection = 'desc';
     this.slotChanged = this.slotChanged.bind(this);
-    this.type = 'itemType'
+    this.itemType = 'items'
   }
 
   slotChanged(e) {
