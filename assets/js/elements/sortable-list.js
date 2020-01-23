@@ -23,7 +23,7 @@ class SortableList extends LitElement {
     super();
     this.truncate = true;
     this.truncationRequired = false;
-    this.displayedItemCount = 1;
+    this.displayedItemCount = 25;
     this.items = [];
     this.itemCount = 0;
     this.truncatedItemCount = 0;
@@ -48,12 +48,14 @@ class SortableList extends LitElement {
 
   setItems() {
     this.items = this.sortBy(this.items, this.sortProperty, this.sortDirection);
+    console.log("Items" + this.items);
     this.setTruncation();
     this.refreshHides();
   }
 
   setTruncation() {
     this.itemCount = this.items.length;
+    console.log("Count" + this.itemCount);
     if (this.itemCount > this.displayedItemCount) {
       this.truncatedItemCount = this.itemCount - this.displayedItemCount;
       this.truncationRequired = true;

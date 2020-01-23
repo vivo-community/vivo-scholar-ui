@@ -1,34 +1,34 @@
 import {LitElement, html, css } from "lit-element";
 
 class Grant extends LitElement{
-
-  static get properties() {
-    return {
-      id: { type: String },
-      grantUrl: {
-        attribute: "grant-url",
-        type: String,
-        reflect: true
-      },
-      grantDate: {
-        attribute: "grant-date",
-        converter: {
-          fromAttribute: (value, type) => {
-            if (value) {
-              return new Date(value);
-            }
-          },
-          toAttribute: (value, type) => {
-            if (value) {
-              return value.toISO8601;
-            }
-          }
-        },
-        reflect: true
-      },
-      onSelect: { type: Object }
-    };
-  }
+//this section for use with vivo-grant-list
+  // static get properties() {
+  //   return {
+  //     id: { type: String },
+  //     grantUrl: {
+  //       attribute: "grant-url",
+  //       type: String,
+  //       reflect: true
+  //     },
+  //     grantDate: {
+  //       attribute: "grant-date",
+  //       converter: {
+  //         fromAttribute: (value, type) => {
+  //           if (value) {
+  //             return new Date(value);
+  //           }
+  //         },
+  //         toAttribute: (value, type) => {
+  //           if (value) {
+  //             return value.toISO8601;
+  //           }
+  //         }
+  //       },
+  //       reflect: true
+  //     },
+  //     onSelect: { type: Object }
+  //   };
+  // }
 
   static get styles() {
     return css `
