@@ -104,7 +104,7 @@ query($subject: String!) {
 <%= for (d) in data["documentsSearch"]["content"] { %>
   <vivo-publication publication-url="/entities/publication/<%= d["id"] %>">
     <div slot="title"><%= d["title"] %></div>
-    <span slot="date"><%= FormatGraphqlDateForSitemap(d["publicationDate"]) %></span>
+    <span slot="date"><%= FormatGraphqlDate(d["publicationDate"]) %></span>
     <vivo-publication-author-list slot="authors">
       <%= for (a) in d["authors"] { %>
        <vivo-publication-author profile-url="/entities/person/<%= a["id"] %>">
