@@ -9,13 +9,18 @@ class SortableList extends LitElement {
         type: Number,
         reflect: true
       },
+      itemType: {
+        attribute: "item-type",
+        type: String,
+        reflect: true
+      },
       items: { type: Array },
       itemCount: { type: Number },
       truncatedItemCount: { type: Number },
       truncate: { type: Boolean, reflect: true },
       truncationRequired: { type: Boolean },
       sortProperty: { type: String },
-      sortDirection: { type: String }
+      sortDirection: { type: String },
     };
   }
 
@@ -30,6 +35,7 @@ class SortableList extends LitElement {
     this.sortProperty = 'itemDate';
     this.sortDirection = 'desc';
     this.slotChanged = this.slotChanged.bind(this);
+    this.type = 'itemType'
   }
 
   slotChanged(e) {
@@ -48,14 +54,12 @@ class SortableList extends LitElement {
 
   setItems() {
     this.items = this.sortBy(this.items, this.sortProperty, this.sortDirection);
-    console.log("Items" + this.items);
     this.setTruncation();
     this.refreshHides();
   }
 
   setTruncation() {
     this.itemCount = this.items.length;
-    console.log("Count" + this.itemCount);
     if (this.itemCount > this.displayedItemCount) {
       this.truncatedItemCount = this.itemCount - this.displayedItemCount;
       this.truncationRequired = true;
@@ -138,6 +142,8 @@ class SortableList extends LitElement {
     }
   }
 
+
+
   static get styles() {
     return css`
       :host {
@@ -183,7 +189,7 @@ class SortableList extends LitElement {
         ${this.truncationRequired && this.truncate ? html`
           <span>
             <span class="items-shown-message">
-              Showing ${this.displayedItemCount} of ${this.itemCount} items
+              Showing ${this.displayedItemCount} of ${this.itemCount} ${this.itemType}
             </span>
           </span>
         `
@@ -191,7 +197,7 @@ class SortableList extends LitElement {
           <span>
             <slot id="title" name="title"></slot>
             <span class="items-shown-message">
-              Showing all ${this.itemCount} items
+              Showing all ${this.itemCount} ${this.itemType}
             </span>
           </span>
         `}
@@ -206,13 +212,13 @@ class SortableList extends LitElement {
           </vaadin-select>
           ${this.truncationRequired && this.truncate ? html`
             <button @click="${this.showTruncatedItems}">
-              Show all ${this.itemCount} items &gt;
+              Show all ${this.itemCount} ${this.itemType} &gt;
             </button>
           `
           : html`
             ${this.truncatedItemCount > 0 ? html`
               <button @click="${this.hideTruncatedItems}">
-                &lt; Show fewer items
+                &lt; Show fewer ${this.itemType}
               </button>
             ` : null}
           `}
