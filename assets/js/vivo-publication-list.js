@@ -100,7 +100,9 @@ class EmbeddedPublicationList extends LitElement {
     let dateFormatted = pubDate.toLocaleDateString("en-US");;
 
     return html`
-      <vivo-publication publication-url="/entities/publication/${p.id}" link-decorate="${this.linkDecorate}">
+      <vivo-publication publication-url="/entities/publication/${p.id}" 
+          link-decorate="${this.linkDecorate}"
+          published-date="${p.publicationDate}">
         <div slot="title">${p.title}</div>
         <vivo-publication-author-list slot="authors">
         ${p.authors.map((a) => this.authorTemplate(a))}
