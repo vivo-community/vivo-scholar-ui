@@ -55,7 +55,10 @@ class SearchPagination extends LitElement {
   // TODO: need some kind of event for paging - which
   // then sends page to search to re-filter
   render() {
-    let paging = pageArrays(this.totalPages, this.number);
+    console.log(this.totalPages);
+    console.log(this.number);
+    console.log(this.size);
+    let paging = pageArrays(this.totalPages, this.number, this.size);
     /* might look like this (for example):
     [ 
       [ '-' ],
@@ -79,9 +82,34 @@ class SearchPagination extends LitElement {
       }
     </div>`
     
+    console.log(previous);
+    console.log(next);
+
+    var previousLink = function() {
+       if (previous[0] != '-') {
+           return html `<li>
+             <a value="${previous[1] - 1}" @click=${callback}>
+               ${previous[1]}
+             </a>
+           </li>`
+       }
+    };
+
+    var nextLink = function() {
+        if (next[0] != '-') {
+            return html `<li>
+              <a value="${next[1] - 1}" @click=${callback}>
+                ${previous[1]}
+              </a>
+            </li>`
+        }
+     };
+
     return html`
       <ul>
+        ${previousLink()}
         ${pages}
+        ${nextLink()}
       </ul>
     `
 }
