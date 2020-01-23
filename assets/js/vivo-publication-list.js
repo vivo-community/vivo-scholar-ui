@@ -3,6 +3,8 @@ import './elements/publication';
 import './elements/publication-list';
 import './elements/publication-author-list';
 import './elements/publication-author';
+import './elements/vaadin-theme.js';
+
 import gql from 'graphql-tag'
 import ApolloClient from 'apollo-boost'
 
