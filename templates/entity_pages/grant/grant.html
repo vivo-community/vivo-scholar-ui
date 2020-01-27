@@ -1,0 +1,19 @@
+<% let grant = data["relationshipById"] %>
+<div class="row">
+    <h2><%= raw(grant["title"]) %></h2>
+</div>
+
+<h4>Principal Investigators</h4>
+<section>
+    <ul class="list-group">
+    <%= for (p) in grant["principalInvestigators"] { %>
+       <li class="list-group-item">
+           <span class="person-name">
+              <a href="/entities/person/<%= p["id"] %>">
+                <%= p["label"] %>
+             </a>
+           </span>
+       </li>
+    <% } %>
+    </ul>
+</section>
