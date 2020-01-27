@@ -55,9 +55,6 @@ class SearchPagination extends LitElement {
   // TODO: need some kind of event for paging - which
   // then sends page to search to re-filter
   render() {
-    console.log(this.totalPages);
-    console.log(this.number);
-    console.log(this.size);
     let paging = pageArrays(this.totalPages, this.number, this.size);
     /* might look like this (for example):
     [ 
@@ -81,9 +78,7 @@ class SearchPagination extends LitElement {
         })
       }
     </div>`
-    
-    console.log(previous);
-    console.log(next);
+  
 
     var previousLink = function() {
        if (previous[0] != '-') {
@@ -275,11 +270,12 @@ class SearchNavigation extends LitElement {
         // search.setFilters( -- facet --);
         search.search();
         // or throw event searchSubmitted?
+        console.log(`SearchNavigation:handleFacetSelected;page=${facet.value}:${facet.checked}`);
     }
 
     handlePageSelected(e) {
       const page = e.detail;
-      console.log(`SearchNavigation:handlePageSelected;page=${page.value}`);
+      //console.log(`SearchNavigation:handlePageSelected;page=${page.value}`);
       this.browsingState.currentPage = page;
       let search = this.browsingState.activeSearch;
       // send in new filters, then re-run active search?
