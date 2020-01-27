@@ -72,6 +72,8 @@ query($id: String!) {
       role
     }
 
+  teachingOverview
+
     # no data
     geographicFocus {
       label

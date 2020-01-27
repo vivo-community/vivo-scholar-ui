@@ -196,3 +196,16 @@ vivo-tab-panel h4 {
     order: 2;
   }
 }
+
+/* courses */
+.course {
+  margin-bottom: 0.75em;
+  .course-title {
+    font-weight: bold;
+    margin-bottom: 0;
+  }
+  .course-role {
+    margin-top: 0;
+    color: var(--darkNeutralColor)
+  }
+}

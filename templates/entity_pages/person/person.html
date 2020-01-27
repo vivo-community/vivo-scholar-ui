@@ -183,24 +183,32 @@
           </vivo-tab-panel>
           <% } %>
 
-<!--tab for teaching and expertise-->
-          <!-- <%= if (person["teachingActivities"]) { %>
+<!-- tab for teaching and expertise-->
+          <%= if (person["teachingActivities"]) { %>
           <vivo-tab id="teaching-tab">
              <h3><%= t("tab_teaching_mentoring") %></h3>
           </vivo-tab>
           <vivo-tab-panel id="teaching-panel">
-             <h4 class="section-title"><%= t("courses") %></h4>
              <section>
+               <%= if (person["teachingOverview"]) { %>
+               <h4 class="section-title"><%= t("teaching_overview") %></h4>
+               <div>
+                  <%= raw(person["teachingOverview"]) %>
+               </div>
+               <% } %>
+               <h4 class="section-title"><%= t("courses") %></h4>
              <% let courses = person["teachingActivities"] %>
              <%= for (c) in courses { %>
-               <div>
-               <%= c["label"] %>
-               <%= c["role"] %>
+               <div class="course">
+                  <div class="course-title"><%= c["label"] %></div>
+               <%= if (c["role"]) { %>
+                 <span class="course-role"><%= c["role"] %></span>
+               <% } %>
                </div>
              <% } %>
              </section>
           </vivo-tab-panel>
-          <% } %> -->
+          <% } %>
 
 <!-- original courses tab -->
          <!-- <%= if (person["courses"]) { %>

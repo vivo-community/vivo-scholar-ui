@@ -33,6 +33,8 @@
   translation: "Subject Headings"
 - id: courses
   translation: "Courses"
+- id: teaching_overview
+  translation: "Teaching Overview"
 - id: about
   translation: "About"
 - id: browse
