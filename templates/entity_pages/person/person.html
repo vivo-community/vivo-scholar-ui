@@ -127,7 +127,7 @@
             <h3><%= t("tab_publications") %></h3>
          </vivo-tab>
          <vivo-tab-panel id="publications-panel">
-            <vivo-sortable-list item-type="publications">
+            <vivo-sortable-list id="publication-list" item-type="publications">
                <%= for (idx, p) in person["publications"] { %>
                <vivo-list-item item-url="/entities/publication/<%= p["id"] %>" item-date="<%= p["publicationDate"] %>">
                  <vivo-publication>
@@ -165,7 +165,7 @@
          </vivo-tab>
          <vivo-tab-panel id="research-expertise-panel">
            <h4 class="section-title"><%= t("grants") %></h4>
-           <vivo-sortable-list item-type="grants">
+           <vivo-sortable-list id="grant-list" item-type="grants">
             <%= for (idx, p) in person["researcherOn"] { %>
             <vivo-list-item item-url="/entities/grant/<%= p["id"] %>" item-date="<%= p["startDate"] %>" >
               <vivo-grant>
