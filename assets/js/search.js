@@ -112,8 +112,9 @@ class SearchPagination extends LitElement {
         ${nextLink()}
       </ul>
     `
+  }
 }
-}
+
 customElements.define('vivo-search-pagination', SearchPagination);
 
 class SearchFacet extends LitElement {
@@ -173,6 +174,11 @@ class SearchFacets extends LitElement {
       document.addEventListener('searchResultsObtained',this.handleSearchResultsObtained);
       // NOTE: would need to 'redraw' facets
       // (with 'filters' from search)   
+    }
+
+    disconnectedCallback() {
+      super.disconnectedCallback();
+      document.removeEventListener('searchResultsObtained',this.handleSearchResultsObtained);
     }
 
     handleSearchResultsObtained(e) {
@@ -488,7 +494,7 @@ class PersonSearch extends LitElement {
         })
       }
     </div>`
-    //return html`...${thing ? html`...${thing.foo}...${thing.bar}` : null }...`;
+
     let pagination = html``;
 
     if (this.data) { 
@@ -547,7 +553,6 @@ class Search extends LitElement {
             query($search: String!) {
               peopleCount: people(query: $search) { page { totalElements } }
             }
-            #pubCount: documents(query: $search) { page { totalElements} }
         `;
     }
 
@@ -557,11 +562,18 @@ class Search extends LitElement {
         this.query = defaultSearch;
         
         // get these from query string too?
-        this.page = 0;
-        this.filters = [];
+        this.page = 0; // e.g. parsed.page
+        this.filters = []; // e.g.parsed.filters ?
 
         this.counts();
         this.search();
+
+        window.addEventListener('searchSubmitted', this.doSearch);
+        window.addEventListener("popstate", this.handlePopState);
+        // NOTE: doSearch might need to be called/initiated by other events
+        // such as searchChooseFacet or searchTabSelected etc...
+        // ??
+        window.addEventListener('facetSelected', this.handleFacetSelected);
     }
 
     parseQuery(qryString) {
@@ -574,15 +586,11 @@ class Search extends LitElement {
        // console.log(`searchParams=${searchParams.toString()}`);
     }
     
-    // lit-element callback
-    connectedCallback() {
-        super.connectedCallback();
-        window.addEventListener('searchSubmitted', this.doSearch);
-        window.addEventListener("popstate", this.handlePopState);
-        // NOTE: doSearch might need to be called/initiated by other events
-        // such as searchChooseFacet or searchTabSelected etc...
-        // ??
-        window.addEventListener('facetSelected', this.handleFacetSelected);
+    disconnectedCallback() {
+      super.disconnectedCallback();
+      window.removeEventListener('searchSubmitted', this.doSearch);
+      window.removeEventListener("popstate", this.handlePopState);
+      window.removeEventListener('facetSelected', this.handleFacetSelected);
     }
 
     facetSelected(e) {
