@@ -584,6 +584,11 @@ class PersonSearch extends LitElement {
     var personCount = this.countData ? this.countData.people.page.totalElements : 0;
     let tab = document.querySelector('#person-search-tab');
     tab.textContent = `People (${personCount})`;
+
+    var pubCount = this.countData ? this.countData.documents.page.totalElements : 0;
+    let tab2 = document.querySelector('#publication-search-tab');
+    tab2.textContent = `Publications (${pubCount})`;
+
   }
 
   // need this so we can pass through
@@ -692,6 +697,7 @@ class Search extends LitElement {
     this.countQuery = gql`
             query($search: String!) {
               peopleCount: people(query: $search) { page { totalElements } }
+              pubCount: documents(query: $search) { page { totalElements } }
             }
         `;
   }
