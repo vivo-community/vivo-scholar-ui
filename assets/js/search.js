@@ -124,7 +124,7 @@ class Search extends LitElement {
     peopleSearch() {
         this.runSearch()
           .then(() => {
-            var personCount = this.data ? this.data.personsFacetedSearch.page.totalElements : 0;
+            var personCount = this.data ? this.data.people.page.totalElements : 0;
             let tab = document.querySelector('#person-search-tab'); 
             tab.textContent = `People (${personCount})`;
           })
