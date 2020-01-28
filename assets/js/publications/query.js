@@ -2,7 +2,7 @@ import gql from "graphql-tag";
 
 const publicationQuery = gql`
   query($search: String!, $pageNumber: Int!, $filters: [FilterArgInput]) {
-    documentsFacetedSearch(
+    documents(
       facets: [{ field: "type" }, { field: "numberOfPages" }]
       filters: $filters
       paging: {

@@ -1,5 +1,5 @@
 query($pageSize: Int!, $pageNumber: Int!) {
-    documentsPaged(paging: {
+    documents(paging: {
         pageNumber: $pageNumber, pageSize: $pageSize,
         sort:{ 
           orders: [{direction: ASC, property:"title"}]

@@ -1,5 +1,5 @@
 query { 
-  relationshipsPaged(paging: { pageSize: 100 }) {
+  relationships(paging: { pageSize: 100 }) {
     content {
       id
       type

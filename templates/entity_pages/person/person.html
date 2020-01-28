@@ -91,9 +91,12 @@
                <%= for (p) in positions { %>
                <div class="position">
                   <div class="position-title"><%= p["title"] %></div>
-                  <%= if (p["organization"]) { %>
-                    <span class="position-organization"><%= p["organization"]["label"] %></span>
-                  <% } %>
+                  <% if (p["organization"]) { %>
+                     <% let orgs = p["organization"] %>
+                     <%= for (o) in orgs { %>
+                       <span class="position-organization"><%= o["label"] %></span>
+                     <% } %>
+                   <% } %>
                   <vivo-interval interval-start="<%= FormatGraphqlDate(p["dateTimeIntervalStart"], "year") %>" interval-end="<%= FormatGraphqlDate(p["dateTimeIntervalEnd"], "year") %>" separate-open></vivo-interval>
                </div>
                <% } %>
