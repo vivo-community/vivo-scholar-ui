@@ -18,11 +18,15 @@ sidebar?
 
   <aside>
      <vivo-sidebar>
-        <vivo-search-facets>
-        </vivo-search-facets>
+        <vivo-search-person-facets search="person-search"></vivo-search-person-facets>
+        <vivo-search-publication-facets search="publication-search"></vivo-search-publication-facets>
+        <!-- TODO: need to lay out all facets, then have tab selected
+        event pick which ones to show
+        -->
     </vivo-sidebar>
   </aside>
 
+  <!-- this kind of organization of layout means facets and search are separate -->
   <main>
 
     <vivo-tabs id="secondary-example" vivo-tab-style="secondary">
@@ -40,7 +44,7 @@ sidebar?
         1. make it easy to add another search tab
         2. 
         -->
-        <vivo-person-search />
+        <vivo-person-search id="person-search"/>
       </vivo-tab-panel>
     
       <vivo-tab id="publication-search-tab">
@@ -50,8 +54,7 @@ sidebar?
       <vivo-tab-panel>
         <p>Publication search goes here</p>
         <!--
-          <vivo-publication-search-results />
-          <vivo-search query="publications/query.js" />
+          <vivo-publication-search />
         -->
       </vivo-tab-panel>
     

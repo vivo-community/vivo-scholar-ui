@@ -9,7 +9,7 @@ const peopleQuery = gql`
       ]
       filters: $filters
       paging: {
-        pageSize: 15
+        pageSize: 100000
         pageNumber: $pageNumber
         sort: { orders: [{ direction: ASC, property: "name" }] }
       }
