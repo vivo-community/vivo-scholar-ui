@@ -43,7 +43,7 @@
     <blockquote>
       <xmp><%= raw(`
 query($subject: String!) {
-  documentsSearch (
+  documents (
     query: $subject;
     paging: { pageNumber: 0, pageSize: 10 }
   ) {
@@ -101,7 +101,7 @@ query($subject: String!) {
 
 <h3>Publications</h3>
 <vivo-publication-list>
-<%= for (d) in data["documentsSearch"]["content"] { %>
+<%= for (d) in data["documents"]["content"] { %>
   <vivo-publication publication-url="/entities/publication/<%= d["id"] %>">
     <div slot="title"><%= d["title"] %></div>
     <span slot="date"><%= FormatGraphqlDate(d["publicationDate"]) %></span>

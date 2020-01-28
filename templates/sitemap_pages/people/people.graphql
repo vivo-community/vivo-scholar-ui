@@ -1,5 +1,6 @@
+# FIXME: need a way to get all
 query {
-    personsSorted(
+    people(
         sort:{ 
           orders: [{direction: ASC, property:"modTime"}]
         }
@@ -8,25 +9,3 @@ query {
     modTime
   }
 }
-#query {
-#    personsPaged(paging: {
-#        pageNumber: 0, 
-#        pageSize: 100,
-#        sort:{ 
-#          orders: [{direction: ASC, property:"name"}]
-#        }
-#    })
-#      {
-#      content {
-#        id
-#        name
-#        thumbnail
-#      }
-#      page {
-#        totalElements
-#        totalPages
-#        number
-#        size
-#      }
-#    }
-#}
