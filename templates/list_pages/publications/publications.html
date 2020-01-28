@@ -1,12 +1,12 @@
 <%
- let totalItems = data["documentsPaged"]["page"]["totalElements"]
- let totalPages = FloatToInt(data["documentsPaged"]["page"]["totalPages"])
- let currentPage = FloatToInt(data["documentsPaged"]["page"]["number"])
- let results = data["documentsPaged"]["content"]
+ let totalItems = data["documents"]["page"]["totalElements"]
+ let totalPages = FloatToInt(data["documents"]["page"]["totalPages"])
+ let currentPage = FloatToInt(data["documents"]["page"]["number"])
+ let results = data["documents"]["content"]
 
  let paging = FigurePagingInfo(currentPage, totalPages)
 %>
-<h4>Publications(<span><%= data["documentsPaged"]["page"]["totalElements"] %>)</span></h4>
+<h4>Publications(<span><%= data["documents"]["page"]["totalElements"] %>)</span></h4>
 
 <div><%= currentPage + 1 %> of Total Pages: <%= totalPages %></div>
 
@@ -34,7 +34,7 @@
 
     <section class="author-list">
             <ul class="list-group">
-            <%= for (p) in data["documentsPaged"]["content"] { %>
+            <%= for (p) in data["documents"]["content"] { %>
                <li class="list-group-item">
     
                    <span class="person-name">
