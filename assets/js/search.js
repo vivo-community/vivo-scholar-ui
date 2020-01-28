@@ -346,6 +346,22 @@ class SearchNavigation extends LitElement {
     document.removeEventListener('pageSelected', this.handlePageSelected);
   }
 
+  getNextSibling(elem, selector) {
+    // Get the next sibling element
+    var sibling = elem.nextElementSibling;
+  
+    // If there's no selector, return the first sibling
+    if (!selector) return sibling;
+  
+    // If the sibling matches our selector, use it
+    // If not, jump to the next sibling and continue the loop
+    while (sibling) {
+      if (sibling.matches(selector)) return sibling;
+      sibling = sibling.nextElementSibling
+    }
+  
+  };
+  
   // ??
   // handlePagination(e) { }
   handleTabSelected(e) {
@@ -353,9 +369,9 @@ class SearchNavigation extends LitElement {
     this.browsingState.currentTab = tab.id
 
     let selectedTab = document.querySelector(`#${tab.id}`);
-    // should just find the first child of selected tab
-    // NOTE: it's just first child
-    this.browsingState.activeSearch = selectedTab.querySelector(':first-child');
+    let panel = this.getNextSibling(selectedTab, 'vivo-tab-panel');
+
+    this.browsingState.activeSearch = panel.querySelector(':first-child');
     // 1. then get id
     // 2. then hide all facets except with id
     this.findCorrectFacetsToDisplay();
@@ -364,12 +380,8 @@ class SearchNavigation extends LitElement {
   handleSearchSubmitted(e) {
     const search = e.detail;
 
-    //this.browsingState.currentSearch = search;
     this.browsingState.currentQuery = search;
     let activeSearch = this.browsingState.activeSearch;
-
-    // 1. then get id
-    // 2. then hide all facets except with id?
 
     activeSearch.counts();
     activeSearch.search();
@@ -379,12 +391,14 @@ class SearchNavigation extends LitElement {
 
   findCorrectFacetsToDisplay() {
     let activeSearch = this.browsingState.activeSearch;
+    // why would this be null?
     let id = activeSearch.id;
-    // 1. activeSearch -> .id
-    // 2. ind facet with search=id
-    
     // need to set the remove
-    let facets = this.querySelectorAll('vivo-facets');
+    let sidebar = document.querySelector('vivo-sidebar');
+    // TODO: should select only with a 'search' attribute
+    // let facets = sidebar.querySelectorAll("[search='*']");
+    let facets = sidebar.querySelectorAll("*");
+    // how to hide all ()
     facets.forEach((t) => t.removeAttribute('selected'));
 
     let facet = document.querySelector(`[search="${id}"]`);
