@@ -34,6 +34,8 @@ class Search extends LitElement {
                 pubCount: documents(query: $search) { page { totalElements } }
               }
           `;
+      // FIXME: active thing doesn't seem to be working as I planned
+      this.active = true;
     }
   
     firstUpdated() {
@@ -45,14 +47,12 @@ class Search extends LitElement {
       this.page = 0; // e.g. parsed.page
       this.filters = []; // e.g.parsed.filters ?
   
+      // when first loaded - run counts and query?
       this.counts();
       this.search();
   
       window.addEventListener('searchSubmitted', this.doSearch);
       window.addEventListener("popstate", this.handlePopState);
-      // NOTE: doSearch might need to be called/initiated by other events
-      // such as searchChooseFacet or searchTabSelected etc...
-      // ??
       window.addEventListener('facetSelected', this.handleFacetSelected);
     }
   
@@ -134,8 +134,8 @@ class Search extends LitElement {
     }
 
     setActive(b) {
-        this.active = b;
-      }
+      this.active = b;
+    }
   
     /*
     setSearchParameters(parameters) {
@@ -177,9 +177,7 @@ class Search extends LitElement {
   
     doSearch(e) {
       this.query = e.detail;
-      /*
-      https://javascriptplayground.com/url-search-params/
-      */
+      //see https://javascriptplayground.com/url-search-params/
       var searchParams = new URLSearchParams(window.location.search);
       searchParams.set("search", e.detail);
       var newRelativePathQuery = window.location.pathname + '?' + searchParams.toString();

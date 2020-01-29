@@ -13,7 +13,8 @@ class PersonSearch extends LitElement {
         return {
             query: { type: Object },
             data: { type: Object },
-            countData: { type: Object }
+            countData: { type: Object },
+            active: { type: Boolean }
         }
     }
 
@@ -37,6 +38,8 @@ class PersonSearch extends LitElement {
 
     constructor() {
         super();
+        // just defaulting active on this one
+        this.active = true;
         this.query = peopleQuery;
         this.handleSearchResultsObtained = this.handleSearchResultsObtained.bind(this);
         this.handleCountResultsObtained = this.handleCountResultsObtained.bind(this);
@@ -81,6 +84,7 @@ class PersonSearch extends LitElement {
     setActive(b) {
         let search = this.shadowRoot.querySelector('vivo-search');
         search.setActive(b);
+        this.active = b;
     }
 
     setPage(num) {
@@ -109,6 +113,9 @@ class PersonSearch extends LitElement {
     }
 
     render() {
+        if (!this.active == true) {
+            return html`<vivo-search graphql=${JSON.stringify(this.query)} />`
+        }
         var results = [];
         if (!this.data || !this.data.people) {
             console.error("no data to show in people-search");

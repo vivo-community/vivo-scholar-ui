@@ -10,7 +10,8 @@ class PublicationSearch extends LitElement {
       return {
         query: { type: Object },
         data: { type: Object },
-        countData: { type: Object }
+        countData: { type: Object },
+        active: { type: Boolean }
       }
     }
   
@@ -69,7 +70,7 @@ class PublicationSearch extends LitElement {
       if (!search) {
         console.error(`search not found: ${search}`);
         return
-    }
+      }
       search.counts();
     }
   
@@ -81,6 +82,7 @@ class PublicationSearch extends LitElement {
     setActive(b) {
         let search = this.shadowRoot.querySelector('vivo-search');
         search.setActive(b);
+        this.active = b;
     }
   
     renderPublisher(publisher) {
@@ -99,15 +101,25 @@ class PublicationSearch extends LitElement {
         }
     }
 
+    renderAuthors(authors) {
+      if (authors) {
+        return html`<vivo-publication-author-list slot="authors">
+          ${authors.map((a) => this.authorTemplate(a))}
+        </vivo-publication-author-list>
+        `
+      }
+    }
+
     renderPublication(p) {
-        return html`
+      let pubDate = new Date(p.publicationDate);
+      let dateFormatted = pubDate.toLocaleDateString("en-US");
+
+      return html`
         <vivo-publication publication-url="/entities/publication/${p.id}" 
           link-decorate="${this.linkDecorate}"
           published-date="${p.publicationDate}">
-        <div slot="title">${p.title}</div>
-        <vivo-publication-author-list slot="authors">
-          ${p.authors.map((a) => this.authorTemplate(a))}
-        </vivo-publication-author-list>
+          <div slot="title">${p.title}</div>
+          ${this.renderAuthors(p.authors)}
           ${this.renderPublisher(p.publisher)}
           <span slot="date">${dateFormatted}</span>
           ${this.renderAbstract(p.abstractText)}
@@ -116,6 +128,13 @@ class PublicationSearch extends LitElement {
     }
 
     render() {
+      // FIXME: always returning this makes people tab work(ish)
+      // but then publication search results never show
+      // remove this and publications show, but not people
+      if (!this.active) {
+        return html`<vivo-search graphql=${JSON.stringify(this.query)} />`
+      }
+      
       var results = [];
       if (!this.data || !this.data.documents) {
           console.error("no data to show in publications-search");

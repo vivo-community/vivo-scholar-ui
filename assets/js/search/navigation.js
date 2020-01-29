@@ -53,17 +53,14 @@ class SearchNavigation extends LitElement {
         if (sibling.matches(selector)) return sibling;
         sibling = sibling.nextElementSibling
       }
-    
     };
     
-    // ??
-    // handlePagination(e) { }
     handleTabSelected(e) {
       const tab = e.detail;
       
       this.browsingState.currentTab = tab.id
 
-      // first de-activate
+      // first de-activate ?
       this.browsingState.activeSearch.setActive(false);
 
       // TODO: maybe a way to get tab -and the find nearest search
@@ -108,7 +105,7 @@ class SearchNavigation extends LitElement {
     }
   
     // TODO: this feels a little fragile - works/doesn't work
-    // depending on precise arrangment on page
+    // depending on precise arrangement on page
     findCorrectFacetsToDisplay() {
       let activeSearch = this.browsingState.activeSearch;
       // why would this be null?
@@ -132,6 +129,8 @@ class SearchNavigation extends LitElement {
       let search = this.browsingState.activeSearch;
       // send in new filters, then re-run active search?
       // search.setFilters( -- facet --);
+      // do counts need to be redone?
+      //search.counts();
       search.search();
     }
   
@@ -148,8 +147,8 @@ class SearchNavigation extends LitElement {
     }
   
     handleSearchResultsObtained(e) {
-      const data = e.detail;
-      this.browsingState.currentData = data;
+      //const data = e.detail;
+      //this.browsingState.currentData = data;
     }
   
     navTo() {
