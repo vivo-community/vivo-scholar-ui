@@ -113,16 +113,10 @@ class PersonSearch extends LitElement {
     }
 
     render() {
-        if (!this.active == true) {
+        if (!this.active == true || !this.data || !this.data.people) {
             return html`<vivo-search graphql=${JSON.stringify(this.query)} />`
         }
         var results = [];
-        if (!this.data || !this.data.people) {
-            console.error("no data to show in people-search");
-            return html`
-            <vivo-search graphql=${JSON.stringify(this.query)}>
-            </vivo-search>`
-        } 
 
         if (this.data && this.data.people.content) {
             let content = this.data.people.content;

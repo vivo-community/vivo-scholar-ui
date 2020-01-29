@@ -131,17 +131,11 @@ class PublicationSearch extends LitElement {
       // FIXME: always returning this makes people tab work(ish)
       // but then publication search results never show
       // remove this and publications show, but not people
-      if (!this.active) {
+      if (!this.active || !this.data || !this.data.documents) {
         return html`<vivo-search graphql=${JSON.stringify(this.query)} />`
       }
       
       var results = [];
-      if (!this.data || !this.data.documents) {
-          console.error("no data to show in publications-search");
-          return html`
-          <vivo-search graphql=${JSON.stringify(this.query)}>
-          </vivo-search>`
-      } 
 
       if (this.data && this.data.documents.content) {
         let content = this.data.documents.content;
