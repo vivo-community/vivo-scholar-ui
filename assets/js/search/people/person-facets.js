@@ -26,14 +26,20 @@ class PeopleFacets extends LitElement {
       // etc...             
       let fakeFacets = html`
           <h4>Keywords</h4>
-          <vivo-search-facet value="facet1" label="Facet 1">
+          <vivo-search-facet value="facet1" label="Facet 1" count="10">
           </vivo-search-facet>
-          <vivo-search-facet value="facet2" label="Facet 2">
-          </vivo-search-facet>`
+          <vivo-search-facet value="facet2" label="Facet 2" count="2">
+          </vivo-search-facet>
+          <h4>Research Areas</h4>
+          <vivo-search-facet value="facet1" label="Facet 1" count="15">
+          </vivo-search-facet>
+          <vivo-search-facet value="facet2" label="Facet 2" count="6">
+          </vivo-search-facet>          
+          `
        
       return html`
           <vivo-search-facets>
-            <h3 slot="heading">Person Facets</h3>
+            <h3 slot="heading">Filter People</h3>
             <div slot="content">
             ${fakeFacets}
             </div>

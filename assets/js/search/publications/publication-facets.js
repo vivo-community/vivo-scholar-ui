@@ -20,18 +20,18 @@ class PublicationFacets extends LitElement {
     }
     
     render() {
-      // TODO: gather facets from search data 
-      // only show ones with key match etc...             
+      // TODO: gather facets from search data          
       let fakeFacets = html`
-          <vivo-search-facet value="facet1" label="Facet 1">
+          <h4>Research Areas</h4>
+          <vivo-search-facet value="facet1" label="Facet 1" count="10">
           </vivo-search-facet>
-          <vivo-search-facet value="facet2" label="Facet 2">
+          <vivo-search-facet value="facet2" label="Facet 2" count="2">
           </vivo-search-facet>`
   
       // grouping of facets per vivo-sidebar-item
       return html`
-          <vivo-search-facets class="hidden">
-            <h3 slot="heading">Publication Facets</h3>
+          <vivo-search-facets>
+            <h3 slot="heading">Filter Publications</h3>
             <div slot="content">
             ${fakeFacets}
             </div>

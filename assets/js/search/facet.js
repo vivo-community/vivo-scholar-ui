@@ -5,7 +5,8 @@ class SearchFacet extends LitElement {
   static get properties() {
     return {
       label: { type: String },
-      value: { type: String }
+      value: { type: String },
+      count: { type: Number }
     }
   }
 
@@ -41,7 +42,7 @@ class SearchFacet extends LitElement {
     return html`
           <label>
             <input type="checkbox" value="${this.value}" @click=${this.handleFacetSelected}>
-            ${this.label}
+            ${this.label} (${this.count})
           </label>
         `
   }

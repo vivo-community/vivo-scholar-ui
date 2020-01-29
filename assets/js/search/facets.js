@@ -14,6 +14,7 @@ class SearchFacets extends LitElement {
       return css`
         :host {
             display: block;
+            background-color: var(--highlightBackgroundColor);
         }
         
       `
