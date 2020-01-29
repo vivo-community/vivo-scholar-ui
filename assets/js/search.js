@@ -5,8 +5,8 @@ import './search/facets.js';
 import './search/pagination.js';
 
 // tab specific
-import './search/people/facets.js';
-import './search/people/search.js';
-import './search/publications/facets.js';
-import './search/publications/search.js';
+import './search/people/person-facets.js';
+import './search/people/person-search.js';
+import './search/publications/publication-facets.js';
+import './search/publications/publication-search.js';
 

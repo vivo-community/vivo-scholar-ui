@@ -1,8 +1,7 @@
 import { LitElement, html, css } from "lit-element";
-
-import peopleQuery from "./query";
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 
+import peopleQuery from "./person-query";
 import './person-card';
 import './person-image';
 

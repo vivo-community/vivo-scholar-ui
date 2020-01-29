@@ -1,6 +1,6 @@
 import { LitElement, html, css } from "lit-element";
 
-import pubQuery from "./query";
+import pubQuery from "./publication-query";
 
 class PublicationSearch extends LitElement {
 
