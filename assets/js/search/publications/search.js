@@ -48,6 +48,7 @@ class PublicationSearch extends LitElement {
   
     handleCountResultsObtained(e) {
       this.countData = e.detail;
+      console.log(this.countData);
       var docCount = this.countData ? this.countData.pubCount.page.totalElements : 0;
       let tab = document.querySelector('#publication-search-tab');
       tab.textContent = `Publications (${docCount})`;

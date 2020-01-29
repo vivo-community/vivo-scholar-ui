@@ -62,7 +62,7 @@ class PersonSearch extends LitElement {
         // TODO: could probably have an associated <count> element
         // and just update that (could be tab heading or could not)
         this.countData = e.detail;
-        // NOTE: alias of 'peopleCount' doesn't seem to work
+        console.log(this.countData);
         var personCount = this.countData ? this.countData.peopleCount.page.totalElements : 0;
         let tab = document.querySelector('#person-search-tab');
         tab.textContent = `People (${personCount})`;

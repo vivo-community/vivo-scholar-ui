@@ -14,6 +14,7 @@ class Search extends LitElement {
         graphql: { type: Object, attribute: true },
         query: { type: String },
         data: { type: Object },
+        countData: { type: Object },
         page: { type: Number },
         filters: { type: Array }
       }
@@ -87,7 +88,7 @@ class Search extends LitElement {
                 search: this.query
               }
           });
-          this.data = data;
+          this.countData = data;
         } catch (error) {
           console.error(error);
           throw error;
@@ -147,7 +148,7 @@ class Search extends LitElement {
       this.runCounts()
         .then(() => {
           this.dispatchEvent(new CustomEvent('countResultsObtained', {
-            detail: this.data,
+            detail: this.countData,
             bubbles: true,
             cancelable: false,
             composed: true

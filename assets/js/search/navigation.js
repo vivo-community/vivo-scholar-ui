@@ -64,10 +64,27 @@ class SearchNavigation extends LitElement {
   
       let selectedTab = document.querySelector(`#${tab.id}`);
       let panel = this.getNextSibling(selectedTab, 'vivo-tab-panel');
-  
-      this.browsingState.activeSearch = panel.querySelector(':first-child');
+      
+      // NOTE: another fragile setup - by name
+      //publication-search-tab to publication-search
+      let searchId = tab.id.replace("-tab", "");
+      console.log(searchId);
+      let search = document.querySelector(`#${searchId}`);
+      console.log(search);
       // 1. then get id
       // 2. then hide all facets except with id
+      this.browsingState.activeSearch = search;
+      // TODO: needs to change the activeSearch ....
+      // would be cool to select by type <vivo-search >
+      //let activeSearch = this.browsingState.activeSearch;
+
+      if (search) {
+        search.counts();
+        search.search();  
+      } else {
+          console.error("could not find search");
+      }
+
       this.findCorrectFacetsToDisplay();
     }
   
@@ -83,6 +100,8 @@ class SearchNavigation extends LitElement {
       this.findCorrectFacetsToDisplay();
     }
   
+    // TODO: this feels a little fragile - works/doesn't work
+    // depending on precise arrangment on page
     findCorrectFacetsToDisplay() {
       let activeSearch = this.browsingState.activeSearch;
       // why would this be null?
