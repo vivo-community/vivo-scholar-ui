@@ -16,7 +16,8 @@ class Search extends LitElement {
         data: { type: Object },
         countData: { type: Object },
         page: { type: Number },
-        filters: { type: Array }
+        filters: { type: Array },
+        active: { type: Boolean }
       }
     }
   
@@ -131,6 +132,10 @@ class Search extends LitElement {
     setQuery(query = "*") {
       this.query = query;
     }
+
+    setActive(b) {
+        this.active = b;
+      }
   
     /*
     setSearchParameters(parameters) {

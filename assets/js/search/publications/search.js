@@ -1,6 +1,6 @@
 import { LitElement, html, css } from "lit-element";
 
-import peopleQuery from "./query";
+import pubQuery from "./query";
 
 class PublicationSearch extends LitElement {
 
@@ -26,7 +26,7 @@ class PublicationSearch extends LitElement {
   
     constructor() {
       super();
-      this.query = peopleQuery;
+      this.query = pubQuery;
       this.handleSearchResultsObtained = this.handleSearchResultsObtained.bind(this);
       this.handleCountResultsObtained = this.handleCountResultsObtained.bind(this);
     }
@@ -48,7 +48,6 @@ class PublicationSearch extends LitElement {
   
     handleCountResultsObtained(e) {
       this.countData = e.detail;
-      console.log(this.countData);
       var docCount = this.countData ? this.countData.pubCount.page.totalElements : 0;
       let tab = document.querySelector('#publication-search-tab');
       tab.textContent = `Publications (${docCount})`;
@@ -57,18 +56,31 @@ class PublicationSearch extends LitElement {
     // need this so we can pass through
     search() {
       let search = this.shadowRoot.querySelector('vivo-search');
+      if (!search) {
+          console.error(`search not found: ${search}`);
+          return
+      }
       search.search();
     }
   
-    // TODO: not sure it's good to have to remember to call search AND counts
     counts() {
       let search = this.shadowRoot.querySelector('vivo-search');
+      // shouldn't be null
+      if (!search) {
+        console.error(`search not found: ${search}`);
+        return
+    }
       search.counts();
     }
   
     setPage(num) {
       let search = this.shadowRoot.querySelector('vivo-search');
       search.setPage(num);
+    }
+
+    setActive(b) {
+        let search = this.shadowRoot.querySelector('vivo-search');
+        search.setActive(b);
     }
   
     renderPublisher(publisher) {
@@ -106,8 +118,11 @@ class PublicationSearch extends LitElement {
     render() {
       var results = [];
       if (!this.data || !this.data.documents) {
-          return;
-      }
+          console.error("no data to show in publications-search");
+          return html`
+          <vivo-search graphql=${JSON.stringify(this.query)}>
+          </vivo-search>`
+      } 
 
       if (this.data && this.data.documents.content) {
         let content = this.data.documents.content;
@@ -116,6 +131,7 @@ class PublicationSearch extends LitElement {
         });
       }
       
+      // FIXME: use arrow notation to get rid of _self?
       let _self = this;
       var resultsDisplay = html`<div>
         ${_.map(results, function (i) {

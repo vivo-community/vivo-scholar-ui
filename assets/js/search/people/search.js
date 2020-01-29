@@ -62,7 +62,6 @@ class PersonSearch extends LitElement {
         // TODO: could probably have an associated <count> element
         // and just update that (could be tab heading or could not)
         this.countData = e.detail;
-        console.log(this.countData);
         var personCount = this.countData ? this.countData.peopleCount.page.totalElements : 0;
         let tab = document.querySelector('#person-search-tab');
         tab.textContent = `People (${personCount})`;
@@ -78,6 +77,11 @@ class PersonSearch extends LitElement {
     counts() {
         let search = this.shadowRoot.querySelector('vivo-search');
         search.counts();
+    }
+
+    setActive(b) {
+        let search = this.shadowRoot.querySelector('vivo-search');
+        search.setActive(b);
     }
 
     setPage(num) {
@@ -107,6 +111,13 @@ class PersonSearch extends LitElement {
 
     render() {
         var results = [];
+        if (!this.data || !this.data.people) {
+            console.error("no data to show in people-search");
+            return html`
+            <vivo-search graphql=${JSON.stringify(this.query)}>
+            </vivo-search>`
+        } 
+
         if (this.data && this.data.people.content) {
             let content = this.data.people.content;
             _.each(content, function (item) {

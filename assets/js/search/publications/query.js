@@ -34,4 +34,5 @@ const publicationQuery = gql`
     }
   }
 `;
+
 export default publicationQuery;

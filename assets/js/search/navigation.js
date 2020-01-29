@@ -60,23 +60,30 @@ class SearchNavigation extends LitElement {
     // handlePagination(e) { }
     handleTabSelected(e) {
       const tab = e.detail;
+      
       this.browsingState.currentTab = tab.id
-  
-      let selectedTab = document.querySelector(`#${tab.id}`);
-      let panel = this.getNextSibling(selectedTab, 'vivo-tab-panel');
+
+      // first de-activate
+      this.browsingState.activeSearch.setActive(false);
+
+      // TODO: maybe a way to get tab -and the find nearest search
+      //let selectedTab = document.querySelector(`#${tab.id}`);
+      //let panel = this.getNextSibling(selectedTab, 'vivo-tab-panel');
       
       // NOTE: another fragile setup - by name
       //publication-search-tab to publication-search
       let searchId = tab.id.replace("-tab", "");
-      console.log(searchId);
       let search = document.querySelector(`#${searchId}`);
-      console.log(search);
+
       // 1. then get id
       // 2. then hide all facets except with id
       this.browsingState.activeSearch = search;
       // TODO: needs to change the activeSearch ....
       // would be cool to select by type <vivo-search >
       //let activeSearch = this.browsingState.activeSearch;
+
+      // only one active search at a time? ...
+      search.setActive(true);
 
       if (search) {
         search.counts();
@@ -126,8 +133,6 @@ class SearchNavigation extends LitElement {
       // send in new filters, then re-run active search?
       // search.setFilters( -- facet --);
       search.search();
-      // or throw event searchSubmitted?
-      //console.log(`SearchNavigation:handleFacetSelected;page=${facet.value}:${facet.checked}`);
     }
   
     handlePageSelected(e) {
@@ -145,14 +150,6 @@ class SearchNavigation extends LitElement {
     handleSearchResultsObtained(e) {
       const data = e.detail;
       this.browsingState.currentData = data;
-  
-      // TODO: instead of having <vivo-person-search />
-      // listen for 'searchResultsObtained' - add an updateResults(data)
-      // method (to each 'activeSearch')?
-      //
-      // also send to search results to other data display components?
-      // update facets ...
-      // update pagination ...
     }
   
     navTo() {
