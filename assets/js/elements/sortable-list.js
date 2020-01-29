@@ -21,8 +21,9 @@ class SortableList extends LitElement {
       truncationRequired: { type: Boolean },
       sortProperty: { type: String },
       sortDirection: { type: String },
-    };
-  }
+      sorts: {type: Object}
+  };
+}
 
   constructor() {
     super();
@@ -32,14 +33,15 @@ class SortableList extends LitElement {
     this.items = [];
     this.itemCount = 0;
     this.truncatedItemCount = 0;
-    this.sortProperty = 'itemDate';
-    this.sortDirection = 'desc';
+    this.sortProperty = null;
+    this.sortDirection = null;
     this.slotChanged = this.slotChanged.bind(this);
-    this.itemType = 'items'
+    this.itemType = 'items';
+    this.sorts = null
   }
 
   slotChanged(e) {
-    const itemElements = Array.from(e.target.assignedNodes()).filter((n) => n.tagName === 'VIVO-LIST-ITEM').map((n) => n.cloneNode(true));
+    const itemElements = Array.from(e.target.assignedNodes()).filter((n) => n.tagName ).map((n) => n.cloneNode(true));
     this.items = itemElements;
     this.setItems();
   }
@@ -51,6 +53,7 @@ class SortableList extends LitElement {
   disconnectedCallBack() {
     super.disconnectedCallBack();
   }
+
 
   setItems() {
     this.items = this.sortBy(this.items, this.sortProperty, this.sortDirection);
@@ -96,18 +99,22 @@ class SortableList extends LitElement {
 
   sortBy(items, sortProperty, sortDirection) {
     const sortItems = items.slice();
-    sortItems.sort((a,b) => {
-      // send missing values to the bottom of the list regardless of sort order
-      if (!a[sortProperty] && !b[sortProperty]) return 0
-      if (!a[sortProperty]) return 1;
-      if (!b[sortProperty]) return -1;
-      if (sortDirection === 'asc') {
-        return a[sortProperty] - b[sortProperty];
-      }
-      if (sortDirection === 'desc') {
-        return b[sortProperty] - a[sortProperty];
-      }
-    });
+      sortItems.sort((a,b) => {
+        // send missing values to the bottom of the list regardless of sort order
+        if (!a[sortProperty] && !b[sortProperty]) return 0;
+        if (!a[sortProperty]) return 1;
+        if (!b[sortProperty]) return -1;
+        if (sortDirection === 'asc') {
+          if (a[sortProperty] == b[sortProperty]) return 0;
+          if (a[sortProperty] > b[sortProperty]) return 1;
+          if (a[sortProperty] < b[sortProperty]) return -1;
+        }
+        if (sortDirection === 'desc') {
+          if (a[sortProperty] == b[sortProperty]) return 0;
+          if (a[sortProperty] < b[sortProperty]) return 1;
+          if (a[sortProperty] > b[sortProperty]) return -1;
+        }
+      });
     this.dispatchEvent(new CustomEvent('itemsSorted', {
       detail: this,
       bubbles: true,
@@ -152,10 +159,9 @@ class SortableList extends LitElement {
       slot {
         display: none;
       }
-      vivo-list-item{
+
+      #items > * {
         margin-bottom: 1em;
-      }
-      vivo-list-item {
         font-size: 18px;
         border-top: 1px solid var(--lightNeutralColor);
       }
@@ -202,14 +208,15 @@ class SortableList extends LitElement {
           </span>
         `}
         <span>
+          ${this.sorts ? html`
           <vaadin-select value="${this.sortProperty}-${this.sortDirection}" @value-changed="${this.selectSort}">
-            <template>
-              <vaadin-list-box>
-                <vaadin-item value="itemDate-desc">Newest First</vaadin-item>
-                <vaadin-item value="itemDate-asc">Oldest First</vaadin-item>
-              </vaadin-list-box>
-            </template>
+          <template>
+            <vaadin-list-box>
+              ${this.sorts.map((s) => html`<vaadin-item value="${s.property}-${s.direction}">${s.label}</vaadin-item>`)}
+            </vaadin-list-box>
+          </template>
           </vaadin-select>
+          ` : null}
           ${this.truncationRequired && this.truncate ? html`
             <button @click="${this.showTruncatedItems}">
               Show all ${this.itemCount} ${this.itemType} &gt;
