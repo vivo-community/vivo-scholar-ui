@@ -36,7 +36,14 @@ class PersonNavigation extends LitElement {
         const publicationList = this.getPublicationList();
         this.browsingState.currentSection = "publications";
         this.browsingState.sectionSort = publicationList.getSort();
-        this.browsingState.returnTo = publication.publicationUrl;
+        this.browsingState.returnTo = publication.url;
+      }
+      const grant = eventPath.find(n => n.tagName === 'VIVO-GRANT');
+      if (grant) {
+        const grantList = this.getGrantList();
+        this.browsingState.currentSection = "grants";
+        this.browsingState.sectionSort = grantList.getSort();
+        this.browsingState.returnTo = grant.url;
       }
       this.navTo();
     }
@@ -61,7 +68,15 @@ class PersonNavigation extends LitElement {
           const publicationList = this.getPublicationList();
           if (publicationList) {
             publicationList.setSort(sectionSort);
-            publicationList.showPublication(returnTo);
+            publicationList.showItem(returnTo);
+          }
+        }
+      case 'grants':
+        if (sectionSort) {
+          const grantList = this.getGrantList();
+          if (grantList) {
+            grantList.setSort(sectionSort);
+            grantList.showItem(returnTo);
           }
         }
     }
@@ -84,8 +99,13 @@ class PersonNavigation extends LitElement {
   }
 
   getPublicationList() {
-    return document.querySelector('vivo-publication-list');
+    return document.querySelector('#publication-list');
   }
+
+  getGrantList() {
+    return document.querySelector('#grant-list');
+  }
+
 
 }
 

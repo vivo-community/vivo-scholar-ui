@@ -62,7 +62,7 @@
               </a>
             </div>
             <% } %>
-          </vivo-sidebar>
+          </vivo-sidebar-item>
       <% } %>
    </aside>
 
@@ -130,48 +130,97 @@
             <h3><%= t("tab_publications") %></h3>
          </vivo-tab>
          <vivo-tab-panel id="publications-panel">
-            <vivo-publication-list>
+            <vivo-sortable-list id="publication-list" item-type="publications" sortProperty="publishedDate" sortDirection="desc">
                <%= for (idx, p) in person["publications"] { %>
-               <vivo-publication publication-url="/entities/publication/<%= p["id"] %>" published-date="<%= p["publicationDate"] %>">
-                  <a slot="title" href="/entities/publication/<%= p["id"] %>">
-                    <%= p["title"] %>
-                  </a>
-                  <vivo-publication-author-list slot="authors">
-                     <%= for (a) in p["authors"] { %>
-                     <vivo-publication-author profile-url="/entities/person/<%= a["id"] %>">
-                        <%= a["label"] %>
-                     </vivo-publication-author>
-                     <% } %>
-                  </vivo-publication-author-list>
-                  <%= if (p["publisher"]) { %>
-                  <span slot="publisher">
-                     <span><%= p["publisher"]["label"] %></span>
-                  </span>
-                  <% } %>
-                  <%= if (p["publicationDate"]) { %>
-                    <span slot="date"><%= FormatGraphqlDate(p["publicationDate"],"yearMonthDay") %></span>
-                  <% } %>
-                  <%= if (p["abstractText"]) { %>
-                  <vivo-truncated-text slot="abstract">
-                    <%= raw(p["abstractText"]) %>
-                  </vivo-truncated-text>
-                  <% } %>
-               </vivo-publication>
+                 <vivo-publication url="/entities/publication/<%= p["id"] %>" published-date="<%= p["publicationDate"] %>" title="<%= p["title"] %>">
+                    <a slot="title" href="/entities/publication/<%= p["id"] %>">
+                      <%= p["title"] %>
+                    </a>
+                    <vivo-publication-author-list slot="authors">
+                       <%= for (a) in p["authors"] { %>
+                       <vivo-publication-author profile-url="/entities/person/<%= a["id"] %>">
+                          <%= a["label"] %>
+                       </vivo-publication-author>
+                       <% } %>
+                    </vivo-publication-author-list>
+                    <%= if (p["publisher"]) { %>
+                    <span slot="publisher"><%= p["publisher"]["label"] %></span>
+                    <% } %>
+                    <%= if (p["publicationDate"]) { %>
+                      <span slot="date"><%= FormatGraphqlDate(p["publicationDate"],"yearMonthDay") %></span>
+                    <% } %>
+                    <%= if (p["abstractText"]) { %>
+                    <vivo-truncated-text slot="abstract">
+                      <%= raw(p["abstractText"]) %>
+                    </vivo-truncated-text>
+                    <% } %>
+                 </vivo-publication>
                <% } %>
-            </vivo-publication-list>
+            </vivo-sortable-list>
          </vivo-tab-panel>
          <% } %>
 
+        <%= if (person["researcherOn"]) { %>
+         <vivo-tab id="research-expertise-tab">
+           <h3><%= t("tab_research_expertise") %></h3>
+         </vivo-tab>
+         <vivo-tab-panel id="research-expertise-panel">
+           <h4 class="section-title"><%= t("grants") %></h4>
+           <vivo-sortable-list id="grant-list" item-type="grants" sortProperty="startDate" sortDirection="desc">
+            <%= for (idx, p) in person["researcherOn"] { %>
+              <vivo-grant url="/entities/grant/<%= p["id"] %>" start-date="<%= p["startDate"] %>" title="<%= p["label"] %>">
+              <a slot="label" href="/entities/grant/<%= p["id"] %>">
+               <%= p["label"] %>
+              </a>
+               <%= if (p["awardedBy"]) { %>
+                <span slot="awardedBy">  awarded by  <%=p["awardedBy"]["label"] %></span>
+               <% } %>
+               <span slot="date"><vivo-interval interval-start="<%= FormatISODate(p["startDate"], "year") %>" interval-end="<%= FormatISODate(p["endDate"], "year") %>"></vivo-interval></span>
+             </vivo-grant>
+            <% } %>
+          </vivo-sortable-list>
+          </vivo-tab-panel>
+          <% } %>
 
-         <%= if (person["courses"]) { %>
-         <vivo-tab id="teaching-tab">
+<!-- tab for teaching and expertise-->
+          <%= if (person["teachingActivities"]) { %>
+          <vivo-tab id="teaching-tab">
+             <h3><%= t("tab_teaching_mentoring") %></h3>
+          </vivo-tab>
+          <vivo-tab-panel id="teaching-panel">
+             <section>
+               <%= if (person["teachingOverview"]) { %>
+               <h4 class="section-title"><%= t("teaching_overview") %></h4>
+               <div>
+                  <%= raw(person["teachingOverview"]) %>
+               </div>
+               <% } %>
+              </section>
+              <section>
+               <h4 class="section-title"><%= t("courses") %></h4>
+             <% let courses = person["teachingActivities"] %>
+             <vivo-course>
+             <%= for (c) in courses { %>
+                  <div slot="course-title"><%= c["label"] %></div>
+               <%= if (c["role"]) { %>
+                 <span slot="course-role"><%= c["role"] %></span>
+               <% } %>
+             <% } %>
+             </vivo-course>
+             </section>
+          </vivo-tab-panel>
+          <% } %>
+
+<!-- original courses tab -->
+         <!-- <%= if (person["courses"]) { %>
+          <vivo-tab id="teaching-tab">
             <h3><%= t("tab_teaching") %></h3>
          </vivo-tab>
          <vivo-tab-panel id="teaching-panel">
             <h4 class="section-title"><%= t("courses") %></h4>
          </vivo-tab-panel>
          <% } %>
-      </vivo-tabs>
+      </vivo-tabs> -->
 
    </main>
 

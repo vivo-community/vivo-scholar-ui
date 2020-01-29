@@ -11,6 +11,7 @@ query($id: String!) {
       label
       url
     }
+
     educationAndTraining {
       id
       field
@@ -55,6 +56,24 @@ query($id: String!) {
         label
       }
     }
+
+    researcherOn{
+     id
+     label
+     awardedBy{
+       label
+     }
+     startDate
+     endDate
+   }
+
+   teachingActivities {
+      label
+      role
+    }
+
+  teachingOverview
+
     # no data
     geographicFocus {
       label

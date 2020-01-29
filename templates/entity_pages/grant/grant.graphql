@@ -1,0 +1,20 @@
+query($id: String!) {
+  relationship(id: $id) {
+    id
+    title
+    dateTimeIntervalStart
+    dateTimeIntervalEnd
+    principalInvestigators {
+      id
+      label
+    }
+    coPrincipalInvestigators {
+      id
+      label
+    }
+    awardedBy {
+      id
+      label
+    }
+  }
+}
