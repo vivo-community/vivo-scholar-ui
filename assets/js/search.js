@@ -8,4 +8,5 @@ import './search/pagination.js';
 import './search/people/facets.js';
 import './search/people/search.js';
 import './search/publications/facets.js';
+import './search/publications/search.js';
 

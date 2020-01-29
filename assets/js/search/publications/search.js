@@ -48,8 +48,7 @@ class PublicationSearch extends LitElement {
   
     handleCountResultsObtained(e) {
       this.countData = e.detail;
-      // NOTE: alias of 'peopleCount' doesn't seem to work
-      var docCount = this.countData ? this.countData.documents.page.totalElements : 0;
+      var docCount = this.countData ? this.countData.pubCount.page.totalElements : 0;
       let tab = document.querySelector('#publication-search-tab');
       tab.textContent = `Publications (${docCount})`;
     }
@@ -71,33 +70,73 @@ class PublicationSearch extends LitElement {
       search.setPage(num);
     }
   
+    renderPublisher(publisher) {
+        if (publisher) {
+            return html`
+              <span slot="publisher">${publisher.label}</span>
+            `
+        }
+    }
+
+    renderAbstract(abstract) {
+        if (abstract) {
+            return html`
+            <vivo-truncated-text slot="abstract">${abstract}</vivo-truncated-text>
+            `
+        }
+    }
+
+    renderPublication(p) {
+        return html`
+        <vivo-publication publication-url="/entities/publication/${p.id}" 
+          link-decorate="${this.linkDecorate}"
+          published-date="${p.publicationDate}">
+        <div slot="title">${p.title}</div>
+        <vivo-publication-author-list slot="authors">
+          ${p.authors.map((a) => this.authorTemplate(a))}
+        </vivo-publication-author-list>
+          ${this.renderPublisher(p.publisher)}
+          <span slot="date">${dateFormatted}</span>
+          ${this.renderAbstract(p.abstractText)}
+        </vivo-publication>
+        `;
+    }
+
     render() {
       var results = [];
       if (!this.data || !this.data.documents) {
           return;
       }
-      
+
       if (this.data && this.data.documents.content) {
         let content = this.data.documents.content;
         _.each(content, function (item) {
           results.push(item);
         });
       }
-  
-  
+      
+      let _self = this;
+      var resultsDisplay = html`<div>
+        ${_.map(results, function (i) {
+            return _self.renderPublication(i);
+          })
+        }
+      </div>`;
+
       let pagination = html``;
 
       if (this.data) {
         pagination = html`<vivo-search-pagination 
-              number="${this.data.people.page.number}"
-              size="${this.data.people.page.size}"
-              totalElements="${this.data.people.page.totalElements}"
-              totalPages="${this.data.people.page.totalPages}"
+              number="${this.data.documents.page.number}"
+              size="${this.data.documents.page.size}"
+              totalElements="${this.data.documents.page.totalElements}"
+              totalPages="${this.data.documents.page.totalPages}"
           />`
       }
   
       return html`
          <vivo-search graphql=${JSON.stringify(this.query)}>
+         ${resultsDisplay}
          ${pagination}
          </vivo-search>`
     }

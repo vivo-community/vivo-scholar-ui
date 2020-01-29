@@ -82,7 +82,10 @@ class Search extends LitElement {
       const fetchData = async () => {
         try {
           const { data } = await client.query({
-            query: this.countQuery
+            query: this.countQuery,
+            variables: {
+                search: this.query
+              }
           });
           this.data = data;
         } catch (error) {
@@ -141,7 +144,7 @@ class Search extends LitElement {
     // setSearchParameters({filter: [], page:0, query: "*"}) --?
   
     counts() {
-      this.runSearch()
+      this.runCounts()
         .then(() => {
           this.dispatchEvent(new CustomEvent('countResultsObtained', {
             detail: this.data,

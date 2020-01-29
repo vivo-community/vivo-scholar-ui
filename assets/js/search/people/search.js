@@ -63,7 +63,7 @@ class PersonSearch extends LitElement {
         // and just update that (could be tab heading or could not)
         this.countData = e.detail;
         // NOTE: alias of 'peopleCount' doesn't seem to work
-        var personCount = this.countData ? this.countData.people.page.totalElements : 0;
+        var personCount = this.countData ? this.countData.peopleCount.page.totalElements : 0;
         let tab = document.querySelector('#person-search-tab');
         tab.textContent = `People (${personCount})`;
     }
@@ -117,11 +117,11 @@ class PersonSearch extends LitElement {
 
         let _self = this;
         var resultsDisplay = html`<div>
-        ${_.map(results, function (i) {
-            return _self.renderPerson(i);
-        })
-            }
-      </div>`;
+          ${_.map(results, function (i) {
+              return _self.renderPerson(i);
+            })
+          }
+        </div>`;
 
         let pagination = html``;
 
