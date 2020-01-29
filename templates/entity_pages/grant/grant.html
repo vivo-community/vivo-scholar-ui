@@ -1,23 +1,19 @@
+<% let grant = data["relationship"] %>
 <div class="row">
-    <h2><%= raw(data["document"]["title"]) %></h2>
+    <h2><%= raw(grant["title"]) %></h2>
 </div>
 
-<div class="row">
-    <h3><%= data["document"]["type"] %></h3>
-</div>
-
-<h4>Authors</h4>
-<section class="author-list">
+<h4>Principal Investigators</h4>
+<section>
     <ul class="list-group">
-    <%= for (p) in data["document"]["authors"] { %>
+    <%= for (p) in grant["principalInvestigators"] { %>
        <li class="list-group-item">
            <span class="person-name">
               <a href="/entities/person/<%= p["id"] %>">
                 <%= p["label"] %>
-             </a> 
+             </a>
            </span>
        </li>
     <% } %>
     </ul>
 </section>
-     

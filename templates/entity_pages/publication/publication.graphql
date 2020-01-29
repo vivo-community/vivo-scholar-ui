@@ -1,5 +1,5 @@
 query($id: String!) {
-  documentById(id: $id) {
+  document(id: $id) {
     type
     title
     authors {

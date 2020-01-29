@@ -5,9 +5,26 @@ class Publication extends LitElement {
   static get properties() {
     return {
       id: { type: String },
-      publicationUrl: {
-        attribute: "publication-url",
+      url: {
+        attribute: "url",
         type: String,
+        reflect: true
+      },
+      title: {
+        attribute: "title",
+        converter: {
+          fromAttribute: (value, type) => {
+            if (value) {
+              let newValue = value.toUpperCase();
+              return newValue;
+            }
+          },
+          toAttribute: (value, type) => {
+            if (value) {
+              return value;
+            }
+          }
+        },
         reflect: true
       },
       publishedDate: {
@@ -29,6 +46,7 @@ class Publication extends LitElement {
       onSelect: { type: Object }
     };
   }
+
 
   static get styles() {
     return css`
