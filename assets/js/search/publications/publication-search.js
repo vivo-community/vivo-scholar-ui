@@ -101,10 +101,18 @@ class PublicationSearch extends LitElement {
         }
     }
 
+    renderAuthor(author) {
+      return html`
+      <vivo-publication-author profile-url="/entities/person/${author.id}">
+        ${author.label}
+      </vivo-publication-author>
+    `
+    }
+
     renderAuthors(authors) {
       if (authors) {
         return html`<vivo-publication-author-list slot="authors">
-          ${authors.map((a) => this.authorTemplate(a))}
+          ${authors.map((a) => this.renderAuthor(a))}
         </vivo-publication-author-list>
         `
       }
