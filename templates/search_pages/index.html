@@ -1,32 +1,17 @@
-<!--
-possible idea:
-1. tab select sends event: "tab-selected" { value = people }
-2. search results respond to "tab-selected" toggle
-   a) if value = person
-   b) show results else
-   c) only count is fine ...
-3. searchSubmitted?
-
-sidebar?
-1. also respond to tab select?
-2. and searchSubmitted?
-
--->
 <vivo-search-navigation></vivo-search-navigation>
 
 <div class="container">
-
+  <!-- NOTE: facets and search are in separate sections
+    the vivo-search-navigation elements uses the "search" attribute
+    to figure out which search to attach to (by corresponding id)
+  -->
   <aside>
      <vivo-sidebar>
         <vivo-search-person-facets search="person-search"></vivo-search-person-facets>
         <vivo-search-publication-facets search="publication-search"></vivo-search-publication-facets>
-        <!-- TODO: need to lay out all facets, then have tab selected
-        event pick which ones to show
-        -->
     </vivo-sidebar>
   </aside>
 
-  <!-- this kind of organization of layout means facets and search are separate -->
   <main>
 
     <vivo-tabs id="secondary-example" vivo-tab-style="secondary">
@@ -35,6 +20,11 @@ sidebar?
       </vivo-tab>
   
       <vivo-tab-panel selected>  
+        <!-- NOTE: the vivo-search-navigation element uses the id of the 
+          tab ("person-search-tab") and lops off the "-tab" to figure
+          out the active search id - if it could detect a <vivo-search>
+          child element interface that might be better
+        -->
         <vivo-person-search id="person-search"/>
       </vivo-tab-panel>
     

@@ -1,5 +1,6 @@
 import { LitElement, html, css } from "lit-element";
 
+// NOTE: this is not making use of any server data right now
 class PublicationFacets extends LitElement {
 
     static get properties() {
