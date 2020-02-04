@@ -120,6 +120,10 @@ class SearchNavigation extends LitElement {
   
       let facet = document.querySelector(`[search="${id}"]`);
       facet.setAttribute('selected', 'selected');
+
+      // TODO: should it send in data here?  Or should facets
+      // listen for searchResultsObtained? or just use
+      // vivo-search-facets 
     }
   
     // run search again? send back down?
