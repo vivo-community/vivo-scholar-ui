@@ -3,16 +3,6 @@ import { FontAwesomeIcon } from '@fortawesome/fontawesome-free';
 
 class SiteHeader extends LitElement {
 
-  static get properties() {
-    return {
-      mobileNav: {
-        attribute: "mobile-nav",
-        type: Boolean
-      }
-    };
-  }
-
-
   static get styles() {
     return css`
       :host {
@@ -58,51 +48,67 @@ class SiteHeader extends LitElement {
           font-size: 5em !important;
           padding-bottom: 20px;
         }
+        :host([large]) #navigation {
+         top: 150px;
+       }
       }
       @media (max-width: 415px) {
 
         #menu-button {
           display: flex;
           margin-left: 5%;
-          margin-bottom: 12%;
         }
         #navigation {
           background-color: var(--primaryColor);
-          width: 100vw;
+          width: 100%;
           margin:0;
           padding: 0;
           position: absolute;
-          z-index: 9;
+          left: 0;
+          top: 100px;
+          z-index: 99;
         }
         #menu {
           display: none;
         }
         #menu.open {
           display: block;
-          position: absolute;
+          position: relative;
           margin: 0;
           padding: 50px 0 0 0;
           background-color: var(--primaryColor);
-          width: 100vw;
-
+          width: 100%;
+        }
+        ::slotted([slot="menu-icon"]){
+          color: #FFFFFF;
+          font-size: 2em;
         }
         ::slotted([slot="nav-item"]){
           display: block;
           font-size: 1em;
           position: relative;
-          padding: 0 0 15% 35%;
-          // margin: 0 0 0 35%;
+          padding: 7.5% 0 7.5% 0;
+          margin: 0;
+          text-align: center;
+        }
+        ::slotted([slot="title"]) {
+          font-size: 2em !important;
         }
         :host([large]) ::slotted([slot="title"]) {
           font-size: 2em !important;
-          padding-bottom: 12%;
+          padding-bottom: 13%;
+        }
+        :host([large]) #menu-button {
+          display: flex;
+          margin-left: 5%;
+          margin-bottom: 13%;
         }
       }
     `
   }
 
   showNav(){
-    const showMenu = this.shadowRoot.querySelector("#menu")
+    const showMenu = this.shadowRoot.querySelector("#menu");
     if (showMenu.classList.contains('open')){
       showMenu.classList.remove('open');
     } else {
@@ -110,17 +116,18 @@ class SiteHeader extends LitElement {
     }
   }
 
+
   render() {
     return html`
       <slot name="title"></slot>
-      <button id="menu-button" @click="${this.showNav}"><i class="fas fa-bars"></i>Menu</button>
-      <nav id="navigation">
+      <button id="menu-button" @click="${this.showNav}"><slot name="menu-icon" aria-hidden=”true”></slot></button>
+      <nav id="navigation" >
         <div id="menu">
           <slot name="nav-item"></slot>
         </div>
       </nav>
 
-    `
+    `;
   }
 
 }
