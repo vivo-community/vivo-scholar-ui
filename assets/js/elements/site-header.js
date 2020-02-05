@@ -30,11 +30,12 @@ class SiteHeader extends LitElement {
         justify-content: space-evenly;
       }
       ::slotted([slot="nav-item"]){
-        font-size: 1.5em;
+        font-size: calc(1em + .5vw);
         font-weight: bold;
-        margin-right: 100px;
+        margin-right: 10%;
         text-decoration: none;
         color: white !important;
+        white-space: nowrap;
       }
       #menu-button {
         display: none;
@@ -53,13 +54,21 @@ class SiteHeader extends LitElement {
          top: 150px;
        }
       }
-      @media (max-width: 415px) {
-
+      @media (max-width: 1024px){
+        ::slotted([slot="title"]) {
+          font-size: 2.5em !important;
+        }
+        :host([large]) ::slotted([slot="title"]) {
+          font-size: 3em !important;
+        }
+      }
+      @media (max-width: 700px){
         #menu-button {
           display: flex;
           margin-left: 5%;
           background: none;
           border: none;
+          margin-bottom: 3%;
         }
         #navigation {
           background-color: var(--primaryColor);
@@ -94,25 +103,47 @@ class SiteHeader extends LitElement {
           margin: 0;
           text-align: center;
         }
+      }
+
+      @media (max-width: 530px) {
         ::slotted([slot="title"]) {
           font-size: 2em !important;
         }
         :host([large]) ::slotted([slot="title"]) {
           font-size: 2em !important;
-          padding-bottom: 13%;
+          padding-bottom: 10%;
         }
         :host([large]) #menu-button {
           display: flex;
           margin-left: 5%;
-          margin-bottom: 13%;
+          margin-bottom: 10%;
         }
       }
+      @media (max-width: 386px){
+        ::slotted([slot="title"]) {
+          font-size: 1.8em !important;
+        }
+        :host([large]) ::slotted([slot="title"]) {
+          font-size: 1.8em !important;
+          padding-bottom: 10%;
+        }
+      }
+      @media (max-width: 366px){
+        ::slotted([slot="title"]) {
+          font-size: 1.5em !important;
+        }
+        :host([large]) ::slotted([slot="title"]) {
+          font-size: 1.5em !important;
+          padding-bottom: 10%;
+        }
+      }
+
     `
   }
 
   showNav(){
     const showMenu = this.shadowRoot.querySelector("#menu");
-    const nav = this.shadowRoot.querySelector('#navigation');
+    const nav = this.shadowRoot.querySelector('#menu-button');
     if (showMenu.classList.contains('open')){
       showMenu.classList.remove('open');
       nav.setAttribute('aria-expanded', 'false');
@@ -125,8 +156,13 @@ class SiteHeader extends LitElement {
   render() {
     return html`
       <slot name="title"></slot>
-      <button id="menu-button" @click="${this.showNav}"><slot name="menu-icon" aria-hidden=”true”></slot></button>
-      <nav id="navigation" aria-expanded="false">
+      <button id="menu-button"
+        aria-haspopup="true" aria-expanded="false"
+        @click="${this.showNav}">
+        <slot name="menu-icon" aria-hidden=”true”></slot>
+        <span hidden>Menu</span>
+        </button>
+      <nav id="navigation">
         <div id="menu">
           <slot name="nav-item"></slot>
         </div>
