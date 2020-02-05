@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/fontawesome-free';
 
 class SiteHeader extends LitElement {
 
+
   static get styles() {
     return css`
       :host {
@@ -57,6 +58,8 @@ class SiteHeader extends LitElement {
         #menu-button {
           display: flex;
           margin-left: 5%;
+          background: none;
+          border: none;
         }
         #navigation {
           background-color: var(--primaryColor);
@@ -80,7 +83,7 @@ class SiteHeader extends LitElement {
           width: 100%;
         }
         ::slotted([slot="menu-icon"]){
-          color: #FFFFFF;
+          color: white;
           font-size: 2em;
         }
         ::slotted([slot="nav-item"]){
@@ -109,19 +112,21 @@ class SiteHeader extends LitElement {
 
   showNav(){
     const showMenu = this.shadowRoot.querySelector("#menu");
+    const nav = this.shadowRoot.querySelector('#navigation');
     if (showMenu.classList.contains('open')){
       showMenu.classList.remove('open');
+      nav.setAttribute('aria-expanded', 'false');
     } else {
       showMenu.classList.add('open');
+      nav.setAttribute('aria-expanded', 'true');
     }
   }
-
 
   render() {
     return html`
       <slot name="title"></slot>
       <button id="menu-button" @click="${this.showNav}"><slot name="menu-icon" aria-hidden=”true”></slot></button>
-      <nav id="navigation" >
+      <nav id="navigation" aria-expanded="false">
         <div id="menu">
           <slot name="nav-item"></slot>
         </div>
