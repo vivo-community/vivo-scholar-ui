@@ -43,12 +43,9 @@ class SiteHeader extends LitElement {
       @media (min-height: 400px) {
         :host([large]) {
           height: 150px;
-          align-items: flex-end;
-          padding-bottom: 20px;
         }
         :host([large]) ::slotted([slot="title"]) {
           font-size: 5em !important;
-          padding-bottom: 20px;
         }
         :host([large]) #navigation {
          top: 150px;
@@ -64,11 +61,10 @@ class SiteHeader extends LitElement {
       }
       @media (max-width: 700px){
         #menu-button {
-          display: flex;
-          margin-left: 5%;
+          display: block;
+          float: right;
           background: none;
           border: none;
-          margin-bottom: 3%;
         }
         #navigation {
           background-color: var(--primaryColor);
@@ -111,21 +107,14 @@ class SiteHeader extends LitElement {
         }
         :host([large]) ::slotted([slot="title"]) {
           font-size: 2em !important;
-          padding-bottom: 10%;
-        }
-        :host([large]) #menu-button {
-          display: flex;
-          margin-left: 5%;
-          margin-bottom: 10%;
         }
       }
-      @media (max-width: 386px){
+      @media (max-width: 388px){
         ::slotted([slot="title"]) {
           font-size: 1.8em !important;
         }
         :host([large]) ::slotted([slot="title"]) {
           font-size: 1.8em !important;
-          padding-bottom: 10%;
         }
       }
       @media (max-width: 366px){
@@ -134,7 +123,6 @@ class SiteHeader extends LitElement {
         }
         :host([large]) ::slotted([slot="title"]) {
           font-size: 1.5em !important;
-          padding-bottom: 10%;
         }
       }
 
