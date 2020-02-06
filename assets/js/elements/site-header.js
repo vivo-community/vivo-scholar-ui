@@ -1,5 +1,4 @@
 import { LitElement, html, css } from "lit-element";
-import { FontAwesomeIcon } from '@fortawesome/fontawesome-free';
 
 class SiteHeader extends LitElement {
 
@@ -61,10 +60,10 @@ class SiteHeader extends LitElement {
       }
       @media (max-width: 700px){
         #menu-button {
-          display: block;
-          float: right;
+          display: flex;
           background: none;
           border: none;
+          padding: 0;
         }
         #navigation {
           background-color: var(--primaryColor);
@@ -144,17 +143,17 @@ class SiteHeader extends LitElement {
   render() {
     return html`
       <slot name="title"></slot>
-      <button id="menu-button"
-        aria-haspopup="true" aria-expanded="false"
-        @click="${this.showNav}">
-        <slot name="menu-icon" aria-hidden=”true”></slot>
-        <span hidden>Menu</span>
-        </button>
       <nav id="navigation">
         <div id="menu">
           <slot name="nav-item"></slot>
         </div>
       </nav>
+      <button id="menu-button"
+        aria-haspopup="true" aria-expanded="false"
+        @click="${this.showNav}">
+        <slot name="menu-icon" aria-hidden=”true”></slot>
+        <span hidden>Menu</span>
+      </button>
 
     `;
   }
