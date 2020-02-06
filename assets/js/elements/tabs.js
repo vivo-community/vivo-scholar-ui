@@ -42,10 +42,12 @@ class Tabs extends LitElement {
         panel.vivoTabStyle = this.vivoTabStyle;
       }
     });
-    if (this.tabs.length >= 1 && this.panels.length >= 1 && this.tabs.filter((t) => t.selected).length == 0) {
-      this.selectTab(this.tabs[0]);
-    }
-  }
+    const screenWidth = window.screen.width;
+    if (screenWidth > 720) {
+      if (this.tabs.length >= 1 && this.panels.length >= 1 && this.tabs.filter((t) => t.selected).length == 0) {
+        this.selectTab(this.tabs[0]);
+      }
+   } 
 
   selectTabById(tabId) {
     this.selectTab(this.querySelector(`vivo-tab#${tabId}`));
@@ -83,6 +85,8 @@ class Tabs extends LitElement {
     }
     this.selectTab(tab);
   }
+
+
 
   static get styles() {
     return css`
