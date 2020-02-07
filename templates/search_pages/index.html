@@ -1,34 +1,15 @@
-<!--
-possible idea:
-1. tab select sends event: "tab-selected" { value = people }
-2. search results respond to "tab-selected" toggle
-   a) if value = person
-   b) show results else
-   c) only count is fine ...
-3. searchSubmitted?
+<vivo-search-navigation></vivo-search-navigation>
 
-sidebar?
-1. also respond to tab select?
-2. and searchSubmitted?
-
--->
 <div class="container">
-
+  <!-- NOTE: facets and search are in separate sections
+    the vivo-search-navigation elements uses the "search" attribute
+    to figure out which search to attach to (by corresponding id)
+  -->
   <aside>
      <vivo-sidebar>
-      <vivo-sidebar-item>
-        <!-- 
-        TODO:  
-        a) populate from current search
-        b) send parameter to current search
-        c) change depending on current tab
-
-        <vivo-search-facets></vivo-search-facets> ?
-        
-        -->
-        <h3 slot="heading">Facets (will go here)</h3>
-        </vivo-sidebar-item>
-     </vivo-sidebar>
+        <vivo-search-person-facets search="person-search"></vivo-search-person-facets>
+        <vivo-search-publication-facets search="publication-search"></vivo-search-publication-facets>
+    </vivo-sidebar>
   </aside>
 
   <main>
@@ -39,8 +20,12 @@ sidebar?
       </vivo-tab>
   
       <vivo-tab-panel selected>  
-        <!-- NOTE: this is not correct, long-term -->
-        <vivo-search></vivo-search>
+        <!-- NOTE: the vivo-search-navigation element uses the id of the 
+          tab ("person-search-tab") and lops off the "-tab" to figure
+          out the active search id - if it could detect a <vivo-search>
+          child element interface that might be better
+        -->
+        <vivo-person-search id="person-search"/>
       </vivo-tab-panel>
     
       <vivo-tab id="publication-search-tab">
@@ -48,11 +33,7 @@ sidebar?
       </vivo-tab>
   
       <vivo-tab-panel>
-        <p>Publication search goes here</p>
-        <!--
-          <vivo-publication-search-results />
-          <vivo-search query="publications/query.js" />
-        -->
+          <vivo-publication-search id="publication-search"/>
       </vivo-tab-panel>
     
     </vivo-tabs>
