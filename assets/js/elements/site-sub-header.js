@@ -14,6 +14,7 @@ class SiteSubHeader extends LitElement {
         height: 100px;
         align-items: center;
       }
+    
     `
   }
 
@@ -26,5 +27,3 @@ class SiteSubHeader extends LitElement {
 }
 
 customElements.define('vivo-site-sub-header', SiteSubHeader);
-
-
