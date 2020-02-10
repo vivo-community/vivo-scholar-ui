@@ -131,7 +131,16 @@ class SearchNavigation extends LitElement {
       const facet = e.detail;
       this.browsingState.currentFacet = facet;
       let search = this.browsingState.activeSearch;
+      console.log(facet);
+      // TODO: need to know the 'field' here too, not just value
+      if (facet.checked) {
+        //search.addFilter(facet);
+      } else {
+        //search.removeFilter(facet);
+      }
       // send in new filters, then re-run active search?
+      // if checked -- addFilter
+      // if not checked -- removeFilter
       // search.setFilters( -- facet --);
       // do counts need to be redone?
       //search.counts();

@@ -4,6 +4,7 @@ class SearchFacet extends LitElement {
 
   static get properties() {
     return {
+      field: { type: String },
       label: { type: String },
       value: { type: String },
       count: { type: Number }
@@ -26,12 +27,13 @@ class SearchFacet extends LitElement {
   }
 
   handleFacetSelected(e) {
-    // if checked == true + add
-    // if checked == false - remove
-    // getAttribute("value") is returning facet1
-    // needs to add/remove filter and re-run search ...
+    // TODO: need facet field here too
     this.dispatchEvent(new CustomEvent('facetSelected', {
-      detail: { checked: e.target.checked, value: e.target.getAttribute("value") },
+      detail: { 
+        field: e.target.getAttribute("field"),
+        checked: e.target.checked, 
+        value: e.target.getAttribute("value") 
+      },
       bubbles: true,
       cancelable: false,
       composed: true
@@ -41,7 +43,11 @@ class SearchFacet extends LitElement {
   render() {
     return html`
           <label>
-            <input type="checkbox" value="${this.value}" @click=${this.handleFacetSelected}>
+            <input 
+              type="checkbox" 
+              field="${this.field}" 
+              value="${this.value}" 
+              @click=${this.handleFacetSelected}>
             ${this.label} (${this.count})
           </label>
         `

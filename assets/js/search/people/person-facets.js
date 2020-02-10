@@ -1,7 +1,6 @@
 import { LitElement, html, css } from "lit-element";
 
-// NOTE: this is not making use of any server data right now
-// usage:
+// usage: (search must match id of vivo-search on page)
 // <vivo-search-person-facets search="person-search"></vivo-search-person-facets>
 class PeopleFacets extends LitElement {
 
@@ -45,8 +44,19 @@ class PeopleFacets extends LitElement {
     handleSearchResultsObtained(e) {
       const data = e.detail;
       this.data = data;
-      // check for 'selected'?
     }
+
+    listFacets(field, entries) {
+      console.log(field);
+      let display = entries.content.map(facet => {
+        return html`<vivo-search-facet 
+          field="${field}"
+          value="${facet.value}" 
+          label="${facet.value}" 
+          count="${facet.count}" />`
+      });
+      return display;
+    };
 
     // add searchResultsObtained listener?
     // #person-facets(DOM) set-data --> data ??
@@ -54,28 +64,23 @@ class PeopleFacets extends LitElement {
       if (!this.data || !this.data.people || !this.selected == true ) {
         return html``
       }
-      // TODO: gather facets from search data 
-      // AND group 
-      // AND only show ones with key match 
-      // etc...             
-      let fakeFacets = html`
-          <h4>Keywords</h4>
-          <vivo-search-facet value="facet1" label="Facet 1" count="10">
-          </vivo-search-facet>
-          <vivo-search-facet value="facet2" label="Facet 2" count="2">
-          </vivo-search-facet>
-          <h4>Research Areas</h4>
-          <vivo-search-facet value="facet1" label="Facet 1" count="15">
-          </vivo-search-facet>
-          <vivo-search-facet value="facet2" label="Facet 2" count="6">
-          </vivo-search-facet>          
-          `
+
+      // TODO: generic or very specific (e.g. "researchAreas" etc...)
+      let display = this.data.people.facets.map(facet => {
+        return html`<h4>${facet.field}</h4>
+          ${this.listFacets(facet.field, facet.entries)}
+        `
+      });
+
+      let facets = html`
+          ${display}      
+      `;
        
       return html`
           <vivo-search-facets id="person-facets">
             <h3 slot="heading">Filter People</h3>
             <div slot="content">
-            ${fakeFacets}
+            ${facets}
             </div>
           </vivo-search-facets>
           `
