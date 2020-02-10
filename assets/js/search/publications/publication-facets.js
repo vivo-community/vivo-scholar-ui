@@ -56,7 +56,7 @@ class PublicationFacets extends LitElement {
       let display = entries.content.map(facet => {
         return html`<vivo-search-facet 
           field="${field}"
-          selected="${this.isFacetedChecked(facet)}"
+          ?selected="${this.isFacetChecked(facet)}"
           value="${facet.value}" 
           label="${facet.value}" 
           count="${facet.count}" />`

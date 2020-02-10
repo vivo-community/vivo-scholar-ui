@@ -72,7 +72,10 @@ class PeopleFacets extends LitElement {
 
 
     inFilters(field, facet) {
+      //console.log(`checking if ${JSON.stringify(facet)} should be checked:${field}`)
       let exists = _.find(this.filters, function(f) { 
+        //console.log(`${f.field} == ${field} && ${f.value} == ${facet.value}`);
+        //console.log(f.field == field && f.value == facet.value);
         return (f.field == field && f.value == facet.value); 
       });
       return exists;
