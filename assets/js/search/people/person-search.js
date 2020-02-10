@@ -92,6 +92,16 @@ class PersonSearch extends LitElement {
         search.setPage(num);
     }
 
+    addFilter(filter) {
+        let search = this.shadowRoot.querySelector('vivo-search');
+        search.addFilter(filter);
+    }
+
+    removeFilter(filter) {
+        let search = this.shadowRoot.querySelector('vivo-search');
+        search.removeFilter(filter);
+    }
+
     renderOverview(person) {
         if (person.overview) {
             return html`<vivo-truncated-text>${unsafeHTML(person.overview)}</vivo-truncated-text>`;

@@ -27,10 +27,9 @@ class SearchFacet extends LitElement {
   }
 
   handleFacetSelected(e) {
-    // TODO: need facet field here too
     this.dispatchEvent(new CustomEvent('facetSelected', {
       detail: { 
-        field: e.target.getAttribute("field"),
+        field: this.field,
         checked: e.target.checked, 
         value: e.target.getAttribute("value") 
       },
@@ -44,8 +43,7 @@ class SearchFacet extends LitElement {
     return html`
           <label>
             <input 
-              type="checkbox" 
-              field="${this.field}" 
+              type="checkbox"  
               value="${this.value}" 
               @click=${this.handleFacetSelected}>
             ${this.label} (${this.count})

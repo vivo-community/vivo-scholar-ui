@@ -137,6 +137,26 @@ class Search extends LitElement {
       this.active = b;
     }
   
+    // might look like:
+    // filters: [{ "locality": "durham" }, ... ]
+    addFilter(filter) {
+      console.log(filter);
+      // may need dict of filters to remove by name
+      // then use filters.entries for query
+      // need to add only key and value (not checked for instance)
+      this.filters.push({"field": filter.field, "value": filter.value});
+      //this.filters = _.dropWhile(this.filters, ['value', filter]);
+    }
+
+    removeFilter(filter) {
+      // NOTE: can have multiple copies of key with value
+      // may need dict of filters to remove by name
+      //this.filters.pop(filter);
+      //this.filters = _.dropWhile(this.filters, ['value', filter]);
+      this.filters = _.reject(this.filters, function(o) { 
+        return (o.field === filter.field && o.value == filter.value); 
+      });
+    }
     /*
     setSearchParameters(parameters) {
         let { filter, page, query } = parameters;

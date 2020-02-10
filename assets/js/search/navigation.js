@@ -134,9 +134,9 @@ class SearchNavigation extends LitElement {
       console.log(facet);
       // TODO: need to know the 'field' here too, not just value
       if (facet.checked) {
-        //search.addFilter(facet);
+        search.addFilter(facet);
       } else {
-        //search.removeFilter(facet);
+        search.removeFilter(facet);
       }
       // send in new filters, then re-run active search?
       // if checked -- addFilter
