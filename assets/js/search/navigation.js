@@ -121,29 +121,32 @@ class SearchNavigation extends LitElement {
       let facet = document.querySelector(`[search="${id}"]`);
       facet.setAttribute('selected', 'selected');
 
-      // TODO: should it send in data here?  Or should facets
-      // listen for searchResultsObtained? or just use
-      // vivo-search-facets 
+      //this.browsingState.currentFacetGroup = facet;
     }
   
     // run search again? send back down?
     handleFacetSelected(e) {
       const facet = e.detail;
-      this.browsingState.currentFacet = facet;
+      // probably not the thing to to here
+      // maybe more like browsingState.add/remove(facet)?
+      //this.browsingState.currentFacet = facet;
       let search = this.browsingState.activeSearch;
-      console.log(facet);
-      // TODO: need to know the 'field' here too, not just value
+
+      // FIXME: redundant
+      //let activeSearch = this.browsingState.activeSearch;
+      //let id = activeSearch.id;
+      //let facet = document.querySelector(`[search="${id}"]`);
+      //facet.addFilter(facet);
+
       if (facet.checked) {
         search.addFilter(facet);
       } else {
         search.removeFilter(facet);
       }
-      // send in new filters, then re-run active search?
-      // if checked -- addFilter
-      // if not checked -- removeFilter
-      // search.setFilters( -- facet --);
       // do counts need to be redone?
       //search.counts();
+      // let facetGroup = this.browsingState.currentFacetGroup;
+      // facetGroup.filters = search.filters;
       search.search();
     }
   

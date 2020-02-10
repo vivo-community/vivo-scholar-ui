@@ -9,7 +9,9 @@ class PeopleFacets extends LitElement {
       return {
         data: { type: Object },
         selected: { type: Boolean, reflect: true },
-        search: { type: String }
+        // TODO: how to get filters in here to know
+        // what to check,uncheck in render?
+        filters: { type: Array }
       }
     }
   
@@ -27,11 +29,14 @@ class PeopleFacets extends LitElement {
     constructor() {
       super();
       this.selected = true;
+      this.filters = [];
       this.handleSearchResultsObtained = this.handleSearchResultsObtained.bind(this);
+      this.handleFacetSelected = this.handleFacetSelected.bind(this);
     }
   
     firstUpdated() {
       document.addEventListener('searchResultsObtained', this.handleSearchResultsObtained);
+      document.addEventListener('facetSelected', this.handleFacetSelected);
       // NOTE: would need to 'redraw' facets
       // (with 'filters' from search)   
     }
@@ -46,11 +51,39 @@ class PeopleFacets extends LitElement {
       this.data = data;
     }
 
+    handleFacetSelected(e) {
+      const facet = e.detail;
+      if (facet.checked) {
+        this.addFilter(facet);
+      } else {
+        this.removeFilter(facet);
+      }
+    }
+
+    addFilter(filter) {
+      this.filters.push({"field": filter.field, "value": filter.value});
+    }
+
+    removeFilter(filter) {
+      this.filters = _.reject(this.filters, function(o) { 
+        return (o.field === filter.field && o.value == filter.value); 
+      });
+    }
+
+
+    inFilters(field, facet) {
+      let exists = _.find(this.filters, function(f) { 
+        return (f.field == field && f.value == facet.value); 
+      });
+      return exists;
+    }
+
     listFacets(field, entries) {
-      console.log(field);
       let display = entries.content.map(facet => {
+        let selected = this.inFilters(field, facet);
         return html`<vivo-search-facet 
           field="${field}"
+          ?selected=${selected}
           value="${facet.value}" 
           label="${facet.value}" 
           count="${facet.count}" />`
@@ -65,7 +98,8 @@ class PeopleFacets extends LitElement {
         return html``
       }
 
-      // TODO: generic or very specific (e.g. "researchAreas" etc...)
+      // TODO: generic or very specific (e.g. data.people.facets["researchAreas"] etc...)
+      // also need 'filters' to tell what checkboxes to check
       let display = this.data.people.facets.map(facet => {
         return html`<h4>${facet.field}</h4>
           ${this.listFacets(facet.field, facet.entries)}

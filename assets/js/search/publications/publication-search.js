@@ -85,6 +85,18 @@ class PublicationSearch extends LitElement {
         this.active = b;
     }
   
+    // FIXME: not crazy about having to remember to add these
+    // to every search
+    addFilter(filter) {
+      let search = this.shadowRoot.querySelector('vivo-search');
+      search.addFilter(filter);
+    }
+
+    removeFilter(filter) {
+      let search = this.shadowRoot.querySelector('vivo-search');
+      search.removeFilter(filter);
+    }
+
     renderPublisher(publisher) {
         if (publisher) {
             return html`

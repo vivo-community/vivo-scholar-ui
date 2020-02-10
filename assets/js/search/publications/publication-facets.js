@@ -7,7 +7,8 @@ class PublicationFacets extends LitElement {
     static get properties() {
       return {
         data: { type: Object },
-        selected: { type: Boolean, attribute: true, reflect: true }
+        selected: { type: Boolean, attribute: true, reflect: true },
+        filters: { type: Array }
       }
     }
     
@@ -32,6 +33,7 @@ class PublicationFacets extends LitElement {
       document.addEventListener('searchResultsObtained', this.handleSearchResultsObtained);
       // NOTE: would need to 'redraw' facets
       // (with 'filters' from search)   
+      // could listen for 'searchSubmitted'?
     }
   
     disconnectedCallback() {
@@ -44,6 +46,24 @@ class PublicationFacets extends LitElement {
       this.data = data;
     }
 
+    // not to be confused with facet group (people) being selected
+    isFacetChecked(facet) { 
+      // need list of filters - then to check whether in list
+      return false;
+    }
+
+    listFacets(field, entries) {
+      let display = entries.content.map(facet => {
+        return html`<vivo-search-facet 
+          field="${field}"
+          selected="${this.isFacetedChecked(facet)}"
+          value="${facet.value}" 
+          label="${facet.value}" 
+          count="${facet.count}" />`
+      });
+      return display;
+    };
+
     render() {
       // TODO: gather facets from search data   
       // NOTE: if search == 'documents' - then could use check for
@@ -51,19 +71,24 @@ class PublicationFacets extends LitElement {
       if (!this.data || !this.data.documents || !this.selected == true ) {
         return html``
       }       
-      let fakeFacets = html`
-          <h4>Research Areas</h4>
-          <vivo-search-facet value="facet1" label="Facet 1" count="10">
-          </vivo-search-facet>
-          <vivo-search-facet value="facet2" label="Facet 2" count="2">
-          </vivo-search-facet>`
+
+      // TODO: generic or very specific (e.g. "researchAreas" etc...)
+      let display = this.data.documents.facets.map(facet => {
+        return html`<h4>${facet.field}</h4>
+          ${this.listFacets(facet.field, facet.entries)}
+        `
+      });
+      
+      let facets = html`
+          ${display}      
+      `;
   
       // grouping of facets per vivo-sidebar-item
       return html`
           <vivo-search-facets>
             <h3 slot="heading">Filter Publications</h3>
             <div slot="content">
-            ${fakeFacets}
+            ${facets}
             </div>
           </vivo-search-facets>
           `

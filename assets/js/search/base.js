@@ -24,8 +24,8 @@ class Search extends LitElement {
     constructor() {
       super();
       this.doSearch = this.doSearch.bind(this);
-      this.facetSelected = this.facetSelected.bind(this);
-  
+      //this.facetSelected = this.facetSelected.bind(this);
+      this.handleFacetSelected = this.handleFacetSelected.bind(this);
       // TODO: specific implementation would need to add to this
       // probably a better way to do over constructor variable
       this.countQuery = gql`
@@ -73,13 +73,20 @@ class Search extends LitElement {
       window.removeEventListener('facetSelected', this.handleFacetSelected);
     }
   
-    facetSelected(e) {
-      // 1. set filters?
-      //this.filters = e.details.
-      // 2. re-run search?
-      // this.doSearch();
+
+    handleFacetSelected(e) {    
+      /*
+      const facet = e.detail;
+      if (facet.checked) {
+        this.addFilter(facet);
+      } else {
+        this.removeFilter(facet);
+      }
+      console.log(this.filters);
+      this.search();
+      */
     }
-  
+    
     runCounts() {
       const fetchData = async () => {
         try {
@@ -137,22 +144,11 @@ class Search extends LitElement {
       this.active = b;
     }
   
-    // might look like:
-    // filters: [{ "locality": "durham" }, ... ]
     addFilter(filter) {
-      console.log(filter);
-      // may need dict of filters to remove by name
-      // then use filters.entries for query
-      // need to add only key and value (not checked for instance)
       this.filters.push({"field": filter.field, "value": filter.value});
-      //this.filters = _.dropWhile(this.filters, ['value', filter]);
     }
 
     removeFilter(filter) {
-      // NOTE: can have multiple copies of key with value
-      // may need dict of filters to remove by name
-      //this.filters.pop(filter);
-      //this.filters = _.dropWhile(this.filters, ['value', filter]);
       this.filters = _.reject(this.filters, function(o) { 
         return (o.field === filter.field && o.value == filter.value); 
       });
@@ -183,6 +179,7 @@ class Search extends LitElement {
     }
   
     search() {
+      // should filters be part of custom event?
       this.runSearch()
         .then(() => {
           this.dispatchEvent(new CustomEvent('searchResultsObtained', {

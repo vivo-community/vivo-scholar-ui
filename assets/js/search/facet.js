@@ -7,7 +7,8 @@ class SearchFacet extends LitElement {
       field: { type: String },
       label: { type: String },
       value: { type: String },
-      count: { type: Number }
+      count: { type: Number },
+      selected: { type: Boolean }
     }
   }
 
@@ -39,14 +40,16 @@ class SearchFacet extends LitElement {
     }));
   }
 
+  // TODO: need a way to mark if 'checked' or not
   render() {
     return html`
           <label>
-            <input 
-              type="checkbox"  
-              value="${this.value}" 
-              @click=${this.handleFacetSelected}>
             ${this.label} (${this.count})
+            <input 
+            type="checkbox"  
+            ?checked=${this.selected}
+            value="${this.value}" 
+            @click=${this.handleFacetSelected}>
           </label>
         `
   }
