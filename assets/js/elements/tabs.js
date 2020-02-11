@@ -13,18 +13,23 @@ class Tabs extends LitElement {
     this.tabs = [];
     this.panels = [];
     this._onSlotChange = this._onSlotChange.bind(this);
+    this._onKeyDown = this._onKeyDown.bind(this);
     this.vivoTabStyle = "primary";
   }
 
   firstUpdated() {
     this._slot = this.shadowRoot.querySelector("slot");
     this._slot.addEventListener('slotchange', this._onSlotChange);
+    this.addEventListener('keydown', this._onKeyDown);
   }
+
 
   disconnectedCallback() {
     super.disconnectedCallback();
     this._slot.removeEventListener('slotchange', this._onSlotChange);
+    this.removeEventListener('keydown', this._onKeyDown);
   }
+
 
   _onSlotChange() {
     this._linkPanels();
@@ -84,6 +89,70 @@ class Tabs extends LitElement {
     this.selectTab(tab);
   }
 
+  //keyboard code
+
+  _allTabs() {
+    return Array.from(this.querySelectorAll('vivo-tab'));
+  }
+
+  _prevTab(){
+    const tabs = this._allTabs();
+    let newIdx = tabs.findIndex(tab => tab.selected) - 1;
+    return tabs[(newIdx + tabs.length) % tabs.length];
+  }
+
+  _firstTab() {
+    const tabs = this._allTabs();
+    return tabs[0];
+  }
+
+  _lastTab() {
+    const tabs = this._allTabs();
+    return tabs[tabs.length - 1];
+  }
+
+  _nextTab() {
+    const tabs = this._allTabs();
+    let newIdx = tabs.findIndex(tab => tab.selected) + 1;
+    return tabs[newIdx % tabs.length];
+  }
+
+  _onKeyDown(e) {
+    const KEYCODE = {
+      DOWN: 40,
+      LEFT: 37,
+      RIGHT: 39,
+      UP: 38,
+      HOME: 36,
+      END: 35,
+    };
+    let newTab;
+      switch (e.keyCode) {
+        case KEYCODE.LEFT:
+        case KEYCODE.UP:
+          newTab = this._prevTab();
+          break;
+
+        case KEYCODE.RIGHT:
+        case KEYCODE.DOWN:
+          newTab = this._nextTab();
+          break;
+
+        case KEYCODE.HOME:
+          newTab = this._firstTab();
+          break;
+
+        case KEYCODE.END:
+          newTab = this._lastTab();
+          break;
+
+        default:
+          return;
+      }
+      event.preventDefault();
+      this.selectTab(newTab);
+  }
+
   static get styles() {
     return css`
       :host {
@@ -94,8 +163,9 @@ class Tabs extends LitElement {
   }
 
   render() {
+
     return html`
-        <slot @click="${this.handleSelectTab}"/>
+        <slot @click="${this.handleSelectTab}";/>
     `
   }
 }
