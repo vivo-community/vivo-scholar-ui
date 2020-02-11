@@ -1,6 +1,6 @@
 import { LitElement, html, css } from "lit-element";
 
-class SearchFacet extends LitElement {
+class SearchFacetBad extends LitElement {
 
   static get properties() {
     return {
@@ -63,7 +63,7 @@ class SearchFacet extends LitElement {
   }
 }
 
-customElements.define('vivo-search-facet-bad', SearchFacet);
+customElements.define('vivo-search-facet-bad', SearchFacetBad);
 
 
 
