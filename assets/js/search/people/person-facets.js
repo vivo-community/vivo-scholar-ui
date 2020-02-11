@@ -71,10 +71,12 @@ class PeopleFacets extends LitElement {
     }
 
     addFilter(filter) {
+      //console.log(`adding ${JSON.stringify(filter)}`);
       this.filters.push({"field": filter.field, "value": filter.value});
     }
 
     removeFilter(filter) {
+      //console.log(`removing ${JSON.stringify(filter)}`);
       this.filters = _.reject(this.filters, function(o) { 
         return (o.field === filter.field && o.value == filter.value); 
       });
@@ -100,6 +102,7 @@ class PeopleFacets extends LitElement {
          if (key == "people" && grouped[field]) {
            //console.log(`setting data - ${JSON.stringify(grouped[field])}`);
            facet.setData(grouped[field]);
+           //console.log(`trying to set filters: ${JSON.stringify(this.filters)}`);
            facet.setFilters(this.filters);
          }
       });

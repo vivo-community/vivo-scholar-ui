@@ -60,15 +60,17 @@ class PublicationFacets extends LitElement {
       }
       // search ->?person-search"
       let search = document.querySelector(`[id="${this.search}"]`);
-      console.log(`found search: ${JSON.stringify(search)}`);
+      //console.log(`found search: ${JSON.stringify(search)}`);
       search.search();
     }
 
     addFilter(filter) {
+      console.log(`adding ${JSON.stringify(filter)}`);
       this.filters.push({"field": filter.field, "value": filter.value});
     }
 
     removeFilter(filter) {
+      console.log(`removing ${JSON.stringify(filter)}`);
       this.filters = _.reject(this.filters, function(o) { 
         return (o.field === filter.field && o.value == filter.value); 
       });
@@ -111,10 +113,14 @@ class PublicationFacets extends LitElement {
         return html``
       }       
 
+      // 1. get all vivo-search-facet elements ...
       let facets = Array.from(this.querySelectorAll("vivo-search-facets"));
 
       // data - group by field
       let grouped = _.groupBy(this.data.documents.facets, "field");
+
+      // 2. for each vivo-search-facet element, get key and field
+      // and assign data (+ filters)
       facets.map(facet => {
          let key = facet.key;
          let field = facet.field;

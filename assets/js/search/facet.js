@@ -8,7 +8,7 @@ class SearchFacet extends LitElement {
       label: { type: String },
       value: { type: String },
       count: { type: Number },
-      selected: { type: Boolean }
+      selected: { type: Boolean, attribute: true, reflect: true }
     }
   }
 
@@ -29,10 +29,14 @@ class SearchFacet extends LitElement {
   }
 
   handleFacetSelected(e) {
+    //e.preventDefault
+    // if not checkbox - what for e.target.checked?
+    // e.target.selected?
     this.dispatchEvent(new CustomEvent('facetSelected', {
       detail: { 
         field: this.field,
         checked: e.target.checked, 
+        //checked: e.target.getAttribute("selected"),
         value: e.target.getAttribute("value") 
       },
       bubbles: true,
@@ -45,7 +49,7 @@ class SearchFacet extends LitElement {
   // https://stackoverflow.com/questions/55962214/litelement-not-updating-checkbox-in-list
   // https://github.com/Polymer/lit-html/issues/732  
   render() {
-    console.log(`${this.label} - selected:${this.selected}`);
+    //console.log(`${this.label} - selected:${this.selected}`);
     return html`
           <label for="${this.field}_${this.value}">
             ${this.label} (${this.count})
