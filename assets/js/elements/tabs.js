@@ -118,7 +118,6 @@ class Tabs extends LitElement {
   }
 
   _onKeyDown(e) {
-    console.log(e.composedPath());
     const KEYCODE = {
       DOWN: 40,
       LEFT: 37,
