@@ -20,13 +20,14 @@ class Tabs extends LitElement {
   firstUpdated() {
     this._slot = this.shadowRoot.querySelector("slot");
     this._slot.addEventListener('slotchange', this._onSlotChange);
-    this._slot.addEventListener('keydown', this._onKeyDown);
+    this.addEventListener('keydown', this._onKeyDown);
   }
 
 
   disconnectedCallback() {
     super.disconnectedCallback();
     this._slot.removeEventListener('slotchange', this._onSlotChange);
+    this.removeEventListener('keydown', this._onKeyDown);
   }
 
 
@@ -117,6 +118,7 @@ class Tabs extends LitElement {
   }
 
   _onKeyDown(e) {
+    console.log(e.composedPath());
     const KEYCODE = {
       DOWN: 40,
       LEFT: 37,
@@ -162,7 +164,7 @@ class Tabs extends LitElement {
   }
 
   render() {
-    document.addEventListener("keydown", this._onKeyDown);
+
     return html`
         <slot @click="${this.handleSelectTab}";/>
     `
