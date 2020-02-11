@@ -71,7 +71,6 @@ class PersonSearch extends LitElement {
 
     // need this so we can pass through
     search() {
-        console.log("trying to run person search");
         let search = this.shadowRoot.querySelector('vivo-search');
         // FIXME: filters need set by person-facets
         // then set here - so it's bubbling up but have to 

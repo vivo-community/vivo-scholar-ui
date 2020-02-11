@@ -21,7 +21,7 @@ class SearchFacets extends LitElement {
   }
 
   setFilters(filters) {
-    console.log(`settings filters in facets: ${JSON.stringify(filters)}`);
+    //console.log(`settings filters in facets: ${JSON.stringify(filters)}`);
     // FIXME: this gets set over and over again in different components
     this.filters = filters;
   }
@@ -64,7 +64,7 @@ class SearchFacets extends LitElement {
       //console.log(`facets:render():${this.field}: ${JSON.stringify(facet)}`);
       let selected = this.inFilters(this.field, facet);  
       //console.log(`result: ${this.field}:${facet.value}: ${selected}`);  
-      return html`<vivo-search-facet 
+      return html`<vivo-search-facet
         field="${this.field}"
         ?selected=${selected}
         value="${facet.value}" 

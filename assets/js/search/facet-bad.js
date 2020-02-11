@@ -32,7 +32,7 @@ class SearchFacet extends LitElement {
     this.dispatchEvent(new CustomEvent('facetSelected', {
       detail: { 
         field: this.field,
-        checked: !this.selected,
+        checked: e.target.checked,
         value: e.target.getAttribute("value") 
       },
       bubbles: true,
@@ -45,16 +45,11 @@ class SearchFacet extends LitElement {
   // https://stackoverflow.com/questions/55962214/litelement-not-updating-checkbox-in-list
   // https://github.com/Polymer/lit-html/issues/732  
   render() {
-    //(`${this.label} - selected:${this.selected}`);
     return html`
           <label for="${this.field}_${this.value}"
-            value=${this.value} 
-            selected="${this.selected}"
-            @click=${this.handleFacetSelected}
           >
             ${this.label} (${this.count})
           </label>
-          <!--
           <input 
             id="${this.field}_${this.value}"
             type="checkbox"  
@@ -63,13 +58,12 @@ class SearchFacet extends LitElement {
             value=${this.value} 
             @click=${this.handleFacetSelected}>
           </input>
-          -->
           
         `
   }
 }
 
-customElements.define('vivo-search-facet', SearchFacet);
+customElements.define('vivo-search-facet-bad', SearchFacet);
 
 
 
