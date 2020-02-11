@@ -1,4 +1,4 @@
-import { LitElement, html, css } from "lit-element";
+import { LitElement, html, css, TemplateResult } from "lit-element";
 
 // usage: (search must match id of vivo-search on page)
 // <vivo-search-person-facets search="person-search"></vivo-search-person-facets>
@@ -8,9 +8,7 @@ class PeopleFacets extends LitElement {
     static get properties() {
       return {
         data: { type: Object },
-        selected: { type: Boolean, reflect: true },
-        // TODO: how to get filters in here to know
-        // what to check,uncheck in render?
+        selected: { type: Boolean, attribute: true, reflect: true },
         filters: { type: Array }
       }
     }
@@ -44,6 +42,7 @@ class PeopleFacets extends LitElement {
     disconnectedCallback() {
       super.disconnectedCallback();
       document.removeEventListener('searchResultsObtained', this.handleSearchResultsObtained);
+      document.removeEventListener('facetSelected', this.handleFacetSelected);
     }
   
     handleSearchResultsObtained(e) {
@@ -78,12 +77,22 @@ class PeopleFacets extends LitElement {
         //console.log(f.field == field && f.value == facet.value);
         return (f.field == field && f.value == facet.value); 
       });
-      return exists;
+      if (typeof exists !== 'undefined') {
+        return true;
+      } else {
+        return false;
+      }
+      //return exists;
     }
 
     listFacets(field, entries) {
       let display = entries.content.map(facet => {
-        let selected = this.inFilters(field, facet);
+        let selected = this.inFilters(field, facet) || false;
+        console.log("*******************");
+        console.log(`facet=${JSON.stringify(facet)}`);
+        console.log(`in-filters=${JSON.stringify(this.inFilters(field, facet))}`);
+        console.log(`selected=${JSON.stringify(selected)}`);
+        console.log("*******************");
         return html`<vivo-search-facet 
           field="${field}"
           ?selected=${selected}

@@ -47,7 +47,7 @@ class SearchFacet extends LitElement {
             ${this.label} (${this.count})
             <input 
             type="checkbox"  
-            ?checked=${this.selected}
+            .checked=${this.selected}
             value=${this.value} 
             @click=${this.handleFacetSelected}>
           </label>

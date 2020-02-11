@@ -27,10 +27,14 @@ class PublicationFacets extends LitElement {
       super();
       this.selected = false;
       this.handleSearchResultsObtained = this.handleSearchResultsObtained.bind(this);
+      this.handleFacetSelected = this.handleFacetSelected.bind(this);
+
     }
   
     firstUpdated() {
       document.addEventListener('searchResultsObtained', this.handleSearchResultsObtained);
+      document.addEventListener('facetSelected', this.handleFacetSelected);
+
       // NOTE: would need to 'redraw' facets
       // (with 'filters' from search)   
       // could listen for 'searchSubmitted'?
@@ -39,6 +43,7 @@ class PublicationFacets extends LitElement {
     disconnectedCallback() {
       super.disconnectedCallback();
       document.removeEventListener('searchResultsObtained', this.handleSearchResultsObtained);
+      document.removeEventListener('facetSelected', this.handleFacetSelected);
     }
   
     handleSearchResultsObtained(e) {
@@ -46,17 +51,45 @@ class PublicationFacets extends LitElement {
       this.data = data;
     }
 
-    // not to be confused with facet group (people) being selected
-    isFacetChecked(facet) { 
-      // need list of filters - then to check whether in list
-      return false;
+    handleFacetSelected(e) {
+      const facet = e.detail;
+      if (facet.checked) {
+        this.addFilter(facet);
+      } else {
+        this.removeFilter(facet);
+      }
+    }
+
+    addFilter(filter) {
+      this.filters.push({"field": filter.field, "value": filter.value});
+    }
+
+    removeFilter(filter) {
+      this.filters = _.reject(this.filters, function(o) { 
+        return (o.field === filter.field && o.value == filter.value); 
+      });
+    }
+
+    inFilters(field, facet) {
+      //console.log(`checking if ${JSON.stringify(facet)} should be checked:${field}`)
+      let exists = _.find(this.filters, function(f) { 
+        //console.log(`${f.field} == ${field} && ${f.value} == ${facet.value}`);
+        //console.log(f.field == field && f.value == facet.value);
+        return (f.field == field && f.value == facet.value); 
+      });
+      if (typeof exists !== 'undefined') {
+        return true;
+      } else {
+        return false;
+      }
     }
 
     listFacets(field, entries) {
       let display = entries.content.map(facet => {
+        let selected = this.inFilters(field, facet);
         return html`<vivo-search-facet 
           field="${field}"
-          ?selected="${this.isFacetChecked(facet)}"
+          ?selected="${selected}"
           value="${facet.value}" 
           label="${facet.value}" 
           count="${facet.count}" />`
