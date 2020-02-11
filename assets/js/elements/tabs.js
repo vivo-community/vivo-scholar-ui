@@ -47,28 +47,36 @@ class Tabs extends LitElement {
       if (this.tabs.length >= 1 && this.panels.length >= 1 && this.tabs.filter((t) => t.selected).length == 0) {
         this.selectTab(this.tabs[0]);
       }
-   } 
+    }
+   }
 
   selectTabById(tabId) {
     this.selectTab(this.querySelector(`vivo-tab#${tabId}`));
   }
 
   selectTab(tab) {
+    const screenWidth = window.screen.width;
+    let tabs = this.querySelectorAll('vivo-tab');
+    let index = Array.from(tabs).indexOf(tab);
+    let panels = this.querySelectorAll('vivo-tab-panel');
+    if (screenWidth < 720 && tab.hasAttribute('selected')){
+      tab.removeAttribute('selected');
+        panels[index].removeAttribute('selected');
+    } else {
     if (tab) {
-      let tabs = this.querySelectorAll('vivo-tab');
       tabs.forEach((t) => t.removeAttribute('selected'));
       tab.setAttribute('selected', 'selected');
-      let index = Array.from(tabs).indexOf(tab);
-      let panels = this.querySelectorAll('vivo-tab-panel');
       panels.forEach((t) => t.removeAttribute('selected'));
       panels[index].setAttribute('selected', 'selected');
+    }
       this.dispatchEvent(new CustomEvent('tabSelected', {
         detail: tab,
         bubbles: true,
         cancelable: false,
         composed: true
       }));
-    }
+
+   }
   }
 
   handleSelectTab(e) {
@@ -85,7 +93,6 @@ class Tabs extends LitElement {
     }
     this.selectTab(tab);
   }
-
 
 
   static get styles() {
