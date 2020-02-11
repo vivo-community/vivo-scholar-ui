@@ -9,7 +9,8 @@ class PeopleFacets extends LitElement {
       return {
         data: { type: Object },
         selected: { type: Boolean, attribute: true, reflect: true },
-        filters: { type: Array }
+        filters: { type: Array },
+        search: { type: String, attribute: true }
       }
     }
   
@@ -26,7 +27,7 @@ class PeopleFacets extends LitElement {
   
     constructor() {
       super();
-      this.selected = true;
+      this.selected = false;
       this.filters = [];
       this.handleSearchResultsObtained = this.handleSearchResultsObtained.bind(this);
       this.handleFacetSelected = this.handleFacetSelected.bind(this);
@@ -51,12 +52,22 @@ class PeopleFacets extends LitElement {
     }
 
     handleFacetSelected(e) {
+      // NOTE: need to skip when not publication
       const facet = e.detail;
       if (facet.checked) {
         this.addFilter(facet);
       } else {
         this.removeFilter(facet);
       }
+      //console.log(`looking for ${this.search}`)
+      let search = document.querySelector(`[id="${this.search}"]`);
+      //console.log(`found search: ${JSON.stringify(search)}`);
+
+      // FIXME: should maybe go back to having navigation
+      // send this down, instead of having to pass around
+      // between components
+      search.setFilters(this.filters);
+      search.search();
     }
 
     addFilter(filter) {
@@ -69,40 +80,6 @@ class PeopleFacets extends LitElement {
       });
     }
 
-
-    inFilters(field, facet) {
-      //console.log(`checking if ${JSON.stringify(facet)} should be checked:${field}`)
-      let exists = _.find(this.filters, function(f) { 
-        //console.log(`${f.field} == ${field} && ${f.value} == ${facet.value}`);
-        //console.log(f.field == field && f.value == facet.value);
-        return (f.field == field && f.value == facet.value); 
-      });
-      if (typeof exists !== 'undefined') {
-        return true;
-      } else {
-        return false;
-      }
-      //return exists;
-    }
-
-    listFacets(field, entries) {
-      let display = entries.content.map(facet => {
-        let selected = this.inFilters(field, facet) || false;
-        console.log("*******************");
-        console.log(`facet=${JSON.stringify(facet)}`);
-        console.log(`in-filters=${JSON.stringify(this.inFilters(field, facet))}`);
-        console.log(`selected=${JSON.stringify(selected)}`);
-        console.log("*******************");
-        return html`<vivo-search-facet 
-          field="${field}"
-          ?selected=${selected}
-          value="${facet.value}" 
-          label="${facet.value}" 
-          count="${facet.count}" />`
-      });
-      return display;
-    };
-
     // add searchResultsObtained listener?
     // #person-facets(DOM) set-data --> data ??
     render() { 
@@ -110,26 +87,26 @@ class PeopleFacets extends LitElement {
         return html``
       }
 
-      // TODO: generic or very specific (e.g. data.people.facets["researchAreas"] etc...)
-      // also need 'filters' to tell what checkboxes to check
-      let display = this.data.people.facets.map(facet => {
-        return html`<h4>${facet.field}</h4>
-          ${this.listFacets(facet.field, facet.entries)}
-        `
-      });
+      //console.log("should display some facets now");
+      let facets = Array.from(this.querySelectorAll("vivo-search-facets"));
 
-      let facets = html`
-          ${display}      
-      `;
+      // data - group by field
+      let grouped = _.groupBy(this.data.people.facets, "field");
+      facets.map(facet => {
+         let key = facet.key;
+         let field = facet.field;
+         //console.log(`trying to populate ${key}:${field}`);
+         //console.log(`data = ${JSON.stringify(grouped[field])}`);
+         if (key == "people" && grouped[field]) {
+           //console.log(`setting data - ${JSON.stringify(grouped[field])}`);
+           facet.setData(grouped[field]);
+           facet.setFilters(this.filters);
+         }
+      });
        
       return html`
-          <vivo-search-facets id="person-facets">
-            <h3 slot="heading">Filter People</h3>
-            <div slot="content">
-            ${facets}
-            </div>
-          </vivo-search-facets>
-          `
+          <slot></slot>
+        `
     }
   };
   

@@ -8,7 +8,8 @@ class PublicationFacets extends LitElement {
       return {
         data: { type: Object },
         selected: { type: Boolean, attribute: true, reflect: true },
-        filters: { type: Array }
+        filters: { type: Array },
+        search: { type: String, attribute: true } // match up to DOM id on page
       }
     }
     
@@ -26,18 +27,14 @@ class PublicationFacets extends LitElement {
     constructor() {
       super();
       this.selected = false;
+      this.filters = [];
       this.handleSearchResultsObtained = this.handleSearchResultsObtained.bind(this);
       this.handleFacetSelected = this.handleFacetSelected.bind(this);
-
     }
   
     firstUpdated() {
       document.addEventListener('searchResultsObtained', this.handleSearchResultsObtained);
       document.addEventListener('facetSelected', this.handleFacetSelected);
-
-      // NOTE: would need to 'redraw' facets
-      // (with 'filters' from search)   
-      // could listen for 'searchSubmitted'?
     }
   
     disconnectedCallback() {
@@ -52,12 +49,19 @@ class PublicationFacets extends LitElement {
     }
 
     handleFacetSelected(e) {
+      if (!this.selected == true ) {
+        return;
+      } 
       const facet = e.detail;
       if (facet.checked) {
         this.addFilter(facet);
       } else {
         this.removeFilter(facet);
       }
+      // search ->?person-search"
+      let search = document.querySelector(`[id="${this.search}"]`);
+      console.log(`found search: ${JSON.stringify(search)}`);
+      search.search();
     }
 
     addFilter(filter) {
@@ -70,6 +74,7 @@ class PublicationFacets extends LitElement {
       });
     }
 
+    /*
     inFilters(field, facet) {
       //console.log(`checking if ${JSON.stringify(facet)} should be checked:${field}`)
       let exists = _.find(this.filters, function(f) { 
@@ -96,6 +101,7 @@ class PublicationFacets extends LitElement {
       });
       return display;
     };
+    */
 
     render() {
       // TODO: gather facets from search data   
@@ -105,26 +111,26 @@ class PublicationFacets extends LitElement {
         return html``
       }       
 
-      // TODO: generic or very specific (e.g. "researchAreas" etc...)
-      let display = this.data.documents.facets.map(facet => {
-        return html`<h4>${facet.field}</h4>
-          ${this.listFacets(facet.field, facet.entries)}
-        `
+      let facets = Array.from(this.querySelectorAll("vivo-search-facets"));
+
+      // data - group by field
+      let grouped = _.groupBy(this.data.documents.facets, "field");
+      facets.map(facet => {
+         let key = facet.key;
+         let field = facet.field;
+         //console.log(`trying to populate ${key}:${field}`);
+         //console.log(`data = ${JSON.stringify(grouped[field])}`);
+         if (key == "documents" && grouped[field]) {
+           //console.log(`setting data - ${JSON.stringify(grouped[field])}`);
+           facet.setData(grouped[field]);
+           facet.setFilters(this.filters);
+         }
       });
-      
-      let facets = html`
-          ${display}      
-      `;
   
       // grouping of facets per vivo-sidebar-item
       return html`
-          <vivo-search-facets>
-            <h3 slot="heading">Filter Publications</h3>
-            <div slot="content">
-            ${facets}
-            </div>
-          </vivo-search-facets>
-          `
+         <slot></slot>
+      `
     }
   };
   

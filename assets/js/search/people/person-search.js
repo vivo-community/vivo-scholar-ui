@@ -71,7 +71,12 @@ class PersonSearch extends LitElement {
 
     // need this so we can pass through
     search() {
+        console.log("trying to run person search");
         let search = this.shadowRoot.querySelector('vivo-search');
+        // FIXME: filters need set by person-facets
+        // then set here - so it's bubbling up but have to 
+        // remember to set everywhere
+        search.setFilters(this.filters);
         search.search();
     }
 
@@ -92,14 +97,9 @@ class PersonSearch extends LitElement {
         search.setPage(num);
     }
 
-    addFilter(filter) {
-        let search = this.shadowRoot.querySelector('vivo-search');
-        search.addFilter(filter);
-    }
-
-    removeFilter(filter) {
-        let search = this.shadowRoot.querySelector('vivo-search');
-        search.removeFilter(filter);
+    // FIXME: set too many places
+    setFilters(filters) {
+        this.filters = filters;
     }
 
     renderOverview(person) {

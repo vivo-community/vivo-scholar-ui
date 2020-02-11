@@ -114,14 +114,19 @@ class SearchNavigation extends LitElement {
       let sidebar = document.querySelector('vivo-sidebar');
       // TODO: should select only with a 'search' attribute
       // let facets = sidebar.querySelectorAll("[search='*']");
+      
+      // NOTE: vivo-sidebar-item(s) are included, so it's
+      // setting too many things now
       let facets = sidebar.querySelectorAll("*");
       // how to hide all ()
       facets.forEach((t) => t.removeAttribute('selected'));
   
-      let facet = document.querySelector(`[search="${id}"]`);
-      facet.setAttribute('selected', 'selected');
-
-      //this.browsingState.currentFacetGroup = facet;
+      // TODO: right now there are multiple matches - would probably
+      // just want one group to toggle on/off
+      let facetGroups = document.querySelectorAll(`[search="${id}"]`);
+      facetGroups.forEach(group => {
+        group.setAttribute('selected', 'selected');
+      })
     }
   
     // run search again? send back down?
@@ -138,11 +143,13 @@ class SearchNavigation extends LitElement {
       //let facet = document.querySelector(`[search="${id}"]`);
       //facet.addFilter(facet);
 
+      /*
       if (facet.checked) {
         search.addFilter(facet);
       } else {
         search.removeFilter(facet);
       }
+      */
       // do counts need to be redone?
       //search.counts();
       // let facetGroup = this.browsingState.currentFacetGroup;

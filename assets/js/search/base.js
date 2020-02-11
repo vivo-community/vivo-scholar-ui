@@ -144,6 +144,7 @@ class Search extends LitElement {
       this.active = b;
     }
   
+    /*
     addFilter(filter) {
       this.filters.push({"field": filter.field, "value": filter.value});
     }
@@ -153,6 +154,7 @@ class Search extends LitElement {
         return (o.field === filter.field && o.value == filter.value); 
       });
     }
+    */
     /*
     setSearchParameters(parameters) {
         let { filter, page, query } = parameters;

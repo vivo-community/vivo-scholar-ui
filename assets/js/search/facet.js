@@ -24,6 +24,7 @@ class SearchFacet extends LitElement {
 
   constructor() {
     super();
+    this.selected = false;
     this.handleFacetSelected = this.handleFacetSelected.bind(this);
   }
 
@@ -41,16 +42,23 @@ class SearchFacet extends LitElement {
   }
 
   // TODO: need a way to mark if 'checked' or not
+  // https://stackoverflow.com/questions/55962214/litelement-not-updating-checkbox-in-list
+  // https://github.com/Polymer/lit-html/issues/732  
   render() {
+    console.log(`${this.label} - selected:${this.selected}`);
     return html`
-          <label>
+          <label for="${this.field}_${this.value}">
             ${this.label} (${this.count})
-            <input 
+          </label>
+          <input 
+            id="${this.field}_${this.value}"
             type="checkbox"  
-            .checked=${this.selected}
+            ?checked="${this.selected}"
+            name=${this.field}
             value=${this.value} 
             @click=${this.handleFacetSelected}>
-          </label>
+          </input>
+          
         `
   }
 }
