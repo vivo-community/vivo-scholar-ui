@@ -13,31 +13,22 @@ class Tabs extends LitElement {
     this.tabs = [];
     this.panels = [];
     this._onSlotChange = this._onSlotChange.bind(this);
-    // this._onKeyDown = this._onKeyDown.bind(this)
+    this._onKeyDown = this._onKeyDown.bind(this);
     this.vivoTabStyle = "primary";
-    const KEYCODE = {
-      DOWN: 40,
-      LEFT: 37,
-      RIGHT: 39,
-      UP: 38,
-      HOME: 36,
-      END: 35,
-    };
   }
 
   firstUpdated() {
     this._slot = this.shadowRoot.querySelector("slot");
     this._slot.addEventListener('slotchange', this._onSlotChange);
+    this._slot.addEventListener('keydown', this._onKeyDown);
   }
 
-  // connectedCallBack() {
-  //   this._slot.addEventListener('keydown', this._onKeyDown);
-  //   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
     this._slot.removeEventListener('slotchange', this._onSlotChange);
   }
+
 
   _onSlotChange() {
     this._linkPanels();
@@ -97,6 +88,8 @@ class Tabs extends LitElement {
     this.selectTab(tab);
   }
 
+  //keyboard code
+
   _allTabs() {
     return Array.from(this.querySelectorAll('vivo-tab'));
   }
@@ -104,7 +97,7 @@ class Tabs extends LitElement {
   _prevTab(){
     const tabs = this._allTabs();
     let newIdx = tabs.findIndex(tab => tab.selected) - 1;
-    return tabs[(newIdx + tabs.length)] % tabs.length;
+    return tabs[(newIdx + tabs.length) % tabs.length];
   }
 
   _firstTab() {
@@ -120,10 +113,18 @@ class Tabs extends LitElement {
   _nextTab() {
     const tabs = this._allTabs();
     let newIdx = tabs.findIndex(tab => tab.selected) + 1;
-    return tabs[(newIdx + tabs.length)] % tabs.length;
+    return tabs[newIdx % tabs.length];
   }
 
   _onKeyDown(e) {
+    const KEYCODE = {
+      DOWN: 40,
+      LEFT: 37,
+      RIGHT: 39,
+      UP: 38,
+      HOME: 36,
+      END: 35,
+    };
     let newTab;
       switch (e.keyCode) {
         case KEYCODE.LEFT:
@@ -161,8 +162,9 @@ class Tabs extends LitElement {
   }
 
   render() {
+    document.addEventListener("keydown", this._onKeyDown);
     return html`
-        <slot @click="${this.handleSelectTab}"/>
+        <slot @click="${this.handleSelectTab}";/>
     `
   }
 }
