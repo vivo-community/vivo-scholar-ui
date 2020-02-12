@@ -61,49 +61,21 @@ class PublicationFacets extends LitElement {
       // search ->?person-search"
       let search = document.querySelector(`[id="${this.search}"]`);
       //console.log(`found search: ${JSON.stringify(search)}`);
+      search.setFilters(this.filters);
       search.search();
     }
 
     addFilter(filter) {
-      console.log(`adding ${JSON.stringify(filter)}`);
+      //console.log(`adding ${JSON.stringify(filter)}`);
       this.filters.push({"field": filter.field, "value": filter.value});
     }
 
     removeFilter(filter) {
-      console.log(`removing ${JSON.stringify(filter)}`);
+      //console.log(`removing ${JSON.stringify(filter)}`);
       this.filters = _.reject(this.filters, function(o) { 
         return (o.field === filter.field && o.value == filter.value); 
       });
     }
-
-    /*
-    inFilters(field, facet) {
-      //console.log(`checking if ${JSON.stringify(facet)} should be checked:${field}`)
-      let exists = _.find(this.filters, function(f) { 
-        //console.log(`${f.field} == ${field} && ${f.value} == ${facet.value}`);
-        //console.log(f.field == field && f.value == facet.value);
-        return (f.field == field && f.value == facet.value); 
-      });
-      if (typeof exists !== 'undefined') {
-        return true;
-      } else {
-        return false;
-      }
-    }
-
-    listFacets(field, entries) {
-      let display = entries.content.map(facet => {
-        let selected = this.inFilters(field, facet);
-        return html`<vivo-search-facet 
-          field="${field}"
-          ?selected="${selected}"
-          value="${facet.value}" 
-          label="${facet.value}" 
-          count="${facet.count}" />`
-      });
-      return display;
-    };
-    */
 
     render() {
       // TODO: gather facets from search data   

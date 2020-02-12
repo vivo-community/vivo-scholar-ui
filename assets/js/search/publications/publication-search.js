@@ -54,6 +54,11 @@ class PublicationSearch extends LitElement {
       tab.textContent = `Publications (${docCount})`;
     }
   
+    // FIXME: set too many places
+    setFilters(filters) {
+      this.filters = filters;
+    }
+
     // need this so we can pass through
     search() {
       let search = this.shadowRoot.querySelector('vivo-search');
