@@ -8,7 +8,7 @@
     <%= stylesheetTag("application.css") %>
     <meta name="csrf-param" content="authenticity_token" />
     <meta name="csrf-token" content="<%= authenticity_token %>" />
-    <link rel="icon" href="<%= assetPath("images/favicon.ico") %>">    
+    <link rel="icon" href="<%= assetPath("images/favicon.ico") %>">
     <%= javascriptTag("vendor/custom-elements-es5-adapter.js") %>
     <%= javascriptTag("vendor/webcomponents-bundle.js") %>
     <%= javascriptTag("elements.js") %>
@@ -19,16 +19,16 @@
     </vivo-site-header>
 
     <vivo-site-sub-header class="site-sub-header">
-        <vivo-site-search-box id="sitewide-search" 
-          class="site-search" 
-          action="/search/people" 
+        <vivo-site-search-box id="sitewide-search"
+          class="site-search"
+          action="/search/people"
           external-submit="true"
           label="<%= t("search") %>">
         </vivo-site-search-box>
       </vivo-site-sub-header>
 
       <div id="main">
-          <%= yield %>      
+          <%= yield %>
       </div>
     <%= javascriptTag("application.js") %>
   </body>

@@ -15,6 +15,15 @@ const publicationQuery = gql`
       content {
         id
         title
+        publicationDate
+        authors {
+          id
+          label
+        }
+        publisher {
+          label
+        }
+        abstractText
       }
       page {
         totalPages
@@ -34,4 +43,5 @@ const publicationQuery = gql`
     }
   }
 `;
+
 export default publicationQuery;

@@ -70,7 +70,7 @@
       <h2 class="page-title"><%= person["name"] %></h2>
       <h2 class="page-subtitle"><%= person["preferredTitle"] %></h2>
       <!-- tabs -->
-      <vivo-tabs>
+      <vivo-tabs tabindex="0">
          <%= if (person["overview"] || person["positions"] || person["educationAndTraining"]) { %>
          <vivo-tab id="about-tab">
             <h3><%= t("about") %></h3>
