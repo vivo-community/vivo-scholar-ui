@@ -3,7 +3,12 @@ import gql from "graphql-tag";
 const publicationQuery = gql`
   query($search: String!, $pageNumber: Int!, $filters: [FilterArgInput]) {
     documents(
-      facets: [{ field: "type" }, { field: "numberOfPages" }]
+      facets: [
+        { field: "type" }, 
+        { field: "authors"},
+        { field: "publisher"},
+        { field: "publicationDate"},
+      ]
       filters: $filters
       paging: {
         pageSize: 100

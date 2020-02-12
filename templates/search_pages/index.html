@@ -24,6 +24,14 @@
           </vivo-search-person-facets>
         </vivo-sidebar-item>
         
+        <vivo-sidebar-item>
+          <vivo-search-person-facets slot="content" search="person-search">
+            <vivo-search-facets key="people" field="type">
+              <h4>Type</h4>
+            </vivo-search-facets>
+          </vivo-search-person-facets>
+        </vivo-sidebar-item>
+
         <!-- TODO: might want to group these, so sidebar-item is not 
         necessary per facet etc...
         -->
@@ -35,6 +43,30 @@
           </vivo-search-person-facets>
         </vivo-sidebar-item>
         
+        <vivo-sidebar-item>
+          <vivo-search-publication-facets slot="content" search="publication-search">
+            <vivo-search-facets key="documents" field="authors">
+              <h4>Author</h4>
+            </vivo-search-facets>
+          </vivo-search-person-facets>
+        </vivo-sidebar-item>
+
+        <vivo-sidebar-item>
+          <vivo-search-publication-facets slot="content" search="publication-search">
+            <vivo-search-facets key="documents" field="publisher">
+              <h4>Publisher</h4>
+            </vivo-search-facets>
+          </vivo-search-person-facets>
+        </vivo-sidebar-item>
+
+        <vivo-sidebar-item>
+          <vivo-search-publication-facets slot="content" search="publication-search">
+            <vivo-search-facets key="documents" field="publicationDate">
+              <h4>Date</h4>
+            </vivo-search-facets>
+          </vivo-search-person-facets>
+        </vivo-sidebar-item>
+
     </vivo-sidebar>
   </aside>
 
