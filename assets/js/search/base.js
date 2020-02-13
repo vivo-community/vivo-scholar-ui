@@ -12,6 +12,7 @@ class Search extends LitElement {
       return {
         // NOTE: this is what determines different searches
         graphql: { type: Object, attribute: true },
+        //query: { type: String, attribute: true, reflect: true },
         query: { type: String },
         data: { type: Object },
         countData: { type: Object },
@@ -80,10 +81,11 @@ class Search extends LitElement {
     }
   
     runSearch() {
+      // TODO: send event?
+      // this.dispatchEvent(new CustomEvent('searchSent', {
+      // so UI can know search, page, filters etc... from event
       const fetchData = async () => {
         try {
-          // supposed to be adding facets, filters here (from sidebar)
-          // also paging ...
           const { data } = await client.query({
             query: this.graphql,
             variables: {
@@ -101,7 +103,6 @@ class Search extends LitElement {
       return fetchData();
     }
   
-    // something like this? or 
     setFilters(filters = []) {
       this.filters = filters;
     }
@@ -124,12 +125,14 @@ class Search extends LitElement {
             composed: true
           }));
         })
-        .catch((e) => console.error(`Error running search:${e}`));
+        .catch((e) => console.error(`Error running counts:${e}`));
     }
   
     search() {
       // should filters be part of this custom event?
       // so facets can know what to check?
+      // add more to detail? like this.query?
+      // e.g. detail: { data: this.data, query: this.query etc... }
       this.runSearch()
         .then(() => {
           this.dispatchEvent(new CustomEvent('searchResultsObtained', {
@@ -163,7 +166,8 @@ class Search extends LitElement {
           `
     }
   
-    // pagination element here?
+    // TODO: maybe just <slot>
+    // need better way to effect 'Searching': -> 
     render() {
       return html`        
             <p><strong>Searching</strong>:<em>${this.query}</em></p>

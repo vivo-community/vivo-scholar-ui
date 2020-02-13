@@ -5,7 +5,8 @@ import pubQuery from "./publication-query";
 class PublicationSearch extends LitElement {
 
     // NOTE: this 'query' is the graphql statement
-    // not crazy about JSON.stringify below
+    // not crazy about JSON.stringify below for setting that attribute
+    // (see <vivo-search graphql=${JSON.stringify(this.query)}>)
     static get properties() {
       return {
         query: { type: Object },

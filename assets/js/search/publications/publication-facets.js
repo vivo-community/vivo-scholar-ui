@@ -30,17 +30,20 @@ class PublicationFacets extends LitElement {
       this.filters = [];
       this.handleSearchResultsObtained = this.handleSearchResultsObtained.bind(this);
       this.handleFacetSelected = this.handleFacetSelected.bind(this);
+      this.handleSearchSubmitted = this.handleSearchSubmitted.bind(this);
     }
   
     firstUpdated() {
       document.addEventListener('searchResultsObtained', this.handleSearchResultsObtained);
       document.addEventListener('facetSelected', this.handleFacetSelected);
+      document.addEventListener('searchSubmitted', this.handleSearchSubmitted);
     }
   
     disconnectedCallback() {
       super.disconnectedCallback();
       document.removeEventListener('searchResultsObtained', this.handleSearchResultsObtained);
       document.removeEventListener('facetSelected', this.handleFacetSelected);
+      document.removeEventListener('searchSubmitted', this.handleSearchSubmitted);
     }
   
     handleSearchResultsObtained(e) {
@@ -52,6 +55,11 @@ class PublicationFacets extends LitElement {
       this.data = data;
     }
 
+    handleSearchSubmitted(e) {
+      // clear filters here?
+      this.filters = [];
+    }
+    
     handleFacetSelected(e) {
       // FIXME: every facets implementation has to add this
       // line - and keep track of it's own filters etc...
@@ -107,7 +115,12 @@ class PublicationFacets extends LitElement {
          if (key == "documents" && grouped[field]) {
            facet.setData(grouped[field]);
            facet.setFilters(this.filters);
-         }
+         } else if (key == "documents" && !grouped[field]) {
+          // NOTE: after a new search, if there are no
+          // facets - need to blank out
+          facet.setData(null);
+          facet.setFilters(this.filters);
+        }
       });
   
       // grouping of facets per vivo-sidebar-item

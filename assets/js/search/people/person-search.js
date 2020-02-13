@@ -92,8 +92,6 @@ class PersonSearch extends LitElement {
     }
 
     setActive(b) {
-        //let search = this.shadowRoot.querySelector('vivo-search');
-        //search.setActive(b);
         this.active = b;
     }
 

@@ -31,28 +31,35 @@ class PeopleFacets extends LitElement {
       this.filters = [];
       this.handleSearchResultsObtained = this.handleSearchResultsObtained.bind(this);
       this.handleFacetSelected = this.handleFacetSelected.bind(this);
+      this.handleSearchSubmitted = this.handleSearchSubmitted.bind(this);
     }
   
     firstUpdated() {
       document.addEventListener('searchResultsObtained', this.handleSearchResultsObtained);
       document.addEventListener('facetSelected', this.handleFacetSelected);
-      // NOTE: would need to 'redraw' facets
-      // (with 'filters' from search)   
+      document.addEventListener('searchSubmitted', this.handleSearchSubmitted);
     }
   
     disconnectedCallback() {
       super.disconnectedCallback();
       document.removeEventListener('searchResultsObtained', this.handleSearchResultsObtained);
       document.removeEventListener('facetSelected', this.handleFacetSelected);
+      document.removeEventListener('searchSubmitted', this.handleSearchSubmitted);
     }
   
     handleSearchResultsObtained(e) {
+      console.log(`search results obtained: ${JSON.stringify(e.detail)}`);
       const data = e.detail;
       // FIXME: another thing to remember
       if (!data || !data.people) {
         return;
       }
       this.data = data;
+    }
+
+    handleSearchSubmitted(e) {
+      // clear filters here?
+      this.filters = [];
     }
 
     handleFacetSelected(e) {
@@ -69,25 +76,20 @@ class PeopleFacets extends LitElement {
       } else {
         this.removeFilter(facet);
       }
-      //console.log(`looking for ${this.search}`)
       let search = document.querySelector(`[id="${this.search}"]`);
-      //console.log(`found search: ${JSON.stringify(search)}`);
 
       // FIXME: should maybe go back to having navigation
       // send this down, instead of having to pass around
       // between components
       search.setFilters(this.filters);
-      //console.log("calling search from person-facets");
       search.search();
     }
 
     addFilter(filter) {
-      //console.log(`adding ${JSON.stringify(filter)}`);
       this.filters.push({"field": filter.field, "value": filter.value});
     }
 
     removeFilter(filter) {
-      //console.log(`removing ${JSON.stringify(filter)}`);
       this.filters = _.reject(this.filters, function(o) { 
         return (o.field === filter.field && o.value == filter.value); 
       });
@@ -99,10 +101,6 @@ class PeopleFacets extends LitElement {
       if (!this.data || !this.data.people || !this.selected == true ) {
         return html``
       }
-
-      //console.log("should display some facets now");
-      //let facets = Array.from(this.querySelectorAll("vivo-search-facets"));
-
       let facets = Array.from(this.querySelectorAll('vivo-search-facets[key="people"]'));
 
       // data - group by field
@@ -110,12 +108,13 @@ class PeopleFacets extends LitElement {
       facets.map(facet => {
          let key = facet.key;
          let field = facet.field;
-         //console.log(`trying to populate ${key}:${field}`);
-         //console.log(`data = ${JSON.stringify(grouped[field])}`);
          if (key == "people" && grouped[field]) {
-           //console.log(`setting data - ${JSON.stringify(grouped[field])}`);
            facet.setData(grouped[field]);
-           //console.log(`trying to set filters: ${JSON.stringify(this.filters)}`);
+           facet.setFilters(this.filters);
+         } else if (key == "people" && !grouped[field]) {
+           // NOTE: after a new search, if there are no
+           // facets - need to blank out
+           facet.setData(null);
            facet.setFilters(this.filters);
          }
       });

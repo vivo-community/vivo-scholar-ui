@@ -7,9 +7,7 @@ class SearchNavigation extends LitElement {
       this.browsingState = {};
       this.navFrom = this.navFrom.bind(this);
       this.navTo = this.navTo.bind(this);
-      this.handleSearchResultsObtained = this.handleSearchResultsObtained.bind(this);
       this.handleSearchSubmitted = this.handleSearchSubmitted.bind(this);
-      this.handleFacetSelected = this.handleFacetSelected.bind(this);
       this.handlePageSelected = this.handlePageSelected.bind(this);
       this.handleTabSelected = this.handleTabSelected.bind(this);
     }
@@ -18,8 +16,6 @@ class SearchNavigation extends LitElement {
       document.addEventListener('DOMContentLoaded', this.navFrom);
       document.addEventListener('tabSelected', this.handleTabSelected);
       document.addEventListener('searchSubmitted', this.handleSearchSubmitted);
-      document.addEventListener('facetSelected', this.handleFacetSelected);
-      document.addEventListener('searchResultsObtained', this.handleSearchResultsObtained);
       document.addEventListener('pageSelected', this.handlePageSelected);
       // wouldn't this select the first one?
       let defaultSearch = document.querySelector('vivo-person-search');
@@ -35,8 +31,6 @@ class SearchNavigation extends LitElement {
       document.removeEventListener('DOMContentLoaded', this.navFrom);
       document.removeEventListener('tabSelected', this.handleTabSelected);
       document.removeEventListener('searchSubmitted', this.handleSearchSubmitted);
-      document.removeEventListener('facetSelected', this.handleFacetSelected);
-      document.removeEventListener('searchResultsObtained', this.handleSearchResultsObtained);
       document.removeEventListener('pageSelected', this.handlePageSelected);
     }
   
@@ -99,6 +93,9 @@ class SearchNavigation extends LitElement {
       let activeSearch = this.browsingState.activeSearch;
   
       activeSearch.counts();
+      // TODO: how to clear filters after new search?
+      // would've thought this would work
+      activeSearch.setFilters([]);
       activeSearch.search();
   
       this.findCorrectFacetsToDisplay();
@@ -129,35 +126,7 @@ class SearchNavigation extends LitElement {
         group.setAttribute('selected', 'selected');
       })
     }
-  
-    // run search again? send back down?
-    handleFacetSelected(e) {
-      //const facet = e.detail;
-      // probably not the thing to to here
-      // maybe more like browsingState.add/remove(facet)?
-      //this.browsingState.currentFacet = facet;
-      //let search = this.browsingState.activeSearch;
-
-      // FIXME: redundant
-      //let activeSearch = this.browsingState.activeSearch;
-      //let id = activeSearch.id;
-      //let search = document.querySelector(`[search="${id}"]`);
-      //facet.addFilter(facet);
-
-      /*
-      if (facet.checked) {
-        search.addFilter(facet);
-      } else {
-        search.removeFilter(facet);
-      }
-      */
-      // do counts need to be redone?
-      //search.counts();
-      // let facetGroup = this.browsingState.currentFacetGroup;
-      // facetGroup.filters = search.filters;
-      //search.search();
-    }
-  
+    
     handlePageSelected(e) {
       const page = e.detail;
       this.browsingState.currentPage = page;
@@ -169,10 +138,6 @@ class SearchNavigation extends LitElement {
       // or throw event searchSubmitted?
     }
   
-    handleSearchResultsObtained(e) {
-      //const data = e.detail;
-      //this.browsingState.currentData = data;
-    }
   
     navTo() {
       const searchParams = new URLSearchParams(this.browsingState);
