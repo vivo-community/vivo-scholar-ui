@@ -4,6 +4,7 @@ class SearchFacet extends LitElement {
 
   static get properties() {
     return {
+      category: { type: String },
       field: { type: String },
       label: { type: String },
       value: { type: String },
@@ -28,9 +29,11 @@ class SearchFacet extends LitElement {
     this.handleFacetSelected = this.handleFacetSelected.bind(this);
   }
 
+  // send more detail?  like main category?  (people|documents etc...)
   handleFacetSelected(e) {
     this.dispatchEvent(new CustomEvent('facetSelected', {
       detail: { 
+        category: this.category,
         field: this.field,
         checked: !this.selected,
         value: e.target.getAttribute("value") 

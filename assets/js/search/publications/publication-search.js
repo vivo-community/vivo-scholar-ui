@@ -11,7 +11,8 @@ class PublicationSearch extends LitElement {
         query: { type: Object },
         data: { type: Object },
         countData: { type: Object },
-        active: { type: Boolean }
+        active: { type: Boolean },
+        filters: { type: Array }
       }
     }
   
@@ -27,6 +28,8 @@ class PublicationSearch extends LitElement {
   
     constructor() {
       super();
+      // don't think I can do this
+      this.filters = [];
       this.query = pubQuery;
       this.handleSearchResultsObtained = this.handleSearchResultsObtained.bind(this);
       this.handleCountResultsObtained = this.handleCountResultsObtained.bind(this);
@@ -44,6 +47,7 @@ class PublicationSearch extends LitElement {
     }
   
     handleSearchResultsObtained(e) {
+      console.log(`pubsearch getting results: ${JSON.stringify(e.detail)}`);
       this.data = e.detail;
     }
   
@@ -54,18 +58,13 @@ class PublicationSearch extends LitElement {
       tab.textContent = `Publications (${docCount})`;
     }
   
-    // FIXME: set too many places
-    setFilters(filters) {
-      this.filters = filters;
-    }
-
     // need this so we can pass through
     search() {
       let search = this.shadowRoot.querySelector('vivo-search');
-      if (!search) {
-          console.error(`search not found: ${search}`);
-          return
-      }
+      console.log(`calling pub search with :${JSON.stringify(this.filters)}`);
+      // NOTE: should already be set
+      search.setFilters(this.filters);
+      console.log("calling search from publication-search");
       search.search();
     }
   
@@ -85,21 +84,18 @@ class PublicationSearch extends LitElement {
     }
 
     setActive(b) {
-        let search = this.shadowRoot.querySelector('vivo-search');
-        search.setActive(b);
-        this.active = b;
+      //let search = this.shadowRoot.querySelector('vivo-search');
+      //search.setActive(b);
+      this.active = b;
     }
   
-    // FIXME: not crazy about having to remember to add these
-    // to every search
-    addFilter(filter) {
+    // FIXME: set too many places
+    setFilters(filters) {
+      console.log(`pub-search setting filters: ${JSON.stringify(filters)}`);
+      // maybe set here?
       let search = this.shadowRoot.querySelector('vivo-search');
-      search.addFilter(filter);
-    }
-
-    removeFilter(filter) {
-      let search = this.shadowRoot.querySelector('vivo-search');
-      search.removeFilter(filter);
+      search.setFilters(filters);
+      this.filters = filters;
     }
 
     renderPublisher(publisher) {

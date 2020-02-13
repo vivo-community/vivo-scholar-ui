@@ -14,7 +14,8 @@ class PersonSearch extends LitElement {
             query: { type: Object },
             data: { type: Object },
             countData: { type: Object },
-            active: { type: Boolean }
+            active: { type: Boolean },
+            filter: { type: Array }
         }
     }
 
@@ -40,6 +41,7 @@ class PersonSearch extends LitElement {
         super();
         // just defaulting active on this one
         this.active = true;
+        this.filters = [];
         this.query = peopleQuery;
         this.handleSearchResultsObtained = this.handleSearchResultsObtained.bind(this);
         this.handleCountResultsObtained = this.handleCountResultsObtained.bind(this);
@@ -76,6 +78,7 @@ class PersonSearch extends LitElement {
         // then set here - so it's bubbling up but have to 
         // remember to set everywhere
         search.setFilters(this.filters);
+        console.log("calling search from person-search");
         search.search();
     }
 
@@ -86,8 +89,8 @@ class PersonSearch extends LitElement {
     }
 
     setActive(b) {
-        let search = this.shadowRoot.querySelector('vivo-search');
-        search.setActive(b);
+        //let search = this.shadowRoot.querySelector('vivo-search');
+        //search.setActive(b);
         this.active = b;
     }
 
@@ -98,6 +101,8 @@ class PersonSearch extends LitElement {
 
     // FIXME: set too many places
     setFilters(filters) {
+        let search = this.shadowRoot.querySelector('vivo-search');
+        search.setFilters(filters);
         this.filters = filters;
     }
 

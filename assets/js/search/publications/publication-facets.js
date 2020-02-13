@@ -49,6 +49,11 @@ class PublicationFacets extends LitElement {
     }
 
     handleFacetSelected(e) {
+      // FIXME: every facets implementation has to add this
+      // line - and keep track of it's own filters etc...
+      if (!(e.detail.category == 'documents')) {
+        return;
+      }
       if (!this.selected == true ) {
         return;
       } 
@@ -61,7 +66,9 @@ class PublicationFacets extends LitElement {
       // search ->?person-search"
       let search = document.querySelector(`[id="${this.search}"]`);
       //console.log(`found search: ${JSON.stringify(search)}`);
+      //console.log(`settings filters in pub-facets: ${JSON.stringify(this.filters)}`);
       search.setFilters(this.filters);
+      //console.log("calling search from publication-facets");
       search.search();
     }
 
@@ -86,7 +93,9 @@ class PublicationFacets extends LitElement {
       }       
 
       // 1. get all vivo-search-facet elements ...
-      let facets = Array.from(this.querySelectorAll("vivo-search-facets"));
+      // (how to limit to publications?)
+      //<vivo-search-facets key="documents" field="publisher"></vivo-search-facets>
+      let facets = Array.from(this.querySelectorAll('vivo-search-facets[key="documents"]'));
 
       // data - group by field
       let grouped = _.groupBy(this.data.documents.facets, "field");
@@ -99,7 +108,6 @@ class PublicationFacets extends LitElement {
          //console.log(`trying to populate ${key}:${field}`);
          //console.log(`data = ${JSON.stringify(grouped[field])}`);
          if (key == "documents" && grouped[field]) {
-           //console.log(`setting data - ${JSON.stringify(grouped[field])}`);
            facet.setData(grouped[field]);
            facet.setFilters(this.filters);
          }

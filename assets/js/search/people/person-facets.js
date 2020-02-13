@@ -52,7 +52,10 @@ class PeopleFacets extends LitElement {
     }
 
     handleFacetSelected(e) {
-      // NOTE: need to skip when not publication
+      // FIXME: too much boilerplate per facet implementation
+      if (!(e.detail.category == 'people')) {
+        return;
+      }
       const facet = e.detail;
       if (facet.checked) {
         this.addFilter(facet);
@@ -67,6 +70,7 @@ class PeopleFacets extends LitElement {
       // send this down, instead of having to pass around
       // between components
       search.setFilters(this.filters);
+      //console.log("calling search from person-facets");
       search.search();
     }
 
@@ -90,7 +94,9 @@ class PeopleFacets extends LitElement {
       }
 
       //console.log("should display some facets now");
-      let facets = Array.from(this.querySelectorAll("vivo-search-facets"));
+      //let facets = Array.from(this.querySelectorAll("vivo-search-facets"));
+
+      let facets = Array.from(this.querySelectorAll('vivo-search-facets[key="people"]'));
 
       // data - group by field
       let grouped = _.groupBy(this.data.people.facets, "field");

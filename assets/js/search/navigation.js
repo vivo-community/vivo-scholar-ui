@@ -84,6 +84,7 @@ class SearchNavigation extends LitElement {
 
       if (search) {
         search.counts();
+        console.log("calling search from navigation->handleTabSelected");
         search.search();  
       } else {
           console.error("could not find search");
@@ -99,6 +100,7 @@ class SearchNavigation extends LitElement {
       let activeSearch = this.browsingState.activeSearch;
   
       activeSearch.counts();
+      console.log("calling search from navigation->handleSearchSubmitted");
       activeSearch.search();
   
       this.findCorrectFacetsToDisplay();
@@ -117,6 +119,7 @@ class SearchNavigation extends LitElement {
       
       // NOTE: vivo-sidebar-item(s) are included, so it's
       // setting too many things now
+      //vivo-search-facets
       let facets = sidebar.querySelectorAll("*");
       // how to hide all ()
       facets.forEach((t) => t.removeAttribute('selected'));
@@ -131,16 +134,16 @@ class SearchNavigation extends LitElement {
   
     // run search again? send back down?
     handleFacetSelected(e) {
-      const facet = e.detail;
+      //const facet = e.detail;
       // probably not the thing to to here
       // maybe more like browsingState.add/remove(facet)?
       //this.browsingState.currentFacet = facet;
-      let search = this.browsingState.activeSearch;
+      //let search = this.browsingState.activeSearch;
 
       // FIXME: redundant
       //let activeSearch = this.browsingState.activeSearch;
       //let id = activeSearch.id;
-      //let facet = document.querySelector(`[search="${id}"]`);
+      //let search = document.querySelector(`[search="${id}"]`);
       //facet.addFilter(facet);
 
       /*
@@ -154,7 +157,7 @@ class SearchNavigation extends LitElement {
       //search.counts();
       // let facetGroup = this.browsingState.currentFacetGroup;
       // facetGroup.filters = search.filters;
-      search.search();
+      //search.search();
     }
   
     handlePageSelected(e) {
@@ -165,6 +168,7 @@ class SearchNavigation extends LitElement {
       // send in new filters, then re-run active search?
       // search.setFilters( -- page --);
       search.setPage(page.value);
+      console.log("calling search from navigation->pageSelected");
       search.search();
       // or throw event searchSubmitted?
     }
