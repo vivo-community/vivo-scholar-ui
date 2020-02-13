@@ -19,7 +19,15 @@ class SearchFacet extends LitElement {
           display: block;
           clear: both;
       }
-      
+      div:hover {
+        cursor: pointer;
+      }
+      div:before {
+        content:"◻";
+      }          
+      div[selected="true"]:before {
+        content:"✓";
+      }  
     `
   }
 
@@ -29,7 +37,6 @@ class SearchFacet extends LitElement {
     this.handleFacetSelected = this.handleFacetSelected.bind(this);
   }
 
-  // send more detail?  like main category?  (people|documents etc...)
   handleFacetSelected(e) {
     this.dispatchEvent(new CustomEvent('facetSelected', {
       detail: { 

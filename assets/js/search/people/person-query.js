@@ -4,9 +4,8 @@ const peopleQuery = gql`
   query($search: String!, $pageNumber: Int!, $filters: [FilterArgInput]) {
     people(
       facets: [
-        { field: "researchAreas" },
-        { field: "locality"},
-        { field: "type" }
+        { field: "type" },
+        { field: "researchAreas" }
       ]
       filters: $filters
       paging: {
