@@ -82,7 +82,6 @@ class PersonSearch extends LitElement {
         // then set here - so it's bubbling up but have to 
         // remember to set everywhere
         search.setFilters(this.filters);
-        console.log("calling search from person-search");
         search.search();
     }
 

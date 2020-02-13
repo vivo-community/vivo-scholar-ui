@@ -65,10 +65,8 @@ class PublicationSearch extends LitElement {
     // need this so we can pass through
     search() {
       let search = this.shadowRoot.querySelector('vivo-search');
-      console.log(`calling pub search with :${JSON.stringify(this.filters)}`);
       // NOTE: should already be set
       search.setFilters(this.filters);
-      console.log("calling search from publication-search");
       search.search();
     }
   
@@ -95,7 +93,6 @@ class PublicationSearch extends LitElement {
   
     // FIXME: set too many places
     setFilters(filters) {
-      console.log(`pub-search setting filters: ${JSON.stringify(filters)}`);
       // maybe set here?
       let search = this.shadowRoot.querySelector('vivo-search');
       search.setFilters(filters);

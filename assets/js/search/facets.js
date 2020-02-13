@@ -16,12 +16,10 @@ class SearchFacets extends LitElement {
   }
 
   setData(data) {
-    //console.log(`Setting data of search-facets: ${JSON.stringify(data)}`)
     this.data = data;
   }
 
   setFilters(filters) {
-    console.log(`settings filters in facets: ${JSON.stringify(filters)}`);
     // FIXME: this gets set over and over again in different components
     this.filters = filters;
   }
@@ -38,10 +36,7 @@ class SearchFacets extends LitElement {
   }
   
   inFilters(field, facet) {
-    //console.log(`checking if ${JSON.stringify(facet)} should be checked:${field}`)
     let exists = _.find(this.filters, function(f) { 
-      //console.log(`${f.field} == ${field} && ${f.value} == ${facet.value}`);
-      //console.log(f.field == field && f.value == facet.value);
       return (f.field == field && f.value == facet.value); 
     });
     if (typeof exists !== 'undefined') {
@@ -55,15 +50,11 @@ class SearchFacets extends LitElement {
     if (!this.data) {
       return html``
     }
-    //console.log(`data=${JSON.stringify(this.data)}`);
-    // NOTE: it's an array - but only want first?
+    // NOTE: it's an array - but only want first
     let content = this.data[0].entries.content;
-    //console.log(`content=${JSON.stringify(content)}`);
     
     let facetList = content.map(facet => {
-      //console.log(`facets:render():${this.field}: ${JSON.stringify(facet)}`);
-      let selected = this.inFilters(this.field, facet);  
-      //console.log(`result: ${this.field}:${facet.value}: ${selected}`);  
+      let selected = this.inFilters(this.field, facet);   
       return html`<vivo-search-facet
         category="${this.key}"
         field="${this.field}"

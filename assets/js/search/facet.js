@@ -55,7 +55,6 @@ class SearchFacet extends LitElement {
   // https://stackoverflow.com/questions/55962214/litelement-not-updating-checkbox-in-list
   // https://github.com/Polymer/lit-html/issues/732  
   render() {
-    //console.log(`${this.label} - selected:${this.selected}`);
     return html`
           <div value=${this.value} 
             selected="${this.selected}"

@@ -69,20 +69,15 @@ class PublicationFacets extends LitElement {
       }
       // search ->?person-search"
       let search = document.querySelector(`[id="${this.search}"]`);
-      //console.log(`found search: ${JSON.stringify(search)}`);
-      //console.log(`settings filters in pub-facets: ${JSON.stringify(this.filters)}`);
       search.setFilters(this.filters);
-      //console.log("calling search from publication-facets");
       search.search();
     }
 
     addFilter(filter) {
-      //console.log(`adding ${JSON.stringify(filter)}`);
       this.filters.push({"field": filter.field, "value": filter.value});
     }
 
     removeFilter(filter) {
-      //console.log(`removing ${JSON.stringify(filter)}`);
       this.filters = _.reject(this.filters, function(o) { 
         return (o.field === filter.field && o.value == filter.value); 
       });
@@ -109,8 +104,6 @@ class PublicationFacets extends LitElement {
       facets.map(facet => {
          let key = facet.key;
          let field = facet.field;
-         //console.log(`trying to populate ${key}:${field}`);
-         //console.log(`data = ${JSON.stringify(grouped[field])}`);
          if (key == "documents" && grouped[field]) {
            facet.setData(grouped[field]);
            facet.setFilters(this.filters);

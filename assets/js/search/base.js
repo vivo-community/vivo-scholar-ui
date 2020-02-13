@@ -16,8 +16,7 @@ class Search extends LitElement {
         data: { type: Object },
         countData: { type: Object },
         page: { type: Number },
-        filters: { type: Array } /*, */
-        //active: { type: Boolean }
+        filters: { type: Array }
       }
     }
   
@@ -46,8 +45,6 @@ class Search extends LitElement {
       this.search();
   
       window.addEventListener('searchSubmitted', this.doSearch);
-      //window.addEventListener("popstate", this.handlePopState);
-      //window.addEventListener('facetSelected', this.handleFacetSelected);
     }
   
     parseQuery(qryString) {
@@ -57,30 +54,13 @@ class Search extends LitElement {
     handlePopState(e) {
       // NOTE: not actually doing anything now
       // var searchParams = new URLSearchParams(window.location.search);
-      // console.log(`searchParams=${searchParams.toString()}`);
     }
   
     disconnectedCallback() {
       super.disconnectedCallback();
       window.removeEventListener('searchSubmitted', this.doSearch);
-      //window.removeEventListener("popstate", this.handlePopState);
-      //window.removeEventListener('facetSelected', this.handleFacetSelected);
     }
   
-      /*
-    handleFacetSelected(e) {    
-      const facet = e.detail;
-      if (facet.checked) {
-        this.addFilter(facet);
-      } else {
-        this.removeFilter(facet);
-      }
-      console.log(this.filters);
-      this.search();
-      
-    }
-    */
-
     runCounts() {
       const fetchData = async () => {
         try {
@@ -100,7 +80,6 @@ class Search extends LitElement {
     }
   
     runSearch() {
-      console.log(`running search filters=${JSON.stringify(this.filters)}`);
       const fetchData = async () => {
         try {
           // supposed to be adding facets, filters here (from sidebar)
@@ -135,14 +114,6 @@ class Search extends LitElement {
       this.query = query;
     }
 
-    //setActive(b) {
-    //  this.active = b;
-    //}
-  
-    // just a method to combine all UI side-effects of search ...
-    // NOTE: assumes parameters have been set
-    // setSearchParameters({filter: [], page:0, query: "*"}) --?
-  
     counts() {
       this.runCounts()
         .then(() => {
@@ -180,7 +151,6 @@ class Search extends LitElement {
       history.pushState(null, '', newRelativePathQuery);
   
       this.counts();
-      console.log("calling search from base.doSearch");
       this.search();
     }
   

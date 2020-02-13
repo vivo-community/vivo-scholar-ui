@@ -84,7 +84,6 @@ class SearchNavigation extends LitElement {
 
       if (search) {
         search.counts();
-        console.log("calling search from navigation->handleTabSelected");
         search.search();  
       } else {
           console.error("could not find search");
@@ -100,7 +99,6 @@ class SearchNavigation extends LitElement {
       let activeSearch = this.browsingState.activeSearch;
   
       activeSearch.counts();
-      console.log("calling search from navigation->handleSearchSubmitted");
       activeSearch.search();
   
       this.findCorrectFacetsToDisplay();
@@ -162,13 +160,11 @@ class SearchNavigation extends LitElement {
   
     handlePageSelected(e) {
       const page = e.detail;
-      //console.log(`SearchNavigation:handlePageSelected;page=${page.value}`);
       this.browsingState.currentPage = page;
       let search = this.browsingState.activeSearch;
       // send in new filters, then re-run active search?
       // search.setFilters( -- page --);
       search.setPage(page.value);
-      console.log("calling search from navigation->pageSelected");
       search.search();
       // or throw event searchSubmitted?
     }
