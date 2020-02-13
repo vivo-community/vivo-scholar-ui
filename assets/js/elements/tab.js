@@ -1,7 +1,7 @@
 import { LitElement, html, css } from 'lit-element';
 
 class Tab extends LitElement {
-        
+
   static get properties() {
     return {
       vivoTabStyle: { attribute: 'vivo-tab-style', type: String, reflect: true },

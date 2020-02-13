@@ -11,10 +11,10 @@ class SiteSubHeader extends LitElement {
         width: 100%;
         background-color: var(--lightNeutralColor);
         color: var(--textColor);
-        height: 100px;
+        height: 75px;
         align-items: center;
       }
-    
+
     `
   }
 

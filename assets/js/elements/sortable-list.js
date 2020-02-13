@@ -163,18 +163,16 @@ class SortableList extends LitElement {
       #items > * {
         margin-bottom: 1em;
         font-size: 18px;
-        border-top: 1px solid var(--lightNeutralColor);
       }
       .item-summary {
         display: flex;
         flex-flow: row wrap;
         justify-content: space-between;
-        align-items: baseline;
+        align-items: flex-start;
         padding: 0.75em 0;
       }
       .items-shown-message {
-        padding-top: 0.5em;
-        padding-bottom: 0.5em;
+        padding-bottom: 1em;
         color: var(--darkNeutralColor, inherit);
         white-space: nowrap;
       }

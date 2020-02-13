@@ -52,15 +52,16 @@ class Publication extends LitElement {
     return css`
       :host {
         display: block;
-        padding-top: 1em;
       }
       ::slotted([slot="title"]) {
         margin-bottom: 0.5em;
         font-weight: bold;
         color: var(--linkColor);
         text-decoration: none;
+        font-size: 1.55em;
       }
       ::slotted([slot="authors"]), ::slotted([slot="publisher"]) {
+        padding-top: .5em;
         margin-right: 0.5em;
       }
       ::slotted([slot="date"])::before, ::slotted([slot="publisher"])::before  {

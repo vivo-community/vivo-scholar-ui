@@ -58,6 +58,7 @@ class Grant extends LitElement{
           color: var(--linkColor);
           font-weight: bold;
           text-decoration: none;
+          font-size: 1.55em;
         }
     `;
   }

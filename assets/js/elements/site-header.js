@@ -13,7 +13,7 @@ class SiteHeader extends LitElement {
         width: 100vw;
         background-color: var(--primaryColor);
         color: white;
-        height: 100px;
+        height: 75px;
         justify-content: space-between;
         align-items: center;
       }
@@ -30,7 +30,6 @@ class SiteHeader extends LitElement {
       }
       ::slotted([slot="nav-item"]){
         font-size: calc(1em + .5vw);
-        font-weight: bold;
         margin-right: 10%;
         text-decoration: none;
         color: white !important;
