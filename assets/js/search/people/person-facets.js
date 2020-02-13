@@ -48,7 +48,6 @@ class PeopleFacets extends LitElement {
     }
   
     handleSearchResultsObtained(e) {
-      console.log(`search results obtained: ${JSON.stringify(e.detail)}`);
       const data = e.detail;
       // FIXME: another thing to remember
       if (!data || !data.people) {
