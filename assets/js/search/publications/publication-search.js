@@ -47,8 +47,12 @@ class PublicationSearch extends LitElement {
     }
   
     handleSearchResultsObtained(e) {
-      console.log(`pubsearch getting results: ${JSON.stringify(e.detail)}`);
-      this.data = e.detail;
+      // FIXME: shouldn't need to add code to do this check
+      let data = e.detail;
+      if (!data || !data.documents) {
+          return;
+      }
+      this.data = data;
     }
   
     handleCountResultsObtained(e) {

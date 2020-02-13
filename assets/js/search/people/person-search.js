@@ -59,7 +59,11 @@ class PersonSearch extends LitElement {
     }
 
     handleSearchResultsObtained(e) {
-        this.data = e.detail;
+        let data = e.detail;
+        if (!data || !data.people) {
+            return;
+        }
+        this.data = data;
     }
 
     handleCountResultsObtained(e) {

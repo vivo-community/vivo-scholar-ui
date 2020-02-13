@@ -45,6 +45,10 @@ class PublicationFacets extends LitElement {
   
     handleSearchResultsObtained(e) {
       const data = e.detail;
+      if (!data || !data.documents) {
+        return;
+      }
+
       this.data = data;
     }
 

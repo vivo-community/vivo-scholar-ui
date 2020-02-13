@@ -48,11 +48,18 @@ class PeopleFacets extends LitElement {
   
     handleSearchResultsObtained(e) {
       const data = e.detail;
+      // FIXME: another thing to remember
+      if (!data || !data.people) {
+        return;
+      }
       this.data = data;
     }
 
     handleFacetSelected(e) {
       // FIXME: too much boilerplate per facet implementation
+      // if facet selected for publication - don't want
+      // to add filters, run search
+      // in facet might want to empty filters
       if (!(e.detail.category == 'people')) {
         return;
       }
