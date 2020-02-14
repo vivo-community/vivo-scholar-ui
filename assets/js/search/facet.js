@@ -18,14 +18,15 @@ class SearchFacet extends LitElement {
       :host {
           display: block;
           clear: both;
+          text-align: right;
       }
       div:hover {
         cursor: pointer;
       }
-      div:before {
+      div:after {
         content:"◻";
       }          
-      div[selected="true"]:before {
+      div[selected="true"]:after {
         content:"✓";
       }  
     `
