@@ -29,7 +29,6 @@ class PublicationSearch extends LitElement {
   
     constructor() {
       super();
-      // don't think I can do this
       this.filters = [];
       this.query = pubQuery;
       this.handleSearchResultsObtained = this.handleSearchResultsObtained.bind(this);
@@ -87,8 +86,6 @@ class PublicationSearch extends LitElement {
     }
 
     setActive(b) {
-      //let search = this.shadowRoot.querySelector('vivo-search');
-      //search.setActive(b);
       this.active = b;
     }
   

@@ -12,7 +12,6 @@ class Search extends LitElement {
       return {
         // NOTE: this is what determines different searches
         graphql: { type: Object, attribute: true },
-        //query: { type: String, attribute: true, reflect: true },
         query: { type: String },
         data: { type: Object },
         countData: { type: Object },
