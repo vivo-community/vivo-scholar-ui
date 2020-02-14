@@ -4,9 +4,12 @@ class SearchFacet extends LitElement {
 
   static get properties() {
     return {
+      category: { type: String },
+      field: { type: String },
       label: { type: String },
       value: { type: String },
-      count: { type: Number }
+      count: { type: Number },
+      selected: { type: Boolean, attribute: true, reflect: true }
     }
   }
 
@@ -15,35 +18,51 @@ class SearchFacet extends LitElement {
       :host {
           display: block;
           clear: both;
+          text-align: right;
       }
-      
+      div:hover {
+        cursor: pointer;
+      }
+      div:after {
+        content:"◻";
+      }          
+      div[selected="true"]:after {
+        content:"✓";
+      }  
     `
   }
 
   constructor() {
     super();
+    this.selected = false;
     this.handleFacetSelected = this.handleFacetSelected.bind(this);
   }
 
   handleFacetSelected(e) {
-    // if checked == true + add
-    // if checked == false - remove
-    // getAttribute("value") is returning facet1
-    // needs to add/remove filter and re-run search ...
     this.dispatchEvent(new CustomEvent('facetSelected', {
-      detail: { checked: e.target.checked, value: e.target.getAttribute("value") },
+      detail: { 
+        category: this.category,
+        field: this.field,
+        checked: !this.selected,
+        value: e.target.getAttribute("value") 
+      },
       bubbles: true,
       cancelable: false,
       composed: true
     }));
   }
 
+  // TODO: need a way to mark if 'checked' or not
+  // https://stackoverflow.com/questions/55962214/litelement-not-updating-checkbox-in-list
+  // https://github.com/Polymer/lit-html/issues/732  
   render() {
     return html`
-          <label>
-            <input type="checkbox" value="${this.value}" @click=${this.handleFacetSelected}>
+          <div value=${this.value} 
+            selected="${this.selected}"
+            @click=${this.handleFacetSelected}
+          >
             ${this.label} (${this.count})
-          </label>
+          </div>
         `
   }
 }

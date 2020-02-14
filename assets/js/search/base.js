@@ -16,44 +16,35 @@ class Search extends LitElement {
         data: { type: Object },
         countData: { type: Object },
         page: { type: Number },
-        filters: { type: Array },
-        active: { type: Boolean }
+        filters: { type: Array }
       }
     }
   
     constructor() {
       super();
       this.doSearch = this.doSearch.bind(this);
-      this.facetSelected = this.facetSelected.bind(this);
-  
-      // TODO: specific implementation would need to add to this
-      // probably a better way to do over constructor variable
+      // FIXME: need better place for counts query
       this.countQuery = gql`
               query($search: String!) {
                 peopleCount: people(query: $search) { page { totalElements } }
                 pubCount: documents(query: $search) { page { totalElements } }
               }
           `;
-      // FIXME: active thing doesn't seem to be working as I planned
-      this.active = true;
     }
   
     firstUpdated() {
       const parsed = this.parseQuery(window.location.search.substring(1));
-      const defaultSearch = (parsed.search && parsed.search.trim().length > 0) ? parsed.search : "*";
-      this.query = defaultSearch;
+      const defaultQuery = (parsed.search && parsed.search.trim().length > 0) ? parsed.search : "*";
+      this.query = defaultQuery;
   
       // get these from query string too?
       this.page = 0; // e.g. parsed.page
       this.filters = []; // e.g.parsed.filters ?
-  
       // when first loaded - run counts and query?
       this.counts();
       this.search();
   
       window.addEventListener('searchSubmitted', this.doSearch);
-      window.addEventListener("popstate", this.handlePopState);
-      window.addEventListener('facetSelected', this.handleFacetSelected);
     }
   
     parseQuery(qryString) {
@@ -63,21 +54,11 @@ class Search extends LitElement {
     handlePopState(e) {
       // NOTE: not actually doing anything now
       // var searchParams = new URLSearchParams(window.location.search);
-      // console.log(`searchParams=${searchParams.toString()}`);
     }
   
     disconnectedCallback() {
       super.disconnectedCallback();
       window.removeEventListener('searchSubmitted', this.doSearch);
-      window.removeEventListener("popstate", this.handlePopState);
-      window.removeEventListener('facetSelected', this.handleFacetSelected);
-    }
-  
-    facetSelected(e) {
-      // 1. set filters?
-      //this.filters = e.details.
-      // 2. re-run search?
-      // this.doSearch();
     }
   
     runCounts() {
@@ -99,10 +80,11 @@ class Search extends LitElement {
     }
   
     runSearch() {
+      // TODO: send event?
+      // this.dispatchEvent(new CustomEvent('searchSent', {
+      // so UI can know search, page, filters etc... from event
       const fetchData = async () => {
         try {
-          // supposed to be adding facets, filters here (from sidebar)
-          // also paging ...
           const { data } = await client.query({
             query: this.graphql,
             variables: {
@@ -120,7 +102,6 @@ class Search extends LitElement {
       return fetchData();
     }
   
-    // something like this? or 
     setFilters(filters = []) {
       this.filters = filters;
     }
@@ -133,22 +114,6 @@ class Search extends LitElement {
       this.query = query;
     }
 
-    setActive(b) {
-      this.active = b;
-    }
-  
-    /*
-    setSearchParameters(parameters) {
-        let { filter, page, query } = parameters;
-        this.filter = filter;
-        this.page = page;
-        this.query = query;
-    }
-    */
-    // just a method to combine all UI side-effects of search ...
-    // NOTE: assumes parameters have been set
-    // setSearchParameters({filter: [], page:0, query: "*"}) --?
-  
     counts() {
       this.runCounts()
         .then(() => {
@@ -159,10 +124,14 @@ class Search extends LitElement {
             composed: true
           }));
         })
-        .catch((e) => console.error(`Error running search:${e}`));
+        .catch((e) => console.error(`Error running counts:${e}`));
     }
   
     search() {
+      // should filters be part of this custom event?
+      // so facets can know what to check?
+      // add more to detail? like this.query?
+      // e.g. detail: { data: this.data, query: this.query etc... }
       this.runSearch()
         .then(() => {
           this.dispatchEvent(new CustomEvent('searchResultsObtained', {
@@ -196,7 +165,8 @@ class Search extends LitElement {
           `
     }
   
-    // pagination element here?
+    // TODO: maybe just <slot>
+    // need better way to effect 'Searching': -> 
     render() {
       return html`        
             <p><strong>Searching</strong>:<em>${this.query}</em></p>

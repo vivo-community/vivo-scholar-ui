@@ -2,28 +2,73 @@ import { LitElement, html, css } from "lit-element";
 
 class SearchFacets extends LitElement {
 
-    static get styles() {
-      return css`
-        :host {
-            display: block;
-        }
-      `
+  static get properties() {
+    return {
+        field: { type: String }, // e.g. researchAreas
+        key: { type: String }, // e.g. people
+        filters: { type: Array },
+        data: { type: Object } //
     }
+  }
+
+  constructor() {
+    super();
+  }
+
+  setData(data) {
+    this.data = data;
+  }
+
+  setFilters(filters) {
+    // FIXME: this gets set over and over again in different components
+    this.filters = filters;
+  }
+
+  static get styles() {
+    return css`
+      :host {
+          display: block;
+      }
+      vivo-search-facet[selected=""] {
+        font-weight: bold;
+      }
+    `
+  }
   
-    render() {
-      // TODO: not crazy about pass-through slots with same exact name
-      // only purpose of this class is element is wrapping in sidebar-item
-      // need to be grouping of facets per vivo-sidebar-item?
+  inFilters(field, facet) {
+    let exists = _.find(this.filters, function(f) { 
+      return (f.field == field && f.value == facet.value); 
+    });
+    if (typeof exists !== 'undefined') {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  render() {
+    if (!this.data) {
+      return html``
+    }
+    // NOTE: it's an array - but only want first
+    let content = this.data[0].entries.content;
+    
+    let facetList = content.map(facet => {
+      let selected = this.inFilters(this.field, facet);   
+      return html`<vivo-search-facet
+        category="${this.key}"
+        field="${this.field}"
+        ?selected=${selected}
+        value="${facet.value}" 
+        label="${facet.value}" 
+        count="${facet.count}">
+        </vivo-search-facet>`
+      });
+      
       return html`
-          <vivo-sidebar-item>
-            <div slot="heading">
-              <slot name="heading"/>
-            </div>
-            <div slot="content">
-              <slot name="content"/>
-            </div>
-          </vivo-sidebar-item>
-          `
+        <slot></slot>
+        ${facetList}
+      `
     }
   }
   

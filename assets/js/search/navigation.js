@@ -7,9 +7,7 @@ class SearchNavigation extends LitElement {
       this.browsingState = {};
       this.navFrom = this.navFrom.bind(this);
       this.navTo = this.navTo.bind(this);
-      this.handleSearchResultsObtained = this.handleSearchResultsObtained.bind(this);
       this.handleSearchSubmitted = this.handleSearchSubmitted.bind(this);
-      this.handleFacetSelected = this.handleFacetSelected.bind(this);
       this.handlePageSelected = this.handlePageSelected.bind(this);
       this.handleTabSelected = this.handleTabSelected.bind(this);
     }
@@ -18,8 +16,6 @@ class SearchNavigation extends LitElement {
       document.addEventListener('DOMContentLoaded', this.navFrom);
       document.addEventListener('tabSelected', this.handleTabSelected);
       document.addEventListener('searchSubmitted', this.handleSearchSubmitted);
-      document.addEventListener('facetSelected', this.handleFacetSelected);
-      document.addEventListener('searchResultsObtained', this.handleSearchResultsObtained);
       document.addEventListener('pageSelected', this.handlePageSelected);
       // wouldn't this select the first one?
       let defaultSearch = document.querySelector('vivo-person-search');
@@ -35,8 +31,6 @@ class SearchNavigation extends LitElement {
       document.removeEventListener('DOMContentLoaded', this.navFrom);
       document.removeEventListener('tabSelected', this.handleTabSelected);
       document.removeEventListener('searchSubmitted', this.handleSearchSubmitted);
-      document.removeEventListener('facetSelected', this.handleFacetSelected);
-      document.removeEventListener('searchResultsObtained', this.handleSearchResultsObtained);
       document.removeEventListener('pageSelected', this.handlePageSelected);
     }
   
@@ -99,6 +93,9 @@ class SearchNavigation extends LitElement {
       let activeSearch = this.browsingState.activeSearch;
   
       activeSearch.counts();
+      // TODO: how to clear filters after new search?
+      // would've thought this would work
+      activeSearch.setFilters([]);
       activeSearch.search();
   
       this.findCorrectFacetsToDisplay();
@@ -114,33 +111,24 @@ class SearchNavigation extends LitElement {
       let sidebar = document.querySelector('vivo-sidebar');
       // TODO: should select only with a 'search' attribute
       // let facets = sidebar.querySelectorAll("[search='*']");
+      
+      // NOTE: vivo-sidebar-item(s) are included, so it's
+      // setting too many things now
+      //vivo-search-facets
       let facets = sidebar.querySelectorAll("*");
       // how to hide all ()
       facets.forEach((t) => t.removeAttribute('selected'));
   
-      let facet = document.querySelector(`[search="${id}"]`);
-      facet.setAttribute('selected', 'selected');
-
-      // TODO: should it send in data here?  Or should facets
-      // listen for searchResultsObtained? or just use
-      // vivo-search-facets 
+      // TODO: right now there are multiple matches - would probably
+      // just want one group to toggle on/off
+      let facetGroups = document.querySelectorAll(`[search="${id}"]`);
+      facetGroups.forEach(group => {
+        group.setAttribute('selected', 'selected');
+      })
     }
-  
-    // run search again? send back down?
-    handleFacetSelected(e) {
-      const facet = e.detail;
-      this.browsingState.currentFacet = facet;
-      let search = this.browsingState.activeSearch;
-      // send in new filters, then re-run active search?
-      // search.setFilters( -- facet --);
-      // do counts need to be redone?
-      //search.counts();
-      search.search();
-    }
-  
+    
     handlePageSelected(e) {
       const page = e.detail;
-      //console.log(`SearchNavigation:handlePageSelected;page=${page.value}`);
       this.browsingState.currentPage = page;
       let search = this.browsingState.activeSearch;
       // send in new filters, then re-run active search?
@@ -150,10 +138,6 @@ class SearchNavigation extends LitElement {
       // or throw event searchSubmitted?
     }
   
-    handleSearchResultsObtained(e) {
-      //const data = e.detail;
-      //this.browsingState.currentData = data;
-    }
   
     navTo() {
       const searchParams = new URLSearchParams(this.browsingState);

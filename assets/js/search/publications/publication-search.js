@@ -5,13 +5,15 @@ import pubQuery from "./publication-query";
 class PublicationSearch extends LitElement {
 
     // NOTE: this 'query' is the graphql statement
-    // not crazy about JSON.stringify below
+    // not crazy about JSON.stringify below for setting that attribute
+    // (see <vivo-search graphql=${JSON.stringify(this.query)}>)
     static get properties() {
       return {
         query: { type: Object },
         data: { type: Object },
         countData: { type: Object },
-        active: { type: Boolean }
+        active: { type: Boolean },
+        filters: { type: Array }
       }
     }
   
@@ -27,6 +29,7 @@ class PublicationSearch extends LitElement {
   
     constructor() {
       super();
+      this.filters = [];
       this.query = pubQuery;
       this.handleSearchResultsObtained = this.handleSearchResultsObtained.bind(this);
       this.handleCountResultsObtained = this.handleCountResultsObtained.bind(this);
@@ -44,7 +47,12 @@ class PublicationSearch extends LitElement {
     }
   
     handleSearchResultsObtained(e) {
-      this.data = e.detail;
+      // FIXME: shouldn't need to add code to do this check
+      let data = e.detail;
+      if (!data || !data.documents) {
+          return;
+      }
+      this.data = data;
     }
   
     handleCountResultsObtained(e) {
@@ -57,10 +65,8 @@ class PublicationSearch extends LitElement {
     // need this so we can pass through
     search() {
       let search = this.shadowRoot.querySelector('vivo-search');
-      if (!search) {
-          console.error(`search not found: ${search}`);
-          return
-      }
+      // NOTE: should already be set
+      search.setFilters(this.filters);
       search.search();
     }
   
@@ -80,11 +86,17 @@ class PublicationSearch extends LitElement {
     }
 
     setActive(b) {
-        let search = this.shadowRoot.querySelector('vivo-search');
-        search.setActive(b);
-        this.active = b;
+      this.active = b;
     }
   
+    // FIXME: set too many places
+    setFilters(filters) {
+      // maybe set here?
+      let search = this.shadowRoot.querySelector('vivo-search');
+      search.setFilters(filters);
+      this.filters = filters;
+    }
+
     renderPublisher(publisher) {
         if (publisher) {
             return html`
