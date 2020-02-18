@@ -1,6 +1,9 @@
 import { LitElement, html, css } from "lit-element";
 
-class SearchFacets extends LitElement {
+import Faceter from './faceter.js'
+
+class SearchFacets extends Faceter(LitElement) {
+//class SearchFacets extends LitElement {
 
   static get properties() {
     return {
@@ -11,18 +14,6 @@ class SearchFacets extends LitElement {
     }
   }
 
-  constructor() {
-    super();
-  }
-
-  setData(data) {
-    this.data = data;
-  }
-
-  setFilters(filters) {
-    // FIXME: this gets set over and over again in different components
-    this.filters = filters;
-  }
 
   static get styles() {
     return css`
@@ -34,18 +25,9 @@ class SearchFacets extends LitElement {
       }
     `
   }
-  
-  inFilters(field, facet) {
-    let exists = _.find(this.filters, function(f) { 
-      return (f.field == field && f.value == facet.value); 
-    });
-    if (typeof exists !== 'undefined') {
-      return true;
-    } else {
-      return false;
-    }
-  }
 
+
+  // render different per
   render() {
     if (!this.data) {
       return html``
@@ -70,7 +52,39 @@ class SearchFacets extends LitElement {
         ${facetList}
       `
     }
-  }
+
+}
   
-  customElements.define('vivo-search-facets', SearchFacets);
+  //export default Faceter;
+customElements.define('vivo-search-facets', SearchFacets);
+  /*
+  looks like this now:
+
+            <vivo-search-publication-facets slot="content" search="publication-search">
+            <vivo-search-facets key="documents" field="publicationDate">
+              <h4>Date</h4>
+            </vivo-search-facets>
+          </vivo-search-person-facets>
+
+maybe look like this?
+<vivo-facets slot="content"
+             key="documents" 
+             field="publicationDate" 
+             search="publication-search">
+  
+<vivo-publication-date-facets 
+    slot="content"
+    key="documents" 
+    field="publicationDate" 
+    search="publication-search"
+    implements="vivo-facets">
+
+       <vivo-publication-date-facets field="publicationDate" implements="vivo-facets"> 
+      <h4>Date</h4>
+      <!-- then publication-date-facets then could have this 
+      or just whatever 
+      ... -->
+      <vivo-date-slider interface="vivo-facet"/>
+    </vivo-facets>
+          */
   

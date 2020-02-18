@@ -22,6 +22,7 @@ class SearchNavigation extends LitElement {
       // 1. then get id
       // 2. then hide all facets except with id
       this.browsingState.activeSearch = defaultSearch;
+      defaultSearch.setActive(true);
   
       this.findCorrectFacetsToDisplay();
     }
@@ -51,19 +52,24 @@ class SearchNavigation extends LitElement {
     
     handleTabSelected(e) {
       const tab = e.detail;
-      
       this.browsingState.currentTab = tab.id
 
       // first de-activate ?
       this.browsingState.activeSearch.setActive(false);
 
+      // search is either active or dormant
+      // only one can be active at a time
+
       // TODO: maybe a way to get tab -and the find nearest search
       //let selectedTab = document.querySelector(`#${tab.id}`);
       //let panel = this.getNextSibling(selectedTab, 'vivo-tab-panel');
       
-      // NOTE: another fragile setup - by name
-      //publication-search-tab to publication-search
+      // NOTE: fragile setup - matches search by name
+      // of tab -
+      //publication-search-tab matches to publication-search
       let searchId = tab.id.replace("-tab", "");
+      // better way ?
+      // let search = tab.querySelector(`[implements="vivo-search"]`);
       let search = document.querySelector(`#${searchId}`);
 
       // 1. then get id
@@ -77,6 +83,7 @@ class SearchNavigation extends LitElement {
       search.setActive(true);
 
       if (search) {
+        // re-run search here?  should render
         search.counts();
         search.search();  
       } else {
@@ -92,12 +99,19 @@ class SearchNavigation extends LitElement {
       this.browsingState.currentQuery = search;
       let activeSearch = this.browsingState.activeSearch;
   
-      activeSearch.counts();
-      // TODO: how to clear filters after new search?
-      // would've thought this would work
-      activeSearch.setFilters([]);
-      activeSearch.search();
-  
+      // could get active search from route ? e.g.
+      // /search/person?query=*
+      // /search/publications?query=* etc...
+      
+      // set the query on all - so if we switch tabs it has
+      // the new query to run
+      let searches = document.querySelectorAll(`[implements="vivo-search"]`);
+      searches.forEach(s => {
+        s.setQuery(search);
+        s.setFilters([]); // not sure this actually works
+      })
+      activeSearch.doSearch(e);
+
       this.findCorrectFacetsToDisplay();
     }
   
@@ -108,14 +122,15 @@ class SearchNavigation extends LitElement {
       // why would this be null?
       let id = activeSearch.id;
       // need to set the remove
-      let sidebar = document.querySelector('vivo-sidebar');
+      //let sidebar = document.querySelector('vivo-sidebar');
       // TODO: should select only with a 'search' attribute
       // let facets = sidebar.querySelectorAll("[search='*']");
       
       // NOTE: vivo-sidebar-item(s) are included, so it's
       // setting too many things now
       //vivo-search-facets
-      let facets = sidebar.querySelectorAll("*");
+      //let facets = sidebar.querySelectorAll("*");
+      let facets = document.querySelectorAll("[implements=vivo-facets]");
       // how to hide all ()
       facets.forEach((t) => t.removeAttribute('selected'));
   
@@ -127,6 +142,7 @@ class SearchNavigation extends LitElement {
       })
     }
     
+    // TODO: this likely doesn't work now
     handlePageSelected(e) {
       const page = e.detail;
       this.browsingState.currentPage = page;
@@ -165,14 +181,6 @@ class SearchNavigation extends LitElement {
   
     getTabs() {
       return document.querySelector('vivo-tabs');
-    }
-  
-    // might not make sense to emulate hows tabs work,
-    // since facets are a result of search - however they may
-    // need to be (re)selected by queryString when returning
-    // from link
-    getFacets() {
-      return document.querySelector('vivo-search-facets');
     }
   
   }

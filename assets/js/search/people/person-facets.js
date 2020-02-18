@@ -2,15 +2,17 @@ import { LitElement, html, css, TemplateResult } from "lit-element";
 
 // usage: (search must match id of vivo-search on page)
 // <vivo-search-person-facets search="person-search"></vivo-search-person-facets>
-class PeopleFacets extends LitElement {
 
-    // how to update data ...?
+import Faceter from '../faceter.js'
+class PeopleFacets extends Faceter(LitElement) {
+
     static get properties() {
       return {
         data: { type: Object },
         selected: { type: Boolean, attribute: true, reflect: true },
         filters: { type: Array },
-        search: { type: String, attribute: true }
+        search: { type: String, attribute: true },
+        implements: { type: String, attribute: true, reflect: true },
       }
     }
   
@@ -29,36 +31,34 @@ class PeopleFacets extends LitElement {
       super();
       this.selected = false;
       this.filters = [];
+      this.implements = "vivo-facets";
+      this.category = "people"; // ?
+
       this.handleSearchResultsObtained = this.handleSearchResultsObtained.bind(this);
       this.handleFacetSelected = this.handleFacetSelected.bind(this);
-      this.handleSearchSubmitted = this.handleSearchSubmitted.bind(this);
     }
   
     firstUpdated() {
       document.addEventListener('searchResultsObtained', this.handleSearchResultsObtained);
       document.addEventListener('facetSelected', this.handleFacetSelected);
-      document.addEventListener('searchSubmitted', this.handleSearchSubmitted);
     }
   
     disconnectedCallback() {
       super.disconnectedCallback();
       document.removeEventListener('searchResultsObtained', this.handleSearchResultsObtained);
       document.removeEventListener('facetSelected', this.handleFacetSelected);
-      document.removeEventListener('searchSubmitted', this.handleSearchSubmitted);
     }
   
     handleSearchResultsObtained(e) {
+      console.log("search results obtained people-facets");
       const data = e.detail;
       // FIXME: another thing to remember
       if (!data || !data.people) {
+        console.log(`data=${JSON.stringify(data)}`);
+        console.log("Not setting data");
         return;
       }
       this.data = data;
-    }
-
-    handleSearchSubmitted(e) {
-      // clear filters here?
-      this.filters = [];
     }
 
     handleFacetSelected(e) {
@@ -75,6 +75,7 @@ class PeopleFacets extends LitElement {
       } else {
         this.removeFilter(facet);
       }
+      // finds the search - wherever it is
       let search = document.querySelector(`[id="${this.search}"]`);
 
       // FIXME: should maybe go back to having navigation
@@ -84,22 +85,17 @@ class PeopleFacets extends LitElement {
       search.search();
     }
 
-    addFilter(filter) {
-      this.filters.push({"field": filter.field, "value": filter.value});
-    }
-
-    removeFilter(filter) {
-      this.filters = _.reject(this.filters, function(o) { 
-        return (o.field === filter.field && o.value == filter.value); 
-      });
-    }
-
     // add searchResultsObtained listener?
     // #person-facets(DOM) set-data --> data ??
     render() { 
       if (!this.data || !this.data.people || !this.selected == true ) {
+        console.log(`data=${this.data};selected=${this.selected}`);
+        console.log("skipping rendering people-facets");
         return html``
       }
+      
+      // NOTE: this is only one right now
+      // or @implements="vivo-facet" 
       let facets = Array.from(this.querySelectorAll('vivo-search-facets[key="people"]'));
 
       // data - group by field
@@ -114,7 +110,8 @@ class PeopleFacets extends LitElement {
            // NOTE: after a new search, if there are no
            // facets - need to blank out
            facet.setData(null);
-           facet.setFilters(this.filters);
+           //facet.setFilters(this.filters);
+           facet.setFilters([]);
          }
       });
        

@@ -1,15 +1,15 @@
 import { LitElement, html, css } from "lit-element";
 
-// NOTE: this is not making use of any server data right now
-// TODO? use 'selected' attribute to process searchResultsObtained?
-class PublicationFacets extends LitElement {
+import Faceter from '../faceter.js'
+class PublicationFacets extends Faceter(LitElement) {
 
     static get properties() {
       return {
         data: { type: Object },
         selected: { type: Boolean, attribute: true, reflect: true },
         filters: { type: Array },
-        search: { type: String, attribute: true } // match up to DOM id on page
+        search: { type: String, attribute: true },
+        implements: { type: String, attribute: true, reflect: true },
       }
     }
     
@@ -28,22 +28,23 @@ class PublicationFacets extends LitElement {
       super();
       this.selected = false;
       this.filters = [];
+      this.implements = "vivo-facets";
+
+      this.category = "documents"; // ?
+
       this.handleSearchResultsObtained = this.handleSearchResultsObtained.bind(this);
       this.handleFacetSelected = this.handleFacetSelected.bind(this);
-      this.handleSearchSubmitted = this.handleSearchSubmitted.bind(this);
     }
   
     firstUpdated() {
       document.addEventListener('searchResultsObtained', this.handleSearchResultsObtained);
       document.addEventListener('facetSelected', this.handleFacetSelected);
-      document.addEventListener('searchSubmitted', this.handleSearchSubmitted);
     }
   
     disconnectedCallback() {
       super.disconnectedCallback();
       document.removeEventListener('searchResultsObtained', this.handleSearchResultsObtained);
       document.removeEventListener('facetSelected', this.handleFacetSelected);
-      document.removeEventListener('searchSubmitted', this.handleSearchSubmitted);
     }
   
     handleSearchResultsObtained(e) {
@@ -55,10 +56,6 @@ class PublicationFacets extends LitElement {
       this.data = data;
     }
 
-    handleSearchSubmitted(e) {
-      // clear filters here?
-      this.filters = [];
-    }
     
     handleFacetSelected(e) {
       // FIXME: every facets implementation has to add this
@@ -81,27 +78,13 @@ class PublicationFacets extends LitElement {
       search.search();
     }
 
-    addFilter(filter) {
-      this.filters.push({"field": filter.field, "value": filter.value});
-    }
-
-    removeFilter(filter) {
-      this.filters = _.reject(this.filters, function(o) { 
-        return (o.field === filter.field && o.value == filter.value); 
-      });
-    }
-
     render() {
-      // TODO: gather facets from search data   
-      // NOTE: if search == 'documents' - then could use check for
-      // match that way
       if (!this.data || !this.data.documents || !this.selected == true ) {
         return html``
       }       
 
       // 1. get all vivo-search-facet elements ...
-      // (how to limit to publications?)
-      //<vivo-search-facets key="documents" field="publisher"></vivo-search-facets>
+      // or [implements=vivo-search-facets]
       let facets = Array.from(this.querySelectorAll('vivo-search-facets[key="documents"]'));
 
       // data - group by field
@@ -119,7 +102,8 @@ class PublicationFacets extends LitElement {
           // NOTE: after a new search, if there are no
           // facets - need to blank out
           facet.setData(null);
-          facet.setFilters(this.filters);
+          //facet.setFilters(this.filters);
+          facet.setFilters([]);
         }
       });
   

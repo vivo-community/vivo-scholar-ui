@@ -1,38 +1,26 @@
-import { LitElement, html, css } from "lit-element";
+//import { LitElement, html, css } from "lit-element";
 import qs from "qs";
 import _ from "lodash";
 
 import client from "../lib/apollo";
-import gql from "graphql-tag";
+//import gql from "graphql-tag";
+import countQuery from "./count-query";
 
-class Search extends LitElement {
+// NOTE: one way to do this, not the only way
+// http://exploringjs.com/es6/ch_classes.html
+// http://justinfagnani.com/2015/12/21/real-mixins-with-javascript-classes/
+let Searcher = (superclass) => class extends superclass {
 
-    // sorting, pageSize too?
-    static get properties() {
-      return {
-        // NOTE: this is what determines different searches
-        graphql: { type: Object, attribute: true },
-        query: { type: String },
+   static get properties() {
+     return {
         data: { type: Object },
         countData: { type: Object },
-        page: { type: Number },
-        filters: { type: Array }
+        active: { type: Boolean }
       }
     }
-  
-    constructor() {
-      super();
-      this.doSearch = this.doSearch.bind(this);
-      // FIXME: need better place for counts query
-      this.countQuery = gql`
-              query($search: String!) {
-                peopleCount: people(query: $search) { page { totalElements } }
-                pubCount: documents(query: $search) { page { totalElements } }
-              }
-          `;
-    }
-  
-    firstUpdated() {
+
+    setUp() {
+      // TODO: maybe not mix up url parsing into this mixin
       const parsed = this.parseQuery(window.location.search.substring(1));
       const defaultQuery = (parsed.search && parsed.search.trim().length > 0) ? parsed.search : "*";
       this.query = defaultQuery;
@@ -44,28 +32,20 @@ class Search extends LitElement {
       this.counts();
       this.search();
   
-      window.addEventListener('searchSubmitted', this.doSearch);
+      // TODO: maybe mixin should not listen for events
+      //window.addEventListener('searchSubmitted', this.doSearch);
+      
     }
   
     parseQuery(qryString) {
       return qs.parse(qryString);
     }
-  
-    handlePopState(e) {
-      // NOTE: not actually doing anything now
-      // var searchParams = new URLSearchParams(window.location.search);
-    }
-  
-    disconnectedCallback() {
-      super.disconnectedCallback();
-      window.removeEventListener('searchSubmitted', this.doSearch);
-    }
-  
+    
     runCounts() {
       const fetchData = async () => {
         try {
           const { data } = await client.query({
-            query: this.countQuery,
+            query: countQuery,
             variables: {
                 search: this.query
               }
@@ -114,6 +94,10 @@ class Search extends LitElement {
       this.query = query;
     }
 
+    setActive(b = false) {
+      this.active = b;
+    }
+
     counts() {
       this.runCounts()
         .then(() => {
@@ -145,6 +129,7 @@ class Search extends LitElement {
     }
   
     doSearch(e) {
+      // ?check if active (since called from all searches now?)
       this.query = e.detail;
       //see https://javascriptplayground.com/url-search-params/
       var searchParams = new URLSearchParams(window.location.search);
@@ -152,28 +137,11 @@ class Search extends LitElement {
       var newRelativePathQuery = window.location.pathname + '?' + searchParams.toString();
       history.pushState(null, '', newRelativePathQuery);
   
+      // doesn't seem to know what this. is
       this.counts();
       this.search();
-    }
-  
-    static get styles() {
-      return css`
-            :host {
-                display: block;
-                clear: both;
-            }
-          `
-    }
-  
-    // TODO: maybe just <slot>
-    // need better way to effect 'Searching': -> 
-    render() {
-      return html`        
-            <p><strong>Searching</strong>:<em>${this.query}</em></p>
-            <slot />
-          `
-    }
+    }  
+
   }
   
-  customElements.define('vivo-search', Search);
-  
+export default Searcher;

@@ -1,4 +1,4 @@
-import './search/base.js';
+import './search/searcher.js';
 import './search/navigation.js';
 import './search/facet.js';
 import './search/facets.js';
