@@ -59,11 +59,12 @@ class PublicationSearch extends Searcher(LitElement) {
       this.data = data;
     }
   
+    // TODO: probably a better way to spread out counts to tab headings
     handleCountResultsObtained(e) {
       this.countData = e.detail;
       var docCount = this.countData ? this.countData.pubCount.page.totalElements : 0;
-      let tab = document.querySelector('#publication-search-tab');
-      tab.textContent = `Publications (${docCount})`;
+      let tab = document.querySelector('#publication-search-count');
+      tab.textContent = `${docCount}`;
     }
 
     renderPublisher(publisher) {

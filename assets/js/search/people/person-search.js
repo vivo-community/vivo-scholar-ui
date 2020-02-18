@@ -73,8 +73,8 @@ class PersonSearch extends Searcher(LitElement) {
         // and just update that (could be tab heading or could not)
         this.countData = e.detail;
         var personCount = this.countData ? this.countData.peopleCount.page.totalElements : 0;
-        let tab = document.querySelector('#person-search-tab');
-        tab.textContent = `People (${personCount})`;
+        let tab = document.querySelector('#person-search-count');
+        tab.textContent = `${personCount}`;
     }
 
     renderOverview(person) {
