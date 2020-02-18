@@ -50,12 +50,8 @@ class PeopleFacets extends Faceter(LitElement) {
     }
   
     handleSearchResultsObtained(e) {
-      console.log("search results obtained people-facets");
       const data = e.detail;
-      // FIXME: another thing to remember
       if (!data || !data.people) {
-        console.log(`data=${JSON.stringify(data)}`);
-        console.log("Not setting data");
         return;
       }
       this.data = data;
@@ -89,8 +85,6 @@ class PeopleFacets extends Faceter(LitElement) {
     // #person-facets(DOM) set-data --> data ??
     render() { 
       if (!this.data || !this.data.people || !this.selected == true ) {
-        console.log(`data=${this.data};selected=${this.selected}`);
-        console.log("skipping rendering people-facets");
         return html``
       }
       
