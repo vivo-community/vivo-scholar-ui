@@ -33,6 +33,7 @@ class PeopleFacets extends Faceter(LitElement) {
       this.filters = [];
       this.implements = "vivo-facets";
       this.category = "people"; // ?
+      //this.key = "people";
 
       this.handleSearchResultsObtained = this.handleSearchResultsObtained.bind(this);
       this.handleFacetSelected = this.handleFacetSelected.bind(this);
@@ -58,6 +59,7 @@ class PeopleFacets extends Faceter(LitElement) {
     }
 
     handleFacetSelected(e) {
+      console.log("facetSelected in person-facets");
       // FIXME: too much boilerplate per facet implementation
       // if facet selected for publication - don't want
       // to add filters, run search
@@ -104,6 +106,7 @@ class PeopleFacets extends Faceter(LitElement) {
            // NOTE: after a new search, if there are no
            // facets - need to blank out
            facet.setData(null);
+           // this doesn't seem to work
            //facet.setFilters(this.filters);
            facet.setFilters([]);
          }

@@ -2,18 +2,17 @@ import { LitElement, html, css } from "lit-element";
 
 import Faceter from './faceter.js'
 
+// 
 class SearchFacets extends Faceter(LitElement) {
-//class SearchFacets extends LitElement {
 
   static get properties() {
     return {
         field: { type: String }, // e.g. researchAreas
         key: { type: String }, // e.g. people
-        filters: { type: Array },
-        data: { type: Object } //
+        //filters: { type: Array },
+        //data: { type: Object } //
     }
   }
-
 
   static get styles() {
     return css`
@@ -26,8 +25,6 @@ class SearchFacets extends Faceter(LitElement) {
     `
   }
 
-
-  // render different per
   render() {
     if (!this.data) {
       return html``
@@ -55,16 +52,15 @@ class SearchFacets extends Faceter(LitElement) {
 
 }
   
-  //export default Faceter;
 customElements.define('vivo-search-facets', SearchFacets);
-  /*
+/*
   looks like this now:
 
-            <vivo-search-publication-facets slot="content" search="publication-search">
-            <vivo-search-facets key="documents" field="publicationDate">
-              <h4>Date</h4>
-            </vivo-search-facets>
-          </vivo-search-person-facets>
+          <vivo-search-publication-facets slot="content" search="publication-search">
+              <vivo-search-facets key="documents" field="publicationDate">
+                <h4>Date</h4>
+              </vivo-search-facets>
+          </vivo-search-publication-facets>
 
 maybe look like this?
 <vivo-facets slot="content"

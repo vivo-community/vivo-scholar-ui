@@ -2,17 +2,15 @@
 
 let Faceter = (superclass) => class extends superclass {
 
-    /*
+    // not sure why this is necessary here
     static get properties() {
         return {
-            field: { type: String }, // e.g. researchAreas
-            key: { type: String }, // e.g. people
-            filters: { type: Array },
-            data: { type: Object } //
+          data: { type: Object },
+          selected: { type: Boolean, attribute: true, reflect: true },
+          filters: { type: Array },
         }
       }
-      */
-
+    
   setData(data) {
     this.data = data;
   }

@@ -1,13 +1,14 @@
 import { LitElement, html, css } from "lit-element";
 
 import Faceter from './faceter.js'
+// need add, remove Filter functions
 class FacetGroup extends Faceter(LitElement) {
 
     static get properties() {
       return {
-        data: { type: Object },
-        selected: { type: Boolean, attribute: true, reflect: true },
-        filters: { type: Array },
+        //data: { type: Object },
+        //selected: { type: Boolean, attribute: true, reflect: true },
+        //filters: { type: Array },
         search: { type: String, attribute: true },
         implements: { type: String, attribute: true, reflect: true },
         key: { type: String }
@@ -30,8 +31,6 @@ class FacetGroup extends Faceter(LitElement) {
       this.selected = false;
       this.filters = [];
       this.implements = "vivo-facets";
-
-      this.key = "documents"; // ?
 
       this.handleSearchResultsObtained = this.handleSearchResultsObtained.bind(this);
       this.handleFacetSelected = this.handleFacetSelected.bind(this);
@@ -99,6 +98,7 @@ class FacetGroup extends Faceter(LitElement) {
          if (key == this.key && grouped[field]) {
            facet.setData(grouped[field]);
            facet.setFilters(this.filters);
+           // facet.setKey(this.key); ????
          } else if (key == this.key && !grouped[field]) {
           // NOTE: after a new search, if there are no
           // facets - need to blank out
