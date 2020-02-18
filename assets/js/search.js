@@ -2,6 +2,7 @@ import './search/searcher.js';
 import './search/navigation.js';
 import './search/facet.js';
 import './search/facets.js';
+import './search/facet-group.js';
 import './search/pagination.js';
 
 // tab specific
