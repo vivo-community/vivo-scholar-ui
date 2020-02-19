@@ -1,9 +1,7 @@
-//import { LitElement, html, css } from "lit-element";
 import qs from "qs";
 import _ from "lodash";
 
 import client from "../lib/apollo";
-//import gql from "graphql-tag";
 import countQuery from "./count-query";
 
 // NOTE: one way to do this, not the only way
@@ -19,22 +17,20 @@ let Searcher = (superclass) => class extends superclass {
       }
     }
 
-    setUp() {
-      // TODO: maybe not mix up url parsing into this mixin
+    deriveQueryFromParameters() {
       const parsed = this.parseQuery(window.location.search.substring(1));
       const defaultQuery = (parsed.search && parsed.search.trim().length > 0) ? parsed.search : "*";
-      this.query = defaultQuery;
-  
-      // get these from query string too?
-      this.page = 0; // e.g. parsed.page
-      this.filters = []; // e.g.parsed.filters ?
-      // when first loaded - run counts and query?
+      return defaultQuery;
+    }
+
+    setUp() {
+      // FIXME: should mixin use 'window' at all?
+      this.query = this.deriveQueryFromParameters();
+      this.page = 0;
+      this.filters = [];
+
       this.counts();
       this.search();
-  
-      // TODO: maybe mixin should not listen for events
-      //window.addEventListener('searchSubmitted', this.doSearch);
-      
     }
   
     parseQuery(qryString) {
@@ -60,9 +56,10 @@ let Searcher = (superclass) => class extends superclass {
     }
   
     runSearch() {
-      // TODO: send event?
-      // this.dispatchEvent(new CustomEvent('searchSent', {
-      // so UI can know search, page, filters etc... from event
+      // TODO: shuld this also send an event?
+      // e.g. this.dispatchEvent(new CustomEvent('searchStarted', {
+      // so UI can know - might be useful for 'waiting' watcher
+      // or to know state of filters etc...
       const fetchData = async () => {
         try {
           const { data } = await client.query({
@@ -128,16 +125,18 @@ let Searcher = (superclass) => class extends superclass {
         .catch((e) => console.error(`Error running search:${e}`));
     }
   
-    doSearch(e) {
-      // ?check if active (since called from all searches now?)
-      this.query = e.detail;
+    pushHistory() {
       //see https://javascriptplayground.com/url-search-params/
       var searchParams = new URLSearchParams(window.location.search);
-      searchParams.set("search", e.detail);
+      searchParams.set("search", this.query);
       var newRelativePathQuery = window.location.pathname + '?' + searchParams.toString();
       history.pushState(null, '', newRelativePathQuery);
-  
-      // doesn't seem to know what this. is
+    }
+
+    doSearch(e) {
+      this.query = e.detail;
+      // FIXME: should mixin be adding to history?
+      this.pushHistory();
       this.counts();
       this.search();
     }  

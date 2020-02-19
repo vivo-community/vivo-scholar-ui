@@ -5,17 +5,11 @@ import pubQuery from "./publication-query";
 import Searcher from '../searcher.js'
 
 class PublicationSearch extends Searcher(LitElement) {
-//class PublicationSearch extends LitElement {
 
-    // NOTE: this 'query' is the graphql statement
-    // not crazy about JSON.stringify below for setting that attribute
-    // (see <vivo-search graphql=${JSON.stringify(this.query)}>)
     static get properties() {
       return {
         graphql: { type: Object },
-        //data: { type: Object },
-        implements: { type: String, attribute: true, reflect: true },
-        //countData: { type: Object }
+        implements: { type: String, attribute: true, reflect: true }
       }
     }
   
@@ -33,7 +27,6 @@ class PublicationSearch extends Searcher(LitElement) {
       super();
       this.graphql = pubQuery;
       this.active = false;
-      //this.implements = "vivo-search";
       this.handleSearchResultsObtained = this.handleSearchResultsObtained.bind(this);
       this.handleCountResultsObtained = this.handleCountResultsObtained.bind(this);
       this.setUp();

@@ -9,8 +9,6 @@ class PublicationDateFacets extends Faceter(LitElement) {
         field: { type: String }, // e.g. researchAreas
         key: { type: String }, // e.g. people
         implements: { type: String, attribute: true, reflect: true }
-        //filters: { type: Array },
-        //data: { type: Object } //
     }
   }
 

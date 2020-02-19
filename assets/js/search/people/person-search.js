@@ -7,14 +7,11 @@ import './person-image';
 import Searcher from '../searcher.js'
 
 class PersonSearch extends Searcher(LitElement) {
-//class PersonSearch extends LitElement {
 
     static get properties() {
         return {
             graphql: { type: Object },
-            //data: { type: Object },
             implements: { type: String, attribute: true, reflect: true },
-            //countData: { type: Object }
         }
     }
 
@@ -39,14 +36,9 @@ class PersonSearch extends Searcher(LitElement) {
     constructor() {
         super();
         this.graphql = peopleQuery;
-        //this.implements = "vivo-search";
         this.handleSearchResultsObtained = this.handleSearchResultsObtained.bind(this);
         this.handleCountResultsObtained = this.handleCountResultsObtained.bind(this);
         this.setUp();
-
-        // ???
-        //this.doSearch = this.doSearch.bind(this);
-
     }
 
     firstUpdated() {

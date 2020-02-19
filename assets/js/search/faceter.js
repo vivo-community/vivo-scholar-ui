@@ -1,4 +1,3 @@
-//import { LitElement, html, css } from "lit-element";
 
 let Faceter = (superclass) => class extends superclass {
 
