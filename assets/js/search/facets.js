@@ -2,15 +2,12 @@ import { LitElement, html, css } from "lit-element";
 
 import Faceter from './faceter.js'
 
-// 
 class SearchFacets extends Faceter(LitElement) {
 
   static get properties() {
     return {
         field: { type: String }, // e.g. researchAreas
         key: { type: String }, // e.g. people
-        //filters: { type: Array },
-        //data: { type: Object } //
     }
   }
 
