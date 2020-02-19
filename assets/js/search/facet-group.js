@@ -6,11 +6,7 @@ class FacetGroup extends Faceter(LitElement) {
 
     static get properties() {
       return {
-        //data: { type: Object },
-        //selected: { type: Boolean, attribute: true, reflect: true },
-        //filters: { type: Array },
         search: { type: String, attribute: true },
-        implements: { type: String, attribute: true, reflect: true },
         key: { type: String }
       }
     }
@@ -30,7 +26,6 @@ class FacetGroup extends Faceter(LitElement) {
       super();
       this.selected = false;
       this.filters = [];
-      this.implements = "vivo-facets";
 
       this.handleSearchResultsObtained = this.handleSearchResultsObtained.bind(this);
       this.handleFacetSelected = this.handleFacetSelected.bind(this);
@@ -49,7 +44,7 @@ class FacetGroup extends Faceter(LitElement) {
   
     handleSearchResultsObtained(e) {
       const data = e.detail;
-      if (!data || !data.documents) {
+      if (!data || !data[this.key]) {
         return;
       }
 
@@ -80,12 +75,14 @@ class FacetGroup extends Faceter(LitElement) {
 
     render() {
       if (!this.data || !this.data[this.key] || !this.selected == true ) {
+        //console.log(`returning blank html for facet-group: ${JSON.stringify(this.data)}`);
         return html``
       }       
 
       // 1. get all vivo-search-facet elements ...
       // or [implements=vivo-search-facets]
-      let facets = Array.from(this.querySelectorAll(`vivo-search-facets[key="${this.key}"]`));
+      let cssQuery = `vivo-search-facets[key="${this.key}"],[implements="vivo-search-facets"]`
+      let facets = Array.from(this.querySelectorAll(cssQuery));
 
       // data - group by field
       let grouped = _.groupBy(this.data[this.key].facets, "field");
@@ -103,7 +100,8 @@ class FacetGroup extends Faceter(LitElement) {
           // NOTE: after a new search, if there are no
           // facets - need to blank out
           facet.setData(null);
-          //facet.setFilters(this.filters);
+          // TODO: nothing seems to be emptying out filters
+          // when tab changes
           facet.setFilters([]);
         }
       });

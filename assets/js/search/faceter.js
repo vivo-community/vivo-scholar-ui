@@ -42,34 +42,4 @@ let Faceter = (superclass) => class extends superclass {
 }
   
 export default Faceter;
-  /*
-  looks like this now:
-
-            <vivo-search-publication-facets slot="content" search="publication-search">
-            <vivo-search-facets key="documents" field="publicationDate">
-              <h4>Date</h4>
-            </vivo-search-facets>
-          </vivo-search-person-facets>
-
-maybe look like this?
-<vivo-facets slot="content"
-             key="documents" 
-             field="publicationDate" 
-             search="publication-search">
-  
-<vivo-publication-date-facets 
-    slot="content"
-    key="documents" 
-    field="publicationDate" 
-    search="publication-search"
-    implements="vivo-facets">
-
-       <vivo-publication-date-facets field="publicationDate" implements="vivo-facets"> 
-      <h4>Date</h4>
-      <!-- then publication-date-facets then could have this 
-      or just whatever 
-      ... -->
-      <vivo-date-slider interface="vivo-facet"/>
-    </vivo-facets>
-          */
   

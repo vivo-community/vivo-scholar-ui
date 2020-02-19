@@ -9,7 +9,7 @@
      <vivo-sidebar>
 
        <vivo-sidebar-item>
-          <vivo-search-person-facets slot="content" search="person-search">
+          <vivo-facet-group slot="content" key="people" search="person-search">
             
             <vivo-search-facets key="people" field="type">
               <h4>Type</h4>
@@ -23,7 +23,7 @@
               <h4>Position</h4>
             </vivo-search-facets>
 
-          </vivo-search-person-facets>
+          </vivo-facet-group>
       
         </vivo-sidebar-item>
 
@@ -36,9 +36,10 @@
               <h4>Type</h4>
             </vivo-search-facets>
 
-            <vivo-search-facets key="documents" field="publicationDate">
+            <vivo-publication-date-facets key="documents" field="publicationDate" 
+              implements="vivo-search-facets">
               <h4>Date</h4>
-            </vivo-search-facets>
+            </vivo-publication-date-facets>
 
             <vivo-search-facets key="documents" field="authors">
               <h4>Author</h4>

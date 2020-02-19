@@ -60,24 +60,9 @@ class SearchNavigation extends LitElement {
       // search is either active or dormant
       // only one can be active at a time
 
-      // TODO: maybe a way to get tab -and the find nearest search
-      //let selectedTab = document.querySelector(`#${tab.id}`);
-      //let panel = this.getNextSibling(selectedTab, 'vivo-tab-panel');
-      
-      // NOTE: fragile setup - matches search by name
-      // of tab -
-      //publication-search-tab matches to publication-search
-      let searchId = tab.id.replace("-tab", "");
-      // better way ?
-      // let search = tab.querySelector(`[implements="vivo-search"]`);
-      let search = document.querySelector(`#${searchId}`);
-
-      // 1. then get id
-      // 2. then hide all facets except with id
+      let panel = this.getNextSibling(tab, 'vivo-tab-panel');
+      let search = panel.querySelector(`[implements="vivo-search"]`);
       this.browsingState.activeSearch = search;
-      // TODO: needs to change the activeSearch ....
-      // would be cool to select by type <vivo-search >
-      //let activeSearch = this.browsingState.activeSearch;
 
       // only one active search at a time? ...
       search.setActive(true);
@@ -119,23 +104,12 @@ class SearchNavigation extends LitElement {
     // depending on precise arrangement on page
     findCorrectFacetsToDisplay() {
       let activeSearch = this.browsingState.activeSearch;
-      // why would this be null?
       let id = activeSearch.id;
-      // need to set the remove
-      //let sidebar = document.querySelector('vivo-sidebar');
-      // TODO: should select only with a 'search' attribute
-      // let facets = sidebar.querySelectorAll("[search='*']");
-      
-      // NOTE: vivo-sidebar-item(s) are included, so it's
-      // setting too many things now
-      //vivo-search-facets
-      //let facets = sidebar.querySelectorAll("*");
-      let facets = document.querySelectorAll("[implements=vivo-facets]");
-      // how to hide all ()
+
+      let facets = document.querySelectorAll('vivo-facet-group');
+      // hiding all
       facets.forEach((t) => t.removeAttribute('selected'));
   
-      // TODO: right now there are multiple matches - would probably
-      // just want one group to toggle on/off
       let facetGroups = document.querySelectorAll(`[search="${id}"]`);
       facetGroups.forEach(group => {
         group.setAttribute('selected', 'selected');
