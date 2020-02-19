@@ -8,65 +8,50 @@
   <aside>
      <vivo-sidebar>
 
-        <vivo-sidebar-item>
-          <vivo-search-person-facets slot="content" search="person-search">
+       <vivo-sidebar-item>
+          <vivo-facet-group slot="content" key="people" search="person-search">
+            
             <vivo-search-facets key="people" field="type">
               <h4>Type</h4>
             </vivo-search-facets>
-          </vivo-search-person-facets>
-        </vivo-sidebar-item>
 
-        <vivo-sidebar-item>
-          <vivo-search-person-facets slot="content" search="person-search">
             <vivo-search-facets key="people" field="researchAreas">
               <h4>Research Areas</h4>
             </vivo-search-facets>
-          </vivo-search-person-facets>
-        </vivo-sidebar-item>
 
-        <vivo-sidebar-item>
-          <vivo-search-person-facets slot="content" search="person-search">
             <vivo-search-facets key="people" field="positions">
               <h4>Position</h4>
             </vivo-search-facets>
-          </vivo-search-person-facets>
+
+          </vivo-facet-group>
+      
         </vivo-sidebar-item>
+
         
-        <!-- TODO: might want to group these, so sidebar-item is not 
-        necessary per facet etc...
-        -->
         <vivo-sidebar-item>
-          <vivo-search-publication-facets slot="content" search="publication-search">
+          <vivo-facet-group slot="content" key="documents" search="publication-search">
+
+            <!-- TODO: maybe use 'key' from parent facet-group tag -->
             <vivo-search-facets key="documents" field="type">
               <h4>Type</h4>
             </vivo-search-facets>
-          </vivo-search-person-facets>
-        </vivo-sidebar-item>
-        
-        <vivo-sidebar-item>
-          <vivo-search-publication-facets slot="content" search="publication-search">
+
+            <vivo-publication-date-facets key="documents" field="publicationDate" 
+              implements="vivo-search-facets">
+              <h4>Date</h4>
+            </vivo-publication-date-facets>
+
             <vivo-search-facets key="documents" field="authors">
               <h4>Author</h4>
             </vivo-search-facets>
-          </vivo-search-person-facets>
-        </vivo-sidebar-item>
 
-        <vivo-sidebar-item>
-          <vivo-search-publication-facets slot="content" search="publication-search">
             <vivo-search-facets key="documents" field="publisher">
               <h4>Publisher</h4>
             </vivo-search-facets>
-          </vivo-search-person-facets>
-        </vivo-sidebar-item>
 
-        <vivo-sidebar-item>
-          <vivo-search-publication-facets slot="content" search="publication-search">
-            <vivo-search-facets key="documents" field="publicationDate">
-              <h4>Date</h4>
-            </vivo-search-facets>
-          </vivo-search-person-facets>
+          </vivo-facet-group>
         </vivo-sidebar-item>
-
+        
     </vivo-sidebar>
   </aside>
 
@@ -74,7 +59,7 @@
 
     <vivo-tabs id="secondary-example" vivo-tab-style="secondary">
       <vivo-tab id="person-search-tab" selected>
-        People (count)
+        People (<span id="person-search-count">0</span>)
       </vivo-tab>
   
       <vivo-tab-panel selected>  
@@ -83,15 +68,15 @@
           out the active search id - if it could detect a <vivo-search>
           child element interface that might be better
         -->
-        <vivo-person-search id="person-search"/>
+        <vivo-person-search id="person-search" implements="vivo-search"/>
       </vivo-tab-panel>
     
       <vivo-tab id="publication-search-tab">
-        Publications (count)
+        Publications (<span id="publication-search-count">0</span>)
       </vivo-tab>
   
       <vivo-tab-panel>
-          <vivo-publication-search id="publication-search"/>
+          <vivo-publication-search id="publication-search" implements="vivo-search"/>
       </vivo-tab-panel>
     
     </vivo-tabs>

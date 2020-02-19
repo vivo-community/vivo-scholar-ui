@@ -2,18 +2,14 @@ import { LitElement, html, css } from "lit-element";
 
 import pubQuery from "./publication-query";
 
-class PublicationSearch extends LitElement {
+import Searcher from '../searcher.js'
 
-    // NOTE: this 'query' is the graphql statement
-    // not crazy about JSON.stringify below for setting that attribute
-    // (see <vivo-search graphql=${JSON.stringify(this.query)}>)
+class PublicationSearch extends Searcher(LitElement) {
+
     static get properties() {
       return {
-        query: { type: Object },
-        data: { type: Object },
-        countData: { type: Object },
-        active: { type: Boolean },
-        filters: { type: Array }
+        graphql: { type: Object },
+        implements: { type: String, attribute: true, reflect: true }
       }
     }
   
@@ -29,10 +25,11 @@ class PublicationSearch extends LitElement {
   
     constructor() {
       super();
-      this.filters = [];
-      this.query = pubQuery;
+      this.graphql = pubQuery;
+      this.active = false;
       this.handleSearchResultsObtained = this.handleSearchResultsObtained.bind(this);
       this.handleCountResultsObtained = this.handleCountResultsObtained.bind(this);
+      this.setUp();
     }
   
     firstUpdated() {
@@ -55,46 +52,12 @@ class PublicationSearch extends LitElement {
       this.data = data;
     }
   
+    // TODO: probably a better way to spread out counts to tab headings
     handleCountResultsObtained(e) {
       this.countData = e.detail;
       var docCount = this.countData ? this.countData.pubCount.page.totalElements : 0;
-      let tab = document.querySelector('#publication-search-tab');
-      tab.textContent = `Publications (${docCount})`;
-    }
-  
-    // need this so we can pass through
-    search() {
-      let search = this.shadowRoot.querySelector('vivo-search');
-      // NOTE: should already be set
-      search.setFilters(this.filters);
-      search.search();
-    }
-  
-    counts() {
-      let search = this.shadowRoot.querySelector('vivo-search');
-      // shouldn't be null
-      if (!search) {
-        console.error(`search not found: ${search}`);
-        return
-      }
-      search.counts();
-    }
-  
-    setPage(num) {
-      let search = this.shadowRoot.querySelector('vivo-search');
-      search.setPage(num);
-    }
-
-    setActive(b) {
-      this.active = b;
-    }
-  
-    // FIXME: set too many places
-    setFilters(filters) {
-      // maybe set here?
-      let search = this.shadowRoot.querySelector('vivo-search');
-      search.setFilters(filters);
-      this.filters = filters;
+      let tab = document.querySelector('#publication-search-count');
+      tab.textContent = `${docCount}`;
     }
 
     renderPublisher(publisher) {
@@ -148,11 +111,8 @@ class PublicationSearch extends LitElement {
     }
 
     render() {
-      // FIXME: always returning this makes people tab work(ish)
-      // but then publication search results never show
-      // remove this and publications show, but not people
       if (!this.active || !this.data || !this.data.documents) {
-        return html`<vivo-search graphql=${JSON.stringify(this.query)} />`
+        return html``
       }
       
       var results = [];
@@ -185,10 +145,10 @@ class PublicationSearch extends LitElement {
       }
   
       return html`
-         <vivo-search graphql=${JSON.stringify(this.query)}>
-         ${resultsDisplay}
-         ${pagination}
-         </vivo-search>`
+        <div>
+        ${resultsDisplay}
+        ${pagination}
+        </div>`
     }
   
   }

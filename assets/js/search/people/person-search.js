@@ -4,18 +4,14 @@ import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 import peopleQuery from "./person-query";
 import './person-card';
 import './person-image';
+import Searcher from '../searcher.js'
 
-class PersonSearch extends LitElement {
+class PersonSearch extends Searcher(LitElement) {
 
-    // NOTE: this 'query' is the graphql statement
-    // not crazy about JSON.stringify below
     static get properties() {
         return {
-            query: { type: Object },
-            data: { type: Object },
-            countData: { type: Object },
-            active: { type: Boolean },
-            filter: { type: Array }
+            graphql: { type: Object },
+            implements: { type: String, attribute: true, reflect: true },
         }
     }
 
@@ -39,12 +35,10 @@ class PersonSearch extends LitElement {
 
     constructor() {
         super();
-        // just defaulting active on this one
-        this.active = true;
-        this.filters = [];
-        this.query = peopleQuery;
+        this.graphql = peopleQuery;
         this.handleSearchResultsObtained = this.handleSearchResultsObtained.bind(this);
         this.handleCountResultsObtained = this.handleCountResultsObtained.bind(this);
+        this.setUp();
     }
 
     firstUpdated() {
@@ -71,40 +65,8 @@ class PersonSearch extends LitElement {
         // and just update that (could be tab heading or could not)
         this.countData = e.detail;
         var personCount = this.countData ? this.countData.peopleCount.page.totalElements : 0;
-        let tab = document.querySelector('#person-search-tab');
-        tab.textContent = `People (${personCount})`;
-    }
-
-    // need this so we can pass through
-    search() {
-        let search = this.shadowRoot.querySelector('vivo-search');
-        // FIXME: filters need set by person-facets
-        // then set here - so it's bubbling up but have to 
-        // remember to set everywhere
-        search.setFilters(this.filters);
-        search.search();
-    }
-
-    // TODO: not sure it's good to have to remember to call search AND counts
-    counts() {
-        let search = this.shadowRoot.querySelector('vivo-search');
-        search.counts();
-    }
-
-    setActive(b) {
-        this.active = b;
-    }
-
-    setPage(num) {
-        let search = this.shadowRoot.querySelector('vivo-search');
-        search.setPage(num);
-    }
-
-    // FIXME: set too many places
-    setFilters(filters) {
-        let search = this.shadowRoot.querySelector('vivo-search');
-        search.setFilters(filters);
-        this.filters = filters;
+        let tab = document.querySelector('#person-search-count');
+        tab.textContent = `${personCount}`;
     }
 
     renderOverview(person) {
@@ -129,8 +91,8 @@ class PersonSearch extends LitElement {
 
     render() {
         if (!this.active == true || !this.data || !this.data.people) {
-            return html`<vivo-search graphql=${JSON.stringify(this.query)} />`
-        }
+            return html``
+        } 
         var results = [];
 
         if (this.data && this.data.people.content) {
@@ -161,10 +123,10 @@ class PersonSearch extends LitElement {
         }
 
         return html`
-         <vivo-search graphql=${JSON.stringify(this.query)}>
-         ${resultsDisplay}
-         ${pagination}
-         </vivo-search>`
+          <div>
+          ${resultsDisplay}
+          ${pagination}
+          </div>`
     }
 
 }

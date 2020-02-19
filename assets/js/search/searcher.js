@@ -1,71 +1,47 @@
-import { LitElement, html, css } from "lit-element";
 import qs from "qs";
 import _ from "lodash";
 
 import client from "../lib/apollo";
-import gql from "graphql-tag";
+import countQuery from "./count-query";
 
-class Search extends LitElement {
+// NOTE: one way to do this, not the only way
+// http://exploringjs.com/es6/ch_classes.html
+// http://justinfagnani.com/2015/12/21/real-mixins-with-javascript-classes/
+let Searcher = (superclass) => class extends superclass {
 
-    // sorting, pageSize too?
-    static get properties() {
-      return {
-        // NOTE: this is what determines different searches
-        graphql: { type: Object, attribute: true },
-        query: { type: String },
+   static get properties() {
+     return {
         data: { type: Object },
         countData: { type: Object },
-        page: { type: Number },
-        filters: { type: Array }
+        active: { type: Boolean }
       }
     }
-  
-    constructor() {
-      super();
-      this.doSearch = this.doSearch.bind(this);
-      // FIXME: need better place for counts query
-      this.countQuery = gql`
-              query($search: String!) {
-                peopleCount: people(query: $search) { page { totalElements } }
-                pubCount: documents(query: $search) { page { totalElements } }
-              }
-          `;
-    }
-  
-    firstUpdated() {
+
+    deriveQueryFromParameters() {
       const parsed = this.parseQuery(window.location.search.substring(1));
       const defaultQuery = (parsed.search && parsed.search.trim().length > 0) ? parsed.search : "*";
-      this.query = defaultQuery;
-  
-      // get these from query string too?
-      this.page = 0; // e.g. parsed.page
-      this.filters = []; // e.g.parsed.filters ?
-      // when first loaded - run counts and query?
+      return defaultQuery;
+    }
+
+    setUp() {
+      // FIXME: should mixin use 'window' at all?
+      this.query = this.deriveQueryFromParameters();
+      this.page = 0;
+      this.filters = [];
+
       this.counts();
       this.search();
-  
-      window.addEventListener('searchSubmitted', this.doSearch);
     }
   
     parseQuery(qryString) {
       return qs.parse(qryString);
     }
-  
-    handlePopState(e) {
-      // NOTE: not actually doing anything now
-      // var searchParams = new URLSearchParams(window.location.search);
-    }
-  
-    disconnectedCallback() {
-      super.disconnectedCallback();
-      window.removeEventListener('searchSubmitted', this.doSearch);
-    }
-  
+    
     runCounts() {
       const fetchData = async () => {
         try {
           const { data } = await client.query({
-            query: this.countQuery,
+            query: countQuery,
             variables: {
                 search: this.query
               }
@@ -80,9 +56,10 @@ class Search extends LitElement {
     }
   
     runSearch() {
-      // TODO: send event?
-      // this.dispatchEvent(new CustomEvent('searchSent', {
-      // so UI can know search, page, filters etc... from event
+      // TODO: shuld this also send an event?
+      // e.g. this.dispatchEvent(new CustomEvent('searchStarted', {
+      // so UI can know - might be useful for 'waiting' watcher
+      // or to know state of filters etc...
       const fetchData = async () => {
         try {
           const { data } = await client.query({
@@ -112,6 +89,10 @@ class Search extends LitElement {
   
     setQuery(query = "*") {
       this.query = query;
+    }
+
+    setActive(b = false) {
+      this.active = b;
     }
 
     counts() {
@@ -144,36 +125,22 @@ class Search extends LitElement {
         .catch((e) => console.error(`Error running search:${e}`));
     }
   
-    doSearch(e) {
-      this.query = e.detail;
+    pushHistory() {
       //see https://javascriptplayground.com/url-search-params/
       var searchParams = new URLSearchParams(window.location.search);
-      searchParams.set("search", e.detail);
+      searchParams.set("search", this.query);
       var newRelativePathQuery = window.location.pathname + '?' + searchParams.toString();
       history.pushState(null, '', newRelativePathQuery);
-  
+    }
+
+    doSearch(e) {
+      this.query = e.detail;
+      // FIXME: should mixin be adding to history?
+      this.pushHistory();
       this.counts();
       this.search();
-    }
-  
-    static get styles() {
-      return css`
-            :host {
-                display: block;
-                clear: both;
-            }
-          `
-    }
-  
-    // TODO: maybe just <slot>
-    // need better way to effect 'Searching': -> 
-    render() {
-      return html`        
-            <p><strong>Searching</strong>:<em>${this.query}</em></p>
-            <slot />
-          `
-    }
+    }  
+
   }
   
-  customElements.define('vivo-search', Search);
-  
+export default Searcher;

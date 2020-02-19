@@ -1,13 +1,14 @@
 import { LitElement, html, css } from "lit-element";
 
-import Faceter from './faceter.js'
+import Faceter from '../faceter.js'
 
-class SearchFacets extends Faceter(LitElement) {
+class PublicationDateFacets extends Faceter(LitElement) {
 
   static get properties() {
     return {
         field: { type: String }, // e.g. researchAreas
         key: { type: String }, // e.g. people
+        implements: { type: String, attribute: true, reflect: true }
     }
   }
 
@@ -16,12 +17,17 @@ class SearchFacets extends Faceter(LitElement) {
       :host {
           display: block;
       }
-      vivo-search-facet[selected=""] {
+      vivo-publication-date-facet[selected=""] {
         font-weight: bold;
       }
     `
   }
 
+  constructor() {
+    super();
+    this.implements = "vivo-search-facets";
+  }
+  
   render() {
     if (!this.data) {
       return html``
@@ -31,14 +37,14 @@ class SearchFacets extends Faceter(LitElement) {
     
     let facetList = content.map(facet => {
       let selected = this.inFilters(this.field, facet);   
-      return html`<vivo-search-facet
+      return html`<vivo-publication-date-facet
         category="${this.key}"
         field="${this.field}"
         ?selected=${selected}
         value="${facet.value}" 
         label="${facet.value}" 
         count="${facet.count}">
-        </vivo-search-facet>`
+        </vivo-publication-date-facet>`
       });
       
       return html`
@@ -49,5 +55,5 @@ class SearchFacets extends Faceter(LitElement) {
 
 }
   
-customElements.define('vivo-search-facets', SearchFacets);
+customElements.define('vivo-publication-date-facets', PublicationDateFacets);
   
