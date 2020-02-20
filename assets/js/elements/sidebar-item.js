@@ -10,11 +10,11 @@ class SidebarItem extends LitElement {
         margin: 0;
       }
       ::slotted([slot="heading"]) {
-        padding: .5em 1em;
+        padding: .25em 1em;
         background-color: var(--highlightBackgroundColor);
       }
       ::slotted([slot="content"]) {
-        padding: .5em 1em;
+        padding: 0 1em;
         font-size: 0.85em;
         background-color: var(--lightNeutralColor);
       }

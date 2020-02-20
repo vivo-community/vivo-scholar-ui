@@ -18,10 +18,13 @@ class SiteHeader extends LitElement {
         align-items: center;
       }
       ::slotted([slot="title"]) {
-        font-size: 3em !important;
+        display: block;
+        width: 100%;
+        max-width: 300px;
         margin: 0 !important;
         z-index: 10;
       }
+
       #menu{
         display: flex;
         flex-flow: row nowrap;
@@ -42,22 +45,14 @@ class SiteHeader extends LitElement {
         :host([large]) {
           height: 150px;
         }
-        :host([large]) ::slotted([slot="title"]) {
-          font-size: 5em !important;
-        }
         :host([large]) #navigation {
          top: 150px;
        }
+       :host([large]) ::slotted([slot="title"]) {
+         max-width: 380px;
+       }
       }
-      @media (max-width: 1024px){
-        ::slotted([slot="title"]) {
-          font-size: 2.5em !important;
-        }
-        :host([large]) ::slotted([slot="title"]) {
-          font-size: 3em !important;
-        }
-      }
-      @media (max-width: 700px){
+      @media (max-width: 725px){
         #menu-button {
           display: flex;
           background: none;
@@ -96,31 +91,6 @@ class SiteHeader extends LitElement {
           padding: 7.5% 0 7.5% 0;
           margin: 0;
           text-align: center;
-        }
-      }
-
-      @media (max-width: 530px) {
-        ::slotted([slot="title"]) {
-          font-size: 2em !important;
-        }
-        :host([large]) ::slotted([slot="title"]) {
-          font-size: 2em !important;
-        }
-      }
-      @media (max-width: 388px){
-        ::slotted([slot="title"]) {
-          font-size: 1.8em !important;
-        }
-        :host([large]) ::slotted([slot="title"]) {
-          font-size: 1.8em !important;
-        }
-      }
-      @media (max-width: 366px){
-        ::slotted([slot="title"]) {
-          font-size: 1.5em !important;
-        }
-        :host([large]) ::slotted([slot="title"]) {
-          font-size: 1.5em !important;
         }
       }
 

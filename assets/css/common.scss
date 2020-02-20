@@ -96,6 +96,7 @@ aside {
 
 /* headings */
 
+
 .page-title {
   color: var(--primaryColor);
   font-weight: bold;
@@ -115,8 +116,8 @@ aside {
 .section-title {
   color: var(--primaryColor);
   font-weight: bold;
-  font-size: 1.4em;
-  margin-top: .7em;
+  font-size: 1.8em;
+  margin-top: .9em;
   margin-bottom: .7em;
 }
 
@@ -131,8 +132,8 @@ aside {
 /* elements */
 vivo-sidebar {
   margin: 0.25em;
-  word-spacing: -.025em;
 }
+
 
 vivo-sidebar img {
   display: block;
@@ -161,6 +162,14 @@ vivo-sidebar-item a {
   font-weight: bold;
   text-decoration: none;
   border-bottom: 1px dotted currentColor;
+}
+
+vivo-sidebar-item  > div:first-of-type {
+  padding-top: .25em;
+}
+
+vivo-sidebar-item  > div:last-of-type {
+  padding-bottom: .25em;
 }
 
 vivo-tabs {

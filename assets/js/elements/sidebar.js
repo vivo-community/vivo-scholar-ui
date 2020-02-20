@@ -10,12 +10,12 @@ class Sidebar extends LitElement {
         }
       `
     }
-  
+
     render() {
       return html`
         <slot></slot>
       `
     }
   }
-  
+
   customElements.define('vivo-sidebar', Sidebar);

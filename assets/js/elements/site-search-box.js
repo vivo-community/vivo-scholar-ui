@@ -61,6 +61,13 @@ class SiteSearchBox extends LitElement {
         flex: 1;
         margin-left: 0.5em;
       }
+      #popup-text {
+        margin-top: 1em;
+        margin-right: 3em;
+      }
+      #popup-text.no-show {
+        display: none;
+      }
       @media (max-width: 500px) {
         #search-box {
           flex-flow: column;
@@ -93,7 +100,6 @@ class SiteSearchBox extends LitElement {
   }
 
 
-
   render() {
     return html`
       <div id="search-box">
@@ -103,7 +109,10 @@ class SiteSearchBox extends LitElement {
             ${this.label}
           </button>
         </form>
-        <slot name="after" @click="${this.popup}"></slot>
+        <slot name="after"></slot>
+      </div>
+
+
 
     `
   }

@@ -40,18 +40,7 @@
       border: none;
       display: inline;
   }
-  #popup-text {
-    display: none;
-    border: 1px solid black;
-    border-radius: 25px;
-    background-color: var(--lightNeutralColor);
-    margin-top: 1em;
-    margin-right: 3em;
-    padding: 1em;
-  }
-  #learn-more{
-    font-weight: bold;
-  }
+
 
   @media (max-width: 1675px) {
     h2 {
@@ -106,17 +95,6 @@
   }
 </style>
 
-<script>
-  function showPopup(){
-    var popup = document.getElementById("popup-text")
-    if (popup.style.display === "none") {
-      popup.style.display = "block";
-    } else {
-      popup.style.display = "none";
-    }
-  }
-</script>
-
 <div class="background">
   <div class="content">
     <h2><%= t("home_greeting") %></h2>
@@ -125,14 +103,26 @@
         label="<%= t("search") %>"
         placeholder="<%= t("home_search_text") %>"
     >
-    <i slot="after" class="fas fa-info-circle" onclick="showPopup()"></i>
+    <i slot="after" id="info-toggle" class="fas fa-info-circle"></i>
     </vivo-site-search-box>
-    <div id="popup-text">
-        <h3>About VIVO Scholars</h3>
-        <p>VIVO Scholar showcases the scholarly contributions and activities
-        of the VIVO community. It includes up-to-date information on scholars'
-        publications, grants, and contact information.</p>
-        <p id="learn-more">Learn more...</p>
-      </div>
+    <vivo-popup-message id="popup-text">
+      <h3 >About VIVO Scholars</h3>
+      <p>VIVO Scholar showcases the scholarly contributions and activities
+      of the VIVO community. It includes up-to-date information on scholars'
+      publications, grants, and contact information.</p>
+      <a href="">Learn more...</a>
+    </vivo-popup-message>
   </div>
 </div>
+
+<script>
+  function togglePopup(){
+    var popup = document.getElementById("popup-text")
+    if (popup.getAttribute("open")) {
+      popup.removeAttribute("open");
+    } else {
+      popup.setAttribute("open", true);
+    }
+  }
+  document.getElementById("info-toggle").addEventListener("click", togglePopup);
+</script>
