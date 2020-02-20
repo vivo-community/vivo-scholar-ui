@@ -1,8 +1,8 @@
 <style>
   html, body {
-    height: 100%; 
+    height: 100%;
     width: 100%;
-    margin: 0; 
+    margin: 0;
   }
 
   .background {
@@ -24,9 +24,6 @@
     width: 50%;
   }
 
-  vivo-site-header {
-    opacity: 0.9;
-  }
 
   vivo-site-search-box {
     font-size: 1.5em;
@@ -43,6 +40,7 @@
       border: none;
       display: inline;
   }
+
 
   @media (max-width: 1675px) {
     h2 {
@@ -102,10 +100,29 @@
     <h2><%= t("home_greeting") %></h2>
     <vivo-site-search-box class="site-search"
         action="/search/"
-        label="<%= t("search") %>" 
+        label="<%= t("search") %>"
         placeholder="<%= t("home_search_text") %>"
     >
-      <i slot="after" class="fas fa-info-circle"></i>
+    <i slot="after" id="info-toggle" class="fas fa-info-circle"></i>
     </vivo-site-search-box>
+    <vivo-popup-message id="popup-text">
+      <h3 >About VIVO Scholars</h3>
+      <p>VIVO Scholar showcases the scholarly contributions and activities
+      of the VIVO community. It includes up-to-date information on scholars'
+      publications, grants, and contact information.</p>
+      <a href="">Learn more...</a>
+    </vivo-popup-message>
   </div>
 </div>
+
+<script>
+  function togglePopup(){
+    var popup = document.getElementById("popup-text")
+    if (popup.getAttribute("open")) {
+      popup.removeAttribute("open");
+    } else {
+      popup.setAttribute("open", true);
+    }
+  }
+  document.getElementById("info-toggle").addEventListener("click", togglePopup);
+</script>

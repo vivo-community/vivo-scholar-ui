@@ -42,6 +42,7 @@ class SiteSearchBox extends LitElement {
         padding: 1em;
         font-size: 1em;
         border: none;
+        margin: 0;
       }
       input[name="search"]:placeholder-shown {
         text-overflow: ellipsis;
@@ -54,10 +55,18 @@ class SiteSearchBox extends LitElement {
         background-color: var(--highlightColor);
         font-size: 1em;
         font-weight: bold;
+        margin: 0;
       }
       ::slotted([slot="after"]) {
         flex: 1;
         margin-left: 0.5em;
+      }
+      #popup-text {
+        margin-top: 1em;
+        margin-right: 3em;
+      }
+      #popup-text.no-show {
+        display: none;
       }
       @media (max-width: 500px) {
         #search-box {
@@ -75,20 +84,21 @@ class SiteSearchBox extends LitElement {
   }
 
   handleSubmit(e) {
-    let query = this.shadowRoot.querySelector('input[name="search"]').value;    
+    let query = this.shadowRoot.querySelector('input[name="search"]').value;
     let event = new CustomEvent('searchSubmitted', {
       detail: query.trim(),
       bubbles: true,
       cancelable: false,
-      composed: true 
+      composed: true
     })
-    
+
     this.dispatchEvent(event);
 
     if (this.externalSubmit) {
       e.preventDefault();
     }
   }
+
 
   render() {
     return html`
@@ -101,6 +111,9 @@ class SiteSearchBox extends LitElement {
         </form>
         <slot name="after"></slot>
       </div>
+
+
+
     `
   }
 
