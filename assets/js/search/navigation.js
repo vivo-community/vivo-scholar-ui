@@ -17,8 +17,8 @@ class SearchNavigation extends LitElement {
       this.navFrom = this.navFrom.bind(this);
       this.navTo = this.navTo.bind(this);
       this.handleSearchSubmitted = this.handleSearchSubmitted.bind(this);
-      this.handlePageSelected = this.handlePageSelected.bind(this);
       this.handleTabSelected = this.handleTabSelected.bind(this);
+      this.handlePageSelected = this.handlePageSelected.bind(this);
     }
   
     firstUpdated() {
@@ -61,6 +61,12 @@ class SearchNavigation extends LitElement {
     
     handleTabSelected(e) {
       const tab = e.detail;
+      // FIXME: this seems to be called by when switching page
+      // not sure why? 
+      if (tab == null) {
+        console.error("called handleTabSelected with wrong event");
+        return;
+      }
       this.browsingState.currentTab = tab.id
 
       // first de-activate ?

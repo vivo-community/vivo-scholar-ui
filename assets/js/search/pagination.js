@@ -119,13 +119,18 @@ class SearchPagination extends LitElement {
       }
     };
 
-    return html`
-      <ul>
-        ${previousLink()}
-        ${pages}
-        ${nextLink()}
-      </ul>
-    `
+    let totalPages = this.totalPages;
+    var pagingCombined = function() {
+      if (totalPages > 1) {
+        return html`<ul>
+          ${previousLink()}
+          ${pages}
+          ${nextLink()}
+        </ul>`
+      }
+    };
+
+    return html`${pagingCombined()}`
   }
 }
 
