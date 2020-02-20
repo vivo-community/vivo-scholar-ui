@@ -11,7 +11,7 @@ const publicationQuery = gql`
       ]
       filters: $filters
       paging: {
-        pageSize: 100
+        pageSize: 10
         pageNumber: $pageNumber
         sort: { orders: [{ direction: ASC, property: "title" }] }
       }
