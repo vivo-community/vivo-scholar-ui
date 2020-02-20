@@ -1,5 +1,14 @@
 import { LitElement, html, css } from "lit-element";
 
+/*
+TODO: maybe make a tabbed-search component
+that contains search-text and tabs/searches etc..
+and have it take care of the search switching?
+
+then make this *only* hangle navigation
+(so search still works without it) like the tab-navigation
+on profile
+*/
 class SearchNavigation extends LitElement {
 
     constructor() {
@@ -60,6 +69,8 @@ class SearchNavigation extends LitElement {
       // search is either active or dormant
       // only one can be active at a time
 
+      // TODO: all searches are in vivo-tab-panels
+      // might be better to enable non-tabbed searching 
       let panel = this.getNextSibling(tab, 'vivo-tab-panel');
       let search = panel.querySelector(`[implements="vivo-search"]`);
       this.browsingState.activeSearch = search;
@@ -117,16 +128,12 @@ class SearchNavigation extends LitElement {
       })
     }
     
-    // TODO: this likely doesn't work now
     handlePageSelected(e) {
       const page = e.detail;
       this.browsingState.currentPage = page;
       let search = this.browsingState.activeSearch;
-      // send in new filters, then re-run active search?
-      // search.setFilters( -- page --);
       search.setPage(page.value);
       search.search();
-      // or throw event searchSubmitted?
     }
   
   
@@ -149,9 +156,8 @@ class SearchNavigation extends LitElement {
           tabs.selectTabById(currentTab);
         }
       }
-  
-      // if currentFacet ... 
-      // if currentResults ...
+      // TODO: still lots to do to restore page and facet
+      // (and facet page) etc... from URL params
     }
   
     getTabs() {

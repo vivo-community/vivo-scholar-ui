@@ -99,12 +99,11 @@ class SearchPagination extends LitElement {
     </div>`
 
 
-    // FIXME: make << >> characters etc...
     var previousLink = function () {
       if (previous[0] != '-') {
         return html`<li>
              <a value="${previous[1] - 1}" @click=${callback}>
-               ${previous[1]}
+               <span>«</span> Previous
              </a>
            </li>`
       }
@@ -114,7 +113,7 @@ class SearchPagination extends LitElement {
       if (next[0] != '-') {
         return html`<li>
               <a value="${next[1] - 1}" @click=${callback}>
-                ${previous[1]}
+                Next <span>»</span>
               </a>
             </li>`
       }
