@@ -67,6 +67,9 @@ class FacetGroup extends Faceter(LitElement) {
         this.removeFilter(facet);
       }
       let search = document.querySelector(`[id="${this.search}"]`);
+
+      // FIXME: might need to reset paging here?
+      search.setPage(0);
       search.setFilters(this.filters);
       search.search();
     }

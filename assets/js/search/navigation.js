@@ -97,6 +97,7 @@ class SearchNavigation extends LitElement {
       })
       activeSearch.doSearch(e);
 
+      // FIXME: probably need to reset paging
       this.findCorrectFacetsToDisplay();
     }
   

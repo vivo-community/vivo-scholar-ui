@@ -29,6 +29,28 @@ class SearchPagination extends LitElement {
       div {
         clear: both;
       }
+      ul {
+        display: inline-block;
+        padding-left: 0;
+        margin: 20px 0;
+        border-radius: 4px;
+      }
+      li {
+        display: inline;
+      }
+      li a {
+        /* FIXME: use theme colors etc... */
+        position: relative;
+        float: left;
+        padding: 6px 12px;
+        color: #337ab7;
+        background-color: #fff;
+        border: 1px solid #ddd;
+      }
+      li[active=""] > a {
+        background-color: #337ab7;
+        color: #fff;
+      }
     `
   }
   constructor() {
@@ -62,18 +84,22 @@ class SearchPagination extends LitElement {
     let pageList = paging[1];
 
     let callback = this.handlePageSelected;
+    
     var pages = html`<div>
-      ${_.map(pageList, function (i) {
-      return html`<li>
+      ${pageList.map(i => {
+        // 0 based, so +1
+        let active = (i == (this.number + 1));
+        return html`<li ?active=${active}>
             <a value="${i - 1}" @click=${callback}>
               ${i}
             </a>
           </li>`
-    })
+        })
       }
     </div>`
 
 
+    // FIXME: make << >> characters etc...
     var previousLink = function () {
       if (previous[0] != '-') {
         return html`<li>
