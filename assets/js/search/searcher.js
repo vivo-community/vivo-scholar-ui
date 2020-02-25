@@ -17,14 +17,14 @@ let Searcher = (superclass) => class extends superclass {
       }
     }
 
-    deriveQueryFromParameters() {
+    deriveQueryFromParameters() {      
+      // FIXME: should a mixin use 'window' at all? seems wrong
       const parsed = this.parseQuery(window.location.search.substring(1));
       const defaultQuery = (parsed.search && parsed.search.trim().length > 0) ? parsed.search : "*";
       return defaultQuery;
     }
 
     setUp() {
-      // FIXME: should mixin use 'window' at all?
       this.query = this.deriveQueryFromParameters();
       this.page = 0;
       this.filters = [];

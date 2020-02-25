@@ -8,7 +8,13 @@ class SearchFacets extends Faceter(LitElement) {
     return {
         field: { type: String }, // e.g. researchAreas
         key: { type: String }, // e.g. people
+        tag: { type: String, attribute: true }, // e.g. SOLR "tag"
     }
+  }
+
+  constructor() {
+    super();
+    this.tag = ""
   }
 
   static get styles() {
@@ -33,6 +39,7 @@ class SearchFacets extends Faceter(LitElement) {
       let selected = this.inFilters(this.field, facet);   
       return html`<vivo-search-facet
         category="${this.key}"
+        tag="${this.tag}"
         field="${this.field}"
         ?selected=${selected}
         value="${facet.value}" 

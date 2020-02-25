@@ -2,6 +2,7 @@ import { LitElement, html, css } from "lit-element";
 
 class SearchFacet extends LitElement {
 
+  // NOTE: these are properties for display (like count, value)
   static get properties() {
     return {
       category: { type: String },
@@ -9,6 +10,8 @@ class SearchFacet extends LitElement {
       label: { type: String },
       value: { type: String },
       count: { type: Number },
+      opKey: { type: String },
+      tag: { type: String },
       selected: { type: Boolean, attribute: true, reflect: true }
     }
   }
@@ -35,6 +38,7 @@ class SearchFacet extends LitElement {
   constructor() {
     super();
     this.selected = false;
+    this.opKey = "EQUALS"; // default or not?
     this.handleFacetSelected = this.handleFacetSelected.bind(this);
   }
 
@@ -44,6 +48,8 @@ class SearchFacet extends LitElement {
         category: this.category,
         field: this.field,
         checked: !this.selected,
+        opKey: this.opKey,
+        tag: this.tag,
         value: e.target.getAttribute("value") 
       },
       bubbles: true,

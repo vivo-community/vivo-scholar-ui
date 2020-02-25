@@ -85,7 +85,13 @@ class FacetGroup extends Faceter(LitElement) {
       // data - group by field
       let grouped = _.groupBy(this.data[this.key].facets, "field");
 
-      // 2. for each vivo-search-facet element, get key and field
+
+      // 2. if multiple of same field (example)
+      // need to do this:
+      // {field: "{!tag=t}type", value: "(FacultyMember OR Librarian)", opKey: "RAW" },
+      // turn it into OR
+
+      // 3. for each vivo-search-facet element, get key and field
       // and assign data (+ filters)
       facets.map(facet => {
          let key = facet.key;
