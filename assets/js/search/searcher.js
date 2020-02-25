@@ -56,6 +56,7 @@ let Searcher = (superclass) => class extends superclass {
     }
   
     runSearch() {
+      console.log(`trying to run search with filters: ${JSON.stringify(this.filters)}`);
       // TODO: shuld this also send an event?
       // e.g. this.dispatchEvent(new CustomEvent('searchStarted', {
       // so UI can know - might be useful for 'waiting' watcher

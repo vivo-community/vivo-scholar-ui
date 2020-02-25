@@ -8,7 +8,8 @@ class FacetGroup extends Faceter(LitElement) {
     static get properties() {
       return {
         search: { type: String, attribute: true },
-        key: { type: String }
+        key: { type: String },
+        //opKey: { type: String, attribute: true }
       }
     }
     
@@ -27,6 +28,7 @@ class FacetGroup extends Faceter(LitElement) {
       super();
       this.selected = false;
       this.filters = [];
+      //
 
       this.handleSearchResultsObtained = this.handleSearchResultsObtained.bind(this);
       this.handleFacetSelected = this.handleFacetSelected.bind(this);
@@ -85,7 +87,7 @@ class FacetGroup extends Faceter(LitElement) {
       // data - group by field
       let grouped = _.groupBy(this.data[this.key].facets, "field");
 
-
+      // TODO: do this, or let GraphQL api handle?
       // 2. if multiple of same field (example)
       // need to do this:
       // {field: "{!tag=t}type", value: "(FacultyMember OR Librarian)", opKey: "RAW" },

@@ -9,6 +9,8 @@ class PublicationDateFacet extends LitElement {
       label: { type: String },
       value: { type: String },
       count: { type: Number },
+      opKey: { type: String },
+      tag: { type: String },
       selected: { type: Boolean, attribute: true, reflect: true },
     }
   }
@@ -44,6 +46,8 @@ class PublicationDateFacet extends LitElement {
         category: this.category,
         field: this.field,
         checked: !this.selected,
+        opKey: this.opKey,
+        tag: this.tag,
         value: e.target.getAttribute("value") 
       },
       bubbles: true,

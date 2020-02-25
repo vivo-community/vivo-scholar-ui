@@ -4,10 +4,10 @@ const publicationQuery = gql`
   query($search: String!, $pageNumber: Int!, $filters: [FilterArgInput]) {
     documents(
       facets: [
-        { field: "type" }, 
-        { field: "authors"},
-        { field: "publisher"},
-        { field: "publicationDate"},
+        { field: "type", exclusionTag: "type"  }, 
+        { field: "authors", exclusionTag: "authors" },
+        { field: "publisher", exclusionTag: "publisher" },
+        { field: "publicationDate", exclusionTag: "publicationDate" },
       ]
       filters: $filters
       paging: {
