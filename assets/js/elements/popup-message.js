@@ -59,9 +59,9 @@ class PopupMessage extends LitElement{
     :host([open]) {
       top: 160px;
       left: 0;
-      height: 50%;
-      width: 100%;
-      transform: translate(0,0);
+      height: 30%;
+      width: 80%;
+      transform: translate(8%,30%);
     }
   }
     `;

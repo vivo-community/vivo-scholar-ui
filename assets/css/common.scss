@@ -135,13 +135,6 @@ vivo-sidebar {
 }
 
 
-vivo-sidebar img {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  border: 1px solid #F3F2F1;
-}
-
 vivo-sidebar-item h3 {
   font-size: 1em;
   margin-bottom: 0;
@@ -213,15 +206,77 @@ vivo-tab-panel h4 {
   padding: 0.25em;
 }
 
-/* responsive css */
-@media screen and (max-width: 800px) {
-  .container {
-    display: flex;
-    flex-direction: column;
-  }
-  .container div:first-child {
-    order: 2;
-  }
+/*Sidebar grid - person*/
+.person-container {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: 200px auto;
+  width: 100%;
+  margin: 0 auto;
+  grid-auto-flow: row;
+  grid-column-gap: .5em;
 }
 
-/* navigation */
+.person-container aside {
+  grid-column: span 1;
+  padding: 0.25em;
+}
+
+.person-container .sidebar-image {
+  grid-column: span 1;
+  padding: 0.25em;
+}
+
+.person-container main {
+  grid-column: span 5;
+  padding: 0.25em;
+}
+
+.sidebar-image {
+  display: block;
+  box-sizing: border-box;
+  margin: 0.25em;
+}
+
+.sidebar-image img{
+  height: 205px;
+  width: 205px;
+  display: block;
+  margin: auto;
+  border: 5px solid #F3F2F1;
+}
+
+
+/* responsive css */
+
+@media screen and (max-width: 800px) {
+
+  .person-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-column-gap: 0;
+  }
+
+  .page-title {
+    text-align: center;
+  }
+
+  .page-subtitle {
+    text-align: center;
+  }
+
+  .sidebar-image img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    border: solid 5px #F3F2F1;
+  }
+
+  .section-title {
+    font-size: 1em;
+  }
+
+  // vivo-tabs {
+  //   background-color: white;
+  // }
+}
