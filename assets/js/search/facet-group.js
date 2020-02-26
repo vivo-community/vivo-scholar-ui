@@ -54,7 +54,6 @@ class FacetGroup extends Faceter(LitElement) {
       this.data = data;
     }
 
-    
     handleFacetSelected(e) {
       if (!(e.detail.category == this.key)) {
         return;
