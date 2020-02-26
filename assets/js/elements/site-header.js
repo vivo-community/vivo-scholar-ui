@@ -24,7 +24,20 @@ class SiteHeader extends LitElement {
         margin: 0 !important;
         z-index: 10;
       }
-
+      .fas {
+        display: inline-block;
+        font-style: normal;
+        font-variant: normal;
+        text-rendering: auto;
+        color: white;
+        font-size: 2em;
+        -webkit-font-smoothing: antialiased;
+      }
+      .fa-bars::before {
+        font-family: 'Font Awesome 5 Free';
+        font-weight: 900;
+        content: "\\f0c9";
+      }
       #menu{
         display: flex;
         flex-flow: row nowrap;
@@ -120,7 +133,7 @@ class SiteHeader extends LitElement {
       <button id="menu-button"
         aria-haspopup="true" aria-expanded="false"
         @click="${this.showNav}">
-        <slot name="menu-icon" aria-hidden=”true”></slot>
+        <i id="menu-icon" class="fas fa-bars" aria-hidden=”true”></i>
         <span hidden>Menu</span>
       </button>
 

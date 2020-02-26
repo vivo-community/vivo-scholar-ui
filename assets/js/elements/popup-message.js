@@ -40,6 +40,21 @@ class PopupMessage extends LitElement{
       background-color: var(--highlightBackgroundColor);
       padding: 1em;
     }
+    :host([open]) .fas {
+      display: inline-block;
+      font-style: normal;
+      font-variant: normal;
+      text-rendering: auto;
+      font-size: 2em;
+      display: flex;
+      flex-direction: row-reverse;
+      -webkit-font-smoothing: antialiased;
+    }
+    :host([open]) .fa-times::before {
+      font-family: 'Font Awesome 5 Free';
+      font-weight: 900;
+      content: "\\f00d";
+    }
     ::slotted(a) {
       text-decoration: none;
       color: black;
@@ -74,6 +89,7 @@ class PopupMessage extends LitElement{
 
   render() {
     return html`
+    <i class="fas fa-times"></i>
     <slot></slot>
     `;
   }
