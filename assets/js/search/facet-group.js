@@ -50,11 +50,29 @@ class FacetGroup extends Faceter(LitElement) {
       if (!data || !data[this.key]) {
         return;
       }
-
       this.data = data;
+      let grouped = _.groupBy(this.data[this.key].facets, "field");
+
+      // NOTE: this *should* be removing filters from constructed
+      // search if they are no longer in search results
+      //
+      // This would happen if another facet has been applied and
+      // narrowed the overall results
+      this.filters.map(filter => {
+        // first check if we even have any matches (avoid error)
+        if (grouped[filter.field]) {
+          let entries = grouped[filter.field][0].entries;
+          let content = entries.content;
+          let values = content.map(v => v.value);
+          if (!_.includes(values, filter.value)) {
+            this.removeFilter(filter);
+          }
+        }
+      });
     }
 
     handleFacetSelected(e) {
+      // ?? how to remove filters
       if (!(e.detail.category == this.key)) {
         return;
       }
@@ -65,11 +83,13 @@ class FacetGroup extends Faceter(LitElement) {
       if (facet.checked) {
         this.addFilter(facet);
       } else {
+
         this.removeFilter(facet);
       }
       let search = document.querySelector(`[id="${this.search}"]`);
 
       search.setPage(0);
+      // TODO: should it also remove filters no longer relevant?
       search.setFilters(this.filters);
       search.search();
     }
@@ -86,13 +106,7 @@ class FacetGroup extends Faceter(LitElement) {
       // data - group by field
       let grouped = _.groupBy(this.data[this.key].facets, "field");
 
-      // TODO: do this, or let GraphQL api handle?
-      // 2. if multiple of same field (example)
-      // need to do this:
-      // {field: "{!tag=t}type", value: "(FacultyMember OR Librarian)", opKey: "RAW" },
-      // turn it into OR
-
-      // 3. for each vivo-search-facet element, get key and field
+      // 2. for each vivo-search-facet element, get key and field
       // and assign data (+ filters)
       facets.map(facet => {
          let key = facet.key;
@@ -105,6 +119,7 @@ class FacetGroup extends Faceter(LitElement) {
           // NOTE: after a new search, if there are no
           // facets - need to blank out
           facet.setData(null);
+          //facet.setSelected(false);
           // TODO: nothing seems to be emptying out filters
           // when tab changes
           facet.setFilters([]);
