@@ -79,17 +79,17 @@ class SiteHeader extends LitElement {
           padding: 0;
           position: absolute;
           left: 0;
-          top: 100px;
+          top: 75px;
           z-index: 99;
         }
         #menu {
           display: none;
         }
         #menu.open {
-          display: block;
-          position: relative;
+          display: flex;
+          flex-direction: column;
           margin: 0;
-          padding: 50px 0 0 0;
+          padding: 12.5px 0;
           background-color: var(--primaryColor);
           width: 100%;
         }
@@ -98,9 +98,7 @@ class SiteHeader extends LitElement {
           font-size: 2em;
         }
         ::slotted([slot="nav-item"]){
-          display: block;
           font-size: 1em;
-          position: relative;
           padding: 7.5% 0 7.5% 0;
           margin: 0;
           text-align: center;

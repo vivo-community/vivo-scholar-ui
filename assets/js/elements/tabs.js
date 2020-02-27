@@ -48,7 +48,7 @@ class Tabs extends LitElement {
       }
     });
     const screenWidth = window.screen.width;
-    if (screenWidth > 700) {
+    if (screenWidth >= 720) {
       if (this.tabs.length >= 1 && this.panels.length >= 1 && this.tabs.filter((t) => t.selected).length == 0) {
         this.selectTab(this.tabs[0]);
       }
@@ -64,7 +64,7 @@ class Tabs extends LitElement {
     let tabs = this.querySelectorAll('vivo-tab');
     let index = Array.from(tabs).indexOf(tab);
     let panels = this.querySelectorAll('vivo-tab-panel');
-    if (screenWidth < 700 && tab.hasAttribute('selected')){
+    if (screenWidth <= 720 && tab.hasAttribute('selected')){
       tab.removeAttribute('selected');
         panels[index].removeAttribute('selected');
     } else {

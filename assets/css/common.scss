@@ -9,36 +9,30 @@
   font-family: Verdana, sans-serif;
   line-height: 1.6em;
 }
-
 .site-header {
   position: fixed;
   left: 0;
   top: 0;
   z-index: 10;
 }
-
 .site-header h1 {
   font-family: Arial, sans-serif;
   font-weight: normal;
 }
-
 .site-header h1 a, site-header h1 a:hover {
   color: white;
   text-decoration: none;
 }
-
 .site-sub-header {
   position: fixed;
   left: 0;
   top: 75px;
   z-index: 9;
 }
-
 .site-search {
   width: 75%;
   margin: 0 auto;
 }
-
 .position {
   margin-bottom: 0.75em;
   .position-title {
@@ -49,7 +43,6 @@
     margin-top: 0;
   }
 }
-
 .education {
   margin-bottom: 0.75em;
   .education-organization {
@@ -57,45 +50,27 @@
   }
 }
 
-@media (max-width: 800px) {
-  .site-search {
-    width: 85%;
-  }
-}
-
-@media (max-width: 500px) {
-  .site-search {
-    width: 90%;
-  }
-}
 
 aside {
   font-family: Arial, sans-serif;
 }
-
 #main {
   width: 95%;
   margin: 210px auto 0 auto;
 }
-
 .highlight {
   color: var(--highlightColor);
   font-size: .8em;
-
 }
-
 .title-bar {
   font-weight: 300 !important;
 }
-
 .profile-image {
   max-width: 100%;
   height: auto;
-  vertical-align: middle;
 }
 
 /* headings */
-
 
 .page-title {
   color: var(--primaryColor);
@@ -104,7 +79,6 @@ aside {
   margin-top: 1em;
   margin-bottom: .3em;
 }
-
 .page-subtitle {
   color: var(--textColor);
   font-weight: normal;
@@ -112,7 +86,6 @@ aside {
   margin-top: 0;
   margin-bottom: 1em;
 }
-
 .section-title {
   color: var(--primaryColor);
   font-weight: bold;
@@ -120,7 +93,6 @@ aside {
   margin-top: .9em;
   margin-bottom: .7em;
 }
-
 .subsection-title {
   color: var(--primaryColor);
   font-weight: bold;
@@ -134,45 +106,36 @@ vivo-sidebar {
   margin: 0.25em;
 }
 
-
 vivo-sidebar-item h3 {
   font-size: 1em;
   margin-bottom: 0;
 }
-
 vivo-sidebar-item h4 {
   display: inline;
   font-weight: bold;
   font-size: 1em;
 }
-
 vivo-sidebar-item h4:after {
   content: ":";
 }
-
 vivo-sidebar-item a {
   color: black;
   font-weight: bold;
   text-decoration: none;
   border-bottom: 1px dotted currentColor;
 }
-
 vivo-sidebar-item  > div:first-of-type {
   padding-top: .25em;
 }
-
 vivo-sidebar-item  > div:last-of-type {
   padding-bottom: .25em;
 }
-
 vivo-tabs {
   background-color: #F3F2F1;
 }
-
 vivo-tab-panel {
   background-color: white;
 }
-
 vivo-tab h3 {
   display: inline;
   padding: 0em;
@@ -180,7 +143,6 @@ vivo-tab h3 {
   margin: 0;
   font-weight: normal;
 }
-
 vivo-tab-panel h4 {
   color: var(--primaryColor);
 }
@@ -195,12 +157,10 @@ vivo-tab-panel h4 {
   grid-auto-flow: dense;
   grid-column-gap: .5em;
 }
-
 .container aside {
   grid-column: span 2;
   padding: 0.25em;
 }
-
 .container main {
   grid-column: span 10;
   padding: 0.25em;
@@ -216,67 +176,100 @@ vivo-tab-panel h4 {
   grid-auto-flow: row;
   grid-column-gap: .5em;
 }
-
 .person-container aside {
   grid-column: span 1;
   padding: 0.25em;
 }
-
 .person-container .sidebar-image {
   grid-column: span 1;
   padding: 0.25em;
 }
-
 .person-container main {
   grid-column: span 5;
   padding: 0.25em;
 }
-
-.sidebar-image {
-  display: block;
-  box-sizing: border-box;
-  margin: 0.25em;
-}
-
 .sidebar-image img{
-  height: 205px;
-  width: 205px;
-  display: block;
+  overflow:hidden;
   margin: auto;
   border: 5px solid #F3F2F1;
+
 }
 
 
 /* responsive css */
 
 @media screen and (max-width: 800px) {
-
+// person.html styling
+  #main {
+    width: 100%
+  }
   .person-container {
     display: grid;
     grid-template-columns: 1fr;
     grid-column-gap: 0;
+    background-color: var(--lightNeutralColor);
   }
-
+  .person-container main {
+    padding: 0;
+  }
+  .person-container aside {
+    padding: 0;
+  }
   .page-title {
     text-align: center;
+    margin: 0;
+    padding-top: 3%;
+    background-color: white;
   }
-
   .page-subtitle {
     text-align: center;
+    margin-top: 0;
+    padding-top: 3%;
+    padding-bottom: 3%;
+    background-color: white;
   }
-
+  vivo-tabs {
+    background-color: white;
+  }
+  vivo-tab-panel {
+    padding: 3%;
+  }
+  vivo-sidebar {
+    background-color: white;
+    margin:0;
+    padding:0;
+  }
+  vivo-sidebar-item {
+    margin: 4%;
+  }
+  vivo-sidebar-item:first-of-type {
+    padding-top: 3%;
+  }
+  vivo-sidebar-item:last-of-type {
+    padding-bottom: 3%;
+}
+  .sidebar-image {
+    margin:0;
+    padding: 0;
+    background: white;
+  }
   .sidebar-image img {
+    height: 195px;
+    width: 195px;
     display: block;
-    margin-left: auto;
-    margin-right: auto;
-    border: solid 5px #F3F2F1;
   }
-
   .section-title {
     font-size: 1em;
   }
+  // site search styling
+  .site-search {
+    width: 85%;
+  }
+}
 
-  // vivo-tabs {
-  //   background-color: white;
-  // }
+@media (max-width: 500px) {
+    // site search styling
+  .site-search {
+    width: 90%;
+  }
 }
