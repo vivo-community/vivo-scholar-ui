@@ -25,9 +25,7 @@ class SearchFacetToggle extends LitElement {
     }
 
     handleToggle(e) {
-        console.log(e.target);
-        // target=<vivo-search-facets key="documents" field="type" tag="type">
-        console.log(`${JSON.stringify(e)}`);
+        // TODO: not a good way to match with exact text
         let label = e.target.textContent;
         if (label === 'More...') {  
             e.target.textContent = 'Less...';  
@@ -42,10 +40,10 @@ class SearchFacetToggle extends LitElement {
 
     render() {      
         return html`
-            <div @click=${this.handleToggle} title="Show More Facets">More...</div>
             <div class="facets" visible="${this.visible}">
               <slot></slot>
             </div>
+            <div @click=${this.handleToggle} title="Show More Facets">More...</div>
         `
     }
 
