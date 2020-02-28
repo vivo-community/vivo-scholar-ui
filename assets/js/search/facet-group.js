@@ -8,7 +8,8 @@ class FacetGroup extends Faceter(LitElement) {
     static get properties() {
       return {
         search: { type: String, attribute: true },
-        key: { type: String }
+        key: { type: String },
+        //opKey: { type: String, attribute: true }
       }
     }
     
@@ -27,6 +28,7 @@ class FacetGroup extends Faceter(LitElement) {
       super();
       this.selected = false;
       this.filters = [];
+      //
 
       this.handleSearchResultsObtained = this.handleSearchResultsObtained.bind(this);
       this.handleFacetSelected = this.handleFacetSelected.bind(this);
@@ -48,12 +50,29 @@ class FacetGroup extends Faceter(LitElement) {
       if (!data || !data[this.key]) {
         return;
       }
-
       this.data = data;
+      let grouped = _.groupBy(this.data[this.key].facets, "field");
+
+      // NOTE: this *should* be removing filters from constructed
+      // search if they are no longer in search results
+      //
+      // This would happen if another facet has been applied and
+      // narrowed the overall results
+      this.filters.map(filter => {
+        // first check if we even have any matches (avoid error)
+        if (grouped[filter.field]) {
+          let entries = grouped[filter.field][0].entries;
+          let content = entries.content;
+          let values = content.map(v => v.value);
+          if (!_.includes(values, filter.value)) {
+            this.removeFilter(filter);
+          }
+        }
+      });
     }
 
-    
     handleFacetSelected(e) {
+      // ?? how to remove filters
       if (!(e.detail.category == this.key)) {
         return;
       }
@@ -64,11 +83,13 @@ class FacetGroup extends Faceter(LitElement) {
       if (facet.checked) {
         this.addFilter(facet);
       } else {
+
         this.removeFilter(facet);
       }
       let search = document.querySelector(`[id="${this.search}"]`);
 
       search.setPage(0);
+      // TODO: should it also remove filters no longer relevant?
       search.setFilters(this.filters);
       search.search();
     }
@@ -98,6 +119,7 @@ class FacetGroup extends Faceter(LitElement) {
           // NOTE: after a new search, if there are no
           // facets - need to blank out
           facet.setData(null);
+          //facet.setSelected(false);
           // TODO: nothing seems to be emptying out filters
           // when tab changes
           facet.setFilters([]);

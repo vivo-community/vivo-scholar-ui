@@ -18,8 +18,18 @@ let Faceter = (superclass) => class extends superclass {
     this.filters = filters;
   }
   
+  // TODO: when adding filter - if already one of that field
+  // turn it into a list (then join(' OR '))?
   addFilter(filter) {
-    this.filters.push({"field": filter.field, "value": filter.value});
+    // TODO: maybe not send tag if blank (and opKey too)
+    this.filters.push(
+      {
+        "field": filter.field, 
+        "value": filter.value, 
+        "opKey": filter.opKey,
+        "tag": filter.tag,
+      }
+    );
   }
 
   removeFilter(filter) {

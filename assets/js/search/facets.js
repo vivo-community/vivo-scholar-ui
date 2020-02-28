@@ -8,7 +8,15 @@ class SearchFacets extends Faceter(LitElement) {
     return {
         field: { type: String }, // e.g. researchAreas
         key: { type: String }, // e.g. people
+        tag: { type: String, attribute: true }, // e.g. SOLR "tag"
+        opKey: { type: String, attribute: true } // EQUALS, RAW etc...
     }
+  }
+
+  constructor() {
+    super();
+    this.tag = ""; // default no tagging
+    this.opKey = "EQUALS"; // default to EQUALS compare
   }
 
   static get styles() {
@@ -31,8 +39,12 @@ class SearchFacets extends Faceter(LitElement) {
     
     let facetList = content.map(facet => {
       let selected = this.inFilters(this.field, facet);   
+      // NOTE: not an easy way to vary the opKey per facet
+      // even though each filter 'can' take different
       return html`<vivo-search-facet
         category="${this.key}"
+        tag="${this.tag}"
+        opKey="${this.opKey}"
         field="${this.field}"
         ?selected=${selected}
         value="${facet.value}" 

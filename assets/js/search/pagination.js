@@ -68,11 +68,10 @@ class SearchPagination extends LitElement {
       composed: true
     }));
   }
-  // TODO: need some kind of event for paging - which
-  // then sends page to search to re-filter
+
   render() {
     let paging = pageArrays(this.totalPages, this.number, this.size);
-    /* might look like this (for example):
+    /* data returned might look like this (for example):
     [ 
       [ '-' ],
       [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 ],

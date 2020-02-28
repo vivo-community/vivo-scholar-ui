@@ -8,6 +8,8 @@ class PublicationDateFacets extends Faceter(LitElement) {
     return {
         field: { type: String }, // e.g. researchAreas
         key: { type: String }, // e.g. people
+        tag: { type: String, attribute: true }, // e.g. SOLR "tag"
+        opKey: { type: String, attribute: true },
         implements: { type: String, attribute: true, reflect: true }
     }
   }
@@ -26,6 +28,7 @@ class PublicationDateFacets extends Faceter(LitElement) {
   constructor() {
     super();
     this.implements = "vivo-search-facets";
+    this.opKey = "EQUALS";
   }
   
   render() {
@@ -39,6 +42,8 @@ class PublicationDateFacets extends Faceter(LitElement) {
       let selected = this.inFilters(this.field, facet);   
       return html`<vivo-publication-date-facet
         category="${this.key}"
+        tag="${this.tag}"
+        opKey="${this.opKey}"
         field="${this.field}"
         ?selected=${selected}
         value="${facet.value}" 

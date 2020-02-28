@@ -11,16 +11,8 @@
        <vivo-sidebar-item>
           <vivo-facet-group slot="content" key="people" search="person-search">
             
-            <vivo-search-facets key="people" field="type">
+            <vivo-search-facets key="people" field="type" tag="type">
               <h4>Type</h4>
-            </vivo-search-facets>
-
-            <vivo-search-facets key="people" field="researchAreas">
-              <h4>Research Areas</h4>
-            </vivo-search-facets>
-
-            <vivo-search-facets key="people" field="positions">
-              <h4>Position</h4>
             </vivo-search-facets>
 
           </vivo-facet-group>
@@ -32,20 +24,21 @@
           <vivo-facet-group slot="content" key="documents" search="publication-search">
 
             <!-- TODO: maybe use 'key' from parent facet-group tag -->
-            <vivo-search-facets key="documents" field="type">
+            <vivo-search-facets key="documents" field="type" tag="type">
               <h4>Type</h4>
             </vivo-search-facets>
 
             <vivo-publication-date-facets key="documents" field="publicationDate" 
-              implements="vivo-search-facets">
+              implements="vivo-search-facets" tag="publicationDate">
               <h4>Date</h4>
             </vivo-publication-date-facets>
 
-            <vivo-search-facets key="documents" field="authors">
+            <!-- NOTE: author name seemed to need 'RAW' option -->
+            <vivo-search-facets key="documents" field="authors" tag="authors">
               <h4>Author</h4>
             </vivo-search-facets>
 
-            <vivo-search-facets key="documents" field="publisher">
+            <vivo-search-facets key="documents" field="publisher" tag="publisher">
               <h4>Publisher</h4>
             </vivo-search-facets>
 
