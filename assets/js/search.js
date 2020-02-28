@@ -3,6 +3,7 @@ import './search/navigation.js';
 import './search/facet.js';
 import './search/facets.js';
 import './search/facet-group.js';
+import './search/facet-toggle.js';
 import './search/pagination.js';
 
 // tab specific searches

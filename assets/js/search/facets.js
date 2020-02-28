@@ -30,17 +30,16 @@ class SearchFacets extends Faceter(LitElement) {
     `
   }
 
-  render() {
-    if (!this.data) {
-      return html``
-    }
-    // NOTE: it's an array - but only want first
-    let content = this.data[0].entries.content;
-    
+  generateHiddenFacetList(showList) {
+    return html`<vivo-search-facet-toggle>
+      ${this.generateFacetList(showList)}
+    </vivo-search-facet-toggle>
+    `
+  }
+
+  generateFacetList(content) {
     let facetList = content.map(facet => {
       let selected = this.inFilters(this.field, facet);   
-      // NOTE: not an easy way to vary the opKey per facet
-      // even though each filter 'can' take different
       return html`<vivo-search-facet
         category="${this.key}"
         tag="${this.tag}"
@@ -52,10 +51,26 @@ class SearchFacets extends Faceter(LitElement) {
         count="${facet.count}">
         </vivo-search-facet>`
       });
-      
-      return html`
+    return facetList;
+  }
+
+  render() {
+    if (!this.data) {
+      return html``
+    }
+    // NOTE: it's an array - but only want first
+    let content = this.data[0].entries.content;
+
+    var showList = content.slice(0,5);
+    var hideList = content.slice(5);
+
+    let showHtml  = this.generateFacetList(showList);
+    let hideHtml = (hideList.length > 0) ? this.generateHiddenFacetList(hideList): html``;
+    
+    return html`
         <slot></slot>
-        ${facetList}
+        ${showHtml}
+        ${hideHtml}
       `
     }
 
