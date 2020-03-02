@@ -206,6 +206,7 @@ vivo-tab-panel h4 {
     display: grid;
     grid-template-columns: 1fr;
     grid-column-gap: 0;
+    grid-template-rows: auto;
     background-color: var(--lightNeutralColor);
   }
   .person-container main {
@@ -217,6 +218,7 @@ vivo-tab-panel h4 {
   }
   .page-title {
     text-align: center;
+    font-size: 1.5em;
     margin: 0;
     padding-top: 3%;
     background-color: white;
@@ -255,8 +257,6 @@ vivo-tab-panel h4 {
     background: white;
   }
   .sidebar-image img {
-    height: 195px;
-    width: 195px;
     display: block;
   }
   .section-title {
