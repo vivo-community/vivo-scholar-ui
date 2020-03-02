@@ -189,7 +189,6 @@ vivo-tab-panel h4 {
   padding: 0.25em;
 }
 .sidebar-image img{
-  overflow:hidden;
   margin: auto;
   border: 5px solid #F3F2F1;
 
@@ -238,6 +237,7 @@ vivo-tab-panel h4 {
     background-color: white;
     margin:0;
     padding:0;
+    overflow: hidden;
   }
   vivo-sidebar-item {
     margin: 4%;
