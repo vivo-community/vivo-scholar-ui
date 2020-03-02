@@ -16,6 +16,9 @@ class SearchFacetToggle extends LitElement {
             .facets[visible='true'] {
                 display: block;
             }
+            span.label {
+                opacity: 50%;
+            }
         `
     }
 
@@ -25,25 +28,28 @@ class SearchFacetToggle extends LitElement {
     }
 
     handleToggle(e) {
-        // TODO: not a good way to match with exact text
-        let label = e.target.textContent;
-        if (label === 'More...') {  
-            e.target.textContent = 'Less...';  
+        if (!this.visible) {  
+            let toggle = this.shadowRoot.querySelector("#toggle");
+            toggle.textContent = "Show Less";
             this.visible = true;  
   
-        } else if  ( label === 'Less...' ) {  
-            e.target.textContent = 'More...';  
+        } else if (this.visible) {  
+            let toggle = this.shadowRoot.querySelector("#toggle");
+            toggle.textContent = "Show More";
             this.visible = false;  
         }  
         
     }
 
+    // TODO: what about facets selected - just be hidden?
     render() {      
         return html`
             <div class="facets" visible="${this.visible}">
               <slot></slot>
             </div>
-            <div @click=${this.handleToggle} title="Show More Facets">More...</div>
+            <div @click=${this.handleToggle}>
+              <span class="label" id="toggle">Show More</span>
+            </div>
         `
     }
 
