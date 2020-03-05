@@ -5,6 +5,7 @@ import './search/facets.js';
 import './search/facet-group.js';
 import './search/facet-toggle.js';
 import './search/pagination.js';
+import './search/facet-popup.js';
 
 // tab specific searches
 import './search/people/person-search.js';

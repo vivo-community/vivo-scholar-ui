@@ -54,7 +54,6 @@ class SearchFacetToggle extends LitElement {
     
 
     handleToggle(e) {
-        // console.log(`total facets (over 5)=${this.count}`);
         // need facets shown count?
         // if we keep track of how many shown, if another 'More'
         // would go over number, show Less

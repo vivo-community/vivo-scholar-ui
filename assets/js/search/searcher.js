@@ -18,13 +18,16 @@ let Searcher = (superclass) => class extends superclass {
     }
 
     deriveQueryFromParameters() {      
-      // FIXME: should a mixin use 'window' at all? seems wrong
       const parsed = this.parseQuery(window.location.search.substring(1));
+      // parsed.page?
+      // parsed.facets?
+      // parsed.filters?
       const defaultQuery = (parsed.search && parsed.search.trim().length > 0) ? parsed.search : "*";
       return defaultQuery;
     }
 
     setUp() {
+      // NOTE: this is only getting 'search' - not tab, page, facet(s), filter(s) etc...
       this.query = this.deriveQueryFromParameters();
       this.page = 0;
       this.filters = [];
@@ -56,6 +59,8 @@ let Searcher = (superclass) => class extends superclass {
     }
   
     runSearch() {
+      //this.pushHistory();
+      // change URL here?
       // TODO: shuld this also send an event?
       // e.g. this.dispatchEvent(new CustomEvent('searchStarted', {
       // so UI can know - might be useful for 'waiting' watcher
@@ -125,17 +130,32 @@ let Searcher = (superclass) => class extends superclass {
         .catch((e) => console.error(`Error running search:${e}`));
     }
   
-    pushHistory() {
+    pushHistory() {;
       //see https://javascriptplayground.com/url-search-params/
+      
       var searchParams = new URLSearchParams(window.location.search);
       searchParams.set("search", this.query);
       var newRelativePathQuery = window.location.pathname + '?' + searchParams.toString();
       history.pushState(null, '', newRelativePathQuery);
+      
+      /*
+      var searchParams = new URLSearchParams(window.location.search);
+      searchParams.set("search", this.query);
+      var newPath = window.location.pathname + 'people?' + searchParams.toString();
+      
+      history.pushState(
+        null, 
+        "",
+        newPath
+      );
+      */
+      
     }
 
-    doSearch(e) {
-      this.query = e.detail;
-      // FIXME: should mixin be adding to history?
+    // NOTE: only called by handleSearchSubmitted in navigation.js
+    doSearch(query) {
+      // assumes not blank string (check already)
+      this.query = query;
       this.pushHistory();
       this.counts();
       this.search();

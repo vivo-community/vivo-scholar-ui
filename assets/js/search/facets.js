@@ -17,6 +17,8 @@ class SearchFacets extends Faceter(LitElement) {
     super();
     this.tag = ""; // default no tagging
     this.opKey = "EQUALS"; // default to EQUALS compare
+    this.popupThreshold = 5;
+    this.togglePopup = this.togglePopup.bind(this);
   }
 
   static get styles() {
@@ -30,11 +32,29 @@ class SearchFacets extends Faceter(LitElement) {
     `
   }
 
+  togglePopup() {
+    let popup = this.shadowRoot.querySelector("#popup-text");
+
+    if (popup.getAttribute("open")) {
+      popup.removeAttribute("open");
+    } else {
+      popup.setAttribute("open", true);
+    }
+  }
+
   generateHiddenFacetList(showList) {
-    return html`<vivo-search-facet-toggle>
+    var results = html`<vivo-search-facet-toggle>
       ${this.generateFacetList(showList)}
-    </vivo-search-facet-toggle>
-    `
+    </vivo-search-facet-toggle>`
+
+    if (showList.length >= this.popupThreshold) {
+        results = html`
+        <h4 id="toggle-facet" @click=${this.togglePopup}>Show More</h4>
+        <vivo-facet-popup-message id="popup-text">
+          ${this.generateFacetList(showList)}
+        </vivo-facet-popup-message>`;
+    } 
+    return results
   }
 
   generateFacetList(content) {
@@ -64,6 +84,11 @@ class SearchFacets extends Faceter(LitElement) {
     var showList = content.slice(0,5);
     var hideList = content.slice(5);
 
+    let extras = hideList.filter(facet => 
+       this.inFilters(this.field, facet)
+    );
+    showList = _.concat(showList, extras);
+    hideList = _.difference(hideList, extras);
     let showHtml  = this.generateFacetList(showList);
     let hideHtml = (hideList.length > 0) ? this.generateHiddenFacetList(hideList): html``;
     

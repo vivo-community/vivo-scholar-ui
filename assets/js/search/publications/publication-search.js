@@ -27,6 +27,7 @@ class PublicationSearch extends Searcher(LitElement) {
       super();
       this.graphql = pubQuery;
       this.active = false;
+      this.path = "/people"; // ?? trying to find way to establish URL per search
       this.handleSearchResultsObtained = this.handleSearchResultsObtained.bind(this);
       this.handleCountResultsObtained = this.handleCountResultsObtained.bind(this);
       this.setUp();
@@ -50,6 +51,11 @@ class PublicationSearch extends Searcher(LitElement) {
           return;
       }
       this.data = data;
+      // might be a new count in here
+      var docCount = this.data ? this.data.documents.page.totalElements : 0;
+      let tab = document.querySelector('#publication-search-count');
+      tab.textContent = `${docCount}`;
+
     }
   
     // TODO: probably a better way to spread out counts to tab headings

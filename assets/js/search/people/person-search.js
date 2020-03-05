@@ -58,6 +58,11 @@ class PersonSearch extends Searcher(LitElement) {
             return;
         }
         this.data = data;
+
+        // might be a new count in here
+        var docCount = this.data ? this.data.people.page.totalElements : 0;
+        let tab = document.querySelector('#person-search-count');
+        tab.textContent = `${docCount}`;
     }
 
     handleCountResultsObtained(e) {
@@ -92,7 +97,7 @@ class PersonSearch extends Searcher(LitElement) {
     render() {
         if (!this.active == true || !this.data || !this.data.people) {
             return html``
-        } 
+        }
         var results = [];
 
         if (this.data && this.data.people.content) {
@@ -106,9 +111,9 @@ class PersonSearch extends Searcher(LitElement) {
         let _self = this;
         var resultsDisplay = html`<div>
           ${_.map(results, function (i) {
-              return _self.renderPerson(i);
-            })
-          }
+            return _self.renderPerson(i);
+        })
+            }
         </div>`;
 
         let pagination = html``;

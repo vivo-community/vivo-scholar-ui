@@ -27,12 +27,13 @@ class SearchNavigation extends LitElement {
       document.addEventListener('searchSubmitted', this.handleSearchSubmitted);
       document.addEventListener('pageSelected', this.handlePageSelected);
       // wouldn't this select the first one?
-      let defaultSearch = document.querySelector('vivo-person-search');
+      let defaultSearch = document.querySelector(`[implements="vivo-search"]`);
+      //let defaultSearch = document.querySelector('vivo-person-search');
       // 1. then get id
       // 2. then hide all facets except with id
       this.browsingState.activeSearch = defaultSearch;
       defaultSearch.setActive(true);
-  
+      
       this.findCorrectFacetsToDisplay();
     }
   
@@ -85,9 +86,10 @@ class SearchNavigation extends LitElement {
       search.setActive(true);
 
       if (search) {
-        // re-run search here?  should render
-        search.counts();
+        // NOTE: not re-running 'counts' query so
+        // facet count is preserved in tab
         search.search();  
+        // add active-search to URL as /people, /publications etc... ?
       } else {
           console.error("could not find search");
       }
@@ -96,8 +98,8 @@ class SearchNavigation extends LitElement {
     }
   
     handleSearchSubmitted(e) {
-      const search = e.detail;
-  
+      const search = (e.detail != '') ? e.detail : "*";
+
       this.browsingState.currentQuery = search;
       let activeSearch = this.browsingState.activeSearch;
   
@@ -112,7 +114,8 @@ class SearchNavigation extends LitElement {
         s.setQuery(search);
         s.setFilters([]); // not sure this actually works
       })
-      activeSearch.doSearch(e);
+
+      activeSearch.doSearch(search);
 
       // FIXME: probably need to reset paging
       this.findCorrectFacetsToDisplay();

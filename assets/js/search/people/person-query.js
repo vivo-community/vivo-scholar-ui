@@ -6,7 +6,8 @@ const peopleQuery = gql`
       facets: [
         { field: "type", exclusionTag: "type" },
         { field: "organizations", exclusionTag: "organizations"},
-        { field: "schools", exclusionTag: "schools"}     
+        { field: "schools", exclusionTag: "schools"},
+        { field: "name", exclusionTag: "name"},
       ]
       filters: $filters
       paging: {
