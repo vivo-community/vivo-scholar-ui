@@ -112,7 +112,12 @@ class SearchNavigation extends LitElement {
       let searches = document.querySelectorAll(`[implements="vivo-search"]`);
       searches.forEach(s => {
         s.setQuery(search);
-        s.setFilters([]); // not sure this actually works
+      })
+
+      // clear all the 'filters' 
+      let facets = document.querySelectorAll('vivo-facet-group');
+      facets.forEach(s => {
+        s.setFilters([]);
       })
 
       activeSearch.doSearch(search);
