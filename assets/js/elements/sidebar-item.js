@@ -17,6 +17,16 @@ class SidebarItem extends LitElement {
         padding: 0 1em;
         font-size: 0.85em;
         background-color: var(--lightNeutralColor);
+        width: 204.53px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      ::slotted([slot="content"]) div{
+        width: 204.53px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
     `
   }
@@ -24,7 +34,7 @@ class SidebarItem extends LitElement {
   render() {
     return html`
       <slot name="heading"></slot>
-      <slot name="content"></slot>
+      <slot name="content"></slot></slot>
     `
   }
 }

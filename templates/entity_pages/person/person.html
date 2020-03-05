@@ -203,7 +203,7 @@
              <% SortByStringField(websites, "label") %>
              <%= for (w) in websites { %>
              <div slot="content" class="website">
-                <a class="prof-link" href="<%= w["url"] %>">
+                <a title="<%= w["label"] %>" class="prof-link" href="<%= w["url"] %>">
                    <%= w["label"] %>
                 </a>
              </div>
@@ -218,7 +218,7 @@
              <% SortByStringField(researchAreas, "label") %>
             <%= for (k) in researchAreas { %>
             <div slot="content">
-              <a href="/entities/concepts/<%= k["id"] %>">
+              <a title="<%= k["label"] %>" href="/entities/concepts/<%= k["id"] %>">
                 <%= k["label"] %>
               </a>
             </div>
