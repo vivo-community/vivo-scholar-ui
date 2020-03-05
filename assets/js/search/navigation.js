@@ -112,6 +112,7 @@ class SearchNavigation extends LitElement {
       let searches = document.querySelectorAll(`[implements="vivo-search"]`);
       searches.forEach(s => {
         s.setQuery(search);
+        s.setPage(0);
       })
 
       // clear all the 'filters' 
