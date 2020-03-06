@@ -29,6 +29,11 @@ class SearchFacets extends Faceter(LitElement) {
       vivo-search-facet[selected=""] {
         font-weight: bold;
       }
+      :host p {
+        opacity: 50%;
+        font-size: 1em;
+        font-weight: normal;
+      }
     `
   }
 
@@ -49,7 +54,7 @@ class SearchFacets extends Faceter(LitElement) {
 
     if (showList.length >= this.popupThreshold) {
         results = html`
-        <h4 id="toggle-facet" @click=${this.togglePopup}>Show More</h4>
+        <p id="toggle-facet" @click=${this.togglePopup}>Show More</p>
         <vivo-facet-popup-message id="popup-text">
           ${this.generateFacetList(showList)}
         </vivo-facet-popup-message>`;

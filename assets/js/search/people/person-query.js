@@ -8,6 +8,7 @@ const peopleQuery = gql`
         { field: "organizations", exclusionTag: "organizations"},
         { field: "schools", exclusionTag: "schools"},
         { field: "name", exclusionTag: "name"},
+        { field: "researchAreas", exclusionTag: "ra" },
       ]
       filters: $filters
       paging: {
