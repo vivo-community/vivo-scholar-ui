@@ -179,7 +179,7 @@
                <%= if (person["primaryEmail"]) { %>
               <div slot="content">
                <h4><%= t("email") %></h4>
-               <span><%= person["primaryEmail"] %></span>
+               <span title="<%= person["primaryEmail"] %>"><%= person["primaryEmail"] %></span>
               </div>
                <% } %>
                <%= if (person["phone"]) { %>
@@ -191,7 +191,7 @@
                <%= if (person["streetAddress"]) { %>
               <div slot="content">
                <h4><%= t("address_1") %></h4>
-               <div><%= person["streetAddress"] %></div>
+               <span title="<%= person["streetAddress"] %>"><%= person["streetAddress"] %></span>
               </div>
                <% } %>
          </vivo-sidebar-item>
