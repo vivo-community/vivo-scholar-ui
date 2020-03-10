@@ -18,16 +18,27 @@ let Searcher = (superclass) => class extends superclass {
     }
 
     deriveQueryFromParameters() {      
-      // FIXME: should a mixin use 'window' at all? seems wrong
       const parsed = this.parseQuery(window.location.search.substring(1));
+      // parsed.page?
+      // parsed.facets?
+      // parsed.filters?
+      // parsed.orders?
       const defaultQuery = (parsed.search && parsed.search.trim().length > 0) ? parsed.search : "*";
       return defaultQuery;
     }
 
-    setUp() {
+    defaultSort() {
+      return [{ direction: "ASC", property: "name" }]
+    }
+
+    // TODO: maybe search should listen for page request (and sort)
+    setUp(orders) {
+      // NOTE: this is only getting 'search' - not tab, page, facet(s), filter(s) etc...
       this.query = this.deriveQueryFromParameters();
       this.page = 0;
       this.filters = [];
+      // TODO: each search should probably implement it's own default
+      this.orders = orders ? orders : this.defaultSort();
 
       this.counts();
       this.search();
@@ -56,18 +67,26 @@ let Searcher = (superclass) => class extends superclass {
     }
   
     runSearch() {
-      // TODO: shuld this also send an event?
-      // e.g. this.dispatchEvent(new CustomEvent('searchStarted', {
+      // this.pushHistory();?
+      // change URL here?
+      this.dispatchEvent(new CustomEvent('searchStarted', {
+        detail: { time: Date(Date.now()) },
+        bubbles: true,
+        cancelable: false,
+        composed: true
+      }));
       // so UI can know - might be useful for 'waiting' watcher
       // or to know state of filters etc...
       const fetchData = async () => {
         try {
+
           const { data } = await client.query({
             query: this.graphql,
             variables: {
               pageNumber: this.page,
               search: this.query,
-              filters: this.filters
+              filters: this.filters,
+              orders: this.orders
             }
           });
           this.data = data;
@@ -95,6 +114,11 @@ let Searcher = (superclass) => class extends superclass {
       this.active = b;
     }
 
+    // needs to look like this ...
+    setSort(orders = []) {
+      this.orders = orders
+    }
+
     counts() {
       this.runCounts()
         .then(() => {
@@ -109,10 +133,7 @@ let Searcher = (superclass) => class extends superclass {
     }
   
     search() {
-      // should filters be part of this custom event?
-      // so facets can know what to check?
-      // add more to detail? like this.query?
-      // e.g. detail: { data: this.data, query: this.query etc... }
+      // TODO: maybe add time stopped to detail?
       this.runSearch()
         .then(() => {
           this.dispatchEvent(new CustomEvent('searchResultsObtained', {
@@ -125,17 +146,34 @@ let Searcher = (superclass) => class extends superclass {
         .catch((e) => console.error(`Error running search:${e}`));
     }
   
-    pushHistory() {
+    pushHistory() {;
       //see https://javascriptplayground.com/url-search-params/
+      
       var searchParams = new URLSearchParams(window.location.search);
       searchParams.set("search", this.query);
       var newRelativePathQuery = window.location.pathname + '?' + searchParams.toString();
       history.pushState(null, '', newRelativePathQuery);
+      
+      /*
+      TODO: maybe manipulating URL to store search would start like this?:
+
+      var searchParams = new URLSearchParams(window.location.search);
+      searchParams.set("search", this.query);
+      var newPath = window.location.pathname + 'people?' + searchParams.toString();
+      
+      history.pushState(
+        null, 
+        "",
+        newPath
+      );
+      */
+      
     }
 
-    doSearch(e) {
-      this.query = e.detail;
-      // FIXME: should mixin be adding to history?
+    // NOTE: only called by handleSearchSubmitted in navigation.js
+    doSearch(query) {
+      // assumes not blank string (checked already)
+      this.query = query;
       this.pushHistory();
       this.counts();
       this.search();

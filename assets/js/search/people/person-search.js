@@ -39,10 +39,18 @@ class PersonSearch extends Searcher(LitElement) {
         this.handleSearchResultsObtained = this.handleSearchResultsObtained.bind(this);
         this.handleCountResultsObtained = this.handleCountResultsObtained.bind(this);
         this.setUp();
+
+        // TODO: set a default sort?
+        this.sortOptions = [
+            {label: 'Name (asc)', field: 'name', 'direction': "ASC"},
+            {label: 'Name (desc)', field: 'name', 'direction': "DESC"}
+        ];
     }
 
     firstUpdated() {
         document.addEventListener('searchResultsObtained', this.handleSearchResultsObtained);
+        // FIXME: might not need the separate countsResults if tab has uses
+        // totalElements (see below)
         document.addEventListener('countResultsObtained', this.handleCountResultsObtained);
     }
 
@@ -58,6 +66,11 @@ class PersonSearch extends Searcher(LitElement) {
             return;
         }
         this.data = data;
+
+        // might be a new count in here
+        var docCount = this.data ? this.data.people.page.totalElements : 0;
+        let tab = document.querySelector('#person-search-count');
+        tab.textContent = `${docCount}`;
     }
 
     handleCountResultsObtained(e) {
@@ -92,7 +105,7 @@ class PersonSearch extends Searcher(LitElement) {
     render() {
         if (!this.active == true || !this.data || !this.data.people) {
             return html``
-        } 
+        }
         var results = [];
 
         if (this.data && this.data.people.content) {
@@ -106,9 +119,9 @@ class PersonSearch extends Searcher(LitElement) {
         let _self = this;
         var resultsDisplay = html`<div>
           ${_.map(results, function (i) {
-              return _self.renderPerson(i);
-            })
-          }
+            return _self.renderPerson(i);
+           })
+        }
         </div>`;
 
         let pagination = html``;
@@ -122,8 +135,17 @@ class PersonSearch extends Searcher(LitElement) {
           />`
         }
 
+        let sorter = html``;
+        // TODO: is stringify necessary?
+        if (this.data) {
+            sorter = html`<vivo-search-sorter
+              options=${JSON.stringify(this.sortOptions)}>
+            </vivo-search-sorter>`
+        }
+
         return html`
           <div>
+          ${sorter}
           ${resultsDisplay}
           ${pagination}
           </div>`

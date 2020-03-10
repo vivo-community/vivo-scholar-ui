@@ -2,6 +2,7 @@ import { LitElement, html, css } from "lit-element";
 
 import Faceter from '../faceter.js'
 
+// TODO: might end up better to extend SearchFacets
 class PublicationDateFacets extends Faceter(LitElement) {
 
   static get properties() {
