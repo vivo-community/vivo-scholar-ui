@@ -1,7 +1,5 @@
 import { LitElement, html, css } from "lit-element";
 
-// TODO: probably want to show more, and show more 
-// until there are no more
 class SearchFacetToggle extends LitElement {
 
     static get properties() {
@@ -54,14 +52,6 @@ class SearchFacetToggle extends LitElement {
     
 
     handleToggle(e) {
-        // need facets shown count?
-        // if we keep track of how many shown, if another 'More'
-        // would go over number, show Less
-        // e.g. this.shadowRoot.querySelector('vivo-search-facet') ??
-        // if allShown ->
-        //   show less ->
-        // else (e.g. there are more) -> 
-        //   show more -> display: visible? 
         if (!this.visible) {  
             let toggle = this.shadowRoot.querySelector("#toggle");
             toggle.textContent = "Show Less";
@@ -75,7 +65,6 @@ class SearchFacetToggle extends LitElement {
         
     }
 
-    // TODO: what to do about facets selected and 'show less'?
     render() {      
         return html`
             <div class="facets" visible="${this.visible}">

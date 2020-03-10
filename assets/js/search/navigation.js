@@ -34,11 +34,8 @@ class SearchNavigation extends LitElement {
       document.addEventListener('sortSelected', this.handleSortSelected);
 
       document.addEventListener('searchStarted', this.handleSearchStarted);
-      // wouldn't this select the first one?
+      // make the first one default
       let defaultSearch = document.querySelector(`[implements="vivo-search"]`);
-      //let defaultSearch = document.querySelector('vivo-person-search');
-      // 1. then get id
-      // 2. then hide all facets except with id
       this.browsingState.activeSearch = defaultSearch;
       defaultSearch.setActive(true);
       

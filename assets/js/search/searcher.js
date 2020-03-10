@@ -156,6 +156,8 @@ let Searcher = (superclass) => class extends superclass {
       history.pushState(null, '', newRelativePathQuery);
       
       /*
+      TODO: maybe manipulating URL to store search would start like this?:
+
       var searchParams = new URLSearchParams(window.location.search);
       searchParams.set("search", this.query);
       var newPath = window.location.pathname + 'people?' + searchParams.toString();
@@ -171,7 +173,7 @@ let Searcher = (superclass) => class extends superclass {
 
     // NOTE: only called by handleSearchSubmitted in navigation.js
     doSearch(query) {
-      // assumes not blank string (check already)
+      // assumes not blank string (checked already)
       this.query = query;
       this.pushHistory();
       this.counts();

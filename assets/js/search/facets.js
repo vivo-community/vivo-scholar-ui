@@ -17,7 +17,7 @@ class SearchFacets extends Faceter(LitElement) {
     super();
     this.tag = ""; // default no tagging
     this.opKey = "EQUALS"; // default to EQUALS compare
-    this.popupThreshold = 8;
+    this.popupThreshold = 8; // eventually 15
     this.togglePopup = this.togglePopup.bind(this);
   }
 

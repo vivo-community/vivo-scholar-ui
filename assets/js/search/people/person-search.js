@@ -120,8 +120,8 @@ class PersonSearch extends Searcher(LitElement) {
         var resultsDisplay = html`<div>
           ${_.map(results, function (i) {
             return _self.renderPerson(i);
-        })
-            }
+           })
+        }
         </div>`;
 
         let pagination = html``;
@@ -136,8 +136,8 @@ class PersonSearch extends Searcher(LitElement) {
         }
 
         let sorter = html``;
+        // TODO: is stringify necessary?
         if (this.data) {
-            // make sorter
             sorter = html`<vivo-search-sorter
               options=${JSON.stringify(this.sortOptions)}>
             </vivo-search-sorter>`
