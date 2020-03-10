@@ -17,7 +17,7 @@ class SearchFacets extends Faceter(LitElement) {
     super();
     this.tag = ""; // default no tagging
     this.opKey = "EQUALS"; // default to EQUALS compare
-    this.popupThreshold = 6;
+    this.popupThreshold = 8;
     this.togglePopup = this.togglePopup.bind(this);
   }
 
@@ -54,10 +54,13 @@ class SearchFacets extends Faceter(LitElement) {
     return results;
   }
 
+  // might be good to get title of facet in here
+  // but it's not necessarily in the data
   generateFacetPopup(showList) {
     var results = html`
     <p id="toggle-facet" @click=${this.togglePopup}>Show More</p>
     <vivo-facet-popup-message id="popup-text">
+      <h4>Filters</h4>
       ${this.generateFacetList(showList)}
     </vivo-facet-popup-message>`;
     return results;

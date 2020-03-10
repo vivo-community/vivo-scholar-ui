@@ -19,13 +19,17 @@ class SearchNavigation extends LitElement {
       this.handleSearchSubmitted = this.handleSearchSubmitted.bind(this);
       this.handleTabSelected = this.handleTabSelected.bind(this);
       this.handlePageSelected = this.handlePageSelected.bind(this);
+      this.handleSortSelected = this.handleSortSelected.bind(this);
     }
   
     firstUpdated() {
       document.addEventListener('DOMContentLoaded', this.navFrom);
       document.addEventListener('tabSelected', this.handleTabSelected);
       document.addEventListener('searchSubmitted', this.handleSearchSubmitted);
+      // NOTE: these are search specific - should maybe be in searcher.js
+      // code instead of here
       document.addEventListener('pageSelected', this.handlePageSelected);
+      document.addEventListener('sortSelected', this.handleSortSelected);
       // wouldn't this select the first one?
       let defaultSearch = document.querySelector(`[implements="vivo-search"]`);
       //let defaultSearch = document.querySelector('vivo-person-search');
@@ -43,6 +47,7 @@ class SearchNavigation extends LitElement {
       document.removeEventListener('tabSelected', this.handleTabSelected);
       document.removeEventListener('searchSubmitted', this.handleSearchSubmitted);
       document.removeEventListener('pageSelected', this.handlePageSelected);
+      document.removeEventListener('sortSelected', this.handleSortSelected);
     }
   
     getNextSibling(elem, selector) {
@@ -62,8 +67,8 @@ class SearchNavigation extends LitElement {
     
     handleTabSelected(e) {
       const tab = e.detail;
-      // FIXME: this seems to be called by when switching page
-      // not sure why? 
+      // FIXME: this seems to be called by clicking anywhere on tab panel
+      // not sure it's really an error
       if (tab == null) {
         console.error("called handleTabSelected with wrong event");
         return;
@@ -151,6 +156,14 @@ class SearchNavigation extends LitElement {
       search.search();
     }
   
+    handleSortSelected(e) {
+      let search = this.browsingState.activeSearch;
+      let orders = [e.detail]
+      search.setSort(orders);
+      // TODO: reset page?
+      search.setPage(0);
+      search.search();
+    }
   
     navTo() {
       const searchParams = new URLSearchParams(this.browsingState);

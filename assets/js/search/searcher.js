@@ -22,15 +22,22 @@ let Searcher = (superclass) => class extends superclass {
       // parsed.page?
       // parsed.facets?
       // parsed.filters?
+      // parsed.orders?
       const defaultQuery = (parsed.search && parsed.search.trim().length > 0) ? parsed.search : "*";
       return defaultQuery;
     }
 
+    defaultSort() {
+      return [{ direction: "ASC", property: "name" }]
+    }
+    // TODO: maybe search should listen for page request (and sort)
     setUp() {
       // NOTE: this is only getting 'search' - not tab, page, facet(s), filter(s) etc...
       this.query = this.deriveQueryFromParameters();
       this.page = 0;
       this.filters = [];
+      // TODO: each search should probably implement different default
+      this.orders = this.defaultSort();
 
       this.counts();
       this.search();
@@ -72,7 +79,8 @@ let Searcher = (superclass) => class extends superclass {
             variables: {
               pageNumber: this.page,
               search: this.query,
-              filters: this.filters
+              filters: this.filters,
+              orders: this.orders
             }
           });
           this.data = data;
@@ -98,6 +106,11 @@ let Searcher = (superclass) => class extends superclass {
 
     setActive(b = false) {
       this.active = b;
+    }
+
+    // needs to look like this ...
+    setSort(orders = []) {
+      this.orders = orders
     }
 
     counts() {

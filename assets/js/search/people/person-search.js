@@ -40,14 +40,17 @@ class PersonSearch extends Searcher(LitElement) {
         this.handleCountResultsObtained = this.handleCountResultsObtained.bind(this);
         this.setUp();
 
+        // TODO: set a default sort?
         this.sortOptions = [
-            {label: 'Name (asc)', field: 'name', 'direction': "asc"},
-            {label: 'Name (desc)', field: 'name', 'direction': "desc"}
+            {label: 'Name (asc)', field: 'name', 'direction': "ASC"},
+            {label: 'Name (desc)', field: 'name', 'direction': "DESC"}
         ];
     }
 
     firstUpdated() {
         document.addEventListener('searchResultsObtained', this.handleSearchResultsObtained);
+        // FIXME: might not need the separate countsResults if tab has uses
+        // totalElements (see below)
         document.addEventListener('countResultsObtained', this.handleCountResultsObtained);
     }
 

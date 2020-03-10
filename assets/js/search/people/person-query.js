@@ -1,7 +1,7 @@
 import gql from "graphql-tag";
 
 const peopleQuery = gql`
-  query($search: String!, $pageNumber: Int!, $filters: [FilterArgInput]) {
+  query($search: String!, $pageNumber: Int!, $filters: [FilterArgInput], $orders: [OrderInput]) {
     people(
       facets: [
         { field: "type", exclusionTag: "type" },
@@ -14,7 +14,7 @@ const peopleQuery = gql`
       paging: {
         pageSize: 5
         pageNumber: $pageNumber
-        sort: { orders: [{ direction: ASC, property: "name" }] }
+        sort: { orders: $orders }
       }
       query: $search
     ) {

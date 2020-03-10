@@ -18,13 +18,8 @@ class SearchSorter extends LitElement {
     }
 
     handleSortSelected(e) {
-        console.log(e);
-        console.log(e.target);
-        //console.log(e.getAttribute("value"));
-        //this.selected = ?
+        let value = e.target.value;
 
-        var value = e.target.getAttribute("value");
-        
         // not getting any value so far
         if (!value) {
             console.error('no value for sorter');
@@ -35,7 +30,7 @@ class SearchSorter extends LitElement {
 
         // also, reset paging?  
         this.dispatchEvent(new CustomEvent('sortSelected', {
-            detail: { value: field, direction: direction },
+            detail: { property: field, direction: direction },
             bubbles: true,
             cancelable: false,
             composed: true

@@ -48,9 +48,9 @@ class FacetPopupMessage extends LitElement{
       font-size: 1.5em;
       text-align: center;
       line-height: normal;
-      height: 50%;
+      height: 75%;
       width: 50%;
-      transform: translate(0,-50%);
+      transform: translate(0,-105%);
       border: 1px solid black;
       border-radius: 25px;
       background-color: var(--highlightBackgroundColor);
@@ -109,7 +109,7 @@ class FacetPopupMessage extends LitElement{
 
   render() {
     return html`
-    <i class="fas fa-times"></i>
+    
     <slot></slot>
     `;
   }
