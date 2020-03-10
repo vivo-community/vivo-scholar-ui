@@ -14,25 +14,27 @@ class FacetPopupMessage extends LitElement{
 
   constructor() {
       super();
-      this.handleFacetSelected = this.handleFacetSelected.bind(this);
+      //this.handleKeyup = this.handleKeyup.bind(this);
   }
 
   firstUpdated() {
-    this.addEventListener("click",this.togglePopup);
-    // might need to listen for 'facetSelected' event
-    this.addEventListener('facetSelected', this.handleFacetSelected);
+    this.addEventListener("click", this.togglePopup);
+    //this.addEventListener("keyup", this.handleKeyup);
   }
 
   disconnectedCallback() {
     this.removeEventListener('click', this.togglePopup);
   }
 
-  handleFacetSelected(e) {
-      // 1. close popup ->
-      // 2. add to list of filters ..
-      // 3. facets of filters selected should
-      //    show up on sidebar
+  /*
+  NOT working
+  handleKeyup(e) {
+    console.log("keyup");
+    if (e.keyCode === 27) {
+        this.open = false;
+    }
   }
+  */
 
   static get styles() {
     return css`
@@ -104,12 +106,12 @@ class FacetPopupMessage extends LitElement{
 
   togglePopup(){
     this.open = !this.open;
+    // TODO: focus if open - so ESC key can be caught?
   }
 
 
   render() {
     return html`
-    
     <slot></slot>
     `;
   }
