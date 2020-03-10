@@ -30,14 +30,15 @@ let Searcher = (superclass) => class extends superclass {
     defaultSort() {
       return [{ direction: "ASC", property: "name" }]
     }
+
     // TODO: maybe search should listen for page request (and sort)
-    setUp() {
+    setUp(orders) {
       // NOTE: this is only getting 'search' - not tab, page, facet(s), filter(s) etc...
       this.query = this.deriveQueryFromParameters();
       this.page = 0;
       this.filters = [];
-      // TODO: each search should probably implement different default
-      this.orders = this.defaultSort();
+      // TODO: each search should probably implement it's own default
+      this.orders = orders ? orders : this.defaultSort();
 
       this.counts();
       this.search();

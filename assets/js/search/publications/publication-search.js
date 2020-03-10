@@ -30,7 +30,14 @@ class PublicationSearch extends Searcher(LitElement) {
       this.path = "/people"; // ?? trying to find way to establish URL per search
       this.handleSearchResultsObtained = this.handleSearchResultsObtained.bind(this);
       this.handleCountResultsObtained = this.handleCountResultsObtained.bind(this);
-      this.setUp();
+      this.setUp([{property: 'title', 'direction': "ASC"}]);
+
+      this.sortOptions = [
+        {label: 'Title (asc)', field: 'title', 'direction': "ASC"},
+        {label: 'Title (desc)', field: 'title', 'direction': "DESC"},
+        {label: 'Date (asc)', field: 'publicationDate', 'direction': "ASC"},
+        {label: 'Date (desc)', field: 'publicationDate', 'direction': "DESC"}
+    ];
     }
   
     firstUpdated() {
@@ -150,9 +157,18 @@ class PublicationSearch extends Searcher(LitElement) {
           />`
       }
 
+      let sorter = html``;
+      if (this.data) {
+          // make sorter
+          sorter = html`<vivo-search-sorter
+            options=${JSON.stringify(this.sortOptions)}>
+          </vivo-search-sorter>`
+      }
+
       // add a sort here?
       return html`
         <div>
+        ${sorter}
         ${resultsDisplay}
         ${pagination}
         </div>`
