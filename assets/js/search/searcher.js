@@ -67,14 +67,20 @@ let Searcher = (superclass) => class extends superclass {
     }
   
     runSearch() {
-      //this.pushHistory();
+      console.log("runSearch");
+      // this.pushHistory();?
       // change URL here?
-      // TODO: shuld this also send an event?
-      // e.g. this.dispatchEvent(new CustomEvent('searchStarted', {
+      this.dispatchEvent(new CustomEvent('searchStarted', {
+        detail: { time: Date(Date.now()) },
+        bubbles: true,
+        cancelable: false,
+        composed: true
+      }));
       // so UI can know - might be useful for 'waiting' watcher
       // or to know state of filters etc...
       const fetchData = async () => {
         try {
+
           const { data } = await client.query({
             query: this.graphql,
             variables: {
@@ -128,10 +134,7 @@ let Searcher = (superclass) => class extends superclass {
     }
   
     search() {
-      // should filters be part of this custom event?
-      // so facets can know what to check?
-      // add more to detail? like this.query?
-      // e.g. detail: { data: this.data, query: this.query etc... }
+      // TODO: maybe add time stopped to detail?
       this.runSearch()
         .then(() => {
           this.dispatchEvent(new CustomEvent('searchResultsObtained', {
