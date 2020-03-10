@@ -16,5 +16,4 @@ import './search/publications/publication-search.js';
 import './search/publications/publication-date-facets.js';
 import './search/publications/publication-date-facet.js';
 
-//
 

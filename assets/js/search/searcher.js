@@ -67,7 +67,6 @@ let Searcher = (superclass) => class extends superclass {
     }
   
     runSearch() {
-      console.log("runSearch");
       // this.pushHistory();?
       // change URL here?
       this.dispatchEvent(new CustomEvent('searchStarted', {

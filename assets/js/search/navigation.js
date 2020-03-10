@@ -138,7 +138,7 @@ class SearchNavigation extends LitElement {
     // query (could be faceting, paging, sorting etc... not just new search)
     handleSearchStarted(e) {
       // TODO: not sure what to do here yet
-      console.log(`search started: ${e.detail.time}`);
+      //console.log(`search started: ${e.detail.time}`);
     }
 
     // TODO: this feels a little fragile - works/doesn't work
