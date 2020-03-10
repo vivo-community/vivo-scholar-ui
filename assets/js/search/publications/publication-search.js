@@ -149,7 +149,8 @@ class PublicationSearch extends Searcher(LitElement) {
               totalPages="${this.data.documents.page.totalPages}"
           />`
       }
-  
+
+      // add a sort here?
       return html`
         <div>
         ${resultsDisplay}

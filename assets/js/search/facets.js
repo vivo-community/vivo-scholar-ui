@@ -17,7 +17,7 @@ class SearchFacets extends Faceter(LitElement) {
     super();
     this.tag = ""; // default no tagging
     this.opKey = "EQUALS"; // default to EQUALS compare
-    this.popupThreshold = 5;
+    this.popupThreshold = 6;
     this.togglePopup = this.togglePopup.bind(this);
   }
 
@@ -47,20 +47,31 @@ class SearchFacets extends Faceter(LitElement) {
     }
   }
 
-  generateHiddenFacetList(showList) {
+  generateFacetToggle(showList) {
     var results = html`<vivo-search-facet-toggle>
       ${this.generateFacetList(showList)}
     </vivo-search-facet-toggle>`
-
-    if (showList.length >= this.popupThreshold) {
-        results = html`
-        <p id="toggle-facet" @click=${this.togglePopup}>Show More</p>
-        <vivo-facet-popup-message id="popup-text">
-          ${this.generateFacetList(showList)}
-        </vivo-facet-popup-message>`;
-    } 
-    return results
+    return results;
   }
+
+  generateFacetPopup(showList) {
+    var results = html`
+    <p id="toggle-facet" @click=${this.togglePopup}>Show More</p>
+    <vivo-facet-popup-message id="popup-text">
+      ${this.generateFacetList(showList)}
+    </vivo-facet-popup-message>`;
+    return results;
+  }
+
+ generateHiddenFacetList(content, hideList) {
+  if (content.length > this.popupThreshold) { 
+    // make selected drift to top?
+    // the pop-up needs all options
+    return this.generateFacetPopup(content)
+  } else  {
+    return this.generateFacetToggle(hideList);
+  }
+ }
 
   generateFacetList(content) {
     let facetList = content.map(facet => {
@@ -92,10 +103,11 @@ class SearchFacets extends Faceter(LitElement) {
     let extras = hideList.filter(facet => 
        this.inFilters(this.field, facet)
     );
+    // sort?
     showList = _.concat(showList, extras);
-    hideList = _.difference(hideList, extras);
+    
     let showHtml  = this.generateFacetList(showList);
-    let hideHtml = (hideList.length > 0) ? this.generateHiddenFacetList(hideList): html``;
+    let hideHtml = (hideList.length > 0) ? this.generateHiddenFacetList(content, hideList): html``;
     
     return html`
         <slot></slot>

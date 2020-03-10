@@ -39,6 +39,11 @@ class PersonSearch extends Searcher(LitElement) {
         this.handleSearchResultsObtained = this.handleSearchResultsObtained.bind(this);
         this.handleCountResultsObtained = this.handleCountResultsObtained.bind(this);
         this.setUp();
+
+        this.sortOptions = [
+            {label: 'Name (asc)', field: 'name', 'direction': "asc"},
+            {label: 'Name (desc)', field: 'name', 'direction': "desc"}
+        ];
     }
 
     firstUpdated() {
@@ -127,8 +132,17 @@ class PersonSearch extends Searcher(LitElement) {
           />`
         }
 
+        let sorter = html``;
+        if (this.data) {
+            // make sorter
+            sorter = html`<vivo-search-sorter
+              options=${JSON.stringify(this.sortOptions)}>
+            </vivo-search-sorter>`
+        }
+
         return html`
           <div>
+          ${sorter}
           ${resultsDisplay}
           ${pagination}
           </div>`
