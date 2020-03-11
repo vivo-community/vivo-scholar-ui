@@ -12,14 +12,13 @@ class SearchNavigation extends LitElement {
 
     constructor() {
       super();
-      this.browsingState = {};
+      this.browsingState = {}; // maybe rename to searchStructure
       this.navFrom = this.navFrom.bind(this);
       this.navTo = this.navTo.bind(this);
       this.handleSearchSubmitted = this.handleSearchSubmitted.bind(this);
       this.handleTabSelected = this.handleTabSelected.bind(this);
       this.handlePageSelected = this.handlePageSelected.bind(this);
       this.handleSortSelected = this.handleSortSelected.bind(this);
-
       this.handleSearchStarted = this.handleSearchStarted.bind(this);
     }
   
@@ -31,22 +30,28 @@ class SearchNavigation extends LitElement {
       // code instead of here
       document.addEventListener('pageSelected', this.handlePageSelected);
       document.addEventListener('sortSelected', this.handleSortSelected);
-
       document.addEventListener('searchStarted', this.handleSearchStarted);
-      // make the first one default
-      let defaultSearch = document.querySelector(`[implements="vivo-search"]`);
-      this.browsingState.activeSearch = defaultSearch;
-      defaultSearch.setActive(true);
-      
-      this.findCorrectFacetsToDisplay();
       
       // make search-box show text of search sent in (from home page)
       let searchBox = document.querySelector(`vivo-site-search-box`);
-
       var params = new URLSearchParams(window.location.search); 
       var search = params.get("search"); 
       const defaultQuery = search ? search : "*";
+
       searchBox.query = defaultQuery;
+
+      // make the first one default
+      let defaultSearch = document.querySelector(`[implements="vivo-search"]`);
+      this.browsingState.activeSearch = defaultSearch;
+      // TODO: set some value like 'people' that can be added to URL
+      // as the search (to be restored) e.g. /people, /publications etc...
+      // example:
+      // let tab = params.get("tab");
+      // let matchedSearch = document.querySelector("#search-${tab}")
+      // if matchedSearch -> matchedSearch.setActive(true) else defaultSearch.setActive(true)
+      defaultSearch.setActive(true);    
+      // NOTE: which facets to display depends on active search  
+      this.findCorrectFacetsToDisplay();
     }
   
     disconnectedCallback() {

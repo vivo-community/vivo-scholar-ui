@@ -26,11 +26,11 @@ let Searcher = (superclass) => class extends superclass {
       const defaultPage = page ? page : 0;
 
       // TODO: not sure what to do about list things
-      let facets = params.getAll("facets");
-      const defaultFacets = facets ? facets : [];
-      // params.getAll("filters")
-      // parmams.getAll("orders");
-      return [defaultQuery, defaultPage];
+      let filters = params.getAll("filters");
+      const defaultFilters = filters ? filters : [];
+      let orders = params.getAll("orders");
+      const defaultOrders = orders ? orders : this.defaultSort();
+      return { query: defaultQuery, page: defaultPage };
     }
 
     defaultSort() {
@@ -39,7 +39,7 @@ let Searcher = (superclass) => class extends superclass {
 
     // TODO: maybe search should listen for page request (and sort)
     setUp(orders) {
-      const [ query, page ] = this.deriveQueryFromParameters();
+      const { query, page } = this.deriveQueryFromParameters();
       this.query = query;
       this.page = page;
       this.filters = [];
@@ -70,9 +70,6 @@ let Searcher = (superclass) => class extends superclass {
     }
   
     runSearch() {
-      // this.pushHistory();?
-      //window.history.replaceState({},'', `${window.location.pathname}?${searchParams.toString()}`);
-      // change URL here?
       this.dispatchEvent(new CustomEvent('searchStarted', {
         detail: { time: Date(Date.now()) },
         bubbles: true,
@@ -118,7 +115,6 @@ let Searcher = (superclass) => class extends superclass {
       this.active = b;
     }
 
-    // needs to look like this ...
     setSort(orders = []) {
       this.orders = orders
     }
@@ -137,6 +133,7 @@ let Searcher = (superclass) => class extends superclass {
     }
   
     search() {
+      this.pushHistory();
       // TODO: maybe add time stopped to detail?
       this.runSearch()
         .then(() => {
@@ -152,35 +149,19 @@ let Searcher = (superclass) => class extends superclass {
   
     pushHistory() {;
       //see https://javascriptplayground.com/url-search-params/
-      
       var searchParams = new URLSearchParams(window.location.search);
-      //var searchParams = new URLSearchParams();
       searchParams.set("search", this.query);
-      //searchParams.set("page", this.page);
+      // TODO: set other ones?
+      searchParams.set("page", this.page);
+      //searchParams.set("filters", this.filters);
       var newRelativePathQuery = window.location.pathname + '?' + searchParams.toString();
       history.pushState(null, '', newRelativePathQuery);
-      
-      /*
-      TODO: maybe manipulating URL to store search would start like this?:
-
-      var searchParams = new URLSearchParams(window.location.search);
-      searchParams.set("search", this.query);
-      var newPath = window.location.pathname + 'people?' + searchParams.toString();
-      
-      history.pushState(
-        null, 
-        "",
-        newPath
-      );
-      */
-      
     }
 
     // NOTE: only called by handleSearchSubmitted in navigation.js
     doSearch(query) {
       // assumes not blank string (checked already)
       this.query = query;
-      this.pushHistory();
       this.counts();
       this.search();
     }  
