@@ -16,7 +16,7 @@ let Searcher = (superclass) => class extends superclass {
       }
     }
 
-    deriveQueryFromParameters() {     
+    deriveSearchFromParameters() {     
       let params = new URLSearchParams(window.location.search); 
       
       let search = params.get("search"); 
@@ -27,24 +27,25 @@ let Searcher = (superclass) => class extends superclass {
 
       // TODO: not sure what to do about list things
       let filters = params.getAll("filters");
-      const defaultFilters = filters ? filters : [];
+      const defaultFilters = (filters.length > 0) ? filters : [];
+      // order trickier since it can be overriden by search code
       let orders = params.getAll("orders");
-      const defaultOrders = orders ? orders : this.defaultSort();
-      return { query: defaultQuery, page: defaultPage };
+      // NOTE: must have defaultSort defined
+      const defaultOrders = (orders.length > 0) ? orders : this.defaultSort;
+      return { 
+        query: defaultQuery, 
+        page: defaultPage,
+        filters: defaultFilters,
+        orders: defaultOrders
+      };
     }
 
-    defaultSort() {
-      return [{ direction: "ASC", property: "name" }]
-    }
-
-    // TODO: maybe search should listen for page request (and sort)
-    setUp(orders) {
-      const { query, page } = this.deriveQueryFromParameters();
+    setUp() {
+      const { query, page, filters, orders } = this.deriveSearchFromParameters();
       this.query = query;
       this.page = page;
-      this.filters = [];
-      // TODO: each search should probably implement it's own default
-      this.orders = orders ? orders : this.defaultSort();
+      this.filters = filters;
+      this.orders = orders;
 
       this.pushHistory();
       this.counts();
@@ -134,7 +135,7 @@ let Searcher = (superclass) => class extends superclass {
   
     search() {
       this.pushHistory();
-      // TODO: maybe add time stopped to detail?
+      // TODO: maybe add time.now to detail?
       this.runSearch()
         .then(() => {
           this.dispatchEvent(new CustomEvent('searchResultsObtained', {
@@ -153,7 +154,22 @@ let Searcher = (superclass) => class extends superclass {
       searchParams.set("search", this.query);
       // TODO: set other ones?
       searchParams.set("page", this.page);
-      //searchParams.set("filters", this.filters);
+      //searchParams.set("filters", this.filters); // how to deal with blank?
+      searchParams.delete("orders");
+
+      console.log(this.orders);
+      
+      if (this.orders.length > 0) {
+        for (let order in this.orders) {
+          //console.log(JSON.stringify(order));
+          console.log(order.property); // undefined
+          console.log(order.direction); // undefined
+          //searchParams.append("orders", {property: property, direction: direction});
+        }
+      }
+      
+
+      //searchParams.set("orders", this.orders); /// how to deal with [object+Object]
       var newRelativePathQuery = window.location.pathname + '?' + searchParams.toString();
       history.pushState(null, '', newRelativePathQuery);
     }

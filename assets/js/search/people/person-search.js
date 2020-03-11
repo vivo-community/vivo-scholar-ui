@@ -36,11 +36,15 @@ class PersonSearch extends Searcher(LitElement) {
     constructor() {
         super();
         this.graphql = peopleQuery;
+        this.path = "/people"; // ?? trying to find way to establish URL per search
+        // must set a default sort
+        this.defaultSort = [{ direction: "ASC", property: "name" }];
+
         this.handleSearchResultsObtained = this.handleSearchResultsObtained.bind(this);
         this.handleCountResultsObtained = this.handleCountResultsObtained.bind(this);
+
         this.setUp();
 
-        // TODO: set a default sort?
         this.sortOptions = [
             {label: 'Name (asc)', field: 'name', 'direction': "ASC"},
             {label: 'Name (desc)', field: 'name', 'direction': "DESC"}
