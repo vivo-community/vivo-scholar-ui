@@ -38,13 +38,18 @@ class SearchFacets extends Faceter(LitElement) {
   }
 
   togglePopup() {
-    let popup = this.shadowRoot.querySelector("#popup-text");
+    let popup = this.shadowRoot.querySelector("#popup-facets");
 
     if (popup.getAttribute("open")) {
       popup.removeAttribute("open");
     } else {
       popup.setAttribute("open", true);
     }
+
+    // this does focus to header - so when popup is first
+    // opened it's possible to close with ESC key
+    let header = this.shadowRoot.querySelector("#popup-header");
+    header.focus();
   }
 
   generateFacetToggle(showList) {
@@ -57,10 +62,11 @@ class SearchFacets extends Faceter(LitElement) {
   // might be good to get title of facet in here
   // but it's not necessarily in the data
   generateFacetPopup(showList) {
+    // just added tabindex to try and be able to focus
     var results = html`
     <p id="toggle-facet" @click=${this.togglePopup}>Show More</p>
-    <vivo-facet-popup-message id="popup-text">
-      <h4>Filters</h4>
+    <vivo-facet-popup-message id="popup-facets">
+      <h4 id="popup-header" tabindex="-1">Filters</h4>
       ${this.generateFacetList(showList)}
     </vivo-facet-popup-message>`;
     return results;

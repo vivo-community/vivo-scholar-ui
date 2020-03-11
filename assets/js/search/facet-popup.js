@@ -17,43 +17,36 @@ class FacetPopupMessage extends LitElement{
 
   constructor() {
       super();
-      //this.handleKeyup = this.handleKeyup.bind(this);
+      this.handleKeydown = this.handleKeydown.bind(this);
       this._onSlotChange = this._onSlotChange.bind(this);
       this.pageNumber = 0;
       this.pageBy = 5;
   }
 
   firstUpdated() {
-    //this.addEventListener("click", this.togglePopup);
     this._slot = this.shadowRoot.querySelector("slot");
     this._slot.addEventListener('slotchange', this._onSlotChange);
-    //this.addEventListener("keyup", this.handleKeyup);
-
+    this.addEventListener("keydown", this.handleKeydown);
     this.addEventListener("facetPageSelected", this.handleFacetPageSelected);
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
-    //this.removeEventListener('click', this.togglePopup);
     this._slot.removeEventListener('slotchange', this._onSlotChange);
+    this.removeEventListener("keydown", this.handleKeydown);
+    this.removeEventListener("facetPageSelected", this.handleFacetPageSelected);
   }
-
 
   _onSlotChange() {
     this.facets = Array.from(this.querySelectorAll('vivo-search-facet'));
-    console.log(`popup has ${this.facets.length} facets`);
-    // TODO: might need to divide up by pageBy in some manner
   }
 
-  /*
-  NOT working
-  handleKeyup(e) {
-    console.log("keyup");
+  handleKeydown(e) {
+    // TODO: note only seems to work when header on popup has focus
     if (e.keyCode === 27) {
         this.open = false;
     }
   }
-  */
 
   showHideFacet(index) {
     let start = (this.pageNumber * this.pageBy);
@@ -98,7 +91,7 @@ class FacetPopupMessage extends LitElement{
       transform: translate(0,-105%);
       border: 1px solid black;
       border-radius: 25px;
-      background-color: var(--highlightBackgroundColor);
+      background-color: white;
       padding: 1em;
       z-index: 99;
     }
@@ -137,7 +130,6 @@ class FacetPopupMessage extends LitElement{
 
   togglePopup(){
     this.open = !this.open;
-    // TODO: focus if open - so ESC key can be caught?
   }
 
   render() {
