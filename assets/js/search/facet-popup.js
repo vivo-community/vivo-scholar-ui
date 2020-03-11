@@ -24,7 +24,7 @@ class FacetPopupMessage extends LitElement{
   }
 
   firstUpdated() {
-    this.addEventListener("click", this.togglePopup);
+    //this.addEventListener("click", this.togglePopup);
     this._slot = this.shadowRoot.querySelector("slot");
     this._slot.addEventListener('slotchange', this._onSlotChange);
     //this.addEventListener("keyup", this.handleKeyup);
@@ -34,7 +34,7 @@ class FacetPopupMessage extends LitElement{
 
   disconnectedCallback() {
     super.disconnectedCallback();
-    this.removeEventListener('click', this.togglePopup);
+    //this.removeEventListener('click', this.togglePopup);
     this._slot.removeEventListener('slotchange', this._onSlotChange);
   }
 
@@ -102,6 +102,21 @@ class FacetPopupMessage extends LitElement{
       padding: 1em;
       z-index: 99;
     }
+    :host([open]) .fas {
+      display: inline-block;
+      font-style: normal;
+      font-variant: normal;
+      text-rendering: auto;
+      font-size: 2em;
+      display: flex;
+      flex-direction: row-reverse;
+      -webkit-font-smoothing: antialiased;
+    }
+    :host([open]) .fa-times::before {
+      font-family: 'Font Awesome 5 Free';
+      font-weight: 900;
+      content: "\\f00d";
+    }
     ::slotted(a) {
       text-decoration: none;
       color: black;
@@ -139,6 +154,7 @@ class FacetPopupMessage extends LitElement{
     }
 
     return html`
+    <i class="fas fa-times" @click=${this.togglePopup}></i>
     <slot></slot>
     ${pagination}
     `;
