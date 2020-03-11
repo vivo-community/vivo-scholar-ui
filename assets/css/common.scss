@@ -75,7 +75,7 @@ aside {
 .page-title {
   color: var(--primaryColor);
   font-weight: bold;
-  font-size: 2em;
+  font-size: 1.8em;
   margin-top: 1em;
   margin-bottom: .3em;
 }
@@ -89,7 +89,7 @@ aside {
 .section-title {
   color: var(--primaryColor);
   font-weight: bold;
-  font-size: 1.8em;
+  font-size: 1.4em;
   margin-top: .9em;
   margin-bottom: .7em;
 }
@@ -104,11 +104,6 @@ aside {
 /* elements */
 vivo-sidebar {
   margin: 0.25em;
-}
-vivo-sidebar span {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 vivo-sidebar-item h3 {
   font-size: 1em;

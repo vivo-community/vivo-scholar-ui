@@ -2,9 +2,16 @@ query($id: String!) {
   document(id: $id) {
     type
     title
+    abstractText
     authors {
       id
       label
     }
+    publicationDate
+    volume
+    issue
+    pageStart
+    pageEnd
+    
   }
 }
