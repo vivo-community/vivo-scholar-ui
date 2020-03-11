@@ -107,7 +107,6 @@ class SearchFacets extends Faceter(LitElement) {
     // NOTE: it's an array - but only want first
     let content = this.data[0].entries.content;
 
-    // TODO: not hard-coded
     var showList = content.slice(0,this.showCount);
     var hideList = content.slice(this.showCount);
 
