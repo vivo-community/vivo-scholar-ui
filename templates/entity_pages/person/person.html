@@ -19,10 +19,10 @@
       <!-- tabs -->
       <vivo-tabs tabindex="0">
          <%= if (person["overview"] || person["positions"] || person["educationAndTraining"]) { %>
-         <vivo-tab id="about-tab">
-          <h3><%= t("about") %></h3>
+         <vivo-tab id="bio-tab">
+          <h3><%= t("bio") %></h3>
          </vivo-tab>
-         <vivo-tab-panel id="about-panel">
+         <vivo-tab-panel id="bio-panel">
             <%= if (person["overview"]) { %>
             <h4 class="section-title"><%= t("overview") %></h4>
             <div>

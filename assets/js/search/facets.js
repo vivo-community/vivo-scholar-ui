@@ -18,6 +18,7 @@ class SearchFacets extends Faceter(LitElement) {
     this.tag = ""; // default no tagging
     this.opKey = "EQUALS"; // default to EQUALS compare
     this.popupThreshold = 8; // eventually 15
+    this.showCount = 5;
     this.togglePopup = this.togglePopup.bind(this);
   }
 
@@ -38,13 +39,18 @@ class SearchFacets extends Faceter(LitElement) {
   }
 
   togglePopup() {
-    let popup = this.shadowRoot.querySelector("#popup-text");
+    let popup = this.shadowRoot.querySelector("#popup-facets");
 
     if (popup.getAttribute("open")) {
       popup.removeAttribute("open");
     } else {
       popup.setAttribute("open", true);
     }
+
+    // this does focus to header - so when popup is first
+    // opened it's possible to close with ESC key
+    let header = this.shadowRoot.querySelector("#popup-header");
+    header.focus();
   }
 
   generateFacetToggle(showList) {
@@ -57,10 +63,11 @@ class SearchFacets extends Faceter(LitElement) {
   // might be good to get title of facet in here
   // but it's not necessarily in the data
   generateFacetPopup(showList) {
+    // just added tabindex to try and be able to focus
     var results = html`
     <p id="toggle-facet" @click=${this.togglePopup}>Show More</p>
-    <vivo-facet-popup-message id="popup-text">
-      <h4>Filters</h4>
+    <vivo-facet-popup-message id="popup-facets">
+      <h4 id="popup-header" tabindex="-1">Filters</h4>
       ${this.generateFacetList(showList)}
     </vivo-facet-popup-message>`;
     return results;
@@ -100,14 +107,26 @@ class SearchFacets extends Faceter(LitElement) {
     // NOTE: it's an array - but only want first
     let content = this.data[0].entries.content;
 
-    var showList = content.slice(0,5);
-    var hideList = content.slice(5);
+    var showList = content.slice(0,this.showCount);
+    var hideList = content.slice(this.showCount);
 
-    let extras = hideList.filter(facet => 
+    let selected = hideList.filter(facet => 
        this.inFilters(this.field, facet)
     );
-    // sort?
-    showList = _.concat(showList, extras);
+
+    let isPopup = (content.length > this.popupThreshold) ? true : false; 
+    showList = _.concat(showList, selected);
+
+    // if it's NOT a popup - then make a selected facet
+    // show up on sidebar - no matter if show more/less is chosen
+    if (!isPopup) {
+      hideList = _.difference(hideList, selected);
+    } else {
+      // otherwise, put selected on top
+      showList = _.concat(selected, showList);
+      // and then fall back to only showing 5
+      showList = showList.slice(0,this.showCount)
+    }
     
     let showHtml  = this.generateFacetList(showList);
     let hideHtml = (hideList.length > 0) ? this.generateHiddenFacetList(content, hideList): html``;

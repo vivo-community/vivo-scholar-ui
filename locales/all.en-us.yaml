@@ -5,8 +5,8 @@
   translation: "Contact"
 - id: profile_professional_links
   translation: "Professional Links"
-- id: tab_about
-  translation: "About"
+- id: tab_bio
+  translation: "Bio"
 - id: tab_publications
   translation: "Publications"
 - id: tab_research_expertise
@@ -51,3 +51,5 @@
   translation: "Keywords"
 - id: grants
   translation: "Grants"
+- id: bio
+  translation: "Bio"
