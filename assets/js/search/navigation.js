@@ -1,5 +1,4 @@
 import { LitElement, html, css } from "lit-element";
-
 /*
 TODO: maybe make a tabbed-search component
 that contains search-text and tabs/searches etc..
@@ -40,6 +39,14 @@ class SearchNavigation extends LitElement {
       defaultSearch.setActive(true);
       
       this.findCorrectFacetsToDisplay();
+      
+      // make search-box show text of search sent in (from home page)
+      let searchBox = document.querySelector(`vivo-site-search-box`);
+
+      var params = new URLSearchParams(window.location.search); 
+      var search = params.get("search"); 
+      const defaultQuery = search ? search : "*";
+      searchBox.query = defaultQuery;
     }
   
     disconnectedCallback() {
@@ -93,10 +100,9 @@ class SearchNavigation extends LitElement {
       search.setActive(true);
 
       if (search) {
-        // NOTE: not re-running 'counts' query so
-        // facet count is preserved in tab
+        // NOTE: not re-running 'counts' query so facet count is preserved in tab
         search.search();  
-        // add active-search to URL as /people, /publications etc... ?
+        // TODO: add active-search to URL as /people, /publications etc... ?
       } else {
           console.error("could not find search");
       }
@@ -137,7 +143,8 @@ class SearchNavigation extends LitElement {
     // NOTE: different than 'searchSubmitted' because it's the graphql
     // query (could be faceting, paging, sorting etc... not just new search)
     handleSearchStarted(e) {
-      // TODO: not sure what to do here yet
+      // TODO: not sure what to do here yet - 
+      // perhaps a global 'waiting' spinner of some sort?
       //console.log(`search started: ${e.detail.time}`);
     }
 
@@ -157,10 +164,12 @@ class SearchNavigation extends LitElement {
       })
     }
     
+    // maybe move this and sort to be handled by individual search
+    // (maybe in searcher.js file)
     handlePageSelected(e) {
+      let search = this.browsingState.activeSearch;
       const page = e.detail;
       this.browsingState.currentPage = page;
-      let search = this.browsingState.activeSearch;
       search.setPage(page.value);
       search.search();
     }
@@ -186,6 +195,7 @@ class SearchNavigation extends LitElement {
       for (let key of url.searchParams.keys()) {
         incomingBrowsingState[key] = url.searchParams.get(key);
       }
+      /*
       const { currentTab } = incomingBrowsingState;
       if (currentTab) {
         const tabs = this.getTabs();
@@ -193,13 +203,16 @@ class SearchNavigation extends LitElement {
           tabs.selectTabById(currentTab);
         }
       }
+      */
       // TODO: still lots to do to restore page and facet
       // (and facet page) etc... from URL params
     }
   
+    /*
     getTabs() {
       return document.querySelector('vivo-tabs');
     }
+    */
   
   }
   

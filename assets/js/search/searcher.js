@@ -1,4 +1,3 @@
-import qs from "qs";
 import _ from "lodash";
 
 import client from "../lib/apollo";
@@ -17,14 +16,21 @@ let Searcher = (superclass) => class extends superclass {
       }
     }
 
-    deriveQueryFromParameters() {      
-      const parsed = this.parseQuery(window.location.search.substring(1));
-      // parsed.page?
-      // parsed.facets?
-      // parsed.filters?
-      // parsed.orders?
-      const defaultQuery = (parsed.search && parsed.search.trim().length > 0) ? parsed.search : "*";
-      return defaultQuery;
+    deriveQueryFromParameters() {     
+      let params = new URLSearchParams(window.location.search); 
+      
+      let search = params.get("search"); 
+      const defaultQuery = search ? search : "*";
+      
+      let page = params.get("page");
+      const defaultPage = page ? page : 0;
+
+      // TODO: not sure what to do about list things
+      let facets = params.getAll("facets");
+      const defaultFacets = facets ? facets : [];
+      // params.getAll("filters")
+      // parmams.getAll("orders");
+      return [defaultQuery, defaultPage];
     }
 
     defaultSort() {
@@ -33,19 +39,16 @@ let Searcher = (superclass) => class extends superclass {
 
     // TODO: maybe search should listen for page request (and sort)
     setUp(orders) {
-      // NOTE: this is only getting 'search' - not tab, page, facet(s), filter(s) etc...
-      this.query = this.deriveQueryFromParameters();
-      this.page = 0;
+      const [ query, page ] = this.deriveQueryFromParameters();
+      this.query = query;
+      this.page = page;
       this.filters = [];
       // TODO: each search should probably implement it's own default
       this.orders = orders ? orders : this.defaultSort();
 
+      this.pushHistory();
       this.counts();
       this.search();
-    }
-  
-    parseQuery(qryString) {
-      return qs.parse(qryString);
     }
     
     runCounts() {
@@ -68,6 +71,7 @@ let Searcher = (superclass) => class extends superclass {
   
     runSearch() {
       // this.pushHistory();?
+      //window.history.replaceState({},'', `${window.location.pathname}?${searchParams.toString()}`);
       // change URL here?
       this.dispatchEvent(new CustomEvent('searchStarted', {
         detail: { time: Date(Date.now()) },
@@ -150,7 +154,9 @@ let Searcher = (superclass) => class extends superclass {
       //see https://javascriptplayground.com/url-search-params/
       
       var searchParams = new URLSearchParams(window.location.search);
+      //var searchParams = new URLSearchParams();
       searchParams.set("search", this.query);
+      //searchParams.set("page", this.page);
       var newRelativePathQuery = window.location.pathname + '?' + searchParams.toString();
       history.pushState(null, '', newRelativePathQuery);
       
