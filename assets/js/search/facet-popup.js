@@ -9,21 +9,40 @@ class FacetPopupMessage extends LitElement{
         type: Boolean,
         reflect: true
       },
+      pageNumber: {
+        type: Number
+      }
     };
   }
 
   constructor() {
       super();
       //this.handleKeyup = this.handleKeyup.bind(this);
+      this._onSlotChange = this._onSlotChange.bind(this);
+      this.pageNumber = 0;
+      this.pageBy = 5;
   }
 
   firstUpdated() {
     this.addEventListener("click", this.togglePopup);
+    this._slot = this.shadowRoot.querySelector("slot");
+    this._slot.addEventListener('slotchange', this._onSlotChange);
     //this.addEventListener("keyup", this.handleKeyup);
+
+    this.addEventListener("facetPageSelected", this.handleFacetPageSelected);
   }
 
   disconnectedCallback() {
+    super.disconnectedCallback();
     this.removeEventListener('click', this.togglePopup);
+    this._slot.removeEventListener('slotchange', this._onSlotChange);
+  }
+
+
+  _onSlotChange() {
+    this.facets = Array.from(this.querySelectorAll('vivo-search-facet'));
+    console.log(`popup has ${this.facets.length} facets`);
+    // TODO: might need to divide up by pageBy in some manner
   }
 
   /*
@@ -35,6 +54,30 @@ class FacetPopupMessage extends LitElement{
     }
   }
   */
+
+  showHideFacet(index) {
+    let start = (this.pageNumber * this.pageBy);
+    let end = (this.pageNumber * this.pageBy) + this.pageBy;
+    let inRange = (index >= start && index < end);
+    return !inRange;
+  }
+
+  showHideFacets() {
+    this.facets.forEach((facet, index) => {
+      let hide = this.showHideFacet(index);
+      if (hide) {
+          facet.className = "hidden";
+      } else {
+          facet.className = "shown";
+      }
+    });
+  }
+
+  handleFacetPageSelected(e) {
+    // TODO: sending this for now: detail: { value: page }
+    let page = e.detail.value;
+    this.pageNumber = page;
+  }
 
   static get styles() {
     return css`
@@ -59,48 +102,21 @@ class FacetPopupMessage extends LitElement{
       padding: 1em;
       z-index: 99;
     }
-    :host([open]) .fas {
-      display: inline-block;
-      font-style: normal;
-      font-variant: normal;
-      text-rendering: auto;
-      font-size: 2em;
-      display: flex;
-      flex-direction: row-reverse;
-      -webkit-font-smoothing: antialiased;
-    }
-    :host([open]) .fa-times::before {
-      font-family: 'Font Awesome 5 Free';
-      font-weight: 900;
-      content: "\\f00d";
-    }
     ::slotted(a) {
       text-decoration: none;
       color: black;
       font-weight: bold;
     }
-
-  @media(max-width: 1230px) {
-    :host([open]) {
-      width: 55%;
+    ::slotted(vivo-search-facet) {
+      display: block;
     }
-  }
-  @media(max-width: 1100px) {
-    :host([open]) {
-      width: 60%;
+    ::slotted(vivo-search-facet.hidden) {
+      display: none;
     }
-  }
-  @media(max-width: 1100px) {
-    :host([open]) {
-      width: 70%;
+    ::slotted(vivo-search-facet.shown) {
+      display: block;
     }
-  }
-  @media(max-width: 800px) {
-    :host([open]) {
-      width: 90%;
-      margin: auto;
-    }
-  }
+    
     `;
   }
 
@@ -109,10 +125,22 @@ class FacetPopupMessage extends LitElement{
     // TODO: focus if open - so ESC key can be caught?
   }
 
-
   render() {
+    let pagination = html``;
+
+    if (this.facets) {
+      this.showHideFacets();
+      pagination = html`<vivo-facet-pagination 
+            number="${this.pageNumber}"
+            size="${this.pageBy}"
+            totalElements="${this.facets.length}"
+            totalPages="${this.facets.length/this.pageBy}"
+        />`
+    }
+
     return html`
     <slot></slot>
+    ${pagination}
     `;
   }
 }
