@@ -9,32 +9,68 @@ class FacetPopupMessage extends LitElement{
         type: Boolean,
         reflect: true
       },
+      pageNumber: {
+        type: Number
+      }
     };
   }
 
   constructor() {
       super();
-      //this.handleKeyup = this.handleKeyup.bind(this);
+      this.handleKeydown = this.handleKeydown.bind(this);
+      this._onSlotChange = this._onSlotChange.bind(this);
+      this.pageNumber = 0;
+      this.pageBy = 5;
   }
 
   firstUpdated() {
-    this.addEventListener("click", this.togglePopup);
-    //this.addEventListener("keyup", this.handleKeyup);
+    this._slot = this.shadowRoot.querySelector("slot");
+    this._slot.addEventListener('slotchange', this._onSlotChange);
+    this.addEventListener("keydown", this.handleKeydown);
+    this.addEventListener("facetPageSelected", this.handleFacetPageSelected);
   }
 
   disconnectedCallback() {
-    this.removeEventListener('click', this.togglePopup);
+    super.disconnectedCallback();
+    this._slot.removeEventListener('slotchange', this._onSlotChange);
+    this.removeEventListener("keydown", this.handleKeydown);
+    this.removeEventListener("facetPageSelected", this.handleFacetPageSelected);
   }
 
-  /*
-  NOT working
-  handleKeyup(e) {
-    console.log("keyup");
+  _onSlotChange() {
+    this.facets = Array.from(this.querySelectorAll('vivo-search-facet'));
+  }
+
+  handleKeydown(e) {
+    // TODO: note only seems to work when header on popup has focus
     if (e.keyCode === 27) {
         this.open = false;
     }
   }
-  */
+
+  showHideFacet(index) {
+    let start = (this.pageNumber * this.pageBy);
+    let end = (this.pageNumber * this.pageBy) + this.pageBy;
+    let inRange = (index >= start && index < end);
+    return !inRange;
+  }
+
+  showHideFacets() {
+    this.facets.forEach((facet, index) => {
+      let hide = this.showHideFacet(index);
+      if (hide) {
+          facet.className = "hidden";
+      } else {
+          facet.className = "shown";
+      }
+    });
+  }
+
+  handleFacetPageSelected(e) {
+    // TODO: sending this for now: detail: { value: page }
+    let page = e.detail.value;
+    this.pageNumber = page;
+  }
 
   static get styles() {
     return css`
@@ -55,7 +91,7 @@ class FacetPopupMessage extends LitElement{
       transform: translate(0,-105%);
       border: 1px solid black;
       border-radius: 25px;
-      background-color: var(--highlightBackgroundColor);
+      background-color: white;
       padding: 1em;
       z-index: 99;
     }
@@ -79,40 +115,40 @@ class FacetPopupMessage extends LitElement{
       color: black;
       font-weight: bold;
     }
-
-  @media(max-width: 1230px) {
-    :host([open]) {
-      width: 55%;
+    ::slotted(vivo-search-facet) {
+      display: block;
     }
-  }
-  @media(max-width: 1100px) {
-    :host([open]) {
-      width: 60%;
+    ::slotted(vivo-search-facet.hidden) {
+      display: none;
     }
-  }
-  @media(max-width: 1100px) {
-    :host([open]) {
-      width: 70%;
+    ::slotted(vivo-search-facet.shown) {
+      display: block;
     }
-  }
-  @media(max-width: 800px) {
-    :host([open]) {
-      width: 90%;
-      margin: auto;
-    }
-  }
+    
     `;
   }
 
   togglePopup(){
     this.open = !this.open;
-    // TODO: focus if open - so ESC key can be caught?
   }
 
-
   render() {
+    let pagination = html``;
+
+    if (this.facets) {
+      this.showHideFacets();
+      pagination = html`<vivo-facet-pagination 
+            number="${this.pageNumber}"
+            size="${this.pageBy}"
+            totalElements="${this.facets.length}"
+            totalPages="${this.facets.length/this.pageBy}"
+        />`
+    }
+
     return html`
+    <i class="fas fa-times" @click=${this.togglePopup}></i>
     <slot></slot>
+    ${pagination}
     `;
   }
 }
