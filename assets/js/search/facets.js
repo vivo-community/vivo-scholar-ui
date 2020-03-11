@@ -18,6 +18,7 @@ class SearchFacets extends Faceter(LitElement) {
     this.tag = ""; // default no tagging
     this.opKey = "EQUALS"; // default to EQUALS compare
     this.popupThreshold = 8; // eventually 15
+    this.showCount = 5;
     this.togglePopup = this.togglePopup.bind(this);
   }
 
@@ -106,14 +107,27 @@ class SearchFacets extends Faceter(LitElement) {
     // NOTE: it's an array - but only want first
     let content = this.data[0].entries.content;
 
-    var showList = content.slice(0,5);
-    var hideList = content.slice(5);
+    // TODO: not hard-coded
+    var showList = content.slice(0,this.showCount);
+    var hideList = content.slice(this.showCount);
 
-    let extras = hideList.filter(facet => 
+    let selected = hideList.filter(facet => 
        this.inFilters(this.field, facet)
     );
-    // sort?
-    showList = _.concat(showList, extras);
+
+    let isPopup = (content.length > this.popupThreshold) ? true : false; 
+    showList = _.concat(showList, selected);
+
+    // if it's NOT a popup - then make a selected facet
+    // show up on sidebar - no matter if show more/less is chosen
+    if (!isPopup) {
+      hideList = _.difference(hideList, selected);
+    } else {
+      // otherwise, put selected on top
+      showList = _.concat(selected, showList);
+      // and then fall back to only showing 5
+      showList = showList.slice(0,this.showCount)
+    }
     
     let showHtml  = this.generateFacetList(showList);
     let hideHtml = (hideList.length > 0) ? this.generateHiddenFacetList(content, hideList): html``;
