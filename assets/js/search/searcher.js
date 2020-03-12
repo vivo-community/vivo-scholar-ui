@@ -30,7 +30,8 @@ let Searcher = (superclass) => class extends superclass {
       // NOTE: each search must have defaultSort defined
       const defaultOrders = (orders && orders.length > 0) ? orders : this.defaultSort;
 
-      // NOTE: playing whack-a-mole trying to set this property
+      // NOTE: playing whack-a-mole a bit trying to set this property
+      // and others (either in navigation.js, searcher.js or person-search.js)
       let searchTab = parsed["search-tab"];
       if (searchTab === this.id) {
         this.active = true;
@@ -52,9 +53,11 @@ let Searcher = (superclass) => class extends superclass {
       if (this.active) {
         this.page = page;
         this.filters = filters;
+        //this.orders = orders;
       } else {
         this.page = 0;
         this.filters = [];
+        //this.orders = this.defaultSort;
       }
 
       this.search();

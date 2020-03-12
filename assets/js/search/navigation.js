@@ -129,6 +129,8 @@ class SearchNavigation extends LitElement {
           console.error("could not find search");
       }
 
+      // TODO: not sure how to reset 'orders' when switching tab
+      // (in URL)
       this.findCorrectFacetsToDisplay();
     }
   

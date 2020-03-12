@@ -32,8 +32,7 @@ class PublicationSearch extends Searcher(LitElement) {
 
       this.handleSearchResultsObtained = this.handleSearchResultsObtained.bind(this);
        
-      this.orders = this.defaultSort;
-
+      //this.orders = this.defaultSort;
       this.sortOptions = [
         {label: 'Title (asc)', field: 'title', 'direction': "ASC"},
         {label: 'Title (desc)', field: 'title', 'direction': "DESC"},
@@ -157,6 +156,7 @@ class PublicationSearch extends Searcher(LitElement) {
       if (this.data) {
           // make sorter
           sorter = html`<vivo-search-sorter
+            selected=${selected}
             options=${JSON.stringify(this.sortOptions)}>
           </vivo-search-sorter>`
       }
