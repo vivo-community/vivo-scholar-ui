@@ -140,9 +140,12 @@ class PersonSearch extends Searcher(LitElement) {
         }
 
         let sorter = html``;
-        // TODO: is stringify necessary?
+        // TODO: might be better if 'searcher.js' code took care of this
+        // kind of assumes only using 1 from array
+        let selected = `${this.orders[0].property}-${this.orders[0].direction}`;
         if (this.data) {
             sorter = html`<vivo-search-sorter
+              selected=${selected}
               options=${JSON.stringify(this.sortOptions)}>
             </vivo-search-sorter>`
         }

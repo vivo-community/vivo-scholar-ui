@@ -1,4 +1,5 @@
 import { LitElement, html, css } from "lit-element";
+import qs from "qs";
 /*
 TODO: maybe make a tabbed-search component
 that contains search-text and tabs/searches etc..
@@ -34,13 +35,14 @@ class SearchNavigation extends LitElement {
       
       // make search-box show text of search sent in (from home page)
       let searchBox = document.querySelector(`vivo-site-search-box`);
-      var params = new URLSearchParams(window.location.search); 
-      var search = params.get("search"); 
+      // parse all other params here?
+      const params = qs.parse(window.location.search.substring(1));
+      let search = params.search;
       const defaultQuery = search ? search : "*";
 
       searchBox.query = defaultQuery;
 
-      // make the first one default
+      // make the first one default (if not in params?)
       let defaultSearch = document.querySelector(`[implements="vivo-search"]`);
       this.browsingState.activeSearch = defaultSearch;
       // TODO: set some value like 'people' that can be added to URL

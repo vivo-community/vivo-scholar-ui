@@ -6,7 +6,7 @@ class SearchSorter extends LitElement {
     static get properties() {
         return {
             options: { type: Array },
-            selected: { type: String }
+            selected: { type: String, attribute: true }
         };
     }
 
@@ -19,13 +19,13 @@ class SearchSorter extends LitElement {
 
     handleSortSelected(e) {
         let value = e.target.value;
-
         // not getting any value so far
         if (!value) {
             console.error('no value for sorter');
             return;
         }
 
+        this.selected = value;
         const [field, direction] = value.split("-", 2);
 
         // also, reset paging?  
@@ -38,11 +38,21 @@ class SearchSorter extends LitElement {
     }
 
 
-    //?selected=${this.selected === option.value}
+    isSelected(option) {
+        // options look like this: 
+        // {label: 'Name (asc)', field: 'name', 'direction': "ASC"},
+        // TODO: not crazy about having to make this parseable version
+        // option sort options over and over again
+        let flag = (this.selected === `${option.field}-${option.direction}`);
+        return flag;
+    }
+
     render() {
         return html`<select @change="${this.handleSortSelected}">
-          ${this.options.map(option => html`
+          ${this.options.map(option => 
+            html`
             <option 
+              ?selected=${this.isSelected(option)}
               value="${option.field}-${option.direction}">
               ${option.label}
             </option>

@@ -1,5 +1,6 @@
 import _ from "lodash";
 
+import qs from "qs";
 import client from "../lib/apollo";
 import countQuery from "./count-query";
 
@@ -16,22 +17,22 @@ let Searcher = (superclass) => class extends superclass {
       }
     }
 
-    deriveSearchFromParameters() {     
-      let params = new URLSearchParams(window.location.search); 
-      
-      let search = params.get("search"); 
-      const defaultQuery = search ? search : "*";
-      
-      let page = params.get("page");
-      const defaultPage = page ? page : 0;
+    deriveSearchFromParameters() {   
+      const parsed = qs.parse(window.location.search.substring(1));
+      let search = parsed.search;
+      let page = parsed.page;
+      let filters = parsed.filters;
+      let orders = parsed.orders;
 
-      // TODO: not sure what to do about list things
-      let filters = params.getAll("filters");
-      const defaultFilters = (filters.length > 0) ? filters : [];
-      // order trickier since it can be overriden by search code
-      let orders = params.getAll("orders");
-      // NOTE: must have defaultSort defined
-      const defaultOrders = (orders.length > 0) ? orders : this.defaultSort;
+      //console.log(orders);
+      //console.log(filters);
+
+      const defaultQuery = search ? search : "*";
+      const defaultPage = page ? page : 0;
+      const defaultFilters = (filters && filters.length > 0) ? filters : [];
+      // NOTE: each search must have defaultSort defined
+      const defaultOrders = (orders && orders.length > 0) ? orders : this.defaultSort;
+
       return { 
         query: defaultQuery, 
         page: defaultPage,
@@ -148,29 +149,23 @@ let Searcher = (superclass) => class extends superclass {
         .catch((e) => console.error(`Error running search:${e}`));
     }
   
-    pushHistory() {;
+    pushHistory() {;      
+      // NOTE: couldn't get this to work - defaulted back to qs
       //see https://javascriptplayground.com/url-search-params/
-      var searchParams = new URLSearchParams(window.location.search);
-      searchParams.set("search", this.query);
-      // TODO: set other ones?
-      searchParams.set("page", this.page);
-      //searchParams.set("filters", this.filters); // how to deal with blank?
-      searchParams.delete("orders");
-
-      console.log(this.orders);
-      
-      if (this.orders.length > 0) {
-        for (let order in this.orders) {
-          //console.log(JSON.stringify(order));
-          console.log(order.property); // undefined
-          console.log(order.direction); // undefined
-          //searchParams.append("orders", {property: property, direction: direction});
-        }
+      let compound = {
+        search: this.query,
+        page: this.page
       }
-      
+      // since there is default search, always a search
+      if (this.orders && this.orders.length > 0) {
+        compound["orders"] = this.orders;
+      }
+      // not always filters though
+      if (this.filters && this.filters.length > 0) {
+        compound["filters"] = this.filters;
+      }
 
-      //searchParams.set("orders", this.orders); /// how to deal with [object+Object]
-      var newRelativePathQuery = window.location.pathname + '?' + searchParams.toString();
+      var newRelativePathQuery = window.location.pathname + '?' + qs.stringify(compound);
       history.pushState(null, '', newRelativePathQuery);
     }
 
