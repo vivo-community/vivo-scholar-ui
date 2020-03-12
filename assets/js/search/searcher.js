@@ -16,6 +16,7 @@ let Searcher = (superclass) => class extends superclass {
       }
     }
 
+
     deriveSearchFromParameters() {   
       const parsed = qs.parse(window.location.search.substring(1));
       let search = parsed.search;
@@ -29,6 +30,11 @@ let Searcher = (superclass) => class extends superclass {
       // NOTE: each search must have defaultSort defined
       const defaultOrders = (orders && orders.length > 0) ? orders : this.defaultSort;
 
+      // NOTE: playing whack-a-mole trying to set this property
+      let searchTab = parsed["search-tab"];
+      if (searchTab === this.id) {
+        this.active = true;
+      }
       return { 
         query: defaultQuery, 
         page: defaultPage,
@@ -39,6 +45,7 @@ let Searcher = (superclass) => class extends superclass {
 
     setUp() {
       const { query, page, filters, orders } = this.deriveSearchFromParameters();
+      
       this.query = query;
       this.orders = orders;
 
@@ -53,7 +60,20 @@ let Searcher = (superclass) => class extends superclass {
       this.search();
     }
     
+    timeout(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
     runSearch() {
+      // FIXME: this is just a hack to avoid error
+      // don't know why the error is happening in first place
+      if (!this.query) {
+        const noOp = async () => {
+          await this.timeout(1000);
+        }
+        return noOp();
+      }
+      
       this.dispatchEvent(new CustomEvent('searchStarted', {
         detail: { time: Date(Date.now()) },
         bubbles: true,
@@ -64,7 +84,6 @@ let Searcher = (superclass) => class extends superclass {
       // or to know state of filters etc...
       const fetchData = async () => {
         try {
-
           const { data } = await client.query({
             query: this.graphql,
             variables: {
@@ -121,7 +140,8 @@ let Searcher = (superclass) => class extends superclass {
         .catch((e) => console.error(`Error running search:${e}`));
     }
   
-    pushHistory() {;      
+    // should only be called if it's the 'active' search
+    pushHistory() {   
       // NOTE: couldn't get this to work - defaulted back to qs
       //see https://javascriptplayground.com/url-search-params/
       let compound = {
@@ -138,13 +158,9 @@ let Searcher = (superclass) => class extends superclass {
       }
 
       // e.g. "person-search"
-      /*
-      NOTE: this always makes publication search active one
       if (this.id) {
         compound["search-tab"] = this.id;
-        console.log(`adding ${this.id} to search params`);
       }
-      */
 
       var newRelativePathQuery = window.location.pathname + '?' + qs.stringify(compound);
       history.pushState(null, '', newRelativePathQuery);

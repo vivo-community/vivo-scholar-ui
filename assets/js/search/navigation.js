@@ -14,8 +14,8 @@ class SearchNavigation extends LitElement {
     constructor() {
       super();
       this.browsingState = {}; // maybe rename to searchStructure
-      this.navFrom = this.navFrom.bind(this);
-      this.navTo = this.navTo.bind(this);
+      //this.navFrom = this.navFrom.bind(this);
+      //this.navTo = this.navTo.bind(this);
       this.handleSearchSubmitted = this.handleSearchSubmitted.bind(this);
       this.handleTabSelected = this.handleTabSelected.bind(this);
       this.handlePageSelected = this.handlePageSelected.bind(this);
@@ -24,7 +24,7 @@ class SearchNavigation extends LitElement {
     }
   
     firstUpdated() {
-      document.addEventListener('DOMContentLoaded', this.navFrom);
+      //document.addEventListener('DOMContentLoaded', this.navFrom);
       document.addEventListener('tabSelected', this.handleTabSelected);
       document.addEventListener('searchSubmitted', this.handleSearchSubmitted);
       // NOTE: these are search specific - should maybe be in searcher.js
@@ -49,17 +49,20 @@ class SearchNavigation extends LitElement {
         this.browsingState.activeSearch = matchedSearch;
         const tabs = this.getMainTabs();
         if (tabs) {
-          console.log(`trying to select ${searchTab}-tab`);
           // NOTE: naming convention is a little fragile - could find
           // parent parent, sibling etc... 
           tabs.selectTabById(`${searchTab}-tab`);
         }
+        //matchedSearch.setUp();
+        //matchedSearch.search();
       } else {
         let defaultSearch = document.querySelector(`[implements="vivo-search"]`);
         defaultSearch.setActive(true);
         this.browsingState.activeSearch = defaultSearch;
-      }
-      //defaultSearch.setActive(true);    
+        //defaultSearch.setUp();
+        //defaultSearch.search();
+        //matchedSearch.doSearch(defaultQuery);
+      }   
       // NOTE: which facets to display depends on active search  
       this.findCorrectFacetsToDisplay(params.filters);
     }
@@ -70,7 +73,7 @@ class SearchNavigation extends LitElement {
 
     disconnectedCallback() {
       super.disconnectedCallback();
-      document.removeEventListener('DOMContentLoaded', this.navFrom);
+      //document.removeEventListener('DOMContentLoaded', this.navFrom);
       document.removeEventListener('tabSelected', this.handleTabSelected);
       document.removeEventListener('searchSubmitted', this.handleSearchSubmitted);
       document.removeEventListener('pageSelected', this.handlePageSelected);
@@ -120,14 +123,12 @@ class SearchNavigation extends LitElement {
 
       // TODO: may need to clear out filters and orders from URL when switching tabs
       if (search) {
-        // NOTE: not re-running 'counts' query so facet count is preserved in tab
         search.search();  
         // TODO: add active-search to URL as /people, /publications etc... ?
       } else {
           console.error("could not find search");
       }
 
-      // filters?
       this.findCorrectFacetsToDisplay();
     }
   
@@ -182,11 +183,9 @@ class SearchNavigation extends LitElement {
       let facetGroups = document.querySelectorAll(`[search="${id}"]`);
       facetGroups.forEach(group => {
         group.setAttribute('selected', 'selected');
-        if (filters) {
+        if (filters && filters.length > 0) {
           // FIXME: this restores filters for person
-          // search but also seems to apply them to publications
           group.setFilters(filters);
-          console.log(group);
         }
       })
     }
@@ -209,37 +208,6 @@ class SearchNavigation extends LitElement {
       search.setPage(0);
       search.search();
     }
-  
-    navTo() {
-      const searchParams = new URLSearchParams(this.browsingState);
-      window.history.replaceState({}, '', `${window.location.pathname}?${searchParams.toString()}`);
-      window.location.href = this.browsingState.to;
-    }
-  
-    navFrom() {
-      const url = new URL(window.location.href);
-      const incomingBrowsingState = {};
-      for (let key of url.searchParams.keys()) {
-        incomingBrowsingState[key] = url.searchParams.get(key);
-      }
-      /*
-      const { currentTab } = incomingBrowsingState;
-      if (currentTab) {
-        const tabs = this.getTabs();
-        if (tabs) {
-          tabs.selectTabById(currentTab);
-        }
-      }
-      */
-      // TODO: still lots to do to restore page and facet
-      // (and facet page) etc... from URL params
-    }
-  
-    /*
-    getTabs() {
-      return document.querySelector('vivo-tabs');
-    }
-    */
   
   }
   

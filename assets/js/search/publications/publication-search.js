@@ -32,14 +32,16 @@ class PublicationSearch extends Searcher(LitElement) {
 
       this.handleSearchResultsObtained = this.handleSearchResultsObtained.bind(this);
        
-      this.setUp();
+      this.orders = this.defaultSort;
 
       this.sortOptions = [
         {label: 'Title (asc)', field: 'title', 'direction': "ASC"},
         {label: 'Title (desc)', field: 'title', 'direction': "DESC"},
         {label: 'Date (asc)', field: 'publicationDate', 'direction': "ASC"},
         {label: 'Date (desc)', field: 'publicationDate', 'direction': "DESC"}
-    ];
+      ];
+
+      this.setUp();
     }
   
     firstUpdated() {
@@ -148,6 +150,8 @@ class PublicationSearch extends Searcher(LitElement) {
               totalPages="${this.data.documents.page.totalPages}"
           />`
       }
+
+      let selected = `${this.orders[0].property}-${this.orders[0].direction}`;
 
       let sorter = html``;
       if (this.data) {

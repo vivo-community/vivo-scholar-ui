@@ -36,17 +36,20 @@ class PersonSearch extends Searcher(LitElement) {
     constructor() {
         super();
         this.graphql = peopleQuery;
+        this.active = false; // ??? not sure about this
         // NOTE: all searches must set a default sort
         this.defaultSort = [{ direction: "ASC", property: "name" }];
 
         this.handleSearchResultsObtained = this.handleSearchResultsObtained.bind(this);
 
-        this.setUp();
+        this.orders = this.defaultSort;
 
         this.sortOptions = [
             {label: 'Name (asc)', field: 'name', 'direction': "ASC"},
             {label: 'Name (desc)', field: 'name', 'direction': "DESC"}
         ];
+
+        this.setUp();
     }
 
     firstUpdated() {
@@ -125,14 +128,9 @@ class PersonSearch extends Searcher(LitElement) {
         }
 
         let sorter = html``;
-        // TODO: might be better if 'searcher.js' code took care of this
-        // kind of assumes only using 1 from array
-        let selected = `${this.defaultSort.property}-${this.defaultSort.direction}`;
 
-        // why is this.orders undefined
-        if (this.orders) {
-            selected = `${this.orders[0].property}-${this.orders[0].direction}`;
-        }
+        // TODO: might be better if 'searcher.js' code took care of this
+        let selected = `${this.orders[0].property}-${this.orders[0].direction}`;
 
         if (this.data) {
             sorter = html`<vivo-search-sorter
