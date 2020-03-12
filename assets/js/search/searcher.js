@@ -2,7 +2,6 @@ import _ from "lodash";
 
 import qs from "qs";
 import client from "../lib/apollo";
-import countQuery from "./count-query";
 
 // NOTE: one way to do this, not the only way
 // http://exploringjs.com/es6/ch_classes.html
@@ -50,28 +49,10 @@ let Searcher = (superclass) => class extends superclass {
         this.page = 0;
         this.filters = [];
       }
-      
+
       this.search();
     }
     
-    runCounts() {
-      const fetchData = async () => {
-        try {
-          const { data } = await client.query({
-            query: countQuery,
-            variables: {
-                search: this.query
-              }
-          });
-          this.countData = data;
-        } catch (error) {
-          console.error(error);
-          throw error;
-        }
-      };
-      return fetchData();
-    }
-  
     runSearch() {
       this.dispatchEvent(new CustomEvent('searchStarted', {
         detail: { time: Date(Date.now()) },
