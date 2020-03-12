@@ -41,21 +41,32 @@ class SearchNavigation extends LitElement {
       const defaultQuery = search ? search : "*";
 
       searchBox.query = defaultQuery;
-
-      // make the first one default (if not in params?)
-      let defaultSearch = document.querySelector(`[implements="vivo-search"]`);
-      this.browsingState.activeSearch = defaultSearch;
-      // TODO: set some value like 'people' that can be added to URL
-      // as the search (to be restored) e.g. /people, /publications etc...
-      // example:
-      // let tab = params.get("tab");
-      // let matchedSearch = document.querySelector("#search-${tab}")
-      // if matchedSearch -> matchedSearch.setActive(true) else defaultSearch.setActive(true)
-      defaultSearch.setActive(true);    
+            
+      let searchTab = params["search-tab"];
+      let matchedSearch = document.querySelector(`#${searchTab}`);
+      if (matchedSearch) {
+        matchedSearch.setActive(true);
+        this.browsingState.activeSearch = matchedSearch;
+        const tabs = this.getMainTabs();
+        if (tabs) {
+          // NOTE: naming convention is a little fragile - could find
+          // parent parent, sibling etc... 
+          tabs.selectTabById(`${searchTab}-tab`);
+        }
+      } else {
+        let defaultSearch = document.querySelector(`[implements="vivo-search"]`);
+        defaultSearch.setActive(true);
+        this.browsingState.activeSearch = defaultSearch;
+      }
+      //defaultSearch.setActive(true);    
       // NOTE: which facets to display depends on active search  
-      this.findCorrectFacetsToDisplay();
+      this.findCorrectFacetsToDisplay(params.filters);
     }
   
+    getMainTabs() {
+      return document.querySelector('vivo-tabs');
+    }
+
     disconnectedCallback() {
       super.disconnectedCallback();
       document.removeEventListener('DOMContentLoaded', this.navFrom);
@@ -80,7 +91,7 @@ class SearchNavigation extends LitElement {
         sibling = sibling.nextElementSibling
       }
     };
-    
+
     handleTabSelected(e) {
       const tab = e.detail;
       // FIXME: this seems to be called by clicking anywhere on tab panel
@@ -106,6 +117,7 @@ class SearchNavigation extends LitElement {
       // only one active search at a time? ...
       search.setActive(true);
 
+      // TODO: may need to clear out filters and orders from URL when switching tabs
       if (search) {
         // NOTE: not re-running 'counts' query so facet count is preserved in tab
         search.search();  
@@ -114,6 +126,7 @@ class SearchNavigation extends LitElement {
           console.error("could not find search");
       }
 
+      // filters?
       this.findCorrectFacetsToDisplay();
     }
   
@@ -157,7 +170,7 @@ class SearchNavigation extends LitElement {
 
     // TODO: this feels a little fragile - works/doesn't work
     // depending on precise arrangement on page
-    findCorrectFacetsToDisplay() {
+    findCorrectFacetsToDisplay(filters = []) {
       let activeSearch = this.browsingState.activeSearch;
       let id = activeSearch.id;
 
@@ -165,9 +178,13 @@ class SearchNavigation extends LitElement {
       // hiding all
       facets.forEach((t) => t.removeAttribute('selected'));
   
+      // should this really be multiple?
       let facetGroups = document.querySelectorAll(`[search="${id}"]`);
       facetGroups.forEach(group => {
         group.setAttribute('selected', 'selected');
+        //if (filters) {
+        //     group.setFilters(filters);
+        //}
       })
     }
     

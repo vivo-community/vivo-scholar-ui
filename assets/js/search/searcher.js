@@ -23,9 +23,7 @@ let Searcher = (superclass) => class extends superclass {
       let page = parsed.page;
       let filters = parsed.filters;
       let orders = parsed.orders;
-
-      //console.log(orders);
-      //console.log(filters);
+      let tab = parsed.tab;
 
       const defaultQuery = search ? search : "*";
       const defaultPage = page ? page : 0;
@@ -37,7 +35,7 @@ let Searcher = (superclass) => class extends superclass {
         query: defaultQuery, 
         page: defaultPage,
         filters: defaultFilters,
-        orders: defaultOrders
+        orders: defaultOrders,
       };
     }
 
@@ -163,6 +161,11 @@ let Searcher = (superclass) => class extends superclass {
       // not always filters though
       if (this.filters && this.filters.length > 0) {
         compound["filters"] = this.filters;
+      }
+
+      // e.g. "person-search"
+      if (this.id) {
+        compound["search-tab"] = this.id;
       }
 
       var newRelativePathQuery = window.location.pathname + '?' + qs.stringify(compound);
