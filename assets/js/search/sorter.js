@@ -19,7 +19,6 @@ class SearchSorter extends LitElement {
 
     handleSortSelected(e) {
         let value = e.target.value;
-        // not getting any value so far
         if (!value) {
             console.error('no value for sorter');
             return;
@@ -42,7 +41,6 @@ class SearchSorter extends LitElement {
         // options look like this: 
         // {label: 'Name (asc)', field: 'name', 'direction': "ASC"},
         // TODO: not crazy about having to make this parseable version
-        // option sort options over and over again
         let flag = (this.selected === `${option.field}-${option.direction}`);
         return flag;
     }

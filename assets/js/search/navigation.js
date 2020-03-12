@@ -120,10 +120,6 @@ class SearchNavigation extends LitElement {
 
       // only one active search at a time? ...
       search.setActive(true);
-      if (!search.orders) {
-        console.log(`search orders property is null`);
-      }
-      // reset sort?
 
       // TODO: may need to clear out filters and orders from URL when switching tabs
       if (search) {

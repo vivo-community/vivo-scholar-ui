@@ -17,6 +17,24 @@ let Searcher = (superclass) => class extends superclass {
     }
 
 
+    // NOTE: if search is restored from URL - and then
+    // the tab is selected the sort parameter carries over
+    // (but does not match any sort) - so needs to go to default
+    // on the other hand, if a sort *is* selected on the tab
+    // then it should persist whilst switching tabs
+    // this little bit is trying to mitigate that 
+    figureOrders(orders) {
+      let order = orders[0];
+      if (this.sortOptions) { 
+        let obj =  _.find(this.sortOptions, { field: order.property, direction: order.direction });
+        if (!obj) {
+           return this.defaultSort;
+        } else {
+          return orders;
+        }
+      }
+    }
+
     deriveSearchFromParameters() {   
       const parsed = qs.parse(window.location.search.substring(1));
       let search = parsed.search;
@@ -28,7 +46,7 @@ let Searcher = (superclass) => class extends superclass {
       const defaultPage = page ? page : 0;
       const defaultFilters = (filters && filters.length > 0) ? filters : [];
       // NOTE: each search must have defaultSort defined
-      const defaultOrders = (orders && orders.length > 0) ? orders : this.defaultSort;
+      const defaultOrders = (orders && orders.length > 0) ? this.figureOrders(orders) : this.defaultSort;
 
       // NOTE: playing whack-a-mole a bit trying to set this property
       // and others (either in navigation.js, searcher.js or person-search.js)
@@ -153,7 +171,6 @@ let Searcher = (superclass) => class extends superclass {
       }
       // since there is default search, always a search
       if (this.orders && this.orders.length > 0) {
-        console.log(`settings orders to ${JSON.stringify(this.orders)}`);
         compound["orders"] = this.orders;
       }
       // not always filters though
