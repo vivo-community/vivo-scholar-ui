@@ -61,7 +61,6 @@ class Tabs extends LitElement {
 
   selectTab(tab) {
     const screenWidth = window.innerWidth;
-    console.log(screenWidth);
     let tabs = this.querySelectorAll('vivo-tab');
     let index = Array.from(tabs).indexOf(tab);
     let panels = this.querySelectorAll('vivo-tab-panel');

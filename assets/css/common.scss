@@ -56,7 +56,7 @@ aside {
 }
 #main {
   width: 95%;
-  margin: 150px auto 0 auto;
+  margin: 168px auto 0 auto;
 }
 .highlight {
   color: var(--highlightColor);
@@ -84,7 +84,10 @@ aside {
   font-weight: normal;
   font-size: 1.4em;
   margin-top: 0;
-  margin-bottom: 1em;
+  margin-bottom: .5em;
+}
+#contact-info {
+  margin-top: 0;
 }
 .section-title {
   color: var(--primaryColor);
@@ -122,6 +125,9 @@ vivo-sidebar-item a {
   font-weight: bold;
   text-decoration: none;
   border-bottom: 1px dotted currentColor;
+}
+.testing{
+  white-space: normal;
 }
 vivo-sidebar-item  > div:first-of-type {
   padding-top: .25em;
@@ -168,34 +174,38 @@ vivo-tab-panel h4 {
 /*Sidebar grid - person*/
 .person-container {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  grid-template-rows: 200px auto;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
   width: 100%;
   margin: 0 auto;
   grid-auto-flow: row;
   grid-column-gap: .5em;
 }
 .person-container aside {
-  grid-column: span 1;
-  padding: 0.25em;
+  grid-column: span 2;
+  padding-right: 0.25em;
 }
 .person-container .sidebar-image {
-  grid-column: span 1;
-  padding: 0.25em;
+  grid-column: span 2;
+  padding-right: 0.25em;
 }
 .person-container main {
-  grid-column: span 5;
-  padding: 0.25em;
+  grid-column: span 10;
+  grid-row: span 5;
+  padding-left: 0.25em;
 }
 .sidebar-image img{
   margin: auto;
-  border: 5px solid #F3F2F1;
-
+  border: 10px solid #F3F2F1;
 }
 
 
 /* responsive css */
-
+@media screen and (min-width: 1400px) {
+  .profile-image {
+  width: 100%;
+  height: auto;
+}
+}
 @media screen and (max-width: 800px) {
 // person.html styling
   #main {
