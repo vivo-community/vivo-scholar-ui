@@ -27,7 +27,7 @@ class PublicationSearch extends Searcher(LitElement) {
       super();
       this.graphql = pubQuery;
       // must set a default sort
-      this.defaultSort = [{property: 'title', 'direction': "ASC"}];
+      this.defaultSort = [{property: 'title', direction: "ASC"}];
       this.active = false;
 
       this.handleSearchResultsObtained = this.handleSearchResultsObtained.bind(this);

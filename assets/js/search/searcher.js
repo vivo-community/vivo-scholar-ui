@@ -153,6 +153,7 @@ let Searcher = (superclass) => class extends superclass {
       }
       // since there is default search, always a search
       if (this.orders && this.orders.length > 0) {
+        console.log(`settings orders to ${JSON.stringify(this.orders)}`);
         compound["orders"] = this.orders;
       }
       // not always filters though
