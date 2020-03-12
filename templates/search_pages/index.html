@@ -11,6 +11,8 @@
        <vivo-sidebar-item>
           <vivo-facet-group slot="content" key="people" search="person-search">
 
+            <h3>Person Filters</h3>
+
             <vivo-search-facets key="people" field="type" tag="type">
               <h4>Type</h4>
             </vivo-search-facets>
@@ -23,6 +25,10 @@
               <h4>School</h4>
             </vivo-search-facets>
 
+            <vivo-search-facets key="people" field="researchAreas" tag="ra">
+              <h4>Research Area</h4>
+            </vivo-search-facets>
+
           </vivo-facet-group>
 
         </vivo-sidebar-item>
@@ -30,7 +36,7 @@
 
         <vivo-sidebar-item>
           <vivo-facet-group slot="content" key="documents" search="publication-search">
-
+            <h3>Publication Filters</h3>
             <!-- TODO: maybe use 'key' from parent facet-group tag -->
             <vivo-search-facets key="documents" field="type" tag="type">
               <h4>Type</h4>

@@ -8,8 +8,7 @@ class FacetGroup extends Faceter(LitElement) {
     static get properties() {
       return {
         search: { type: String, attribute: true },
-        key: { type: String },
-        //opKey: { type: String, attribute: true }
+        key: { type: String }
       }
     }
     
@@ -28,7 +27,6 @@ class FacetGroup extends Faceter(LitElement) {
       super();
       this.selected = false;
       this.filters = [];
-      //
 
       this.handleSearchResultsObtained = this.handleSearchResultsObtained.bind(this);
       this.handleFacetSelected = this.handleFacetSelected.bind(this);
@@ -53,7 +51,7 @@ class FacetGroup extends Faceter(LitElement) {
       this.data = data;
       let grouped = _.groupBy(this.data[this.key].facets, "field");
 
-      // NOTE: this *should* be removing filters from constructed
+      // NOTE: this removes filters from constructed
       // search if they are no longer in search results
       //
       // This would happen if another facet has been applied and
@@ -64,6 +62,7 @@ class FacetGroup extends Faceter(LitElement) {
           let entries = grouped[filter.field][0].entries;
           let content = entries.content;
           let values = content.map(v => v.value);
+          // remove cause no longer in search results
           if (!_.includes(values, filter.value)) {
             this.removeFilter(filter);
           }

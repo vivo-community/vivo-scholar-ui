@@ -27,9 +27,17 @@ class PublicationSearch extends Searcher(LitElement) {
       super();
       this.graphql = pubQuery;
       this.active = false;
+      this.path = "/people"; // ?? trying to find way to establish URL per search
       this.handleSearchResultsObtained = this.handleSearchResultsObtained.bind(this);
       this.handleCountResultsObtained = this.handleCountResultsObtained.bind(this);
-      this.setUp();
+      this.setUp([{property: 'title', 'direction': "ASC"}]);
+
+      this.sortOptions = [
+        {label: 'Title (asc)', field: 'title', 'direction': "ASC"},
+        {label: 'Title (desc)', field: 'title', 'direction': "DESC"},
+        {label: 'Date (asc)', field: 'publicationDate', 'direction': "ASC"},
+        {label: 'Date (desc)', field: 'publicationDate', 'direction': "DESC"}
+    ];
     }
   
     firstUpdated() {
@@ -50,6 +58,11 @@ class PublicationSearch extends Searcher(LitElement) {
           return;
       }
       this.data = data;
+      // might be a new count in here
+      var docCount = this.data ? this.data.documents.page.totalElements : 0;
+      let tab = document.querySelector('#publication-search-count');
+      tab.textContent = `${docCount}`;
+
     }
   
     // TODO: probably a better way to spread out counts to tab headings
@@ -143,9 +156,19 @@ class PublicationSearch extends Searcher(LitElement) {
               totalPages="${this.data.documents.page.totalPages}"
           />`
       }
-  
+
+      let sorter = html``;
+      if (this.data) {
+          // make sorter
+          sorter = html`<vivo-search-sorter
+            options=${JSON.stringify(this.sortOptions)}>
+          </vivo-search-sorter>`
+      }
+
+      // add a sort here?
       return html`
         <div>
+        ${sorter}
         ${resultsDisplay}
         ${pagination}
         </div>`
