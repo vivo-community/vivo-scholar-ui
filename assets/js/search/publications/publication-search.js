@@ -26,13 +26,11 @@ class PublicationSearch extends Searcher(LitElement) {
     constructor() {
       super();
       this.graphql = pubQuery;
-      this.path = "/publications"; // ?? trying to find way to establish URL per search
       // must set a default sort
       this.defaultSort = [{property: 'title', 'direction': "ASC"}];
       this.active = false;
-      
+
       this.handleSearchResultsObtained = this.handleSearchResultsObtained.bind(this);
-      this.handleCountResultsObtained = this.handleCountResultsObtained.bind(this);
        
       this.setUp();
 
@@ -46,13 +44,11 @@ class PublicationSearch extends Searcher(LitElement) {
   
     firstUpdated() {
       document.addEventListener('searchResultsObtained', this.handleSearchResultsObtained);
-      document.addEventListener('countResultsObtained', this.handleCountResultsObtained);
     }
   
     disconnectedCallback() {
       super.disconnectedCallback();
       document.removeEventListener('searchResultsObtained', this.handleSearchResultsObtained);
-      document.addEventListener('countResultsObtained', this.handleCountResultsObtained);
     }
   
     handleSearchResultsObtained(e) {
@@ -69,14 +65,6 @@ class PublicationSearch extends Searcher(LitElement) {
 
     }
   
-    // TODO: probably a better way to spread out counts to tab headings
-    handleCountResultsObtained(e) {
-      this.countData = e.detail;
-      var docCount = this.countData ? this.countData.pubCount.page.totalElements : 0;
-      let tab = document.querySelector('#publication-search-count');
-      tab.textContent = `${docCount}`;
-    }
-
     renderPublisher(publisher) {
         if (publisher) {
             return html`

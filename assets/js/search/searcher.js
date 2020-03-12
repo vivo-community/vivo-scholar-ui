@@ -23,7 +23,6 @@ let Searcher = (superclass) => class extends superclass {
       let page = parsed.page;
       let filters = parsed.filters;
       let orders = parsed.orders;
-      let tab = parsed.tab;
 
       const defaultQuery = search ? search : "*";
       const defaultPage = page ? page : 0;
@@ -42,12 +41,16 @@ let Searcher = (superclass) => class extends superclass {
     setUp() {
       const { query, page, filters, orders } = this.deriveSearchFromParameters();
       this.query = query;
-      this.page = page;
-      this.filters = filters;
       this.orders = orders;
 
-      this.pushHistory();
-      this.counts();
+      if (this.active) {
+        this.page = page;
+        this.filters = filters;
+      } else {
+        this.page = 0;
+        this.filters = [];
+      }
+      
       this.search();
     }
     
@@ -118,22 +121,12 @@ let Searcher = (superclass) => class extends superclass {
     setSort(orders = []) {
       this.orders = orders
     }
-
-    counts() {
-      this.runCounts()
-        .then(() => {
-          this.dispatchEvent(new CustomEvent('countResultsObtained', {
-            detail: this.countData,
-            bubbles: true,
-            cancelable: false,
-            composed: true
-          }));
-        })
-        .catch((e) => console.error(`Error running counts:${e}`));
-    }
   
     search() {
-      this.pushHistory();
+      if (this.active) {
+        this.pushHistory();
+      }
+      
       // TODO: maybe add time.now to detail?
       this.runSearch()
         .then(() => {
@@ -164,9 +157,13 @@ let Searcher = (superclass) => class extends superclass {
       }
 
       // e.g. "person-search"
+      /*
+      NOTE: this always makes publication search active one
       if (this.id) {
         compound["search-tab"] = this.id;
+        console.log(`adding ${this.id} to search params`);
       }
+      */
 
       var newRelativePathQuery = window.location.pathname + '?' + qs.stringify(compound);
       history.pushState(null, '', newRelativePathQuery);
@@ -176,7 +173,6 @@ let Searcher = (superclass) => class extends superclass {
     doSearch(query) {
       // assumes not blank string (checked already)
       this.query = query;
-      this.counts();
       this.search();
     }  
 

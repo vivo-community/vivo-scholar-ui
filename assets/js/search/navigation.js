@@ -41,7 +41,7 @@ class SearchNavigation extends LitElement {
       const defaultQuery = search ? search : "*";
 
       searchBox.query = defaultQuery;
-            
+
       let searchTab = params["search-tab"];
       let matchedSearch = document.querySelector(`#${searchTab}`);
       if (matchedSearch) {
@@ -49,6 +49,7 @@ class SearchNavigation extends LitElement {
         this.browsingState.activeSearch = matchedSearch;
         const tabs = this.getMainTabs();
         if (tabs) {
+          console.log(`trying to select ${searchTab}-tab`);
           // NOTE: naming convention is a little fragile - could find
           // parent parent, sibling etc... 
           tabs.selectTabById(`${searchTab}-tab`);
@@ -156,7 +157,6 @@ class SearchNavigation extends LitElement {
 
       activeSearch.doSearch(search);
 
-      // FIXME: probably need to reset paging
       this.findCorrectFacetsToDisplay();
     }
   
@@ -182,9 +182,12 @@ class SearchNavigation extends LitElement {
       let facetGroups = document.querySelectorAll(`[search="${id}"]`);
       facetGroups.forEach(group => {
         group.setAttribute('selected', 'selected');
-        //if (filters) {
-        //     group.setFilters(filters);
-        //}
+        if (filters) {
+          // FIXME: this restores filters for person
+          // search but also seems to apply them to publications
+          group.setFilters(filters);
+          console.log(group);
+        }
       })
     }
     
