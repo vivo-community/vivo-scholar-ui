@@ -26,6 +26,7 @@ class FacetGroup extends Faceter(LitElement) {
     constructor() {
       super();
       this.selected = false;
+      // way to get this from URL?
       this.filters = [];
 
       this.handleSearchResultsObtained = this.handleSearchResultsObtained.bind(this);

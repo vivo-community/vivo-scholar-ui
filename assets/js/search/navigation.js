@@ -1,5 +1,5 @@
 import { LitElement, html, css } from "lit-element";
-
+import qs from "qs";
 /*
 TODO: maybe make a tabbed-search component
 that contains search-text and tabs/searches etc..
@@ -13,38 +13,58 @@ class SearchNavigation extends LitElement {
 
     constructor() {
       super();
-      this.browsingState = {};
-      this.navFrom = this.navFrom.bind(this);
-      this.navTo = this.navTo.bind(this);
+      this.browsingState = {}; // maybe rename to searchStructure
       this.handleSearchSubmitted = this.handleSearchSubmitted.bind(this);
       this.handleTabSelected = this.handleTabSelected.bind(this);
       this.handlePageSelected = this.handlePageSelected.bind(this);
       this.handleSortSelected = this.handleSortSelected.bind(this);
-
       this.handleSearchStarted = this.handleSearchStarted.bind(this);
     }
   
     firstUpdated() {
-      document.addEventListener('DOMContentLoaded', this.navFrom);
       document.addEventListener('tabSelected', this.handleTabSelected);
       document.addEventListener('searchSubmitted', this.handleSearchSubmitted);
       // NOTE: these are search specific - should maybe be in searcher.js
       // code instead of here
       document.addEventListener('pageSelected', this.handlePageSelected);
       document.addEventListener('sortSelected', this.handleSortSelected);
-
       document.addEventListener('searchStarted', this.handleSearchStarted);
-      // make the first one default
-      let defaultSearch = document.querySelector(`[implements="vivo-search"]`);
-      this.browsingState.activeSearch = defaultSearch;
-      defaultSearch.setActive(true);
       
-      this.findCorrectFacetsToDisplay();
+      // make search-box show text of search sent in (from home page)
+      let searchBox = document.querySelector(`vivo-site-search-box`);
+      // parse all other params here?
+      const params = qs.parse(window.location.search.substring(1));
+      let search = params.search;
+      const defaultQuery = search ? search : "*";
+
+      searchBox.query = defaultQuery;
+
+      let searchTab = params["search-tab"];
+      let matchedSearch = document.querySelector(`#${searchTab}`);
+      if (matchedSearch) {
+        matchedSearch.setActive(true);
+        this.browsingState.activeSearch = matchedSearch;
+        const tabs = this.getMainTabs();
+        if (tabs) {
+          // NOTE: naming convention is a little fragile - could find
+          // parent parent, sibling etc... 
+          tabs.selectTabById(`${searchTab}-tab`);
+        }
+      } else {
+        let defaultSearch = document.querySelector(`[implements="vivo-search"]`);
+        defaultSearch.setActive(true);
+        this.browsingState.activeSearch = defaultSearch;
+      }   
+      // NOTE: which facets to display depends on active search  
+      this.findCorrectFacetsToDisplay(params.filters);
     }
   
+    getMainTabs() {
+      return document.querySelector('vivo-tabs');
+    }
+
     disconnectedCallback() {
       super.disconnectedCallback();
-      document.removeEventListener('DOMContentLoaded', this.navFrom);
       document.removeEventListener('tabSelected', this.handleTabSelected);
       document.removeEventListener('searchSubmitted', this.handleSearchSubmitted);
       document.removeEventListener('pageSelected', this.handlePageSelected);
@@ -66,7 +86,7 @@ class SearchNavigation extends LitElement {
         sibling = sibling.nextElementSibling
       }
     };
-    
+
     handleTabSelected(e) {
       const tab = e.detail;
       // FIXME: this seems to be called by clicking anywhere on tab panel
@@ -92,15 +112,16 @@ class SearchNavigation extends LitElement {
       // only one active search at a time? ...
       search.setActive(true);
 
+      // TODO: may need to clear out filters and orders from URL when switching tabs
       if (search) {
-        // NOTE: not re-running 'counts' query so
-        // facet count is preserved in tab
         search.search();  
-        // add active-search to URL as /people, /publications etc... ?
+        // TODO: add active-search to URL as /people, /publications etc... ?
       } else {
           console.error("could not find search");
       }
 
+      // TODO: not sure how to reset 'orders' when switching tab
+      // (in URL)
       this.findCorrectFacetsToDisplay();
     }
   
@@ -120,6 +141,9 @@ class SearchNavigation extends LitElement {
       searches.forEach(s => {
         s.setQuery(search);
         s.setPage(0);
+        // just run each search to get the counts
+        // (this includes 'active' search)
+        s.search();
       })
 
       // clear all the 'filters' 
@@ -128,22 +152,20 @@ class SearchNavigation extends LitElement {
         s.setFilters([]);
       })
 
-      activeSearch.doSearch(search);
-
-      // FIXME: probably need to reset paging
       this.findCorrectFacetsToDisplay();
     }
   
     // NOTE: different than 'searchSubmitted' because it's the graphql
     // query (could be faceting, paging, sorting etc... not just new search)
     handleSearchStarted(e) {
-      // TODO: not sure what to do here yet
+      // TODO: not sure what to do here yet - 
+      // perhaps a global 'waiting' spinner of some sort?
       //console.log(`search started: ${e.detail.time}`);
     }
 
     // TODO: this feels a little fragile - works/doesn't work
     // depending on precise arrangement on page
-    findCorrectFacetsToDisplay() {
+    findCorrectFacetsToDisplay(filters = []) {
       let activeSearch = this.browsingState.activeSearch;
       let id = activeSearch.id;
 
@@ -151,16 +173,23 @@ class SearchNavigation extends LitElement {
       // hiding all
       facets.forEach((t) => t.removeAttribute('selected'));
   
+      // should this really be multiple?
       let facetGroups = document.querySelectorAll(`[search="${id}"]`);
       facetGroups.forEach(group => {
         group.setAttribute('selected', 'selected');
+        if (filters && filters.length > 0) {
+          // FIXME: this restores filters for person
+          group.setFilters(filters);
+        }
       })
     }
     
+    // maybe move this and sort to be handled by individual search
+    // (maybe in searcher.js file)
     handlePageSelected(e) {
+      let search = this.browsingState.activeSearch;
       const page = e.detail;
       this.browsingState.currentPage = page;
-      let search = this.browsingState.activeSearch;
       search.setPage(page.value);
       search.search();
     }
@@ -169,36 +198,8 @@ class SearchNavigation extends LitElement {
       let search = this.browsingState.activeSearch;
       let orders = [e.detail]
       search.setSort(orders);
-      // TODO: reset page?
       search.setPage(0);
       search.search();
-    }
-  
-    navTo() {
-      const searchParams = new URLSearchParams(this.browsingState);
-      window.history.replaceState({}, '', `${window.location.pathname}?${searchParams.toString()}`);
-      window.location.href = this.browsingState.to;
-    }
-  
-    navFrom() {
-      const url = new URL(window.location.href);
-      const incomingBrowsingState = {};
-      for (let key of url.searchParams.keys()) {
-        incomingBrowsingState[key] = url.searchParams.get(key);
-      }
-      const { currentTab } = incomingBrowsingState;
-      if (currentTab) {
-        const tabs = this.getTabs();
-        if (tabs) {
-          tabs.selectTabById(currentTab);
-        }
-      }
-      // TODO: still lots to do to restore page and facet
-      // (and facet page) etc... from URL params
-    }
-  
-    getTabs() {
-      return document.querySelector('vivo-tabs');
     }
   
   }

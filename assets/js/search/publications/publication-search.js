@@ -26,29 +26,29 @@ class PublicationSearch extends Searcher(LitElement) {
     constructor() {
       super();
       this.graphql = pubQuery;
+      // must set a default sort
+      this.defaultSort = [{property: 'title', direction: "ASC"}];
       this.active = false;
-      this.path = "/people"; // ?? trying to find way to establish URL per search
-      this.handleSearchResultsObtained = this.handleSearchResultsObtained.bind(this);
-      this.handleCountResultsObtained = this.handleCountResultsObtained.bind(this);
-      this.setUp([{property: 'title', 'direction': "ASC"}]);
 
+      this.handleSearchResultsObtained = this.handleSearchResultsObtained.bind(this);
+       
       this.sortOptions = [
         {label: 'Title (asc)', field: 'title', 'direction': "ASC"},
         {label: 'Title (desc)', field: 'title', 'direction': "DESC"},
         {label: 'Date (asc)', field: 'publicationDate', 'direction': "ASC"},
         {label: 'Date (desc)', field: 'publicationDate', 'direction': "DESC"}
-    ];
+      ];
+
+      this.setUp();
     }
   
     firstUpdated() {
       document.addEventListener('searchResultsObtained', this.handleSearchResultsObtained);
-      document.addEventListener('countResultsObtained', this.handleCountResultsObtained);
     }
   
     disconnectedCallback() {
       super.disconnectedCallback();
       document.removeEventListener('searchResultsObtained', this.handleSearchResultsObtained);
-      document.addEventListener('countResultsObtained', this.handleCountResultsObtained);
     }
   
     handleSearchResultsObtained(e) {
@@ -65,14 +65,6 @@ class PublicationSearch extends Searcher(LitElement) {
 
     }
   
-    // TODO: probably a better way to spread out counts to tab headings
-    handleCountResultsObtained(e) {
-      this.countData = e.detail;
-      var docCount = this.countData ? this.countData.pubCount.page.totalElements : 0;
-      let tab = document.querySelector('#publication-search-count');
-      tab.textContent = `${docCount}`;
-    }
-
     renderPublisher(publisher) {
         if (publisher) {
             return html`
@@ -157,10 +149,13 @@ class PublicationSearch extends Searcher(LitElement) {
           />`
       }
 
+      let selected = `${this.orders[0].property}-${this.orders[0].direction}`;
+
       let sorter = html``;
       if (this.data) {
           // make sorter
           sorter = html`<vivo-search-sorter
+            selected=${selected}
             options=${JSON.stringify(this.sortOptions)}>
           </vivo-search-sorter>`
       }
