@@ -17,6 +17,14 @@ class SidebarItem extends LitElement {
         padding: 0 1em;
         font-size: 0.85em;
         background-color: var(--lightNeutralColor);
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+      }
+      @media screen and (max-width: 800px) {
+        ::slotted([slot="content"]) {
+          width: auto;
+        }
       }
     `
   }

@@ -47,7 +47,7 @@ class Tabs extends LitElement {
         panel.vivoTabStyle = this.vivoTabStyle;
       }
     });
-    const screenWidth = window.screen.width;
+    const screenWidth = window.innerWidth;
     if (screenWidth >= 720) {
       if (this.tabs.length >= 1 && this.panels.length >= 1 && this.tabs.filter((t) => t.selected).length == 0) {
         this.selectTab(this.tabs[0]);
@@ -60,7 +60,7 @@ class Tabs extends LitElement {
   }
 
   selectTab(tab) {
-    const screenWidth = window.screen.width;
+    const screenWidth = window.innerWidth;
     let tabs = this.querySelectorAll('vivo-tab');
     let index = Array.from(tabs).indexOf(tab);
     let panels = this.querySelectorAll('vivo-tab-panel');

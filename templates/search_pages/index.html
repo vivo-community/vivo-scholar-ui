@@ -10,7 +10,9 @@
 
        <vivo-sidebar-item>
           <vivo-facet-group slot="content" key="people" search="person-search">
+
             <h3>Person Filters</h3>
+
             <vivo-search-facets key="people" field="type" tag="type">
               <h4>Type</h4>
             </vivo-search-facets>
@@ -28,10 +30,10 @@
             </vivo-search-facets>
 
           </vivo-facet-group>
-      
+
         </vivo-sidebar-item>
 
-        
+
         <vivo-sidebar-item>
           <vivo-facet-group slot="content" key="documents" search="publication-search">
             <h3>Publication Filters</h3>
@@ -40,7 +42,7 @@
               <h4>Type</h4>
             </vivo-search-facets>
 
-            <vivo-publication-date-facets key="documents" field="publicationDate" 
+            <vivo-publication-date-facets key="documents" field="publicationDate"
               implements="vivo-search-facets" tag="publicationDate">
               <h4>Date</h4>
             </vivo-publication-date-facets>
@@ -56,34 +58,34 @@
 
           </vivo-facet-group>
         </vivo-sidebar-item>
-        
+
     </vivo-sidebar>
   </aside>
 
   <main>
 
     <vivo-tabs id="secondary-example" vivo-tab-style="secondary">
-      <vivo-tab id="person-search-tab" selected>
+      <vivo-tab id="person-search-tab">
         People (<span id="person-search-count">0</span>)
       </vivo-tab>
-  
-      <vivo-tab-panel selected>  
-        <!-- NOTE: the vivo-search-navigation element uses the id of the 
+
+      <vivo-tab-panel >
+        <!-- NOTE: the vivo-search-navigation element uses the id of the
           tab ("person-search-tab") and lops off the "-tab" to figure
           out the active search id - if it could detect a <vivo-search>
           child element interface that might be better
         -->
         <vivo-person-search id="person-search" implements="vivo-search"/>
       </vivo-tab-panel>
-    
+
       <vivo-tab id="publication-search-tab">
         Publications (<span id="publication-search-count">0</span>)
       </vivo-tab>
-  
+
       <vivo-tab-panel>
           <vivo-publication-search id="publication-search" implements="vivo-search"/>
       </vivo-tab-panel>
-    
+
     </vivo-tabs>
 
   </main>

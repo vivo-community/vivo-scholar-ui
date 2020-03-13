@@ -35,7 +35,7 @@ The app will be available at: [http://localhost:4200](http://localhost:4200)
 It should be easy to add and/or customize pages with basic knowledge of HTML and GraphQL.
 
 Pages are represented by a template file and corresponding GraphQL query file.
-Adding new or edting existing templates and queries are the expected means of customization.
+Adding new or editing existing templates and queries are the expected means of customization.
 
 Web Components will be the primary method of encapsulating of core styles and behaviors.
 They can be used to build new templates and will also provide embeddable 'widgets' for
@@ -57,7 +57,7 @@ will be an exception.
     * Template: templates/search_pages/{type}.html
     * Query: assumes javascript will query GraphQL endpoint directly
 * "/pages/{name}" - generic pages, any/html javascript with optional GraphQL query
-    * Template: templates/any_pages/{name}.html 
+    * Template: templates/any_pages/{name}.html
     * Query (optional): templates/any_pages/{name}.graphql
     * Query Parameters: Dynamic, derived from query string
     * [Adding an Any Page](http://localhost:4200/docs/elements/any-page)
