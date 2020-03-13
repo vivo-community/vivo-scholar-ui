@@ -23,8 +23,20 @@ class SearchFacet extends LitElement {
           clear: both;
           text-align: right;
       }
+      div {
+        display: flex;
+        flex-wrap: nowrap;
+      }
       div:hover {
         cursor: pointer;
+      }
+      .label {
+        flex-grow: 2;
+        flex-basis: 90%;
+      }
+      .checkbox {
+        flex-grow: 1;
+        flex-basis: 10%;
       }
       .checkbox:after {
         content:"◻";
