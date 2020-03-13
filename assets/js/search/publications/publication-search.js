@@ -19,7 +19,21 @@ class PublicationSearch extends Searcher(LitElement) {
             display: block;
             clear: both;
         }
-        
+        .publications {
+          display: block; 
+          padding: 1em;
+        }
+        .search-actions {
+          display: flex;
+        }
+        vivo-filter-clearer {
+          flex-grow: 2;
+          flex-basis: 65%;
+        }
+        vivo-search-sorter {
+          flex-grow: 1;
+          flex-basis:35%;
+        }
       `
     }
   
@@ -131,7 +145,7 @@ class PublicationSearch extends Searcher(LitElement) {
       
       // FIXME: use arrow notation to get rid of _self?
       let _self = this;
-      var resultsDisplay = html`<div>
+      var resultsDisplay = html`<div class="publications">
         ${_.map(results, function (i) {
             return _self.renderPublication(i);
           })
@@ -160,10 +174,15 @@ class PublicationSearch extends Searcher(LitElement) {
           </vivo-search-sorter>`
       }
 
-      // add a sort here?
+      let clearer = html`<vivo-filter-clearer>
+      </vivo-filter-clearer>`
+ 
       return html`
-        <div>
-        ${sorter}
+        <div id="publication-search-results">
+          <div class="search-actions">
+          ${clearer}
+          ${sorter}
+          </div>
         ${resultsDisplay}
         ${pagination}
         </div>`
