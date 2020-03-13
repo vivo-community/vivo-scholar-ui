@@ -101,7 +101,6 @@ class SearchNavigation extends LitElement {
           facet.setFilters([]);
       })
       // 3. run search again
-      // search.search();
       search.search();
     }
 
