@@ -42,7 +42,6 @@ class PersonSearch extends Searcher(LitElement) {
 
         this.handleSearchResultsObtained = this.handleSearchResultsObtained.bind(this);
 
-        //this.orders = this.defaultSort;
         this.sortOptions = [
             {label: 'Name (asc)', field: 'name', 'direction': "ASC"},
             {label: 'Name (desc)', field: 'name', 'direction': "DESC"}

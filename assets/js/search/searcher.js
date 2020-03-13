@@ -71,11 +71,9 @@ let Searcher = (superclass) => class extends superclass {
       if (this.active) {
         this.page = page;
         this.filters = filters;
-        //this.orders = orders;
       } else {
         this.page = 0;
         this.filters = [];
-        //this.orders = this.defaultSort;
       }
 
       this.search();
@@ -88,6 +86,11 @@ let Searcher = (superclass) => class extends superclass {
     runSearch() {
       // FIXME: this is just a hack to avoid error
       // don't know why the error is happening in first place
+      //
+      // Basic problem is sometimes it's calling GraphQL
+      // with no 'query' set (and it's a required parameter)
+      // so far cannot trace why it's being called, or
+      // why the 'query' would ever be null
       if (!this.query) {
         const noOp = async () => {
           await this.timeout(1000);

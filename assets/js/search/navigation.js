@@ -14,8 +14,6 @@ class SearchNavigation extends LitElement {
     constructor() {
       super();
       this.browsingState = {}; // maybe rename to searchStructure
-      //this.navFrom = this.navFrom.bind(this);
-      //this.navTo = this.navTo.bind(this);
       this.handleSearchSubmitted = this.handleSearchSubmitted.bind(this);
       this.handleTabSelected = this.handleTabSelected.bind(this);
       this.handlePageSelected = this.handlePageSelected.bind(this);
@@ -24,7 +22,6 @@ class SearchNavigation extends LitElement {
     }
   
     firstUpdated() {
-      //document.addEventListener('DOMContentLoaded', this.navFrom);
       document.addEventListener('tabSelected', this.handleTabSelected);
       document.addEventListener('searchSubmitted', this.handleSearchSubmitted);
       // NOTE: these are search specific - should maybe be in searcher.js
@@ -53,15 +50,10 @@ class SearchNavigation extends LitElement {
           // parent parent, sibling etc... 
           tabs.selectTabById(`${searchTab}-tab`);
         }
-        //matchedSearch.setUp();
-        //matchedSearch.search();
       } else {
         let defaultSearch = document.querySelector(`[implements="vivo-search"]`);
         defaultSearch.setActive(true);
         this.browsingState.activeSearch = defaultSearch;
-        //defaultSearch.setUp();
-        //defaultSearch.search();
-        //matchedSearch.doSearch(defaultQuery);
       }   
       // NOTE: which facets to display depends on active search  
       this.findCorrectFacetsToDisplay(params.filters);
@@ -73,7 +65,6 @@ class SearchNavigation extends LitElement {
 
     disconnectedCallback() {
       super.disconnectedCallback();
-      //document.removeEventListener('DOMContentLoaded', this.navFrom);
       document.removeEventListener('tabSelected', this.handleTabSelected);
       document.removeEventListener('searchSubmitted', this.handleSearchSubmitted);
       document.removeEventListener('pageSelected', this.handlePageSelected);
@@ -160,7 +151,7 @@ class SearchNavigation extends LitElement {
       facets.forEach(s => {
         s.setFilters([]);
       })
-      
+
       this.findCorrectFacetsToDisplay();
     }
   

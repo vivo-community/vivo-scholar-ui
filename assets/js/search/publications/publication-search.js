@@ -32,7 +32,6 @@ class PublicationSearch extends Searcher(LitElement) {
 
       this.handleSearchResultsObtained = this.handleSearchResultsObtained.bind(this);
        
-      //this.orders = this.defaultSort;
       this.sortOptions = [
         {label: 'Title (asc)', field: 'title', 'direction': "ASC"},
         {label: 'Title (desc)', field: 'title', 'direction': "DESC"},
