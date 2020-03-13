@@ -187,13 +187,6 @@ let Searcher = (superclass) => class extends superclass {
       history.pushState(null, '', newRelativePathQuery);
     }
 
-    // NOTE: only called by handleSearchSubmitted in navigation.js
-    doSearch(query) {
-      // assumes not blank string (checked already)
-      this.query = query;
-      this.search();
-    }  
-
   }
   
 export default Searcher;

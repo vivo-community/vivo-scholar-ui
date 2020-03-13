@@ -150,6 +150,9 @@ class SearchNavigation extends LitElement {
       searches.forEach(s => {
         s.setQuery(search);
         s.setPage(0);
+        // just run each search to get the counts
+        // (this includes 'active' search)
+        s.search();
       })
 
       // clear all the 'filters' 
@@ -157,9 +160,7 @@ class SearchNavigation extends LitElement {
       facets.forEach(s => {
         s.setFilters([]);
       })
-
-      activeSearch.doSearch(search);
-
+      
       this.findCorrectFacetsToDisplay();
     }
   
