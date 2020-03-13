@@ -36,28 +36,27 @@ class PersonSearch extends Searcher(LitElement) {
     constructor() {
         super();
         this.graphql = peopleQuery;
-        this.handleSearchResultsObtained = this.handleSearchResultsObtained.bind(this);
-        this.handleCountResultsObtained = this.handleCountResultsObtained.bind(this);
-        this.setUp();
+        this.active = false; // ??? not sure about this
+        // NOTE: all searches must set a default sort
+        this.defaultSort = [{ property: "name", direction: "ASC" }];
 
-        // TODO: set a default sort?
+        this.handleSearchResultsObtained = this.handleSearchResultsObtained.bind(this);
+
         this.sortOptions = [
             {label: 'Name (asc)', field: 'name', 'direction': "ASC"},
             {label: 'Name (desc)', field: 'name', 'direction': "DESC"}
         ];
+
+        this.setUp();
     }
 
     firstUpdated() {
         document.addEventListener('searchResultsObtained', this.handleSearchResultsObtained);
-        // FIXME: might not need the separate countsResults if tab has uses
-        // totalElements (see below)
-        document.addEventListener('countResultsObtained', this.handleCountResultsObtained);
     }
 
     disconnectedCallback() {
         super.disconnectedCallback();
         document.removeEventListener('searchResultsObtained', this.handleSearchResultsObtained);
-        document.addEventListener('countResultsObtained', this.handleCountResultsObtained);
     }
 
     handleSearchResultsObtained(e) {
@@ -71,15 +70,6 @@ class PersonSearch extends Searcher(LitElement) {
         var docCount = this.data ? this.data.people.page.totalElements : 0;
         let tab = document.querySelector('#person-search-count');
         tab.textContent = `${docCount}`;
-    }
-
-    handleCountResultsObtained(e) {
-        // TODO: could probably have an associated <count> element
-        // and just update that (could be tab heading or could not)
-        this.countData = e.detail;
-        var personCount = this.countData ? this.countData.peopleCount.page.totalElements : 0;
-        let tab = document.querySelector('#person-search-count');
-        tab.textContent = `${personCount}`;
     }
 
     renderOverview(person) {
@@ -136,9 +126,13 @@ class PersonSearch extends Searcher(LitElement) {
         }
 
         let sorter = html``;
-        // TODO: is stringify necessary?
+
+        // TODO: might be better if 'searcher.js' code took care of this
+        let selected = `${this.orders[0].property}-${this.orders[0].direction}`;
+
         if (this.data) {
             sorter = html`<vivo-search-sorter
+              selected=${selected}
               options=${JSON.stringify(this.sortOptions)}>
             </vivo-search-sorter>`
         }
