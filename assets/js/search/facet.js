@@ -33,6 +33,7 @@ class SearchFacet extends LitElement {
       .label {
         flex-grow: 2;
         flex-basis: 90%;
+        padding-right: 0.5em;
       }
       .checkbox {
         flex-grow: 1;

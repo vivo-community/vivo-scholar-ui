@@ -26,6 +26,17 @@ class PersonSearch extends Searcher(LitElement) {
             flex-direction: row;
             flex-wrap: nowrap; 
         }
+        .search-actions {
+            display: flex;
+        }
+        vivo-filter-clearer {
+            flex-grow: 2;
+            flex-basis: 65%;
+        }
+        vivo-search-sorter {
+            flex-grow: 1;
+            flex-basis:35%;
+        }
         vivo-person-card-image {
             flex-shrink: 1;
             flex-basis: 10%;
@@ -147,9 +158,16 @@ class PersonSearch extends Searcher(LitElement) {
             </vivo-search-sorter>`
         }
 
+        // TODO: add a filter-clearer
+        let clearer = html`<vivo-filter-clearer>
+        </vivo-filter-clearer>`
+
         return html`
           <div id="people-search-results">
+          <div class="search-actions">
+          ${clearer}
           ${sorter}
+          </div>
           ${resultsDisplay}
           ${pagination}
           </div>`

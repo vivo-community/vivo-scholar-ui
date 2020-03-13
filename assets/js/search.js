@@ -9,6 +9,7 @@ import './search/facet-popup.js';
 import './search/sorter.js';
 import './search/facet-pagination.js';
 import './search/search-sidebar-item.js';
+import './search/filter-clearer.js';
 
 // tab specific searches
 import './search/people/person-search.js';
