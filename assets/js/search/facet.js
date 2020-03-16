@@ -23,15 +23,31 @@ class SearchFacet extends LitElement {
           clear: both;
           text-align: right;
       }
+      div {
+        display: flex;
+        flex-wrap: nowrap;
+      }
       div:hover {
         cursor: pointer;
       }
-      div:after {
+      .label {
+        flex-grow: 2;
+        flex-basis: 90%;
+        padding-right: 0.5em;
+      }
+      .checkbox {
+        flex-grow: 1;
+        flex-basis: 10%;
+      }
+      .checkbox:after {
         content:"◻";
       }          
-      div[selected="true"]:after {
+      div[selected="true"] .checkbox:after {
         content:"✓";
       }  
+      div[selected="true"] .label {
+        font-weight: bold;
+      } 
     `
   }
 
@@ -43,6 +59,8 @@ class SearchFacet extends LitElement {
   }
 
   handleFacetSelected(e) {
+    // if span clicked - need parent
+    let parent = e.target.parentNode;
     this.dispatchEvent(new CustomEvent('facetSelected', {
       detail: { 
         category: this.category,
@@ -50,7 +68,7 @@ class SearchFacet extends LitElement {
         checked: !this.selected,
         opKey: this.opKey,
         tag: this.tag,
-        value: e.target.getAttribute("value") 
+        value: parent.getAttribute("value") 
       },
       bubbles: true,
       cancelable: false,
@@ -67,7 +85,10 @@ class SearchFacet extends LitElement {
             selected="${this.selected}"
             @click=${this.handleFacetSelected}
           >
-            ${this.label} (${this.count})
+            <span class="label">
+              ${this.label} (${this.count})
+            </span>
+            <span class="checkbox"></span>
           </div>
         `
   }

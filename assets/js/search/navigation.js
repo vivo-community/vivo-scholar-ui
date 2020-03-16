@@ -19,6 +19,7 @@ class SearchNavigation extends LitElement {
       this.handlePageSelected = this.handlePageSelected.bind(this);
       this.handleSortSelected = this.handleSortSelected.bind(this);
       this.handleSearchStarted = this.handleSearchStarted.bind(this);
+      this.handleRemoveFilters = this.handleRemoveFilters.bind(this);
     }
   
     firstUpdated() {
@@ -29,7 +30,8 @@ class SearchNavigation extends LitElement {
       document.addEventListener('pageSelected', this.handlePageSelected);
       document.addEventListener('sortSelected', this.handleSortSelected);
       document.addEventListener('searchStarted', this.handleSearchStarted);
-      
+      document.addEventListener('removeFilters', this.handleRemoveFilters);
+
       // make search-box show text of search sent in (from home page)
       let searchBox = document.querySelector(`vivo-site-search-box`);
       // parse all other params here?
@@ -70,6 +72,7 @@ class SearchNavigation extends LitElement {
       document.removeEventListener('pageSelected', this.handlePageSelected);
       document.removeEventListener('sortSelected', this.handleSortSelected);
       document.removeEventListener('searchStarted', this.handleSearchStarted);
+      document.removeEventListener('removeFilters', this.handleRemoveFilters);
     }
   
     getNextSibling(elem, selector) {
@@ -86,6 +89,20 @@ class SearchNavigation extends LitElement {
         sibling = sibling.nextElementSibling
       }
     };
+
+    handleRemoveFilters(e) {
+      let search = this.browsingState.activeSearch;
+      let id = search.id;
+      // 1. remove from active search
+      search.setFilters([]);
+      // 2. remove from facet group
+      let facets = document.querySelectorAll(`[search="${id}"]`);
+      facets.forEach(facet => {
+          facet.setFilters([]);
+      })
+      // 3. run search again
+      search.search();
+    }
 
     handleTabSelected(e) {
       const tab = e.detail;

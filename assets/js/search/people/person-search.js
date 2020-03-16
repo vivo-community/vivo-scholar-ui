@@ -17,17 +17,38 @@ class PersonSearch extends Searcher(LitElement) {
 
     static get styles() {
         return css`
+        .people {
+            display: block; 
+            padding: 1em;
+        }
+        .person {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap; 
+        }
+        .search-actions {
+            display: flex;
+        }
+        vivo-filter-clearer {
+            flex-grow: 2;
+            flex-basis: 65%;
+        }
+        vivo-search-sorter {
+            flex-grow: 1;
+            flex-basis:35%;
+        }
         vivo-person-card-image {
-            float:left;
-            width: 10%;
+            flex-shrink: 1;
+            flex-basis: 10%;
+            padding: 0.2em;
         }
         vivo-person-card {
-            float: left;
-            width: 90%;
+            flex-shrink: 3;
+            flex-basis: 90%;
+            padding: 0.2em;
         }
         :host {
             display: block;
-            clear: both;
         }
         
       `
@@ -80,15 +101,15 @@ class PersonSearch extends Searcher(LitElement) {
 
     renderPerson(person) {
         let title = person.preferredTitle || person.id;
-        return html`
+        return html`<div class="person">
             <vivo-person-card-image thumbnail="${person.thumbnail}"></vivo-person-card-image>
             <vivo-person-card>
                 <div slot="title">${title}</div>
                 <a slot="name" href="/entities/person/${person.id}">
                   ${person.name}
                 </a>
-              ${this.renderOverview(person)}
             </vivo-person-card>
+        </div>
         `;
     }
 
@@ -107,7 +128,7 @@ class PersonSearch extends Searcher(LitElement) {
 
 
         let _self = this;
-        var resultsDisplay = html`<div>
+        var resultsDisplay = html`<div class="people">
           ${_.map(results, function (i) {
             return _self.renderPerson(i);
            })
@@ -137,9 +158,16 @@ class PersonSearch extends Searcher(LitElement) {
             </vivo-search-sorter>`
         }
 
+        // TODO: add a filter-clearer
+        let clearer = html`<vivo-filter-clearer>
+        </vivo-filter-clearer>`
+
         return html`
-          <div>
+          <div id="people-search-results">
+          <div class="search-actions">
+          ${clearer}
           ${sorter}
+          </div>
           ${resultsDisplay}
           ${pagination}
           </div>`
