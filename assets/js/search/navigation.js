@@ -175,9 +175,8 @@ class SearchNavigation extends LitElement {
     // NOTE: different than 'searchSubmitted' because it's the graphql
     // query (could be faceting, paging, sorting etc... not just new search)
     handleSearchStarted(e) {
-      // TODO: not sure what to do here yet - 
-      // perhaps a global 'waiting' spinner of some sort?
-      //console.log(`search started: ${e.detail.time}`);
+      // TODO: not sure what to do here yet - possibly mark all searches
+      // and facet-groups as waiting = true
     }
 
     // TODO: this feels a little fragile - works/doesn't work

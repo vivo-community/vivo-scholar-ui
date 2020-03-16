@@ -12,7 +12,8 @@ let Searcher = (superclass) => class extends superclass {
      return {
         data: { type: Object },
         countData: { type: Object },
-        active: { type: Boolean }
+        active: { type: Boolean },
+        waiting: { type: Boolean }
       }
     }
 

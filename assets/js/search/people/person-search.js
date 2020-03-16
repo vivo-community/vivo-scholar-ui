@@ -11,8 +11,7 @@ class PersonSearch extends Searcher(LitElement) {
     static get properties() {
         return {
             graphql: { type: Object },
-            implements: { type: String, attribute: true, reflect: true },
-            waiting: { type: Boolean }
+            implements: { type: String, attribute: true, reflect: true }
         }
     }
 
@@ -86,10 +85,6 @@ class PersonSearch extends Searcher(LitElement) {
     }
 
     handleSearchStarted(e) {
-        // TODO: not sure what to do here yet - 
-        // perhaps a global 'waiting' spinner of some sort?
-        console.log(`search started in person-search: ${e.detail.time}`);
-        // 1. maybe disable all controls somehow? or hide and replace with spinner?
         this.waiting = true;
     }
 
