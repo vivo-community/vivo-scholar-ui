@@ -139,7 +139,7 @@ class PublicationSearch extends Searcher(LitElement) {
 
     render() {
       if (this.active == true && this.waiting == true) {
-        return html`<vivo-search-spinner></vivo-search-spinner>`
+        return html``
       }
       if (!this.active || !this.data || !this.data.documents) {
         return html``

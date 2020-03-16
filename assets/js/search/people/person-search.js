@@ -124,7 +124,7 @@ class PersonSearch extends Searcher(LitElement) {
 
     render() {
         if (this.active == true && this.waiting == true) {
-            return html`<vivo-search-spinner></vivo-search-spinner>`
+            return html``
         }
         if (!this.active == true || !this.data || !this.data.people) {
             return html``

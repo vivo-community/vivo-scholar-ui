@@ -20,6 +20,7 @@ class SearchNavigation extends LitElement {
       this.handleSortSelected = this.handleSortSelected.bind(this);
       this.handleSearchStarted = this.handleSearchStarted.bind(this);
       this.handleRemoveFilters = this.handleRemoveFilters.bind(this);
+      this.handleSearchResultsObtained = this.handleSearchResultsObtained.bind(this);
     }
   
     firstUpdated() {
@@ -31,6 +32,7 @@ class SearchNavigation extends LitElement {
       document.addEventListener('sortSelected', this.handleSortSelected);
       document.addEventListener('searchStarted', this.handleSearchStarted);
       document.addEventListener('removeFilters', this.handleRemoveFilters);
+      document.addEventListener('searchResultsObtained', this.handleSearchResultsObtained);
 
       // make search-box show text of search sent in (from home page)
       let searchBox = document.querySelector(`vivo-site-search-box`);
@@ -73,6 +75,7 @@ class SearchNavigation extends LitElement {
       document.removeEventListener('sortSelected', this.handleSortSelected);
       document.removeEventListener('searchStarted', this.handleSearchStarted);
       document.removeEventListener('removeFilters', this.handleRemoveFilters);
+      document.removeEventListener('searchResultsObtained', this.handleSearchResultsObtained); 
     }
   
     getNextSibling(elem, selector) {
@@ -177,6 +180,18 @@ class SearchNavigation extends LitElement {
     handleSearchStarted(e) {
       // TODO: not sure what to do here yet - possibly mark all searches
       // and facet-groups as waiting = true
+      // let search = activeSearch ->
+      // let facetGroup = facetGroups ->
+      let modal = document.querySelector('#search-waiting');
+      console.log("setting shown = true");
+      modal.shown = true;
+      // 
+    }
+
+    handleSearchResultsObtained(e) {
+      let modal = document.querySelector('#search-waiting');
+      console.log("setting shown = false");
+      modal.shown = false;
     }
 
     // TODO: this feels a little fragile - works/doesn't work

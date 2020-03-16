@@ -110,7 +110,7 @@ class FacetGroup extends Faceter(LitElement) {
 
     render() {
       if (this.waiting == true) {
-        return html`<vivo-search-spinner></vivo-search-spinner>`
+        return html``
       }
       if (!this.data || !this.data[this.key] || !this.selected == true ) {
         return html``
