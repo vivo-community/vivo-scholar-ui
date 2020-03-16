@@ -8,7 +8,8 @@ class FacetGroup extends Faceter(LitElement) {
     static get properties() {
       return {
         search: { type: String, attribute: true },
-        key: { type: String }
+        key: { type: String },
+        waiting: { type: Boolean }
       }
     }
     
@@ -28,23 +29,36 @@ class FacetGroup extends Faceter(LitElement) {
       this.selected = false;
       // way to get this from URL?
       this.filters = [];
+      this.waiting = false;
 
       this.handleSearchResultsObtained = this.handleSearchResultsObtained.bind(this);
       this.handleFacetSelected = this.handleFacetSelected.bind(this);
+      this.handleSearchStarted = this.handleSearchStarted.bind(this);
     }
   
     firstUpdated() {
       document.addEventListener('searchResultsObtained', this.handleSearchResultsObtained);
       document.addEventListener('facetSelected', this.handleFacetSelected);
+      document.addEventListener('searchStarted', this.handleSearchStarted);
     }
   
     disconnectedCallback() {
       super.disconnectedCallback();
       document.removeEventListener('searchResultsObtained', this.handleSearchResultsObtained);
       document.removeEventListener('facetSelected', this.handleFacetSelected);
+      document.removeEventListener('searchStarted', this.handleSearchStarted);
     }
   
+    handleSearchStarted(e) {
+      // TODO: not sure what to do here yet - 
+      // perhaps a global 'waiting' spinner of some sort?
+      console.log(`search started in facet-group: ${e.detail.time}`);
+      // 1. maybe disable all controls somehow? or hide and replace with spinner?
+      this.waiting = true;
+    }
+
     handleSearchResultsObtained(e) {
+      this.waiting = false;
       const data = e.detail;
       if (!data || !data[this.key]) {
         return;
@@ -95,6 +109,9 @@ class FacetGroup extends Faceter(LitElement) {
     }
 
     render() {
+      if (this.waiting == true) {
+        return html`<vivo-search-spinner></vivo-search-spinner>`
+      }
       if (!this.data || !this.data[this.key] || !this.selected == true ) {
         return html``
       }       

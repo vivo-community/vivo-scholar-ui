@@ -10,6 +10,7 @@ import './search/sorter.js';
 import './search/facet-pagination.js';
 import './search/search-sidebar-item.js';
 import './search/filter-clearer.js';
+import './search/spinner.js';
 
 // tab specific searches
 import './search/people/person-search.js';

@@ -12,6 +12,7 @@ class PersonSearch extends Searcher(LitElement) {
         return {
             graphql: { type: Object },
             implements: { type: String, attribute: true, reflect: true },
+            waiting: { type: Boolean }
         }
     }
 
@@ -58,10 +59,12 @@ class PersonSearch extends Searcher(LitElement) {
         super();
         this.graphql = peopleQuery;
         this.active = false; // ??? not sure about this
+        this.waiting = false;
         // NOTE: all searches must set a default sort
         this.defaultSort = [{ property: "name", direction: "ASC" }];
 
         this.handleSearchResultsObtained = this.handleSearchResultsObtained.bind(this);
+        this.handleSearchStarted = this.handleSearchStarted.bind(this);
 
         this.sortOptions = [
             {label: 'Name (asc)', field: 'name', 'direction': "ASC"},
@@ -73,14 +76,25 @@ class PersonSearch extends Searcher(LitElement) {
 
     firstUpdated() {
         document.addEventListener('searchResultsObtained', this.handleSearchResultsObtained);
+        document.addEventListener('searchStarted', this.handleSearchStarted);
     }
 
     disconnectedCallback() {
         super.disconnectedCallback();
         document.removeEventListener('searchResultsObtained', this.handleSearchResultsObtained);
+        document.removeEventListener('searchStarted', this.handleSearchStarted);
+    }
+
+    handleSearchStarted(e) {
+        // TODO: not sure what to do here yet - 
+        // perhaps a global 'waiting' spinner of some sort?
+        console.log(`search started in person-search: ${e.detail.time}`);
+        // 1. maybe disable all controls somehow? or hide and replace with spinner?
+        this.waiting = true;
     }
 
     handleSearchResultsObtained(e) {
+        this.waiting = false;
         let data = e.detail;
         if (!data || !data.people) {
             return;
@@ -114,6 +128,9 @@ class PersonSearch extends Searcher(LitElement) {
     }
 
     render() {
+        if (this.active == true && this.waiting == true) {
+            return html`<vivo-search-spinner></vivo-search-spinner>`
+        }
         if (!this.active == true || !this.data || !this.data.people) {
             return html``
         }

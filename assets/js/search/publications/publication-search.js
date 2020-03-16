@@ -9,7 +9,8 @@ class PublicationSearch extends Searcher(LitElement) {
     static get properties() {
       return {
         graphql: { type: Object },
-        implements: { type: String, attribute: true, reflect: true }
+        implements: { type: String, attribute: true, reflect: true },
+        waiting: { type: Boolean }
       }
     }
   
@@ -45,7 +46,8 @@ class PublicationSearch extends Searcher(LitElement) {
       this.active = false;
 
       this.handleSearchResultsObtained = this.handleSearchResultsObtained.bind(this);
-       
+      this.handleSearchStarted = this.handleSearchStarted.bind(this);
+
       this.sortOptions = [
         {label: 'Title (asc)', field: 'title', 'direction': "ASC"},
         {label: 'Title (desc)', field: 'title', 'direction': "DESC"},
@@ -58,14 +60,25 @@ class PublicationSearch extends Searcher(LitElement) {
   
     firstUpdated() {
       document.addEventListener('searchResultsObtained', this.handleSearchResultsObtained);
+      document.addEventListener('searchStarted', this.handleSearchStarted);
     }
   
     disconnectedCallback() {
       super.disconnectedCallback();
-      document.removeEventListener('searchResultsObtained', this.handleSearchResultsObtained);
+      document.removeEventListener('searchResultsObtained', this.handleSearchResultsObtained);        
+      document.removeEventListener('searchStarted', this.handleSearchStarted);
     }
   
+    handleSearchStarted(e) {
+      // TODO: not sure what to do here yet - 
+      // perhaps a global 'waiting' spinner of some sort?
+      console.log(`search started in publication-search: ${e.detail.time}`);
+      // 1. maybe disable all controls somehow? or hide and replace with spinner?
+      this.waiting = true;
+    }
+
     handleSearchResultsObtained(e) {
+      this.waiting = false;
       // FIXME: shouldn't need to add code to do this check
       let data = e.detail;
       if (!data || !data.documents) {
@@ -130,6 +143,9 @@ class PublicationSearch extends Searcher(LitElement) {
     }
 
     render() {
+      if (this.active == true && this.waiting == true) {
+        return html`<vivo-search-spinner></vivo-search-spinner>`
+      }
       if (!this.active || !this.data || !this.data.documents) {
         return html``
       }

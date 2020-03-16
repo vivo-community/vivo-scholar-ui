@@ -83,6 +83,20 @@ let Searcher = (superclass) => class extends superclass {
       return new Promise(resolve => setTimeout(resolve, ms));
     }
 
+    delay(sec, msg) {
+      const milliseconds = 1000 * sec; 
+      return new Promise(resolve => {
+        setTimeout(() => {
+          resolve(msg);
+        }, milliseconds);
+      });
+    }
+
+    async wait(sec) {
+      var x = await this.delay(sec, "done waiting");
+      console.log(x); 
+    }
+
     runSearch() {
       // FIXME: this is just a hack to avoid error
       // don't know why the error is happening in first place
@@ -98,14 +112,20 @@ let Searcher = (superclass) => class extends superclass {
         return noOp();
       }
       
+      // so UI can know - might be useful for 'waiting' watcher
+      // or to know state of filters etc...
       this.dispatchEvent(new CustomEvent('searchStarted', {
         detail: { time: Date(Date.now()) },
         bubbles: true,
         cancelable: false,
         composed: true
       }));
-      // so UI can know - might be useful for 'waiting' watcher
-      // or to know state of filters etc...
+
+      /*
+      https://duke.zoom.us/j/546688608
+
+      */
+
       const fetchData = async () => {
         try {
           const { data } = await client.query({
@@ -123,7 +143,9 @@ let Searcher = (superclass) => class extends superclass {
           throw error;
         }
       };
-      return fetchData();
+      // NOTE: to simulate delay change to this
+      return this.wait(2).then(fetchData());
+      //return fetchData();
     }
   
     setFilters(filters = []) {
@@ -150,9 +172,10 @@ let Searcher = (superclass) => class extends superclass {
       if (this.active) {
         this.pushHistory();
       }
-      
+            
       // TODO: maybe add time.now to detail?
       this.runSearch()
+        //.then(wait())
         .then(() => {
           this.dispatchEvent(new CustomEvent('searchResultsObtained', {
             detail: this.data,
