@@ -78,8 +78,8 @@ let Searcher = (superclass) => class extends superclass {
         this.filters = [];
       }
 
-      //this.simulateDelay = false;
-      this.simulateDelay = true;
+      // NOTE: can change this to true to see 'waiting' modal box
+      this.simulateDelay = false;
       this.search();
     }
     
