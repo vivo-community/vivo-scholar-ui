@@ -13,7 +13,8 @@ let Searcher = (superclass) => class extends superclass {
         data: { type: Object },
         countData: { type: Object },
         active: { type: Boolean },
-        waiting: { type: Boolean }
+        waiting: { type: Boolean },
+        simulateDelay: { type: Boolean }
       }
     }
 
@@ -77,6 +78,8 @@ let Searcher = (superclass) => class extends superclass {
         this.filters = [];
       }
 
+      //this.simulateDelay = false;
+      this.simulateDelay = true;
       this.search();
     }
     
@@ -95,7 +98,6 @@ let Searcher = (superclass) => class extends superclass {
 
     async wait(sec) {
       var x = await this.delay(sec, "done waiting");
-      console.log(x); 
     }
 
     runSearch() {
@@ -122,11 +124,6 @@ let Searcher = (superclass) => class extends superclass {
         composed: true
       }));
 
-      /*
-      https://duke.zoom.us/j/546688608
-
-      */
-
       const fetchData = async () => {
         try {
           const { data } = await client.query({
@@ -145,8 +142,11 @@ let Searcher = (superclass) => class extends superclass {
         }
       };
       // NOTE: to simulate delay change to this
-      return this.wait(2).then(fetchData());
-      //return fetchData();
+      if (this.simulateDelay) {
+        return this.wait(2).then(fetchData());
+      } else {
+        return fetchData();
+      }
     }
   
     setFilters(filters = []) {
