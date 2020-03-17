@@ -50,10 +50,6 @@ class FacetGroup extends Faceter(LitElement) {
     }
   
     handleSearchStarted(e) {
-      // TODO: not sure what to do here yet - 
-      // perhaps a global 'waiting' spinner of some sort?
-      console.log(`search started in facet-group: ${e.detail.time}`);
-      // 1. maybe disable all controls somehow? or hide and replace with spinner?
       this.waiting = true;
     }
 

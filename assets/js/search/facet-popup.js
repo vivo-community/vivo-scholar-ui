@@ -110,18 +110,28 @@ label="Participation citoyenne" count="1" class="shown">
     this.pageNumber = page;
   }
 
+  
+  openUp() {
+    //this.open = !this.open;
+    this.open = true;
+  }
+
   closeDown() {
-    this.open = !this.open;
+    //this.open = !this.open;
+    this.open = false;
     let group = this.getRootNode().host.parentNode;
     let search = document.querySelector(`[id="${group.search}"]`);
 
-    // need to set filters on group
+    // need to set filters on group ?
     group.setFilters(this.filters);
 
     // then run search
     search.setPage(0);
     search.setFilters(this.filters);
     search.search({from: 'facets'});
+
+    // these are getting stuck
+    //this.filters = [];
   }
 
   togglePopup(){

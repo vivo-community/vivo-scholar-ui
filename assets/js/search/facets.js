@@ -42,9 +42,11 @@ class SearchFacets extends Faceter(LitElement) {
     let popup = this.shadowRoot.querySelector("#popup-facets");
 
     if (popup.getAttribute("open")) {
-      popup.removeAttribute("open");
+      popup.closeDown();
     } else {
-      popup.setAttribute("open", true);
+      popup.openUp();
+      // when open popup - need to 'reset' filters
+      popup.setFilters(this.filters);
     }
 
     // this does focus to header - so when popup is first
