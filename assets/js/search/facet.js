@@ -12,7 +12,8 @@ class SearchFacet extends LitElement {
       count: { type: Number },
       opKey: { type: String },
       tag: { type: String },
-      selected: { type: Boolean, attribute: true, reflect: true }
+      selected: { type: Boolean, attribute: true, reflect: true },
+      //defer: { type: Boolean }
     }
   }
 
@@ -55,10 +56,16 @@ class SearchFacet extends LitElement {
     super();
     this.selected = false;
     this.opKey = "EQUALS"; // default or not?
+    //this.defer = false;
     this.handleFacetSelected = this.handleFacetSelected.bind(this);
   }
 
   handleFacetSelected(e) {
+    // skip the event?
+    if (this.defer) {
+      return;
+    }
+
     // if span clicked - need parent
     let parent = e.target.parentNode;
     this.dispatchEvent(new CustomEvent('facetSelected', {
@@ -68,10 +75,12 @@ class SearchFacet extends LitElement {
         checked: !this.selected,
         opKey: this.opKey,
         tag: this.tag,
+        // TODO: send a context - so we know whether to 'gather'?
         value: parent.getAttribute("value") 
       },
       bubbles: true,
-      cancelable: false,
+      //cancelable: false,
+      cancelable: true,
       composed: true
     }));
   }

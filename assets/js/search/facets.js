@@ -49,8 +49,8 @@ class SearchFacets extends Faceter(LitElement) {
 
     // this does focus to header - so when popup is first
     // opened it's possible to close with ESC key
-    let header = this.shadowRoot.querySelector("#popup-header");
-    header.focus();
+    //let header = this.shadowRoot.querySelector("#popup-header");
+    //header.focus();
   }
 
   generateFacetToggle(showList) {

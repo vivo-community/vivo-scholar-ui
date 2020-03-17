@@ -1,5 +1,6 @@
 import { LitElement, html, css } from "lit-element";
 import qs from "qs";
+import _ from "lodash";
 /*
 TODO: maybe make a tabbed-search component
 that contains search-text and tabs/searches etc..
@@ -104,7 +105,7 @@ class SearchNavigation extends LitElement {
           facet.setFilters([]);
       })
       // 3. run search again
-      search.search();
+      search.search({from: 'facets'});
     }
 
     handleTabSelected(e) {
@@ -183,14 +184,16 @@ class SearchNavigation extends LitElement {
       // let search = activeSearch ->
       // let facetGroup = facetGroups ->
       let modal = document.querySelector('#search-waiting');
-      console.log("setting shown = true");
-      modal.shown = true;
-      // 
+      // TODO: how to NOT do this when facets are selected?
+      // sending: detail: { time: Date(Date.now()), context: context },
+      // NOTE: could check the value of from and do different things
+      if (!_.has(e.detail.context, "from")) {
+        modal.shown = true;
+      } 
     }
 
     handleSearchResultsObtained(e) {
       let modal = document.querySelector('#search-waiting');
-      console.log("setting shown = false");
       modal.shown = false;
     }
 
@@ -222,7 +225,7 @@ class SearchNavigation extends LitElement {
       const page = e.detail;
       this.browsingState.currentPage = page;
       search.setPage(page.value);
-      search.search();
+      search.search({from: 'paging'});
     }
   
     handleSortSelected(e) {
@@ -230,7 +233,7 @@ class SearchNavigation extends LitElement {
       let orders = [e.detail]
       search.setSort(orders);
       search.setPage(0);
-      search.search();
+      search.search({from: 'sorting'});
     }
   
   }

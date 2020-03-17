@@ -6,14 +6,14 @@ class ModalBox extends LitElement {
 
     static get properties() {
         return {
-            shown: { type: Boolean }
+            shown: { type: Boolean, attribute: true, reflect: true }
         };
     }
 
     constructor() {
         super();
-        this.classes = {};
-        //this.classes = { "modal": true, "show-modal": false }
+        this.shown = false;
+        this.classes = { "modal": true, "show-modal": false }
     }
 
     //https://sabe.io/tutorials/how-to-create-modal-popup-box
@@ -29,6 +29,7 @@ class ModalBox extends LitElement {
             opacity: 0;
             visibility: hidden;
             transform: scale(1.1);
+            z-index: 2;
         }
         .modal-content {
             position: absolute;
@@ -55,8 +56,6 @@ class ModalBox extends LitElement {
 
     }
 
-    // modal-content
-    // this.shadowRoot.querySelector('modal-content').classList.add('show-modal')
     render() {
         this.classes = { "modal": true, "show-modal": this.shown };
         return html`
@@ -64,7 +63,7 @@ class ModalBox extends LitElement {
           <div class="modal-content">
             <slot></slot>
           </div>
-       </div>`
+        </div>`
     }
 }
 

@@ -80,7 +80,7 @@ let Searcher = (superclass) => class extends superclass {
 
       // NOTE: can change this to true to see 'waiting' modal box
       this.simulateDelay = false;
-      this.search();
+      this.search({from: 'setUp'});
     }
     
     timeout(ms) {
@@ -100,7 +100,7 @@ let Searcher = (superclass) => class extends superclass {
       var x = await this.delay(sec, "done waiting");
     }
 
-    runSearch() {
+    runSearch(context={}) {
       // FIXME: this is just a hack to avoid error
       // don't know why the error is happening in first place
       //
@@ -118,7 +118,8 @@ let Searcher = (superclass) => class extends superclass {
       // so UI can know - might be useful for 'waiting' watcher
       // or to know state of filters etc...
       this.dispatchEvent(new CustomEvent('searchStarted', {
-        detail: { time: Date(Date.now()) },
+        // not crazy about this 'context'
+        detail: { time: Date(Date.now()), context: context },
         bubbles: true,
         cancelable: false,
         composed: true
@@ -169,14 +170,13 @@ let Searcher = (superclass) => class extends superclass {
       this.orders = orders
     }
   
-    search() {
+    search(context = {}) {
       if (this.active) {
         this.pushHistory();
       }
             
       // TODO: maybe add time.now to detail?
-      this.runSearch()
-        //.then(wait())
+      this.runSearch(context)
         .then(() => {
           this.dispatchEvent(new CustomEvent('searchResultsObtained', {
             detail: this.data,

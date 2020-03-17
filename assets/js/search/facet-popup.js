@@ -1,6 +1,8 @@
 import { LitElement, html, css } from "lit-element";
 
-class FacetPopupMessage extends LitElement{
+// needed add, remove Filter functions
+import Faceter from './faceter.js'
+class FacetPopupMessage extends Faceter(LitElement) {
 
   static get properties() {
     return {
@@ -11,7 +13,9 @@ class FacetPopupMessage extends LitElement{
       },
       pageNumber: {
         type: Number
-      }
+      },
+      // best way to do this?
+      search: { type: String, attribute: true }
     };
   }
 
@@ -21,13 +25,20 @@ class FacetPopupMessage extends LitElement{
       this._onSlotChange = this._onSlotChange.bind(this);
       this.pageNumber = 0;
       this.pageBy = 5;
+      this.open =false;
+      this.filters = [];
+
+      this.handleFacetSelected = this.handleFacetSelected.bind(this);
   }
+
 
   firstUpdated() {
     this._slot = this.shadowRoot.querySelector("slot");
     this._slot.addEventListener('slotchange', this._onSlotChange);
     this.addEventListener("keydown", this.handleKeydown);
     this.addEventListener("facetPageSelected", this.handleFacetPageSelected);
+
+    this.addEventListener('facetSelected', this.handleFacetSelected);
   }
 
   disconnectedCallback() {
@@ -35,6 +46,32 @@ class FacetPopupMessage extends LitElement{
     this._slot.removeEventListener('slotchange', this._onSlotChange);
     this.removeEventListener("keydown", this.handleKeydown);
     this.removeEventListener("facetPageSelected", this.handleFacetPageSelected);
+
+    this.removeEventListener('facetSelected', this.handleFacetSelected);
+  }
+
+  /*
+<vivo-search-facet category="people" tag="ra" opkey="EQUALS" 
+field="researchAreas" value="Participation citoyenne" 
+label="Participation citoyenne" count="1" class="shown">
+        </vivo-search-facet>
+    */
+  handleFacetSelected(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    let selected = e.detail.checked;
+    e.target.selected = selected;
+    
+    // still need it to be bolded (as if selected)
+    // event.cancel? and then gather up, waiting for 'close'
+    const facet = e.detail;
+    if (facet.checked) {
+      this.addFilter(facet);
+    } else {
+      this.removeFilter(facet);
+    }
+    /*
+    */
   }
 
   _onSlotChange() {
@@ -44,7 +81,8 @@ class FacetPopupMessage extends LitElement{
   handleKeydown(e) {
     // TODO: note only seems to work when header on popup has focus
     if (e.keyCode === 27) {
-        this.open = false;
+        //this.open = false;
+        this.closeDown();
     }
   }
 
@@ -72,8 +110,27 @@ class FacetPopupMessage extends LitElement{
     this.pageNumber = page;
   }
 
+  closeDown() {
+    this.open = !this.open;
+    let group = this.getRootNode().host.parentNode;
+    let search = document.querySelector(`[id="${group.search}"]`);
+
+    // need to set filters on group
+    group.setFilters(this.filters);
+
+    // then run search
+    search.setPage(0);
+    search.setFilters(this.filters);
+    search.search({from: 'facets'});
+  }
+
+  togglePopup(){
+    this.closeDown();
+  }
+
   static get styles() {
     return css`
+    
     :host {
       display: none;
     }
@@ -81,7 +138,6 @@ class FacetPopupMessage extends LitElement{
       display: block;
       box-sizing: border-box;
       overflow: scroll;
-      /* position: fixed; */
       position: absolute;
       font-size: 1.5em;
       text-align: center;
@@ -128,10 +184,6 @@ class FacetPopupMessage extends LitElement{
     `;
   }
 
-  togglePopup(){
-    this.open = !this.open;
-  }
-
   render() {
     let pagination = html``;
 
@@ -145,7 +197,7 @@ class FacetPopupMessage extends LitElement{
         />`
     }
 
-    return html`
+    return html`  
     <i class="fas fa-times" @click=${this.togglePopup}></i>
     <slot></slot>
     ${pagination}
