@@ -15,7 +15,7 @@ class FacetPopupMessage extends Faceter(LitElement) {
         type: Number
       },
       // best way to do this?
-      search: { type: String, attribute: true }
+      //search: { type: String, attribute: true }
     };
   }
 
@@ -50,28 +50,20 @@ class FacetPopupMessage extends Faceter(LitElement) {
     this.removeEventListener('facetSelected', this.handleFacetSelected);
   }
 
-  /*
-<vivo-search-facet category="people" tag="ra" opkey="EQUALS" 
-field="researchAreas" value="Participation citoyenne" 
-label="Participation citoyenne" count="1" class="shown">
-        </vivo-search-facet>
-    */
   handleFacetSelected(e) {
+    // NOTE: need to prevent default 'facet clicked' behavior
     e.preventDefault();
     e.stopPropagation();
     let selected = e.detail.checked;
     e.target.selected = selected;
     
     // still need it to be bolded (as if selected)
-    // event.cancel? and then gather up, waiting for 'close'
     const facet = e.detail;
     if (facet.checked) {
       this.addFilter(facet);
     } else {
       this.removeFilter(facet);
     }
-    /*
-    */
   }
 
   _onSlotChange() {
@@ -81,7 +73,6 @@ label="Participation citoyenne" count="1" class="shown">
   handleKeydown(e) {
     // TODO: note only seems to work when header on popup has focus
     if (e.keyCode === 27) {
-        //this.open = false;
         this.closeDown();
     }
   }
@@ -112,17 +103,16 @@ label="Participation citoyenne" count="1" class="shown">
 
   
   openUp() {
-    //this.open = !this.open;
     this.open = true;
   }
 
   closeDown() {
-    //this.open = !this.open;
     this.open = false;
+    // this should get parent vivo-facet-group
     let group = this.getRootNode().host.parentNode;
     let search = document.querySelector(`[id="${group.search}"]`);
 
-    // need to set filters on group ?
+    // need to set filters on group
     group.setFilters(this.filters);
 
     // then run search
@@ -205,7 +195,7 @@ label="Participation citoyenne" count="1" class="shown">
         />`
     }
 
-    return html`  
+    return html`
     <i class="fas fa-times" @click=${this.togglePopup}></i>
     <slot></slot>
     ${pagination}

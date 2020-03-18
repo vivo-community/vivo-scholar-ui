@@ -57,7 +57,7 @@ class PersonSearch extends Searcher(LitElement) {
     constructor() {
         super();
         this.graphql = peopleQuery;
-        this.active = false; // ??? not sure about this
+        this.active = false;
         this.waiting = false;
         // NOTE: all searches must set a default sort
         this.defaultSort = [{ property: "name", direction: "ASC" }];

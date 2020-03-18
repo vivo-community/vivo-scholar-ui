@@ -12,8 +12,7 @@ class SearchFacet extends LitElement {
       count: { type: Number },
       opKey: { type: String },
       tag: { type: String },
-      selected: { type: Boolean, attribute: true, reflect: true },
-      //defer: { type: Boolean }
+      selected: { type: Boolean, attribute: true, reflect: true }
     }
   }
 
@@ -56,16 +55,10 @@ class SearchFacet extends LitElement {
     super();
     this.selected = false;
     this.opKey = "EQUALS"; // default or not?
-    //this.defer = false;
     this.handleFacetSelected = this.handleFacetSelected.bind(this);
   }
 
   handleFacetSelected(e) {
-    // skip the event?
-    if (this.defer) {
-      return;
-    }
-
     // if span clicked - need parent
     let parent = e.target.parentNode;
     this.dispatchEvent(new CustomEvent('facetSelected', {
@@ -75,17 +68,15 @@ class SearchFacet extends LitElement {
         checked: !this.selected,
         opKey: this.opKey,
         tag: this.tag,
-        // TODO: send a context - so we know whether to 'gather'?
         value: parent.getAttribute("value") 
       },
       bubbles: true,
-      //cancelable: false,
       cancelable: true,
       composed: true
     }));
   }
 
-  // TODO: need a way to mark if 'checked' or not
+  // NOTE: had to do div/span/fake-checkbox instead of real input[type=checkbox]
   // https://stackoverflow.com/questions/55962214/litelement-not-updating-checkbox-in-list
   // https://github.com/Polymer/lit-html/issues/732  
   render() {

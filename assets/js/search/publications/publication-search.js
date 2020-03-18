@@ -74,8 +74,8 @@ class PublicationSearch extends Searcher(LitElement) {
 
     handleSearchResultsObtained(e) {
       this.waiting = false;
-      // FIXME: shouldn't need to add code to do this check
       let data = e.detail;
+      // FIXME: shouldn't (in theory) need to check data, but getting null sometimes
       if (!data || !data.documents) {
           return;
       }

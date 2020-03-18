@@ -48,11 +48,6 @@ class SearchFacets extends Faceter(LitElement) {
       // when open popup - need to 'reset' filters
       popup.setFilters(this.filters);
     }
-
-    // this does focus to header - so when popup is first
-    // opened it's possible to close with ESC key
-    //let header = this.shadowRoot.querySelector("#popup-header");
-    //header.focus();
   }
 
   generateFacetToggle(showList) {
@@ -69,7 +64,7 @@ class SearchFacets extends Faceter(LitElement) {
     var results = html`
     <p id="toggle-facet" @click=${this.togglePopup}>Show More</p>
     <vivo-facet-popup-message id="popup-facets">
-      <h4 id="popup-header" tabindex="-1">Filters</h4>
+      <h4 id="popup-header">Filters</h4>
       ${this.generateFacetList(showList)}
     </vivo-facet-popup-message>`;
     return results;

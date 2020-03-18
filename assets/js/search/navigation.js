@@ -179,17 +179,8 @@ class SearchNavigation extends LitElement {
     // NOTE: different than 'searchSubmitted' because it's the graphql
     // query (could be faceting, paging, sorting etc... not just new search)
     handleSearchStarted(e) {
-      // TODO: not sure what to do here yet - possibly mark all searches
-      // and facet-groups as waiting = true
-      // let search = activeSearch ->
-      // let facetGroup = facetGroups ->
       let modal = document.querySelector('#search-waiting');
-      // TODO: how to NOT do this when facets are selected?
-      // sending: detail: { time: Date(Date.now()), context: context },
-      // NOTE: could check the value of from and do different things
-      if (!_.has(e.detail.context, "from")) {
-        modal.shown = true;
-      } 
+      modal.shown = true; 
     }
 
     handleSearchResultsObtained(e) {

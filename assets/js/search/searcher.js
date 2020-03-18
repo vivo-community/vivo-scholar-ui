@@ -115,10 +115,8 @@ let Searcher = (superclass) => class extends superclass {
         return noOp();
       }
       
-      // so UI can know - might be useful for 'waiting' watcher
-      // or to know state of filters etc...
+      // need to know when search has started, but before results
       this.dispatchEvent(new CustomEvent('searchStarted', {
-        // not crazy about this 'context'
         detail: { time: Date(Date.now()) },
         bubbles: true,
         cancelable: false,
@@ -142,7 +140,7 @@ let Searcher = (superclass) => class extends superclass {
           throw error;
         }
       };
-      // NOTE: to simulate delay change to this
+      // TODO: probably should remove this at some point
       if (this.simulateDelay) {
         return this.wait(2).then(fetchData());
       } else {
@@ -175,7 +173,7 @@ let Searcher = (superclass) => class extends superclass {
         this.pushHistory();
       }
             
-      // TODO: maybe add time.now to detail?
+      // TODO: maybe add time.now to detail? (to time searches?)
       this.runSearch()
         .then(() => {
           this.dispatchEvent(new CustomEvent('searchResultsObtained', {
