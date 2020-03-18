@@ -71,12 +71,12 @@ class SearchFacet extends LitElement {
         value: parent.getAttribute("value") 
       },
       bubbles: true,
-      cancelable: false,
+      cancelable: true,
       composed: true
     }));
   }
 
-  // TODO: need a way to mark if 'checked' or not
+  // NOTE: had to do div/span/fake-checkbox instead of real input[type=checkbox]
   // https://stackoverflow.com/questions/55962214/litelement-not-updating-checkbox-in-list
   // https://github.com/Polymer/lit-html/issues/732  
   render() {

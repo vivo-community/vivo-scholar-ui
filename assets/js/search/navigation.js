@@ -1,5 +1,6 @@
 import { LitElement, html, css } from "lit-element";
 import qs from "qs";
+import _ from "lodash";
 /*
 TODO: maybe make a tabbed-search component
 that contains search-text and tabs/searches etc..
@@ -19,6 +20,7 @@ class SearchNavigation extends LitElement {
       this.handlePageSelected = this.handlePageSelected.bind(this);
       this.handleSortSelected = this.handleSortSelected.bind(this);
       this.handleRemoveFilters = this.handleRemoveFilters.bind(this);
+      this.handleSearchResultsObtained = this.handleSearchResultsObtained.bind(this);
     }
   
     firstUpdated() {
@@ -29,6 +31,7 @@ class SearchNavigation extends LitElement {
       document.addEventListener('pageSelected', this.handlePageSelected);
       document.addEventListener('sortSelected', this.handleSortSelected);
       document.addEventListener('removeFilters', this.handleRemoveFilters);
+      document.addEventListener('searchResultsObtained', this.handleSearchResultsObtained);
 
       // make search-box show text of search sent in (from home page)
       let searchBox = document.querySelector(`vivo-site-search-box`);
@@ -70,6 +73,7 @@ class SearchNavigation extends LitElement {
       document.removeEventListener('pageSelected', this.handlePageSelected);
       document.removeEventListener('sortSelected', this.handleSortSelected);
       document.removeEventListener('removeFilters', this.handleRemoveFilters);
+      document.removeEventListener('searchResultsObtained', this.handleSearchResultsObtained); 
     }
   
     getNextSibling(elem, selector) {
@@ -172,6 +176,18 @@ class SearchNavigation extends LitElement {
       this.findCorrectFacetsToDisplay();
     }
   
+    // NOTE: different than 'searchSubmitted' because it's the graphql
+    // query (could be faceting, paging, sorting etc... not just new search)
+    handleSearchStarted(e) {
+      let modal = document.querySelector('#search-waiting');
+      modal.shown = true; 
+    }
+
+    handleSearchResultsObtained(e) {
+      let modal = document.querySelector('#search-waiting');
+      modal.shown = false;
+    }
+
     // TODO: this feels a little fragile - works/doesn't work
     // depending on precise arrangement on page
     findCorrectFacetsToDisplay(filters = []) {
