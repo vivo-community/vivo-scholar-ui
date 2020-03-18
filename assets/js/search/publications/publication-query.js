@@ -1,8 +1,10 @@
 import gql from "graphql-tag";
 
 const publicationQuery = gql`
-  query($search: String!, $pageNumber: Int!, $filters: [FilterArgInput], $orders: [OrderInput]) {
+  query($search: String!, $pageNumber: Int!, $filters: [FilterArgInput], 
+    $orders: [OrderInput], $boosts: [BoostArgInput]) {
     documents(
+      boosts: $boosts,
       facets: [
         { field: "type", exclusionTag: "type"  }, 
         { field: "authors", exclusionTag: "authors" },

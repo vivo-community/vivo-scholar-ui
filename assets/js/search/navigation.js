@@ -155,9 +155,12 @@ class SearchNavigation extends LitElement {
       // set the query on all - so if we switch tabs it has
       // the new query to run
       let searches = document.querySelectorAll(`[implements="vivo-search"]`);
+
+      // TODO: should this set orders too?
       searches.forEach(s => {
         s.setQuery(search);
         s.setPage(0);
+        s.resetSort();
         // just run each search to get the counts
         // (this includes 'active' search)
         s.search();
@@ -214,6 +217,8 @@ class SearchNavigation extends LitElement {
     handleSortSelected(e) {
       let search = this.browsingState.activeSearch;
       let orders = [e.detail]
+      // if search is NOT "*" ? - default?
+      // or if e.detail.field = 'relevance'
       search.setSort(orders);
       search.setPage(0);
       search.search();
