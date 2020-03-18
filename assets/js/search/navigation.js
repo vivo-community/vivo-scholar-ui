@@ -19,7 +19,6 @@ class SearchNavigation extends LitElement {
       this.handleTabSelected = this.handleTabSelected.bind(this);
       this.handlePageSelected = this.handlePageSelected.bind(this);
       this.handleSortSelected = this.handleSortSelected.bind(this);
-      this.handleSearchStarted = this.handleSearchStarted.bind(this);
       this.handleRemoveFilters = this.handleRemoveFilters.bind(this);
       this.handleSearchResultsObtained = this.handleSearchResultsObtained.bind(this);
     }
@@ -31,7 +30,6 @@ class SearchNavigation extends LitElement {
       // code instead of here
       document.addEventListener('pageSelected', this.handlePageSelected);
       document.addEventListener('sortSelected', this.handleSortSelected);
-      document.addEventListener('searchStarted', this.handleSearchStarted);
       document.addEventListener('removeFilters', this.handleRemoveFilters);
       document.addEventListener('searchResultsObtained', this.handleSearchResultsObtained);
 
@@ -74,7 +72,6 @@ class SearchNavigation extends LitElement {
       document.removeEventListener('searchSubmitted', this.handleSearchSubmitted);
       document.removeEventListener('pageSelected', this.handlePageSelected);
       document.removeEventListener('sortSelected', this.handleSortSelected);
-      document.removeEventListener('searchStarted', this.handleSearchStarted);
       document.removeEventListener('removeFilters', this.handleRemoveFilters);
       document.removeEventListener('searchResultsObtained', this.handleSearchResultsObtained); 
     }
@@ -159,9 +156,12 @@ class SearchNavigation extends LitElement {
       // set the query on all - so if we switch tabs it has
       // the new query to run
       let searches = document.querySelectorAll(`[implements="vivo-search"]`);
+
+      // TODO: should this set orders too?
       searches.forEach(s => {
         s.setQuery(search);
         s.setPage(0);
+        s.resetSort();
         // just run each search to get the counts
         // (this includes 'active' search)
         s.search();

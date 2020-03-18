@@ -18,19 +18,30 @@ let Searcher = (superclass) => class extends superclass {
       }
     }
 
-
     // NOTE: if search is restored from URL - and then
     // the tab is selected the sort parameter carries over
     // (but does not match any sort) - so needs to go to default
     // on the other hand, if a sort *is* selected on the tab
     // then it should persist whilst switching tabs
-    // this little bit is trying to mitigate that 
-    figureOrders(orders) {
+    figureDefaultSort(searchStr) {
+      if (searchStr === "*") { 
+        return this.defaultSort 
+      } else { 
+        return [{ property: "score", direction: "ASC" }]
+      }
+    }
+
+    figureOrders(orders, searchStr) {
+      // first checking if anything in query parameters
+      if (!orders || !orders.length > 0) {
+        return this.figureDefaultSort(searchStr);
+      }      
       let order = orders[0];
       if (this.sortOptions) { 
+        // search need to define sortOptions too
         let obj =  _.find(this.sortOptions, { field: order.property, direction: order.direction });
         if (!obj) {
-           return this.defaultSort;
+          return this.figureDefaultSort(searchStr);
         } else {
           return orders;
         }
@@ -48,10 +59,13 @@ let Searcher = (superclass) => class extends superclass {
       const defaultPage = page ? page : 0;
       const defaultFilters = (filters && filters.length > 0) ? filters : [];
       // NOTE: each search must have defaultSort defined
-      const defaultOrders = (orders && orders.length > 0) ? this.figureOrders(orders) : this.defaultSort;
+      const defaultOrders = this.figureOrders(orders, defaultQuery);
 
-      // NOTE: playing whack-a-mole a bit trying to set this property
-      // and others (either in navigation.js, searcher.js or person-search.js)
+      // TODO: if order is different than 'score' should this null out?
+      const defaultBoosts = this.defaultBoosts;
+
+      // NOTE: playing whack-a-mole a bit trying to set this property (active)
+      // (either in navigation.js, searcher.js or <type>-search.js)
       let searchTab = parsed["search-tab"];
       if (searchTab === this.id) {
         this.active = true;
@@ -61,14 +75,16 @@ let Searcher = (superclass) => class extends superclass {
         page: defaultPage,
         filters: defaultFilters,
         orders: defaultOrders,
+        boosts: defaultBoosts
       };
     }
 
     setUp() {
-      const { query, page, filters, orders } = this.deriveSearchFromParameters();
+      const { query, page, filters, orders, boosts } = this.deriveSearchFromParameters();
       
       this.query = query;
       this.orders = orders;
+      this.boosts = boosts;
 
       if (this.active) {
         this.page = page;
@@ -109,6 +125,7 @@ let Searcher = (superclass) => class extends superclass {
       // so far cannot trace why it's being called, or
       // why the 'query' would ever be null
       if (!this.query) {
+        console.error(`skipping blank search`);
         const noOp = async () => {
           await this.timeout(1000);
         }
@@ -131,7 +148,8 @@ let Searcher = (superclass) => class extends superclass {
               pageNumber: this.page,
               search: this.query,
               filters: this.filters,
-              orders: this.orders
+              orders: this.orders,
+              boosts: this.boosts
             }
           });
           this.data = data;
@@ -165,7 +183,21 @@ let Searcher = (superclass) => class extends superclass {
     }
 
     setSort(orders = []) {
+      // NOTE: if a sort AND a boost are sent, the sort is ignored
+      if ((orders.length) > 0 && (orders[0].property != 'score')) {
+        this.boosts = [];
+      } else {
+        this.boosts = this.defaultBoosts;
+      }
       this.orders = orders
+    }
+
+    resetSort() {
+      if (this.query === "*") { 
+        this.orders = this.defaultSort 
+      } else { 
+        this.orders = [{ property: "score", direction: "ASC" }]
+      }
     }
   
     search() {
@@ -194,7 +226,7 @@ let Searcher = (superclass) => class extends superclass {
         search: this.query,
         page: this.page
       }
-      // since there is default search, always a search
+      // since there is default sort, always a sort (orders)
       if (this.orders && this.orders.length > 0) {
         compound["orders"] = this.orders;
       }
