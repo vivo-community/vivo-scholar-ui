@@ -22,18 +22,27 @@ let Searcher = (superclass) => class extends superclass {
     // on the other hand, if a sort *is* selected on the tab
     // then it should persist whilst switching tabs
     // this little bit is trying to mitigate that 
+
+    figureDefaultSort(searchStr) {
+      if (searchStr === "*") { 
+        return this.defaultSort 
+      } else { 
+        return [{ property: "score", direction: "ASC" }]
+      }
+    }
+
     figureOrders(orders, searchStr) {
+      // FIXME: could probably consolidate this logic a bit
+      // first checking if anything in query parameters
+      if (!orders || !orders.length > 0) {
+        return this.figureDefaultSort(searchStr);
+      }      
       let order = orders[0];
       if (this.sortOptions) { 
+        // search need to define sortOptions too
         let obj =  _.find(this.sortOptions, { field: order.property, direction: order.direction });
         if (!obj) {
-          // sort by default sort if query is wildcard
-          if (searchStr === "*") { 
-            return this.defaultSort 
-          } else { 
-            return [{ property: "score", direction: "ASC" }]
-          }
-          //return this.defaultSort;
+          return this.figureDefaultSort(searchStr);
         } else {
           return orders;
         }
@@ -51,8 +60,10 @@ let Searcher = (superclass) => class extends superclass {
       const defaultPage = page ? page : 0;
       const defaultFilters = (filters && filters.length > 0) ? filters : [];
       // NOTE: each search must have defaultSort defined
-      const defaultOrders = (orders && orders.length > 0) ? this.figureOrders(orders, search) : this.defaultSort;
+      //const defaultOrders = (orders && orders.length > 0) ? this.figureOrders(orders, defaultQuery) : this.defaultSort;
+      const defaultOrders = this.figureOrders(orders, defaultQuery);
 
+      // TODO: if order is different than 'score' should this null out?
       const defaultBoosts = this.defaultBoosts;
 
       // NOTE: playing whack-a-mole a bit trying to set this property
@@ -74,7 +85,6 @@ let Searcher = (superclass) => class extends superclass {
       const { query, page, filters, orders, boosts } = this.deriveSearchFromParameters();
       
       this.query = query;
-      console.log(`setting orders= ${orders}`);
       this.orders = orders;
       this.boosts = boosts;
 
@@ -102,6 +112,7 @@ let Searcher = (superclass) => class extends superclass {
       // so far cannot trace why it's being called, or
       // why the 'query' would ever be null
       if (!this.query) {
+        console.error(`skipping blank search`);
         const noOp = async () => {
           await this.timeout(1000);
         }
@@ -154,6 +165,12 @@ let Searcher = (superclass) => class extends superclass {
     }
 
     setSort(orders = []) {
+      // iNOTE: if a sort AND a boost are sent, the sort is ignored
+      if ((orders.length) > 0 && (orders[0].property != 'score')) {
+        this.boosts = [];
+      } else {
+        this.boosts = this.defaultBoosts;
+      }
       this.orders = orders
     }
 
@@ -169,7 +186,6 @@ let Searcher = (superclass) => class extends superclass {
       if (this.active) {
         this.pushHistory();
       }
-      
       // TODO: maybe add time.now to detail?
       this.runSearch()
         .then(() => {

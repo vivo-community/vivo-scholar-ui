@@ -18,7 +18,6 @@ class SearchNavigation extends LitElement {
       this.handleTabSelected = this.handleTabSelected.bind(this);
       this.handlePageSelected = this.handlePageSelected.bind(this);
       this.handleSortSelected = this.handleSortSelected.bind(this);
-      this.handleSearchStarted = this.handleSearchStarted.bind(this);
       this.handleRemoveFilters = this.handleRemoveFilters.bind(this);
     }
   
@@ -29,7 +28,6 @@ class SearchNavigation extends LitElement {
       // code instead of here
       document.addEventListener('pageSelected', this.handlePageSelected);
       document.addEventListener('sortSelected', this.handleSortSelected);
-      document.addEventListener('searchStarted', this.handleSearchStarted);
       document.addEventListener('removeFilters', this.handleRemoveFilters);
 
       // make search-box show text of search sent in (from home page)
@@ -71,7 +69,6 @@ class SearchNavigation extends LitElement {
       document.removeEventListener('searchSubmitted', this.handleSearchSubmitted);
       document.removeEventListener('pageSelected', this.handlePageSelected);
       document.removeEventListener('sortSelected', this.handleSortSelected);
-      document.removeEventListener('searchStarted', this.handleSearchStarted);
       document.removeEventListener('removeFilters', this.handleRemoveFilters);
     }
   
@@ -175,14 +172,6 @@ class SearchNavigation extends LitElement {
       this.findCorrectFacetsToDisplay();
     }
   
-    // NOTE: different than 'searchSubmitted' because it's the graphql
-    // query (could be faceting, paging, sorting etc... not just new search)
-    handleSearchStarted(e) {
-      // TODO: not sure what to do here yet - 
-      // perhaps a global 'waiting' spinner of some sort?
-      //console.log(`search started: ${e.detail.time}`);
-    }
-
     // TODO: this feels a little fragile - works/doesn't work
     // depending on precise arrangement on page
     findCorrectFacetsToDisplay(filters = []) {
@@ -217,8 +206,6 @@ class SearchNavigation extends LitElement {
     handleSortSelected(e) {
       let search = this.browsingState.activeSearch;
       let orders = [e.detail]
-      // if search is NOT "*" ? - default?
-      // or if e.detail.field = 'relevance'
       search.setSort(orders);
       search.setPage(0);
       search.search();
