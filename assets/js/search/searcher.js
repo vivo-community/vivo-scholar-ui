@@ -23,8 +23,6 @@ let Searcher = (superclass) => class extends superclass {
     // (but does not match any sort) - so needs to go to default
     // on the other hand, if a sort *is* selected on the tab
     // then it should persist whilst switching tabs
-    // this little bit is trying to mitigate that 
-
     figureDefaultSort(searchStr) {
       if (searchStr === "*") { 
         return this.defaultSort 
@@ -34,7 +32,6 @@ let Searcher = (superclass) => class extends superclass {
     }
 
     figureOrders(orders, searchStr) {
-      // FIXME: could probably consolidate this logic a bit
       // first checking if anything in query parameters
       if (!orders || !orders.length > 0) {
         return this.figureDefaultSort(searchStr);
@@ -62,14 +59,13 @@ let Searcher = (superclass) => class extends superclass {
       const defaultPage = page ? page : 0;
       const defaultFilters = (filters && filters.length > 0) ? filters : [];
       // NOTE: each search must have defaultSort defined
-      //const defaultOrders = (orders && orders.length > 0) ? this.figureOrders(orders, defaultQuery) : this.defaultSort;
       const defaultOrders = this.figureOrders(orders, defaultQuery);
 
       // TODO: if order is different than 'score' should this null out?
       const defaultBoosts = this.defaultBoosts;
 
-      // NOTE: playing whack-a-mole a bit trying to set this property
-      // and others (either in navigation.js, searcher.js or person-search.js)
+      // NOTE: playing whack-a-mole a bit trying to set this property (active)
+      // (either in navigation.js, searcher.js or <type>-search.js)
       let searchTab = parsed["search-tab"];
       if (searchTab === this.id) {
         this.active = true;
@@ -187,7 +183,7 @@ let Searcher = (superclass) => class extends superclass {
     }
 
     setSort(orders = []) {
-      // iNOTE: if a sort AND a boost are sent, the sort is ignored
+      // NOTE: if a sort AND a boost are sent, the sort is ignored
       if ((orders.length) > 0 && (orders[0].property != 'score')) {
         this.boosts = [];
       } else {
