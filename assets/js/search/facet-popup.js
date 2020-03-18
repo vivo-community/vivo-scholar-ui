@@ -128,10 +128,8 @@ label="Participation citoyenne" count="1" class="shown">
     // then run search
     search.setPage(0);
     search.setFilters(this.filters);
-    search.search({from: 'facets'});
+    search.search();
 
-    // these are getting stuck
-    //this.filters = [];
   }
 
   togglePopup(){

@@ -105,7 +105,7 @@ class SearchNavigation extends LitElement {
           facet.setFilters([]);
       })
       // 3. run search again
-      search.search({from: 'facets'});
+      search.search();
     }
 
     handleTabSelected(e) {
@@ -225,7 +225,7 @@ class SearchNavigation extends LitElement {
       const page = e.detail;
       this.browsingState.currentPage = page;
       search.setPage(page.value);
-      search.search({from: 'paging'});
+      search.search();
     }
   
     handleSortSelected(e) {
@@ -233,7 +233,7 @@ class SearchNavigation extends LitElement {
       let orders = [e.detail]
       search.setSort(orders);
       search.setPage(0);
-      search.search({from: 'sorting'});
+      search.search();
     }
   
   }

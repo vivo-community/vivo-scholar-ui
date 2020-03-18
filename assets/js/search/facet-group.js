@@ -101,7 +101,7 @@ class FacetGroup extends Faceter(LitElement) {
       search.setPage(0);
       // TODO: should it also remove filters no longer relevant?
       search.setFilters(this.filters);
-      search.search({from: 'facets'});
+      search.search();
     }
 
     render() {
