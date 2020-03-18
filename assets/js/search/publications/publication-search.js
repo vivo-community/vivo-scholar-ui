@@ -45,7 +45,8 @@ class PublicationSearch extends Searcher(LitElement) {
       this.active = false;
 
       this.handleSearchResultsObtained = this.handleSearchResultsObtained.bind(this);
-       
+      this.handleSearchStarted = this.handleSearchStarted.bind(this);
+
       this.sortOptions = [
         {label: 'Title (asc)', field: 'title', 'direction': "ASC"},
         {label: 'Title (desc)', field: 'title', 'direction': "DESC"},
@@ -58,16 +59,23 @@ class PublicationSearch extends Searcher(LitElement) {
   
     firstUpdated() {
       document.addEventListener('searchResultsObtained', this.handleSearchResultsObtained);
+      document.addEventListener('searchStarted', this.handleSearchStarted);
     }
   
     disconnectedCallback() {
       super.disconnectedCallback();
-      document.removeEventListener('searchResultsObtained', this.handleSearchResultsObtained);
+      document.removeEventListener('searchResultsObtained', this.handleSearchResultsObtained);        
+      document.removeEventListener('searchStarted', this.handleSearchStarted);
     }
   
+    handleSearchStarted(e) {
+      this.waiting = true;
+    }
+
     handleSearchResultsObtained(e) {
-      // FIXME: shouldn't need to add code to do this check
+      this.waiting = false;
       let data = e.detail;
+      // FIXME: shouldn't (in theory) need to check data, but getting null sometimes
       if (!data || !data.documents) {
           return;
       }
@@ -130,6 +138,9 @@ class PublicationSearch extends Searcher(LitElement) {
     }
 
     render() {
+      if (this.active == true && this.waiting == true) {
+        return html``
+      }
       if (!this.active || !this.data || !this.data.documents) {
         return html``
       }

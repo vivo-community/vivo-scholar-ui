@@ -12,7 +12,9 @@ let Searcher = (superclass) => class extends superclass {
      return {
         data: { type: Object },
         countData: { type: Object },
-        active: { type: Boolean }
+        active: { type: Boolean },
+        waiting: { type: Boolean },
+        simulateDelay: { type: Boolean }
       }
     }
 
@@ -76,11 +78,26 @@ let Searcher = (superclass) => class extends superclass {
         this.filters = [];
       }
 
+      // NOTE: can change this to true to see 'waiting' modal box
+      this.simulateDelay = false;
       this.search();
     }
     
     timeout(ms) {
       return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    delay(sec, msg) {
+      const milliseconds = 1000 * sec; 
+      return new Promise(resolve => {
+        setTimeout(() => {
+          resolve(msg);
+        }, milliseconds);
+      });
+    }
+
+    async wait(sec) {
+      var x = await this.delay(sec, "done waiting");
     }
 
     runSearch() {
@@ -98,14 +115,14 @@ let Searcher = (superclass) => class extends superclass {
         return noOp();
       }
       
+      // need to know when search has started, but before results
       this.dispatchEvent(new CustomEvent('searchStarted', {
         detail: { time: Date(Date.now()) },
         bubbles: true,
         cancelable: false,
         composed: true
       }));
-      // so UI can know - might be useful for 'waiting' watcher
-      // or to know state of filters etc...
+
       const fetchData = async () => {
         try {
           const { data } = await client.query({
@@ -123,7 +140,12 @@ let Searcher = (superclass) => class extends superclass {
           throw error;
         }
       };
-      return fetchData();
+      // TODO: probably should remove this at some point
+      if (this.simulateDelay) {
+        return this.wait(2).then(fetchData());
+      } else {
+        return fetchData();
+      }
     }
   
     setFilters(filters = []) {
@@ -150,8 +172,8 @@ let Searcher = (superclass) => class extends superclass {
       if (this.active) {
         this.pushHistory();
       }
-      
-      // TODO: maybe add time.now to detail?
+            
+      // TODO: maybe add time.now to detail? (to time searches?)
       this.runSearch()
         .then(() => {
           this.dispatchEvent(new CustomEvent('searchResultsObtained', {
