@@ -5,12 +5,9 @@ import _ from 'lodash'
  * and the current page.  The first array is what to do with *before*,
  * the last array is what to do with *after*
  *
- * just made PAGE_BY a constant
- *
  * so, as an example:
  *
- * if we have 95 pages, and we 
- * are on page 1:
+ * if we have 95 pages, and we are on page 1 and page by 15:
  *
  [ [ '-' ],
  [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 ],
@@ -41,15 +38,15 @@ import _ from 'lodash'
  */
 
 function pageArrays(totalPages, currentPage, size) {
-  // want to avoid problems if 0 sent in
+  // want to avoid problems if 0 sent in for size
   let pageBy = (size > 0) ? size : 5
   let returnArray = []
 
   if (totalPages <= pageBy) {
-    let pageArray = _.range(1, totalPages + 1)
-    returnArray.push(['-'])
-    returnArray.push(pageArray)
-    returnArray.push(['-'])
+    let pageArray = _.range(1, totalPages + 1);
+    returnArray.push(['-']);
+    returnArray.push(pageArray);
+    returnArray.push(['-']);
     return returnArray
   }
   
@@ -57,17 +54,16 @@ function pageArrays(totalPages, currentPage, size) {
 
   // which segment are we in ??
   let currentPartition = Math.floor(currentPage/pageBy)
-  
-  let isEnd =  currentPage % pageBy == 0
+ 
+  // FIXME: this is confusing
+  let isEnd =  (currentPage) != 0 && (currentPage + 1 % pageBy == 0)
   if (isEnd) {
     // if it's exact, we don't need to switch to next range
     currentPartition = currentPartition - 1
   }
 
   let start = (currentPartition * pageBy) + 1
-
   let end = (start + pageBy > totalPages) ? totalPages : (start + pageBy)
-
   let pageRange = _.range(start, end)
 
   if (currentPartition >= partitions) {
@@ -86,10 +82,10 @@ function pageArrays(totalPages, currentPage, size) {
     returnArray.push(['-'])
     returnArray.push(pageRange)
     returnArray.push(['+', ((currentPartition + 1) * pageBy) + 1])
+  } else {
+    console.error(`unforseen alternative in else ${currentPartition}`);
   }
-
   return returnArray
-
 }
 
 

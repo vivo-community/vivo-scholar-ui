@@ -82,12 +82,13 @@ class FacetPagination extends LitElement {
       [ '+', 16 ] 
     ]
     */
+
     let previous = paging[0];
     let next = paging[2];
     let pageList = paging[1];
 
     let callback = this.handlePageSelected;
-    
+
     var pages = html`<div>
       ${pageList.map(i => {
         // 0 based, so +1

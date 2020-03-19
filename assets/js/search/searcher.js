@@ -48,6 +48,10 @@ let Searcher = (superclass) => class extends superclass {
       }
     }
 
+    figureDefaultFilters() {
+      // how to persist default filters without putting in URL
+    }
+
     deriveSearchFromParameters() {   
       const parsed = qs.parse(window.location.search.substring(1));
       let search = parsed.search;
@@ -88,10 +92,12 @@ let Searcher = (superclass) => class extends superclass {
 
       if (this.active) {
         this.page = page;
-        this.filters = filters;
+        //this.filters = filters;
+        this.setFilters(filters);
       } else {
         this.page = 0;
-        this.filters = [];
+        //this.filters = [];
+        this.setFilters([]);
       }
 
       // NOTE: can change this to true to see 'waiting' modal box
@@ -167,7 +173,14 @@ let Searcher = (superclass) => class extends superclass {
     }
   
     setFilters(filters = []) {
-      this.filters = filters;
+      // NOTE: if there is a defaultFilters value, must *always* apply
+      if (this.defaultFilters) {
+        // make filters include default - but leave off if already in list
+        this.filters = _.union(filters, this.defaultFilters);
+      }
+      else {
+        this.filters = filters;
+      }
     }
   
     setPage(page = 0) {
