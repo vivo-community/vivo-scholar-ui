@@ -8,7 +8,6 @@ const grantQuery = gql`
       facets: [
         { field: "administeredBy", exclusionTag: "ab" },
       ]
-      #filters: [{field: "type", value: "Grant"}],
       filters: $filters,
       paging: {
         pageSize: 5
