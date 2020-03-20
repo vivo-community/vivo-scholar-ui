@@ -85,11 +85,9 @@ let Searcher = (superclass) => class extends superclass {
 
       if (this.active) {
         this.page = page;
-        //this.filters = filters;
         this.setFilters(filters);
       } else {
         this.page = 0;
-        //this.filters = [];
         this.setFilters([]);
       }
 
