@@ -48,10 +48,6 @@ let Searcher = (superclass) => class extends superclass {
       }
     }
 
-    figureDefaultFilters() {
-      // how to persist default filters without putting in URL
-    }
-
     deriveSearchFromParameters() {   
       const parsed = qs.parse(window.location.search.substring(1));
       let search = parsed.search;
@@ -65,11 +61,8 @@ let Searcher = (superclass) => class extends superclass {
       // NOTE: each search must have defaultSort defined
       const defaultOrders = this.figureOrders(orders, defaultQuery);
 
-      // TODO: if order is different than 'score' should this null out?
       const defaultBoosts = this.defaultBoosts;
 
-      // NOTE: playing whack-a-mole a bit trying to set this property (active)
-      // (either in navigation.js, searcher.js or <type>-search.js)
       let searchTab = parsed["search-tab"];
       if (searchTab === this.id) {
         this.active = true;

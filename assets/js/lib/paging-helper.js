@@ -7,7 +7,7 @@ import _ from 'lodash'
  *
  * so, as an example:
  *
- * if we have 95 pages, and we are on page 1 and page by 15:
+ * if we have 95 pages, and we are on page 1 (and page-by=15):
  *
  [ [ '-' ],
  [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 ],
@@ -36,7 +36,6 @@ import _ from 'lodash'
 [ [ '+', 76 ], [ 91, 92, 93, 94 ], [ '-' ] ]
  *
  */
-
 function pageArrays(totalPages, currentPage, size) {
   // want to avoid problems if 0 sent in for size
   let pageBy = (size > 0) ? size : 5
@@ -55,10 +54,10 @@ function pageArrays(totalPages, currentPage, size) {
   // which segment are we in ??
   let currentPartition = Math.floor(currentPage/pageBy)
  
-  // FIXME: this is confusing
-  let isEnd =  (currentPage) != 0 && (currentPage + 1 % pageBy == 0)
+  // figure out if it's the 'last' page
+  let isEnd =  (currentPage) != 0 && ((currentPage + 1) % pageBy == 0)
   if (isEnd) {
-    // if it's exact, we don't need to switch to next range
+    // we don't need to switch to next range
     currentPartition = currentPartition - 1
   }
 
@@ -69,17 +68,17 @@ function pageArrays(totalPages, currentPage, size) {
   if (currentPartition >= partitions) {
     returnArray.push(['+', (currentPartition - 1) * pageBy + 1])
     returnArray.push(pageRange)
-    returnArray.push(['-'])
+    returnArray.push(['-']) // no next
   } else if ((currentPartition < partitions) && (currentPartition > 1)) {
     returnArray.push(['+', (currentPartition - 1) * pageBy + 1])
     returnArray.push(pageRange)
     returnArray.push(['+', ((currentPartition + 1) * pageBy) + 1])
   } else if (currentPartition == 1) {
-    returnArray.push(['+', 1])
+    returnArray.push(['+', 1]) // yes previous, to 1 (first record)
     returnArray.push(pageRange)
     returnArray.push(['+', ((currentPartition + 1) * pageBy) + 1])
   } else if (currentPartition == 0) {
-    returnArray.push(['-'])
+    returnArray.push(['-']) // no previous
     returnArray.push(pageRange)
     returnArray.push(['+', ((currentPartition + 1) * pageBy) + 1])
   } else {
@@ -87,7 +86,6 @@ function pageArrays(totalPages, currentPage, size) {
   }
   return returnArray
 }
-
 
 export default pageArrays
 
