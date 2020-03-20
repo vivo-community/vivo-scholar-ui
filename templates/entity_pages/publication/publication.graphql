@@ -12,6 +12,14 @@ query($id: String!) {
     issue
     pageStart
     pageEnd
-    
+    doi
+    translations{
+      id
+      label
+    }
+    publicationVenue{
+     id
+     label
+   }
   }
 }

@@ -47,6 +47,7 @@ func init() {
 			"SortByISODateFieldDesc":     helpers.SortByISODateFieldDesc,
 			"SortByGraphqlDateField":     helpers.SortByGraphqlDateField,
 			"SortByGraphqlDateFieldDesc": helpers.SortByGraphqlDateFieldDesc,
+			"SplitCamelCase":							helpers.SplitCamelCase,
 		},
 	})
 }
