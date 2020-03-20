@@ -86,23 +86,6 @@ class GrantSearch extends Searcher(LitElement) {
         tab.textContent = `${docCount}`;
     }
 
-
-    /*
-      <vivo-grant url="/entities/grant/<%= p["id"] %>" start-date="<%= p["startDate"] %>" 
-          title="<%= p["label"] %>">
-        <a slot="label" href="/entities/grant/<%= p["id"] %>">
-          <%= p["label"] %>
-        </a>
-        <%= if (p["awardedBy"]) { %>
-           <span slot="awardedBy">  awarded by  <%=p["awardedBy"]["label"] %></span>
-        <% } %>
-        <span slot="date">
-          <vivo-interval interval-start="<%= FormatISODate(p["startDate"], "year") %>" 
-            interval-end="<%= FormatISODate(p["endDate"], "year") %>">
-          </vivo-interval>
-        </span>
-      </vivo-grant>
-    */
     renderAwardedBy(grant) {
         if (grant.awardedBy) {
             return html`
@@ -176,7 +159,6 @@ class GrantSearch extends Searcher(LitElement) {
             </vivo-search-sorter>`
         }
 
-        // TODO: add a filter-clearer
         let clearer = html`<vivo-filter-clearer>
         </vivo-filter-clearer>`
 
