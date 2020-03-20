@@ -20,6 +20,17 @@ const grantQuery = gql`
       content {
         id
         title
+        dateTimeIntervalStart
+        dateTimeIntervalEnd
+        administeredBy {
+          id
+          label
+          type
+        }   
+        awardedBy {
+          id
+          label
+        }     
       }
       page {
         totalElements

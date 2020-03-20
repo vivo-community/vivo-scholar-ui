@@ -87,10 +87,45 @@ class GrantSearch extends Searcher(LitElement) {
     }
 
 
+    /*
+      <vivo-grant url="/entities/grant/<%= p["id"] %>" start-date="<%= p["startDate"] %>" 
+          title="<%= p["label"] %>">
+        <a slot="label" href="/entities/grant/<%= p["id"] %>">
+          <%= p["label"] %>
+        </a>
+        <%= if (p["awardedBy"]) { %>
+           <span slot="awardedBy">  awarded by  <%=p["awardedBy"]["label"] %></span>
+        <% } %>
+        <span slot="date">
+          <vivo-interval interval-start="<%= FormatISODate(p["startDate"], "year") %>" 
+            interval-end="<%= FormatISODate(p["endDate"], "year") %>">
+          </vivo-interval>
+        </span>
+      </vivo-grant>
+    */
+    renderAwardedBy(grant) {
+        if (grant.awardedBy) {
+            return html`
+            <span slot="awardedBy"> awarded by ${grant.awardedBy.label}</span>
+            `
+        }
+    }
+
     renderGrant(grant) {
-        return html`<div class="grant">
+        let url = `/entities/grant/${grant.id}`;
+        return html`
+        <vivo-grant url="${url}" start-date="${grant.dateTimeIntervalStart}" title="${grant.title}">
             <div>${grant.title}</div>
-        </div>
+            <a slot="label" href="${url}">
+              ${grant.title}
+            </a>
+            ${this.renderAwardedBy} 
+            <span slot="date">
+              <vivo-interval interval-start="${grant.dateTimeIntervalStart}" 
+                interval-end="${grant.dateTimeIntervalEnd}">
+              </vivo-interval>
+            </span>
+        </vivo-grant>
         `;
     }
 
