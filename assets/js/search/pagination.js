@@ -78,12 +78,19 @@ class SearchPagination extends LitElement {
       [ '+', 16 ] 
     ]
     */
+
+    if (paging.length == 0) {
+      console.error("paging component with failed pageArrays");
+      return html``;
+    }
+
     let previous = paging[0];
     let next = paging[2];
     let pageList = paging[1];
 
     let callback = this.handlePageSelected;
     
+
     var pages = html`<div>
       ${pageList.map(i => {
         // 0 based, so +1

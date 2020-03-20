@@ -61,11 +61,8 @@ let Searcher = (superclass) => class extends superclass {
       // NOTE: each search must have defaultSort defined
       const defaultOrders = this.figureOrders(orders, defaultQuery);
 
-      // TODO: if order is different than 'score' should this null out?
       const defaultBoosts = this.defaultBoosts;
 
-      // NOTE: playing whack-a-mole a bit trying to set this property (active)
-      // (either in navigation.js, searcher.js or <type>-search.js)
       let searchTab = parsed["search-tab"];
       if (searchTab === this.id) {
         this.active = true;
@@ -88,10 +85,10 @@ let Searcher = (superclass) => class extends superclass {
 
       if (this.active) {
         this.page = page;
-        this.filters = filters;
+        this.setFilters(filters);
       } else {
         this.page = 0;
-        this.filters = [];
+        this.setFilters([]);
       }
 
       // NOTE: can change this to true to see 'waiting' modal box
@@ -167,7 +164,14 @@ let Searcher = (superclass) => class extends superclass {
     }
   
     setFilters(filters = []) {
-      this.filters = filters;
+      // NOTE: if there is a defaultFilters value, must *always* apply
+      if (this.defaultFilters) {
+        // make filters include default - but leave off if already in list
+        this.filters = _.union(filters, this.defaultFilters);
+      }
+      else {
+        this.filters = filters;
+      }
     }
   
     setPage(page = 0) {
