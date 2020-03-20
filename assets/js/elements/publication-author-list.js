@@ -43,7 +43,7 @@ class PublicationAuthorList extends LitElement {
         padding: 0;
       }
       ::slotted(vivo-publication-author):after {
-        content: ", ";
+        content: "; ";
       }
       ::slotted(vivo-publication-author:last-child):after {
         content: "";

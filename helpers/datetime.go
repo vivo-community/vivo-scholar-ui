@@ -35,6 +35,8 @@ func FormatDateTime(dateTime time.Time, resolution string) string {
 		layout = "2006-01"
 	case "yearMonthDay":
 		layout = "2006-01-02"
+	case "yearMonthFullName":
+		layout = "January 2006"
 	}
 	return dateTime.Format(layout)
 }
