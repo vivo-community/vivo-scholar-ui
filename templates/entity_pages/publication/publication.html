@@ -1,23 +1,85 @@
-<div class="row">
-    <h2><%= raw(data["document"]["title"]) %></h2>
-</div>
+<%
+  let publication = data["document"]
+%>
+  <div class="publication-container">
+    <h2 class="page-title"><%= raw(publication["title"]) %></h2>
+    <div class="publication-heading">
+      <%=if (publication["type"]) { %>
+        <%= for (p) in publication["type"] { %>
+        <h3 class="pub-type" id="test"><%= SplitCamelCase(p) %></h3>
+      <% } %>
+        <% } %>
+      <button  onclick="window.location.href = '';" class="text-button">Full Text</button>
+      <button  onclick="window.location.href = '';" class="cite-button">Export/Cite</button>
+      <%= if (publication["publicationDate"]) { %>
+        <vivo-interval class="pub-date" interval-start="<%= FormatGraphqlDate(publication["publicationDate"], "yearMonthFullName") %>"></vivo-interval>
+      <% } %>
+    </div>
+  <%= if (publication["abstractText"]) { %>
+    <vivo-entity-item>
+        <span slot="title">Abstract</span>
+        <span slot="content">
+          <vivo-truncated-text slot="abstract">
 
-<div class="row">
-    <h3><%= data["document"]["type"] %></h3>
-</div>
-
-<h4>Authors</h4>
-<section class="author-list">
-    <ul class="list-group">
-    <%= for (p) in data["document"]["authors"] { %>
-       <li class="list-group-item">
-           <span class="person-name">
-              <a href="/entities/person/<%= p["id"] %>">
-                <%= p["label"] %>
-             </a> 
-           </span>
-       </li>
+          </vivo-truncated-text>
+        </span>
+    </vivo-entity-item>
+  <% } %>
+  <%= if (publication["authors"]) { %>
+    <vivo-entity-item>
+      <span slot="title">Authors</span>
+      <span slot="content">
+        <vivo-publication-author-list slot="authors">
+            <%= for (p) in publication["authors"] { %>
+                <vivo-publication-author profile-url="/entities/person/<%= p["id"] %>">
+                    <%= p["label"] %>
+                </vivo-publication-author>
+            <% } %>
+        </vivo-publication-author-list>
+      </span>
+    </vivo-entity-item>
+  <% } %>
+  <%= if (publication["authors"]) { %>
+    <vivo-entity-item>
+      <span slot="title">Linked Authors</span>
+      <span slot="content">
+          <%= for (p) in publication["authors"] { %>
+             <a href="/entities/person/<%= p["id"] %>">
+               <%= p["label"] %>
+            </a><br>
+          <% } %>
+      </vivo-entity-item>
     <% } %>
-    </ul>
-</section>
-     
+    <%= if (publication["publicationVenue"]) { %>
+      <vivo-entity-item>
+        <span slot="title">Published In</span>
+        <span slot="content"><%= publication["publicationVenue"]["label"] %></span>
+      </vivo-entity-item>
+    <% } %>
+    <%=if (publication["volume"]) { %>
+      <vivo-entity-item>
+        <span slot="title">Volume/Issue</span>
+        <span slot="content">Volume <%= publication["volume"] %> Issue <%= publication["issue"] %></span>
+      </vivo-entity-item>
+    <% } %>
+    <%=if (publication["pageStart"]) { %>
+      <vivo-entity-item>
+        <span slot="title">Start/End Page</span>
+        <span slot="content"> <%= publication["pageStart"] %> - <%= publication["pageEnd"] %></span>
+      </vivo-entity-item>
+    <% } %>
+    <%=if (publication["doi"]) { %>
+      <vivo-entity-item>
+        <span slot="title">DOI</span>
+        <span slot="content"> <%= publication["doi"] %></span>
+      </vivo-entity-item>
+    <% } %>
+    <%= if (publicaton["translations"]) { %>
+        <vivo-entity-item>
+          <span slot="title">Language</span>
+          <%= for (p) in publication["translations"] { %>
+            <span slot="content"> <%= p["label"] %> </span>
+          <% } %>
+        </vivo-entity-item>
+    <% } %>
+</div>

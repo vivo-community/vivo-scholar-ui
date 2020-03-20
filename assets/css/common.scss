@@ -78,6 +78,7 @@ aside {
   font-size: 1.8em;
   margin-top: 1em;
   margin-bottom: .3em;
+  line-height: normal;
 }
 .page-subtitle {
   color: var(--textColor);
@@ -150,6 +151,55 @@ vivo-tab h3 {
 }
 vivo-tab-panel h4 {
   color: var(--primaryColor);
+}
+
+/*publication entity page*/
+
+.publication-container {
+  width: 95%;
+  margin: 180px auto 0 auto;
+  padding-left: 5%;
+}
+.publication-container .page-title{
+  margin-left: 3%;
+  margin-bottom: 1%;
+}
+.publication-container button {
+  background-color: var(--highlightColor);
+  color: white;
+  border: none;
+  margin-top: 15%;
+  display: block;
+  width: 100%;
+  text-align: center;
+}
+.pub-type{
+  grid-area: pubType;
+  margin-bottom: 0;
+  margin-left: 5%;
+}
+.text-button{
+  grid-area: textButton;
+  margin-right: 10%;
+}
+.cite-button{
+  grid-area: citeButton;
+  margin-left: 10%;
+}
+
+.pub-date{
+  grid-area: pubDate;
+  margin-top: 0;
+  color: black;
+  margin-left: 5%;
+}
+.publication-heading{
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: 50px;
+  grid-template-areas:
+  "pubType pubType pubType pubType . . . . textButton citeButton . ."
+  "pubDate pubDate pubDate pubDate . . . . . . . .";
 }
 
 

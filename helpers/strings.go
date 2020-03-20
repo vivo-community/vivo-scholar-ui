@@ -3,6 +3,7 @@ package helpers
 import (
 	"encoding/json"
 	"strings"
+	"regexp"
 )
 
 func RemoveLanguageTag(value string) string {
@@ -23,4 +24,11 @@ func MakeJSONString(obj interface{}) string {
 func Trim(value string) string {
 	result := strings.TrimSpace(value)
 	return result
+}
+
+func SplitCamelCase(value string) string {
+  re := regexp.MustCompile(`([A-Z]+)`)
+  result := re.ReplaceAllString(value, ` $1`)
+  result = strings.Trim(result, " ")
+  return (result)
 }
