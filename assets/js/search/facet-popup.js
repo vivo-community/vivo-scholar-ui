@@ -36,7 +36,7 @@ class FacetPopupMessage extends Faceter(LitElement) {
     this._slot = this.shadowRoot.querySelector("slot");
     this._slot.addEventListener('slotchange', this._onSlotChange);
     this.addEventListener("keydown", this.handleKeydown);
-    this.addEventListener("facetPageSelected", this.handleFacetPageSelected);
+    this.addEventListener("pageSelected", this.handleFacetPageSelected);
 
     this.addEventListener('facetSelected', this.handleFacetSelected);
   }
@@ -45,7 +45,7 @@ class FacetPopupMessage extends Faceter(LitElement) {
     super.disconnectedCallback();
     this._slot.removeEventListener('slotchange', this._onSlotChange);
     this.removeEventListener("keydown", this.handleKeydown);
-    this.removeEventListener("facetPageSelected", this.handleFacetPageSelected);
+    this.removeEventListener("pageSelected", this.handleFacetPageSelected);
 
     this.removeEventListener('facetSelected', this.handleFacetSelected);
   }
@@ -96,7 +96,10 @@ class FacetPopupMessage extends Faceter(LitElement) {
   }
 
   handleFacetPageSelected(e) {
-    // TODO: sending this for now: detail: { value: page }
+    // NOTE: need to stop bubbling up to 'navigation' component
+    // (only paging facets, not search results)
+    e.preventDefault();
+    e.stopPropagation();
     let page = e.detail.value;
     this.pageNumber = page;
   }
@@ -187,7 +190,7 @@ class FacetPopupMessage extends Faceter(LitElement) {
 
     if (this.facets) {
       this.showHideFacets();
-      pagination = html`<vivo-facet-pagination 
+      pagination = html`<vivo-search-pagination 
             number="${this.pageNumber}"
             size="${this.pageBy}"
             totalElements="${this.facets.length}"

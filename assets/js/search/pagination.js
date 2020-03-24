@@ -1,7 +1,7 @@
 import { LitElement, html, css } from "lit-element";
 import _ from "lodash";
 
-import pageArrays from '../lib/paging-helper';
+import slicePages from '../lib/paging-helper';
 
 class SearchPagination extends LitElement {
 
@@ -30,22 +30,17 @@ class SearchPagination extends LitElement {
         clear: both;
       }
       ul {
-        display: inline-block;
+        display: flex;
+        flex-wrap: nowrap;
         padding-left: 0;
         margin: 20px 0;
         border-radius: 4px;
-        display: flex;
-        flex-wrap: nowrap;
       }
       li {
         display: inline;
       }
       li a {
         /* FIXME: use theme colors etc... */
-        /*
-        position: relative;
-        float: left;
-        */
         padding: 6px 12px;
         color: #337ab7;
         background-color: #fff;
@@ -69,33 +64,16 @@ class SearchPagination extends LitElement {
     this.dispatchEvent(new CustomEvent('pageSelected', {
       detail: { value: page },
       bubbles: true,
-      cancelable: false,
+      cancelable: true,
       composed: true
     }));
   }
 
   render() {
-    let paging = pageArrays(this.totalPages, this.number, this.size, this.totalElements);
-    /* data returned might look like this (for example):
-    [ 
-      [ '-' ],
-      [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 ],
-      [ '+', 16 ] 
-    ]
-    */
-
-    if (paging.length == 0) {
-      console.error("paging component with failed pageArrays");
-      return html``;
-    }
-
-    let previous = paging[0];
-    let next = paging[2];
-    let pageList = paging[1];
+    let { previous, pageList, next } = slicePages(this.totalPages, this.number)
 
     let callback = this.handlePageSelected;
     
-
     var pages = html`<div>
       ${pageList.map(i => {
         // 0 based, so +1
@@ -111,9 +89,9 @@ class SearchPagination extends LitElement {
 
 
     var previousLink = function () {
-      if (previous[0] != '-') {
+      if (previous.display) {
         return html`<li>
-             <a value="${previous[1] - 1}" @click=${callback}>
+             <a value="${previous.start - 1}" @click=${callback}>
                <span>«</span> Previous
              </a>
            </li>`
@@ -121,9 +99,9 @@ class SearchPagination extends LitElement {
     };
 
     var nextLink = function () {
-      if (next[0] != '-') {
+      if (next.display) {
         return html`<li>
-              <a value="${next[1] - 1}" @click=${callback}>
+              <a value="${next.start - 1}" @click=${callback}>
                 Next <span>»</span>
               </a>
             </li>`
