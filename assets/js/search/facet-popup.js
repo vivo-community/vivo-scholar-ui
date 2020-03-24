@@ -1,7 +1,9 @@
 import { LitElement, html, css } from "lit-element";
 
-// needed add, remove Filter functions
+// needed add, remove filter functions
 import Faceter from './faceter.js'
+import * as config from './config.js'
+
 class FacetPopupMessage extends Faceter(LitElement) {
 
   static get properties() {
@@ -13,9 +15,7 @@ class FacetPopupMessage extends Faceter(LitElement) {
       },
       pageNumber: {
         type: Number
-      },
-      // best way to do this?
-      //search: { type: String, attribute: true }
+      }
     };
   }
 
@@ -24,7 +24,8 @@ class FacetPopupMessage extends Faceter(LitElement) {
       this.handleKeydown = this.handleKeydown.bind(this);
       this._onSlotChange = this._onSlotChange.bind(this);
       this.pageNumber = 0;
-      this.pageBy = 5;
+      this.pageBy = config.FACET_PAGE_SIZE;
+      this.pageGrouping = config.FACET_PAGE_GROUPING;
       this.open =false;
       this.filters = [];
 
@@ -36,8 +37,7 @@ class FacetPopupMessage extends Faceter(LitElement) {
     this._slot = this.shadowRoot.querySelector("slot");
     this._slot.addEventListener('slotchange', this._onSlotChange);
     this.addEventListener("keydown", this.handleKeydown);
-    this.addEventListener("facetPageSelected", this.handleFacetPageSelected);
-
+    this.addEventListener("pageSelected", this.handleFacetPageSelected);
     this.addEventListener('facetSelected', this.handleFacetSelected);
   }
 
@@ -45,8 +45,7 @@ class FacetPopupMessage extends Faceter(LitElement) {
     super.disconnectedCallback();
     this._slot.removeEventListener('slotchange', this._onSlotChange);
     this.removeEventListener("keydown", this.handleKeydown);
-    this.removeEventListener("facetPageSelected", this.handleFacetPageSelected);
-
+    this.removeEventListener("pageSelected", this.handleFacetPageSelected);
     this.removeEventListener('facetSelected', this.handleFacetSelected);
   }
 
@@ -96,7 +95,10 @@ class FacetPopupMessage extends Faceter(LitElement) {
   }
 
   handleFacetPageSelected(e) {
-    // TODO: sending this for now: detail: { value: page }
+    // NOTE: need to stop bubbling up to 'navigation' component
+    // (only paging facets, not search results)
+    e.preventDefault();
+    e.stopPropagation();
     let page = e.detail.value;
     this.pageNumber = page;
   }
@@ -187,11 +189,12 @@ class FacetPopupMessage extends Faceter(LitElement) {
 
     if (this.facets) {
       this.showHideFacets();
-      pagination = html`<vivo-facet-pagination 
+      pagination = html`<vivo-search-pagination 
             number="${this.pageNumber}"
             size="${this.pageBy}"
             totalElements="${this.facets.length}"
             totalPages="${this.facets.length/this.pageBy}"
+            pageGrouping=${this.pageGrouping}
         />`
     }
 

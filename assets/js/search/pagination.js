@@ -1,8 +1,9 @@
 import { LitElement, html, css } from "lit-element";
 import _ from "lodash";
 
-import pageArrays from '../lib/paging-helper';
+import slicePages from '../lib/paging-helper';
 
+import * as config from './config.js'
 class SearchPagination extends LitElement {
 
   static get properties() {
@@ -10,7 +11,8 @@ class SearchPagination extends LitElement {
       totalElements: { type: Number },
       totalPages: { type: Number },
       number: { type: Number },
-      size: { type: Number }
+      size: { type: Number },
+      pageGrouping: { type: Number }
     }
   }
 
@@ -30,7 +32,8 @@ class SearchPagination extends LitElement {
         clear: both;
       }
       ul {
-        display: inline-block;
+        display: flex;
+        flex-wrap: nowrap;
         padding-left: 0;
         margin: 20px 0;
         border-radius: 4px;
@@ -40,12 +43,11 @@ class SearchPagination extends LitElement {
       }
       li a {
         /* FIXME: use theme colors etc... */
-        position: relative;
-        float: left;
         padding: 6px 12px;
         color: #337ab7;
         background-color: #fff;
         border: 1px solid #ddd;
+        flex-grow: 1;
       }
       li[active=""] > a {
         background-color: #337ab7;
@@ -53,9 +55,11 @@ class SearchPagination extends LitElement {
       }
     `
   }
+
   constructor() {
     super();
     this.handlePageSelected = this.handlePageSelected.bind(this);
+    this.pageGrouping = config.PAGE_GROUPING;
   }
 
   handlePageSelected(e) {
@@ -64,40 +68,23 @@ class SearchPagination extends LitElement {
     this.dispatchEvent(new CustomEvent('pageSelected', {
       detail: { value: page },
       bubbles: true,
-      cancelable: false,
+      cancelable: true,
       composed: true
     }));
   }
 
   render() {
-    let paging = pageArrays(this.totalPages, this.number, this.size);
-    /* data returned might look like this (for example):
-    [ 
-      [ '-' ],
-      [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 ],
-      [ '+', 16 ] 
-    ]
-    */
-
-    if (paging.length == 0) {
-      console.error("paging component with failed pageArrays");
-      return html``;
-    }
-
-    let previous = paging[0];
-    let next = paging[2];
-    let pageList = paging[1];
+    let { previous, pageList, next } = slicePages(this.totalPages, this.number, this.pagesGrouping)
 
     let callback = this.handlePageSelected;
     
-
     var pages = html`<div>
       ${pageList.map(i => {
-        // 0 based, so +1
-        let active = (i == (this.number + 1));
+        // 0 based, so +1 to display
+        let active = (i == (this.number));
         return html`<li ?active=${active}>
-            <a value="${i - 1}" @click=${callback}>
-              ${i}
+            <a value="${i}" @click=${callback}>
+              ${i + 1}
             </a>
           </li>`
         })
@@ -106,9 +93,9 @@ class SearchPagination extends LitElement {
 
 
     var previousLink = function () {
-      if (previous[0] != '-') {
+      if (previous.display) {
         return html`<li>
-             <a value="${previous[1] - 1}" @click=${callback}>
+             <a value="${previous.start}" @click=${callback}>
                <span>«</span> Previous
              </a>
            </li>`
@@ -116,9 +103,9 @@ class SearchPagination extends LitElement {
     };
 
     var nextLink = function () {
-      if (next[0] != '-') {
+      if (next.display) {
         return html`<li>
-              <a value="${next[1] - 1}" @click=${callback}>
+              <a value="${next.start}" @click=${callback}>
                 Next <span>»</span>
               </a>
             </li>`

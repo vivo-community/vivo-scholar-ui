@@ -1,91 +1,104 @@
 import _ from 'lodash'
 
 /*
- * NOTE: this returns an array of 3 arrays given a total number of pages
- * and the current page.  The first array is what to do with *before*,
- * the last array is what to do with *after*
- *
- * so, as an example:
- *
- * if we have 95 pages, and we are on page 1 (and page-by=15):
- *
- [ [ '-' ],
- [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 ],
- [ '+', 16 ] ]
+NOTE: this returns an object with three keys (previous, pageList, next) 
+given these three parameters:
 
- - means no page to show for *before*
- [1...15] are the pages to show
- +, 16 means the *after* link goes to page 16
+totalPages=total number of pages in collection 
+currentPage=the current page looking at (likely in URL) 
+displaySize=how many pages to show at a time (partitioning cut off)
 
- if we're on page 65
- that falls within the 61-75 range
- the *before* would be 46
- the *next would be 76
-
- [ [ '+', 46 ],
-  [ 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75 ],
-  [ '+', 76 ] ]
-
-
- if we're on page 92 of 94
- that falls with the 91-105 range (but we don't have 105 pages)
- so *before* would be 76
- *next* would be no page
- and [91...94] are the pages to show
-
-[ [ '+', 76 ], [ 91, 92, 93, 94 ], [ '-' ] ]
- *
- */
-function pageArrays(totalPages, currentPage, size) {
-  // want to avoid problems if 0 sent in for size
-  let pageBy = (size > 0) ? size : 5
-  let returnArray = []
-
-  if (totalPages <= pageBy) {
-    let pageArray = _.range(1, totalPages + 1);
-    returnArray.push(['-']);
-    returnArray.push(pageArray);
-    returnArray.push(['-']);
-    return returnArray
-  }
-  
-  let partitions = Math.floor(totalPages/pageBy) 
-
-  // which segment are we in ??
-  let currentPartition = Math.floor(currentPage/pageBy)
- 
-  // figure out if it's the 'last' page
-  let isEnd =  (currentPage) != 0 && ((currentPage + 1) % pageBy == 0)
-  if (isEnd) {
-    // we don't need to switch to next range
-    currentPartition = currentPartition - 1
-  }
-
-  let start = (currentPartition * pageBy) + 1
-  let end = (start + pageBy > totalPages) ? totalPages : (start + pageBy)
-  let pageRange = _.range(start, end)
-
-  if (currentPartition >= partitions) {
-    returnArray.push(['+', (currentPartition - 1) * pageBy + 1])
-    returnArray.push(pageRange)
-    returnArray.push(['-']) // no next
-  } else if ((currentPartition < partitions) && (currentPartition > 1)) {
-    returnArray.push(['+', (currentPartition - 1) * pageBy + 1])
-    returnArray.push(pageRange)
-    returnArray.push(['+', ((currentPartition + 1) * pageBy) + 1])
-  } else if (currentPartition == 1) {
-    returnArray.push(['+', 1]) // yes previous, to 1 (first record)
-    returnArray.push(pageRange)
-    returnArray.push(['+', ((currentPartition + 1) * pageBy) + 1])
-  } else if (currentPartition == 0) {
-    returnArray.push(['-']) // no previous
-    returnArray.push(pageRange)
-    returnArray.push(['+', ((currentPartition + 1) * pageBy) + 1])
-  } else {
-    console.error(`unforseen alternative in else ${currentPartition}`);
-  }
-  return returnArray
+returns object like this:
+{
+ previous: what is *before* the list of pages,
+ pageList: what pages to list (0 based)
+ next: what is *after* the list of pages
 }
 
-export default pageArrays
+**Example 1:
+
+if we have 95 pages, and we are on page = 0 (UI displayed as 1) 
+and the displaySize = 15:
+ 
+slicePages(95, 0, 15) =>
+{
+  previous: { display: false },
+  pageList: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 ],
+  next: { display: true, 15 }
+}
+ 
+** Example 2:
+
+if we're on page 65 that falls within the 60-74 range
+the *previous* would be 45
+the *next would be 75
+
+slicePages(95, 65, 15) =>
+{
+  previous: { display: true, start: 45 },
+  pageList: [ 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74 ],
+  next: { display: true, 75 }
+}
+
+**Example 3:
+
+if we're on page 92 of 94
+that falls with the 90-105 range (but we don't have 105 pages)
+so *previous* would be 75
+*next* would be no page
+and [90...94] are the pages to show 
+
+slicePages(94, 92, 15) =>
+{
+  previous: { display: true, start: 75 },
+  pageList: [ 90, 91, 92, 93, 94 ],
+  next: { display: false }
+}
+
+*/
+function slicePages(totalPages, currentPage, displaySize = 5) {
+  let previous = { display: false };
+  let next = { display: false };
+  let pages = _.range(0, totalPages);
+
+  if (totalPages <= displaySize) {
+    return {
+      previous: previous,
+      pageList: pages,
+      next:  next
+    }
+  }
+  // else ...
+  let partitions = Math.floor(totalPages / displaySize);
+
+  // which segment (partition) are we in ??
+  let currentPartition = Math.floor(currentPage / displaySize)
+
+  let start = (currentPartition * displaySize)
+  let end = (start + displaySize >= totalPages) ? totalPages : (start + displaySize)
+  pages = _.range(start, end)
+
+  if (currentPartition >= partitions) {
+    // no next
+    previous = { display: true, start: ((currentPartition - 1) * displaySize) }
+  } else if ((currentPartition < partitions) && (currentPartition > 1)) {
+    previous = { display: true, start: ((currentPartition - 1) * displaySize) }
+    next = { display: true, start: ((currentPartition + 1) * displaySize) }
+  } else if (currentPartition == 1) {
+    // previous is just very first page (0-based)
+    previous = { display: true, start: 0 }
+    next = { display: true, start: ((currentPartition + 1) * displaySize) }
+  } else if (currentPartition == 0) {
+    // no previous
+    next = { display: true, start: ((currentPartition + 1) * displaySize) }
+  }
+
+  return {
+      previous: previous,
+      pageList: pages,
+      next:  next
+  }
+}
+
+export default slicePages
 
