@@ -3,6 +3,7 @@ import _ from "lodash";
 
 import slicePages from '../lib/paging-helper';
 
+import * as config from './config.js'
 class SearchPagination extends LitElement {
 
   static get properties() {
@@ -10,7 +11,8 @@ class SearchPagination extends LitElement {
       totalElements: { type: Number },
       totalPages: { type: Number },
       number: { type: Number },
-      size: { type: Number }
+      size: { type: Number },
+      pageGrouping: { type: Number }
     }
   }
 
@@ -53,9 +55,11 @@ class SearchPagination extends LitElement {
       }
     `
   }
+
   constructor() {
     super();
     this.handlePageSelected = this.handlePageSelected.bind(this);
+    this.pageGrouping = config.PAGE_GROUPING;
   }
 
   handlePageSelected(e) {
@@ -70,7 +74,7 @@ class SearchPagination extends LitElement {
   }
 
   render() {
-    let { previous, pageList, next } = slicePages(this.totalPages, this.number)
+    let { previous, pageList, next } = slicePages(this.totalPages, this.number, this.pagesGrouping)
 
     let callback = this.handlePageSelected;
     

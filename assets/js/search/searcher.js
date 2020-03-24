@@ -3,6 +3,8 @@ import _ from "lodash";
 import qs from "qs";
 import client from "../lib/apollo";
 
+import * as config from './config.js';
+
 // NOTE: one way to do this, not the only way
 // http://exploringjs.com/es6/ch_classes.html
 // http://justinfagnani.com/2015/12/21/real-mixins-with-javascript-classes/
@@ -76,7 +78,8 @@ let Searcher = (superclass) => class extends superclass {
       };
     }
 
-    setUp() {
+    // allow each search override this way?
+    setUp(pageSize = config.PAGE_SIZE) {
       const { query, page, filters, orders, boosts } = this.deriveSearchFromParameters();
       
       this.query = query;
@@ -91,6 +94,8 @@ let Searcher = (superclass) => class extends superclass {
         this.setFilters([]);
       }
 
+      // each search *must* define, or default? 
+      this.pageSize = pageSize;
       // NOTE: can change this to true to see 'waiting' modal box
       this.simulateDelay = false;
       this.search();
@@ -146,7 +151,8 @@ let Searcher = (superclass) => class extends superclass {
               search: this.query,
               filters: this.filters,
               orders: this.orders,
-              boosts: this.boosts
+              boosts: this.boosts,
+              pageSize: this.pageSize
             }
           });
           this.data = data;

@@ -2,6 +2,7 @@ import { LitElement, html, css } from "lit-element";
 
 import Faceter from './faceter.js'
 
+import * as config from './config.js'
 class SearchFacets extends Faceter(LitElement) {
 
   static get properties() {
@@ -17,8 +18,8 @@ class SearchFacets extends Faceter(LitElement) {
     super();
     this.tag = ""; // default no tagging
     this.opKey = "EQUALS"; // default to EQUALS compare
-    this.popupThreshold = 8; // eventually 15
-    this.showCount = 5;
+    this.popupThreshold = config.FACET_POPUP_THRESHOLD;
+    this.showCount = config.FACETS_SHOW;
     this.togglePopup = this.togglePopup.bind(this);
   }
 

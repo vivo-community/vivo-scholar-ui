@@ -1,8 +1,8 @@
 import gql from "graphql-tag";
 
 const publicationQuery = gql`
-  query($search: String!, $pageNumber: Int!, $filters: [FilterArgInput], 
-    $orders: [OrderInput], $boosts: [BoostArgInput]) {
+  query($search: String!, $pageNumber: Int!, $pageSize: Int!,
+    $filters: [FilterArgInput], $orders: [OrderInput], $boosts: [BoostArgInput]) {
     documents(
       boosts: $boosts,
       facets: [
@@ -13,7 +13,7 @@ const publicationQuery = gql`
       ]
       filters: $filters
       paging: {
-        pageSize: 5
+        pageSize: $pageSize
         pageNumber: $pageNumber
         sort: { orders: $orders }
       }
