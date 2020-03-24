@@ -34,35 +34,26 @@ import _ from 'lodash'
  and [91...94] are the pages to show
 
 [ [ '+', 76 ], [ 91, 92, 93, 94 ], [ '-' ] ]
- *
- */
-function pageArrays(totalPages, currentPage, size) {
-  // want to avoid problems if 0 sent in for size
-  let pageBy = (size > 0) ? size : 5
-  let returnArray = []
 
-  if (totalPages <= pageBy) {
+*/
+function pageArrays(totalPages, currentPage, pageBy, totalRecords, displaySize = 5) {
+  let returnArray = []
+  
+  if (totalPages <= displaySize) {
     let pageArray = _.range(1, totalPages + 1);
     returnArray.push(['-']);
     returnArray.push(pageArray);
     returnArray.push(['-']);
     return returnArray
   }
-  
-  let partitions = Math.floor(totalPages/pageBy) 
+
+  let partitions = Math.floor(totalPages / displaySize);
 
   // which segment are we in ??
-  let currentPartition = Math.floor(currentPage/pageBy)
- 
-  // figure out if it's the 'last' page
-  let isEnd =  (currentPage) != 0 && ((currentPage + 1) % pageBy == 0)
-  if (isEnd) {
-    // we don't need to switch to next range
-    currentPartition = currentPartition - 1
-  }
+  let currentPartition = Math.floor(currentPage / displaySize)
 
-  let start = (currentPartition * pageBy) + 1
-  let end = (start + pageBy > totalPages) ? totalPages : (start + pageBy)
+  let start = (currentPartition * displaySize) + 1
+  let end = (start + displaySize > totalPages) ? totalPages : (start + displaySize)
   let pageRange = _.range(start, end)
 
   if (currentPartition >= partitions) {

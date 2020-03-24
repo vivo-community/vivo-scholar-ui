@@ -36,14 +36,19 @@ class FacetPagination extends LitElement {
         padding-left: 0;
         margin: 20px 0;
         border-radius: 4px;
+        display: flex;
+        flex-wrap: nowrap;
       }
       li {
         display: inline;
       }
       li a {
         /* FIXME: use theme colors etc... */
+        /*
         position: relative;
         float: left;
+        */
+        flex-grow: 1;
         padding: 6px 12px;
         color: #337ab7;
         background-color: #fff;
@@ -74,7 +79,7 @@ class FacetPagination extends LitElement {
   }
 
   render() {
-    let paging = pageArrays(this.totalPages, this.number, this.size);
+    let paging = pageArrays(this.totalPages, this.number, this.size, this.totalElements);
     /* data returned might look like this (for example):
     [ 
       [ '-' ],

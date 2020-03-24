@@ -13,7 +13,7 @@ const publicationQuery = gql`
       ]
       filters: $filters
       paging: {
-        pageSize: 10
+        pageSize: 5
         pageNumber: $pageNumber
         sort: { orders: $orders }
       }
