@@ -1,19 +1,35 @@
 <% let grant = data["relationship"] %>
-<div class="row">
-    <h2><%= raw(grant["title"]) %></h2>
+<div class="entity-container">
+    <h2 class="page-title"><%= raw(grant["title"]) %></h2>
+    <div class="entity-heading">
+      <%= if (grant["dateTimeIntervalStart"] || grant["dateTimeIntervalEnd"] ) { %>
+        <vivo-interval class="entity-date" interval-start="<%= FormatGraphqlDate(grant["dateTimeIntervalStart"], "year") %>" interval-end="<%= FormatGraphqlDate(grant["dateTimeIntervalEnd"], "year") %>"></vivo-interval>
+      <% } %>
+    </div>
+    <vivo-entity-item>
+      <span slot="title">Awarded By</span>
+      <%= for (g) in grant["awardedBy"] { %>
+        <span slot="content"><%= g["label"] %></span>
+      <% } %>
+    </vivo-entity-item>
+    <vivo-entity-item>
+      <span slot="title">Principal Investigators</span>
+      <span slot="content">
+        <%= for (g) in grant["principalInvestigators"] { %>
+                  <a href="/entities/person/<%= g["id"] %>">
+                    <%= g["label"] %>
+                  </a><br>
+        <% } %>
+      </span>
+    </vivo-entity-item>
+    <vivo-entity-item>
+      <span slot="title">Subject Areas</span>
+      <span slot="content">
+        <%= for (g) in grant["subjectAreas"] { %>
+                  <a href="">
+                    <%= g["label"] %>
+                  </a><br>
+        <% } %>
+      </span>
+    </vivo-entity-item>
 </div>
-
-<h4>Principal Investigators</h4>
-<section>
-    <ul class="list-group">
-    <%= for (p) in grant["principalInvestigators"] { %>
-       <li class="list-group-item">
-           <span class="person-name">
-              <a href="/entities/person/<%= p["id"] %>">
-                <%= p["label"] %>
-             </a>
-           </span>
-       </li>
-    <% } %>
-    </ul>
-</section>

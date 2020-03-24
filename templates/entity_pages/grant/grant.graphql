@@ -16,5 +16,9 @@ query($id: String!) {
       id
       label
     }
+    subjectAreas{
+      id
+      label
+    }
   }
 }
