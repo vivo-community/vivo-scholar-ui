@@ -187,13 +187,7 @@ class FacetPopupMessage extends Faceter(LitElement) {
   render() {
     let pagination = html``;
 
-    //console.log(this.pageNumber);
-    //console.log(this.pageBy);
-    //console.log(this.pageGrouping);
-
     if (this.facets) {
-      console.log(this.facets.length);
-      console.log(this.facets.length/this.pageBy);
       this.showHideFacets();
       pagination = html`<vivo-search-pagination 
             number="${this.pageNumber}"
