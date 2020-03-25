@@ -1,6 +1,7 @@
 import { LitElement, html, css } from "lit-element";
 import qs from "qs";
 import _ from "lodash";
+
 /*
 TODO: maybe make a tabbed-search component
 that contains search-text and tabs/searches etc..
@@ -21,6 +22,7 @@ class SearchNavigation extends LitElement {
       this.handleSortSelected = this.handleSortSelected.bind(this);
       this.handleRemoveFilters = this.handleRemoveFilters.bind(this);
       this.handleSearchResultsObtained = this.handleSearchResultsObtained.bind(this);
+      this.handleSearchPopState = this.handleSearchPopState.bind(this); 
     }
   
     firstUpdated() {
@@ -32,6 +34,7 @@ class SearchNavigation extends LitElement {
       document.addEventListener('sortSelected', this.handleSortSelected);
       document.addEventListener('removeFilters', this.handleRemoveFilters);
       document.addEventListener('searchResultsObtained', this.handleSearchResultsObtained);
+      window.addEventListener('popstate', this.handleSearchPopState);
 
       // make search-box show text of search sent in (from home page)
       let searchBox = document.querySelector(`vivo-site-search-box`);
@@ -74,6 +77,7 @@ class SearchNavigation extends LitElement {
       document.removeEventListener('sortSelected', this.handleSortSelected);
       document.removeEventListener('removeFilters', this.handleRemoveFilters);
       document.removeEventListener('searchResultsObtained', this.handleSearchResultsObtained); 
+      window.removeEventListener('popstate', this.handleSearchPopState); 
     }
   
     getNextSibling(elem, selector) {
@@ -205,6 +209,8 @@ class SearchNavigation extends LitElement {
         if (filters && filters.length > 0) {
           // FIXME: this restores filters for person
           group.setFilters(filters);
+        } else {
+          group.setFilters([]);
         }
       })
     }
@@ -225,6 +231,34 @@ class SearchNavigation extends LitElement {
       search.setSort(orders);
       search.setPage(0);
       search.search();
+    }
+
+    handleSearchPopState(e) {
+      const params = qs.parse(window.location.search.substring(1));
+
+      let searchTab = params["search-tab"];
+      let matchedSearch = document.querySelector(`#${searchTab}`);
+      if (matchedSearch) {
+        this.browsingState.activeSearch = matchedSearch;
+      } else {
+        // first one??
+        let defaultSearch = document.querySelector(`[implements="vivo-search"]`);
+        this.browsingState.activeSearch = defaultSearch;
+      }   
+      let search = this.browsingState.activeSearch;
+      search.restoreFromParams(params);
+      // NOTE: which facets to display depends on active search 
+      // seems to be correct filters 
+      let filters = params.filters ? params.filters : [];
+      this.findCorrectFacetsToDisplay(filters);
+
+      const tabs = this.getMainTabs();
+      if (tabs) {
+        // NOTE: don't want to fire 'tabSelected'
+        // NOTE: naming convention is a little fragile - could find
+        // parent parent, sibling etc... 
+        tabs.selectTabById(`${searchTab}-tab`);
+      }
     }
   
   }

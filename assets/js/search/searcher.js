@@ -50,8 +50,8 @@ let Searcher = (superclass) => class extends superclass {
       }
     }
 
-    deriveSearchFromParameters() {   
-      const parsed = qs.parse(window.location.search.substring(1));
+    deriveSearchFromParameters(parsed) {   
+      //const parsed = qs.parse(window.location.search.substring(1));
       let search = parsed.search;
       let page = parsed.page;
       let filters = parsed.filters;
@@ -78,9 +78,28 @@ let Searcher = (superclass) => class extends superclass {
       };
     }
 
+    restoreFromParams(params) {
+      const { query, page, filters, orders, boosts } = this.deriveSearchFromParameters(params);
+      this.query = query;
+      this.orders = orders;
+      this.boosts = boosts;
+
+      this.page = page;
+      if (typeof filters == 'undefined') {
+        this.setFilters([]);
+      } else {
+        this.setFilters(filters);
+      }
+      
+      console.log(filters);
+      // skip adding to history
+      this.search(true);
+    }
+
     // allow each search override this way?
     setUp(pageSize = config.PAGE_SIZE) {
-      const { query, page, filters, orders, boosts } = this.deriveSearchFromParameters();
+      const parsed = qs.parse(window.location.search.substring(1));
+      const { query, page, filters, orders, boosts } = this.deriveSearchFromParameters(parsed);
       
       this.query = query;
       this.orders = orders;
@@ -210,8 +229,9 @@ let Searcher = (superclass) => class extends superclass {
       }
     }
   
-    search() {
-      if (this.active) {
+    search(skip_history=false) {
+      if (this.active && !skip_history) {
+        console.log(`adding search to history: active=${this.active};skip_history=${skip_history}`);
         this.pushHistory();
       }
             
