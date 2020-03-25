@@ -259,7 +259,7 @@ class SearchNavigation extends LitElement {
         tabs.selectTabById(`${searchTab}-tab`, false);
       } else {
         // FIXME: best way to restore first search? e.g. search/?search=*
-        tabs.selectTabById(`person-search-tab`, false);
+        tabs.selectTabById(`${search.id}-tab`, false);
       }
     }
   

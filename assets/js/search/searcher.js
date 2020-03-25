@@ -90,9 +90,9 @@ let Searcher = (superclass) => class extends superclass {
       } else {
         this.setFilters(filters);
       }
-      
-      console.log(filters);
-      // skip adding to history
+
+      // skip adding to history - would like named parameter here
+      // e.g. search(skip_history = true)
       this.search(true);
     }
 
@@ -230,8 +230,8 @@ let Searcher = (superclass) => class extends superclass {
     }
   
     search(skip_history=false) {
+      // override necessary for 'back' button
       if (this.active && !skip_history) {
-        console.log(`adding search to history: active=${this.active};skip_history=${skip_history}`);
         this.pushHistory();
       }
             
