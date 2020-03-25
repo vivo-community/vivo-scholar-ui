@@ -53,35 +53,40 @@ class Tabs extends LitElement {
         this.selectTab(this.tabs[0]);
       }
     }
-   }
-
-  selectTabById(tabId) {
-    this.selectTab(this.querySelector(`vivo-tab#${tabId}`));
   }
 
-  selectTab(tab) {
+  selectTabById(tabId, fireEvent = true) {
+    this.selectTab(this.querySelector(`vivo-tab#${tabId}`), fireEvent);
+  }
+
+  selectTab(tab, fireEvent = true) {
     const screenWidth = window.innerWidth;
     let tabs = this.querySelectorAll('vivo-tab');
     let index = Array.from(tabs).indexOf(tab);
     let panels = this.querySelectorAll('vivo-tab-panel');
-    if (screenWidth <= 720 && tab.hasAttribute('selected')){
+    if (screenWidth <= 720 && tab.hasAttribute('selected')) {
       tab.removeAttribute('selected');
-        panels[index].removeAttribute('selected');
+      panels[index].removeAttribute('selected');
+      // added in case event *is* supposed to be skipped
+      fireEvent = false;
     } else {
-    if (tab) {
-      tabs.forEach((t) => t.removeAttribute('selected'));
-      tab.setAttribute('selected', 'selected');
-      panels.forEach((t) => t.removeAttribute('selected'));
-      panels[index].setAttribute('selected', 'selected');
-    }
+      if (tab) {
+        tabs.forEach((t) => t.removeAttribute('selected'));
+        tab.setAttribute('selected', 'selected');
+        panels.forEach((t) => t.removeAttribute('selected'));
+        panels[index].setAttribute('selected', 'selected');
+      }
+    } 
+    // NOTE: this was within else statement, but wasn't sure if that
+    // was right (to not fire when screenWidth <= 720)?
+    if (fireEvent) {
       this.dispatchEvent(new CustomEvent('tabSelected', {
         detail: tab,
         bubbles: true,
         cancelable: false,
         composed: true
       }));
-
-   }
+    }
   }
 
   handleSelectTab(e) {
@@ -105,7 +110,7 @@ class Tabs extends LitElement {
     return Array.from(this.querySelectorAll('vivo-tab'));
   }
 
-  _prevTab(){
+  _prevTab() {
     const tabs = this._allTabs();
     let newIdx = tabs.findIndex(tab => tab.selected) - 1;
     return tabs[(newIdx + tabs.length) % tabs.length];
@@ -137,30 +142,30 @@ class Tabs extends LitElement {
       END: 35,
     };
     let newTab;
-      switch (e.keyCode) {
-        case KEYCODE.LEFT:
-        case KEYCODE.UP:
-          newTab = this._prevTab();
-          break;
+    switch (e.keyCode) {
+      case KEYCODE.LEFT:
+      case KEYCODE.UP:
+        newTab = this._prevTab();
+        break;
 
-        case KEYCODE.RIGHT:
-        case KEYCODE.DOWN:
-          newTab = this._nextTab();
-          break;
+      case KEYCODE.RIGHT:
+      case KEYCODE.DOWN:
+        newTab = this._nextTab();
+        break;
 
-        case KEYCODE.HOME:
-          newTab = this._firstTab();
-          break;
+      case KEYCODE.HOME:
+        newTab = this._firstTab();
+        break;
 
-        case KEYCODE.END:
-          newTab = this._lastTab();
-          break;
+      case KEYCODE.END:
+        newTab = this._lastTab();
+        break;
 
-        default:
-          return;
-      }
-      event.preventDefault();
-      this.selectTab(newTab);
+      default:
+        return;
+    }
+    event.preventDefault();
+    this.selectTab(newTab);
   }
 
   static get styles() {

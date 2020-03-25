@@ -246,6 +246,8 @@ class SearchNavigation extends LitElement {
         this.browsingState.activeSearch = defaultSearch;
       }   
       let search = this.browsingState.activeSearch;
+      search.setActive(true);
+      
       search.restoreFromParams(params);
       // NOTE: which facets to display depends on active search 
       // seems to be correct filters 
@@ -253,11 +255,11 @@ class SearchNavigation extends LitElement {
       this.findCorrectFacetsToDisplay(filters);
 
       const tabs = this.getMainTabs();
-      if (tabs) {
-        // NOTE: don't want to fire 'tabSelected'
-        // NOTE: naming convention is a little fragile - could find
-        // parent parent, sibling etc... 
-        tabs.selectTabById(`${searchTab}-tab`);
+      if (searchTab) {
+        tabs.selectTabById(`${searchTab}-tab`, false);
+      } else {
+        // FIXME: best way to restore first search? e.g. search/?search=*
+        tabs.selectTabById(`person-search-tab`, false);
       }
     }
   
