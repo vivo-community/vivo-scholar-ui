@@ -51,7 +51,6 @@ let Searcher = (superclass) => class extends superclass {
     }
 
     deriveSearchFromParameters(parsed) {   
-      //const parsed = qs.parse(window.location.search.substring(1));
       let search = parsed.search;
       let page = parsed.page;
       let filters = parsed.filters;
