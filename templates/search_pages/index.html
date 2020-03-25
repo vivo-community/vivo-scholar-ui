@@ -1,3 +1,13 @@
+<!-- FIXME: better way to override these -->
+<style>
+  #main {
+    width: 100%;
+    margin: 140px auto 0 auto;
+  }
+  main {
+    margin-top: 0.75em;
+  }
+</style>
 <vivo-search-navigation></vivo-search-navigation>
 
 <vivo-modal id="search-waiting">
@@ -77,7 +87,10 @@
   </aside>
 
   <main>
-
+    <!-- 
+    <vivo-filter-clearer></vivo-filter-clearer>
+    -->
+    
     <vivo-tabs id="secondary-example" vivo-tab-style="secondary">
       <vivo-tab id="person-search-tab">
         People (<span id="person-search-count">0</span>)

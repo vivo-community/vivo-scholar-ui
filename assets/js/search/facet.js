@@ -34,6 +34,7 @@ class SearchFacet extends LitElement {
         flex-grow: 2;
         flex-basis: 90%;
         padding-right: 0.5em;
+        line-height: 16pt;
       }
       .checkbox {
         flex-grow: 1;
