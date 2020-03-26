@@ -66,7 +66,6 @@ class SearchFacets extends Faceter(LitElement) {
     var results = html`
     <p id="toggle-facet" @click=${this.togglePopup}>Show More</p>
     <vivo-facet-popup-message id="popup-facets">
-      <h4 id="popup-header">Filters</h4>
       ${this.generateFacetList(showList)}
     </vivo-facet-popup-message>`;
     return results;

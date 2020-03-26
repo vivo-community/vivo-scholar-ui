@@ -23,10 +23,7 @@ class FacetPopupMessage extends Faceter(LitElement) {
       super();
       this.handleKeydown = this.handleKeydown.bind(this);
       this._onSlotChange = this._onSlotChange.bind(this);
-      this.pageNumber = 0;
-      this.pageBy = config.FACET_PAGE_SIZE;
-      this.pageGrouping = config.FACET_PAGE_GROUPING;
-      this.open =false;
+      this.open = false;
       this.filters = [];
 
       this.handleFacetSelected = this.handleFacetSelected.bind(this);
@@ -66,6 +63,7 @@ class FacetPopupMessage extends Faceter(LitElement) {
   }
 
   _onSlotChange() {
+    // divide into columns?
     this.facets = Array.from(this.querySelectorAll('vivo-search-facet'));
   }
 
@@ -74,24 +72,6 @@ class FacetPopupMessage extends Faceter(LitElement) {
     if (e.keyCode === 27) {
         this.closeDown();
     }
-  }
-
-  showHideFacet(index) {
-    let start = (this.pageNumber * this.pageBy);
-    let end = (this.pageNumber * this.pageBy) + this.pageBy;
-    let inRange = (index >= start && index < end);
-    return !inRange;
-  }
-
-  showHideFacets() {
-    this.facets.forEach((facet, index) => {
-      let hide = this.showHideFacet(index);
-      if (hide) {
-          facet.className = "hidden";
-      } else {
-          facet.className = "shown";
-      }
-    });
   }
 
   handleFacetPageSelected(e) {
@@ -103,34 +83,37 @@ class FacetPopupMessage extends Faceter(LitElement) {
     this.pageNumber = page;
   }
 
-  
   openUp() {
     this.open = true;
   }
 
-  closeDown() {
-    this.open = false;
-    // this should get parent vivo-facet-group
-    let group = this.getRootNode().host.parentNode;
-    let search = document.querySelector(`[id="${group.search}"]`);
-
-    // need to set filters on group
-    group.setFilters(this.filters);
-
-    // then run search
-    search.setPage(0);
-    search.setFilters(this.filters);
-    search.search();
-
+  apply() {
+    this.closeDown(true);
   }
 
-  togglePopup(){
-    this.closeDown();
+  cancel() {
+    this.closeDown(false);
+  }
+
+  closeDown(applyFilters=true) {
+    this.open = false;
+
+    if (applyFilters) {
+      // this should get parent vivo-facet-group
+      let group = this.getRootNode().host.parentNode;
+      let search = document.querySelector(`[id="${group.search}"]`);
+      // need to set filters on group
+      group.setFilters(this.filters);
+      // then run search
+      search.setPage(0);
+      search.setFilters(this.filters);
+      search.search();
+    }
+  
   }
 
   static get styles() {
     return css`
-    
     :host {
       display: none;
     }
@@ -174,34 +157,40 @@ class FacetPopupMessage extends Faceter(LitElement) {
     ::slotted(vivo-search-facet) {
       display: block;
     }
-    ::slotted(vivo-search-facet.hidden) {
-      display: none;
+    h4 {
+      background-color: var(--highlightBackgroundColor);
     }
-    ::slotted(vivo-search-facet.shown) {
-      display: block;
+    .facet-container {
+      display: flex;
+      flex-direction: column;
+      flex-wrap: wrap;
+      max-height: 200px;
+      min-width: 100px;
+      max-weight: 400px;
+      overflow: auto;
+      overflow-y: hidden;
+      scrollbar-base-color:#ffeaff
     }
-    
+    #cancel:hover {
+      cursor: pointer;
+    }
+    #apply:hover {
+      cursor: pointer;
+    }
     `;
   }
 
   render() {
-    let pagination = html``;
-
-    if (this.facets) {
-      this.showHideFacets();
-      pagination = html`<vivo-search-pagination 
-            number="${this.pageNumber}"
-            size="${this.pageBy}"
-            totalElements="${this.facets.length}"
-            totalPages="${this.facets.length/this.pageBy}"
-            pageGrouping=${this.pageGrouping}
-        />`
-    }
 
     return html`
-    <i class="fas fa-times" @click=${this.togglePopup}></i>
-    <slot></slot>
-    ${pagination}
+    <h4><i class="fas fa-times" @click=${this.cancel}></i></h4>
+    <div class="facet-container">
+      <slot></slot>
+    </div>
+    <div class="actions">
+        <button id="cancel" @click=${this.cancel}>Cancel</button>
+        <button id="apply" @click=${this.apply}>Apply</button>
+    </div>
     `;
   }
 }
