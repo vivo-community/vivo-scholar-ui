@@ -101,10 +101,8 @@ class SearchNavigation extends LitElement {
       // 1. remove from active search
       search.setFilters([]);
       // 2. remove from facet group
-      console.log(`looking for facets with search=${id}`);
       let facets = document.querySelectorAll(`[search="${id}"]`);
       facets.forEach(facet => {
-          console.log(facet);
           facet.setFilters([]);
       })
       // 3. run search again
