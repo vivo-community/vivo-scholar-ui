@@ -101,8 +101,10 @@ class SearchNavigation extends LitElement {
       // 1. remove from active search
       search.setFilters([]);
       // 2. remove from facet group
+      console.log(`looking for facets with search=${id}`);
       let facets = document.querySelectorAll(`[search="${id}"]`);
       facets.forEach(facet => {
+          console.log(facet);
           facet.setFilters([]);
       })
       // 3. run search again
@@ -194,7 +196,7 @@ class SearchNavigation extends LitElement {
 
     // TODO: this feels a little fragile - works/doesn't work
     // depending on precise arrangement on page
-    findCorrectFacetsToDisplay(filters = []) {
+    findCorrectFacetsToDisplay(filters = null) {
       let activeSearch = this.browsingState.activeSearch;
       let id = activeSearch.id;
 
@@ -207,10 +209,11 @@ class SearchNavigation extends LitElement {
       facetGroups.forEach(group => {
         group.setAttribute('selected', 'selected');
         if (filters && filters.length > 0) {
-          // FIXME: this restores filters for person
           group.setFilters(filters);
-        } else {
+        } else if (filters && filters.length == 0) {
           group.setFilters([]);
+        } else {
+          // no filters sent in
         }
       })
     }

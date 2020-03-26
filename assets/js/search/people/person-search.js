@@ -29,7 +29,7 @@ class PersonSearch extends Searcher(LitElement) {
         .search-actions {
             display: flex;
         }
-        vivo-filter-clearer {
+        vivo-search-pagination-summary {
             flex-grow: 2;
             flex-basis: 65%;
         }
@@ -160,6 +160,17 @@ class PersonSearch extends Searcher(LitElement) {
           />`
         }
 
+        let pagingSummary = html``;
+
+        if (this.data) {
+          pagingSummary = html`<vivo-search-pagination-summary
+            number="${this.data.people.page.number}"
+            size="${this.data.people.page.size}"
+            totalElements="${this.data.people.page.totalElements}"
+            totalPages="${this.data.people.page.totalPages}"
+         />`
+        }
+
         let sorter = html``;
 
         // TODO: might be better if 'searcher.js' code took care of this
@@ -172,14 +183,10 @@ class PersonSearch extends Searcher(LitElement) {
             </vivo-search-sorter>`
         }
 
-        // TODO: add a filter-clearer
-        let clearer = html`<vivo-filter-clearer>
-        </vivo-filter-clearer>`
-
         return html`
           <div id="people-search-results">
           <div class="search-actions">
-          ${clearer}
+          ${pagingSummary}
           ${sorter}
           </div>
           ${resultsDisplay}
