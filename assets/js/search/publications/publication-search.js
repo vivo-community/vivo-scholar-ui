@@ -16,8 +16,8 @@ class PublicationSearch extends Searcher(LitElement) {
     static get styles() {
       return css`
         :host {
-            display: block;
-            clear: both;
+          display: block;
+          clear: both;
         }
         .publications {
           display: block; 
@@ -26,7 +26,7 @@ class PublicationSearch extends Searcher(LitElement) {
         .search-actions {
           display: flex;
         }
-        vivo-filter-clearer {
+        vivo-search-pagination-summary {
           flex-grow: 2;
           flex-basis: 65%;
         }
@@ -177,6 +177,17 @@ class PublicationSearch extends Searcher(LitElement) {
           />`
       }
 
+      let pagingSummary = html``;
+
+      if (this.data) {
+        pagingSummary = html`<vivo-search-pagination-summary
+          number="${this.data.documents.page.number}"
+          size="${this.data.documents.page.size}"
+          totalElements="${this.data.documents.page.totalElements}"
+          totalPages="${this.data.documents.page.totalPages}"
+       />`
+      }
+
       let selected = `${this.orders[0].property}-${this.orders[0].direction}`;
 
       let sorter = html``;
@@ -188,13 +199,11 @@ class PublicationSearch extends Searcher(LitElement) {
           </vivo-search-sorter>`
       }
 
-      let clearer = html`<vivo-filter-clearer>
-      </vivo-filter-clearer>`
  
       return html`
         <div id="publication-search-results">
           <div class="search-actions">
-          ${clearer}
+          ${pagingSummary}
           ${sorter}
           </div>
         ${resultsDisplay}

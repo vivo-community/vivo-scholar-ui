@@ -26,7 +26,8 @@ class SearchFacets extends Faceter(LitElement) {
   static get styles() {
     return css`
       :host {
-          display: block;
+        display: block;
+        line-height: 1.6em;
       }
       vivo-search-facet[selected=""] {
         font-weight: bold;

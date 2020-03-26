@@ -8,15 +8,23 @@ class SearchSidebarItem extends LitElement {
         display: block;
         box-sizing: border-box;
         margin: 0;
+        background-color: var(--highlightBackgroundColor);
       }
       ::slotted([slot="heading"]) {
         padding: .25em 1em;
         background-color: var(--highlightBackgroundColor);
       }
+      h3 {
+        font-size: 1.8em;
+      }
+      ::slotted(h3) {
+        font-size: 1.8em;
+      }
       ::slotted([slot="content"]) {
         padding: 0 1em;
         font-size: 0.85em;
-        background-color: var(--lightNeutralColor);
+        background-color: var(--highlightBackgroundColor);
+        /* background-color: var(--lightNeutralColor); */
         /* text-overflow: ellipsis;
         white-space: nowrap;
         overflow: hidden;

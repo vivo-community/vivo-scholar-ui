@@ -9,10 +9,12 @@ class SearchFilterClearer extends LitElement {
 
     static get styles() {
         return css`
-          a:hover {
-            cursor: pointer;
-          }
-          `
+        a {
+          font-weight: bold;
+        }
+        a:hover {
+          cursor: pointer;
+        }`
     }
 
     handleClearFilters(e) {
@@ -26,7 +28,7 @@ class SearchFilterClearer extends LitElement {
 
     render() {
         return html`<a @click="${this.handleClearFilters}">
-           Clear Filters ...
+           < Reset search filters
         </a>`
     }
 }
