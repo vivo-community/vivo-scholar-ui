@@ -16,7 +16,7 @@ class PersonImage extends LitElement {
         url = `${baseImageUrl}${this.thumbnail}`;
       }
       return html`
-          <img className="img-thumbnail" width="90" src="${url}" />
+          <img className="img-thumbnail" width="130" src="${url}" />
           `
     }
   }
