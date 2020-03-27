@@ -83,9 +83,7 @@ class SearchPagination extends LitElement {
         // 0 based, so +1 to display
         let active = (i == (this.number));
         return html`<li ?active=${active}>
-            <a value="${i}" @click=${callback}>
-              ${i + 1}
-            </a>
+            <a value="${i}" @click=${callback}>${i + 1}</a>
           </li>`
         })
       }
@@ -95,9 +93,7 @@ class SearchPagination extends LitElement {
     var previousLink = function () {
       if (previous.display) {
         return html`<li>
-             <a value="${previous.start}" @click=${callback}>
-               <span>«</span> Previous
-             </a>
+             <a value="${previous.start}" @click=${callback}><span>«</span> Previous</a>
            </li>`
       }
     };
@@ -105,9 +101,7 @@ class SearchPagination extends LitElement {
     var nextLink = function () {
       if (next.display) {
         return html`<li>
-              <a value="${next.start}" @click=${callback}>
-                Next <span>»</span>
-              </a>
+              <a value="${next.start}" @click=${callback}>Next <span>»</span></a>
             </li>`
       }
     };
