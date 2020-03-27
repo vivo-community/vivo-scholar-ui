@@ -16,12 +16,13 @@ class SearchFacet extends LitElement {
     }
   }
 
+  // https://www.w3schools.com/howto/howto_css_custom_checkbox.asp
   static get styles() {
     return css`
       :host {
-          display: block;
-          clear: both;
-          text-align: right;
+        display: block;
+        clear: both;
+        text-align: right;
       }
       div {
         display: flex;
@@ -45,41 +46,56 @@ class SearchFacet extends LitElement {
         overflow: hidden;
         visibility: hidden;
       }
-      .checkbox {
-        background-color: white;
-        border: 1pt solid #2F3D4F;
-        border: none;
-        height: 1em;
-        line-height: 16pt;
-        font-size: 14pt;
-        /* padding-bottom: 2px; */
-        text-align: center;
-        justify-content: center;
-        background: transparent;
-      }
-      .checkbox {
+      .checkbox-container {
         flex-grow: 1;
         flex-basis: 10%;
+        display:inline-block;
+        position: relative;
       }
-      .checkbox:after {
-        /* content:"◻"; */
-      }  
-      div[selected="true"] .checkbox {
-        /*
-        background-color: #26A8DF;
-        color: white;
-        */
-        border: 1pt solid #2F3D4F; 
-        border: none;     
-      }        
-      div[selected="true"] .checkbox:after {
-        text-align: center;
-        /* content:"✓"; */
-      }  
-      div[selected="true"] .label {
-        /* already bolded by facets.js */
-        /* font-weight: bold */
-      } 
+      .checkbox-container input {
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+        height: 0;
+        width: 0;
+      }
+      .checkbox-custom {
+        position: absolute;
+        /* tried different numbers here */
+        top: 4px;
+        left: 0px;
+        /* not sure this should be */
+        height: 0.85em;
+        width: 0.85em;
+        background-color: white;
+        border: 1pt solid #2F3D4F;
+      }
+      .checkbox-container:hover input ~ .checkbox-custom {
+        background-color: #ccc;
+      }
+      .checkbox-container input:checked ~ .checkbox-custom {
+        background-color: #2196F3;
+      }
+      .checkbox-custom:after {
+        content: "";
+        position: absolute;
+        display: none;
+      }
+      .checkbox-container input:checked ~ .checkbox-custom:after {
+        display: block;
+      }      
+      .checkbox-container .checkbox-custom:after {
+        /* had to just find these numbers by trying different ones */
+        left: 4px; 
+        top: 0px;
+        width: 2px;
+        height: 0.50em;
+        border: solid white;
+        border-width: 0 3px 3px 0;
+        -webkit-transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+        transform: rotate(45deg);
+      }           
     `
   }
 
@@ -91,7 +107,7 @@ class SearchFacet extends LitElement {
   }
 
   handleFacetSelected(e) {
-    // if span clicked - need parent
+    // if span clicked - need parent (note had to add 'value' to multiple 'parents')
     let parent = e.target.parentNode;
     this.dispatchEvent(new CustomEvent('facetSelected', {
       detail: { 
@@ -108,14 +124,10 @@ class SearchFacet extends LitElement {
     }));
   }
 
-  // ballot-box: &#x2610;
-  // ballot-box-with-check: &#9745;
   // NOTE: had to do div/span/fake-checkbox instead of real input[type=checkbox]
   // https://stackoverflow.com/questions/55962214/litelement-not-updating-checkbox-in-list
   // https://github.com/Polymer/lit-html/issues/732  
   render() {
-    //let textCheck = this.selected ? '&check;' : '';
-    let textCheck = this.selected ? '&#9745;' : '&#x2610;';
     return html`
           <div value=${this.value} 
             selected="${this.selected}"
@@ -124,7 +136,11 @@ class SearchFacet extends LitElement {
             <span class="label" title="${this.label} (${this.count}))">
               ${this.label} (${this.count})
             </span>
-            <span class="checkbox">${unsafeHTML(textCheck)}</span>
+            <!-- NOTE: adding value again so event can do parent.value -->
+            <span class="checkbox-container" value=${this.value}>
+              <input type="checkbox" ?checked=${this.selected}></input>
+              <span class="checkbox-custom"></span>
+            </span>
           </div>
         `
   }
