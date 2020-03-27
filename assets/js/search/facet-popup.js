@@ -128,10 +128,8 @@ class FacetPopupMessage extends Faceter(LitElement) {
       height: 75%;
       width: 50%;
       transform: translate(0,-105%);
-      border: 1px solid black;
-      border-radius: 25px;
       background-color: white;
-      padding: 1em;
+      padding: 0.25em;
       z-index: 99;
     }
     :host([open]) .fas {
@@ -159,6 +157,8 @@ class FacetPopupMessage extends Faceter(LitElement) {
     }
     h4 {
       background-color: var(--highlightBackgroundColor);
+      margin-top: 0;
+      padding: 0;
     }
     .facet-container {
       display: flex;
