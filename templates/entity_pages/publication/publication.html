@@ -3,16 +3,16 @@
 %>
   <div class="entity-container">
     <h2 class="page-title"><%= raw(publication["title"]) %></h2>
-    <div class="entity-heading">
+    <div class="publication-heading">
       <%=if (publication["type"]) { %>
         <%= for (p) in publication["type"] { %>
-        <h3 class="entity-type"><%= SplitCamelCase(p) %></h3>
+        <h3 class="publication-type"><%= SplitCamelCase(p) %></h3>
       <% } %>
         <% } %>
       <button  onclick="window.location.href = '';" class="text-button">Full Text</button>
       <button  onclick="window.location.href = '';" class="cite-button">Export/Cite</button>
       <%= if (publication["publicationDate"]) { %>
-        <vivo-interval class="entity-date" interval-start="<%= FormatGraphqlDate(publication["publicationDate"], "yearMonthFullName") %>"></vivo-interval>
+        <vivo-interval class="publication-date" interval-start="<%= FormatGraphqlDate(publication["publicationDate"], "yearMonthFullName") %>"></vivo-interval>
       <% } %>
     </div>
   <%= if (publication["abstractText"]) { %>

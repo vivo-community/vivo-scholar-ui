@@ -12,6 +12,11 @@ query($id: String!) {
       id
       label
     }
+    contributors{
+     id
+     label
+     role
+   }
     awardedBy {
       id
       label

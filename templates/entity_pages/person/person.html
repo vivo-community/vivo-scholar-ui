@@ -17,7 +17,17 @@
       <h2 class="page-title"><%= person["name"] %></h2>
       <h2 class="page-subtitle"><%= person["preferredTitle"] %></h2>
       <%= if (person["primaryEmail"] || person["phone"] || person["streetAddress"]) { %>
-      <span id="contact-info"><%= person["primaryEmail"] %> | <%= person["phone"] %> | <%= person["streetAddress"] %></p>
+      <span id="contact-info"><p>
+        <%= if (person["primaryEmail"]){ %>
+          <%= person["primaryEmail"] %>&nbsp&nbsp
+        <% } %>
+        <%= if (person["phone"]) { %>
+          <%= person["phone"] %>&nbsp&nbsp
+        <% } %>
+        <%= if (person["streetAddress"]) { %>
+          <%= person["streetAddress"] %>
+        <% } %>
+        </p>
       <% } %>
       <!-- tabs -->
       <vivo-tabs tabindex="0">

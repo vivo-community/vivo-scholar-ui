@@ -157,7 +157,8 @@ vivo-tab-panel h4 {
 
 .entity-container {
   width: 95%;
-  margin: 180px auto 0 auto;
+  margin: auto;
+  margin-top: 180px;
   padding-left: 5%;
 }
 .entity .page-title{
@@ -173,8 +174,8 @@ vivo-tab-panel h4 {
   width: 100%;
   text-align: center;
 }
-.entity-type{
-  grid-area: entityType;
+.publication-type{
+  grid-area: publicationType;
   margin-bottom: 0;
   margin-left: 5%;
 }
@@ -187,20 +188,25 @@ vivo-tab-panel h4 {
   margin-left: 10%;
 }
 
-.entity-date{
-  grid-area: entityDate;
+.publication-date{
+  grid-area: publicationDate;
   margin-top: 0;
   color: black;
   margin-left: 5%;
 }
-.entity-heading{
+.publication-heading{
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   grid-template-rows: 50px;
   grid-template-areas:
-  "entityType entityType entityType entityType . . . . textButton citeButton . ."
-  "entityDate entityDate entityDate entityDate . . . . . . . .";
+  "publicationType publicationType publicationType publicationType . . . . textButton citeButton . ."
+  "publicationDate publicationDate publicationDate publicationDate . . . . . . . .";
 }
+
+.grant-date {
+  color: black;
+}
+
 
 
 /* grid experiment */
