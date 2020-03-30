@@ -113,7 +113,7 @@ class PersonSearch extends Searcher(LitElement) {
     }
 
     renderPerson(person) {
-        let title = person.preferredTitle || person.id;
+        let title = person.preferredTitle || '';
         return html`<div class="person">
             <vivo-person-card-image thumbnail="${person.thumbnail}"></vivo-person-card-image>
             <vivo-person-card>
