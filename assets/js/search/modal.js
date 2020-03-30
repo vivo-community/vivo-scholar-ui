@@ -29,7 +29,7 @@ class ModalBox extends LitElement {
             opacity: 0;
             visibility: hidden;
             transform: scale(1.1);
-            z-index: 2;
+            z-index: 9999;
         }
         .modal-content {
             position: absolute;
@@ -48,9 +48,11 @@ class ModalBox extends LitElement {
             transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
         }
         ::slotted(*) {
+            /*
             display: flex;
             align-items: center;
-            justify-content: center;        
+            justify-content: center;
+            */        
         }
         `
 

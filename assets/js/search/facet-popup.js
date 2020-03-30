@@ -3,6 +3,7 @@ import { LitElement, html, css } from "lit-element";
 // needed add, remove filter functions
 import Faceter from './faceter.js'
 import * as config from './config.js'
+import { classMap } from 'lit-html/directives/class-map';
 
 class FacetPopupMessage extends Faceter(LitElement) {
 
@@ -25,6 +26,8 @@ class FacetPopupMessage extends Faceter(LitElement) {
       this._onSlotChange = this._onSlotChange.bind(this);
       this.open = false;
       this.filters = [];
+
+      this.classes = { "modal": true, "show-modal": false }
 
       this.handleFacetSelected = this.handleFacetSelected.bind(this);
   }
@@ -108,31 +111,17 @@ class FacetPopupMessage extends Faceter(LitElement) {
       search.setPage(0);
       search.setFilters(this.filters);
       search.search();
+    } else {
+      // need to unselect all
+      this.facets.forEach((f) => f.removeAttribute('selected'));
+      this.setFilters([]);
     }
   
   }
 
   static get styles() {
     return css`
-    :host {
-      display: none;
-    }
-    :host([open]) {
-      display: block;
-      box-sizing: border-box;
-      overflow: scroll;
-      position: absolute;
-      font-size: 1.5em;
-      text-align: center;
-      line-height: normal;
-      height: 75%;
-      width: 50%;
-      transform: translate(0,-105%);
-      background-color: white;
-      padding: 0.25em;
-      z-index: 99;
-    }
-    :host([open]) .fas {
+    vivo-modal([shown]) .fas {
       display: inline-block;
       font-style: normal;
       font-variant: normal;
@@ -146,7 +135,7 @@ class FacetPopupMessage extends Faceter(LitElement) {
       font-family: 'Font Awesome 5 Free';
       font-weight: 900;
       content: "\\f00d";
-    }
+    }    
     ::slotted(a) {
       text-decoration: none;
       color: black;
@@ -159,6 +148,8 @@ class FacetPopupMessage extends Faceter(LitElement) {
       background-color: var(--highlightBackgroundColor);
       margin-top: 0;
       padding: 0;
+      padding-right: 4px;
+      text-align: right;
     }
     .facet-container {
       display: flex;
@@ -166,7 +157,7 @@ class FacetPopupMessage extends Faceter(LitElement) {
       flex-wrap: wrap;
       max-height: 200px;
       min-width: 100px;
-      max-weight: 400px;
+      max-width: 400px;
       overflow: auto;
       overflow-y: hidden;
       scrollbar-base-color:#ffeaff
@@ -177,20 +168,25 @@ class FacetPopupMessage extends Faceter(LitElement) {
     #apply:hover {
       cursor: pointer;
     }
+    .actions {
+      text-align: center;
+    }
     `;
   }
 
   render() {
 
     return html`
-    <h4><i class="fas fa-times" @click=${this.cancel}></i></h4>
-    <div class="facet-container">
-      <slot></slot>
-    </div>
-    <div class="actions">
-        <button id="cancel" @click=${this.cancel}>Cancel</button>
-        <button id="apply" @click=${this.apply}>Apply</button>
-    </div>
+    <vivo-modal ?shown="${this.open}">
+        <h4><i class="fas fa-times" @click=${this.cancel}></i></h4>
+        <div class="facet-container">
+          <slot></slot>
+        </div>
+        <div class="actions">
+          <button id="cancel" @click=${this.cancel}>Cancel</button>
+          <button id="apply" @click=${this.apply}>Apply</button>
+        </div>
+    </vivo-modal>
     `;
   }
 }
