@@ -16,9 +16,13 @@ class PersonCard extends LitElement {
         margin-top: 0;
         margin-bottom: .3em
       }
+      ::slotted(a) {
+        color: var(--primaryColor);
+        text-decoration: none;
+      }
       h3 {
         color: var(--textColor);
-        font-weight: normal;
+        font-weight: bold;
         font-size: 1em;
         margin-top: 0;
         margin-bottom: .5em;
