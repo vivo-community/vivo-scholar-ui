@@ -70,10 +70,22 @@ class GrantSearch extends Searcher(LitElement) {
     }
 
     // TODO: is this same thing as 'Funding Source'?
+    renderContributors(grant) {
+        if (grant.contributors) {
+            var s = _.map(grant.contributors, 'label').join(',');
+            return html`
+            <div slot="awardedBy"><b>Contributors</b> ${s}</div>
+            `
+        }
+    }
+
+    // TODO: is this same thing as 'Funding Source'?
     renderAwardedBy(grant) {
         if (grant.awardedBy) {
+            // NOTE: array
+            var s = _.map(grant.awardedBy, 'label').join(',');
             return html`
-            <span slot="awardedBy"> awarded by ${grant.awardedBy.label}</span>
+            <div slot="awardedBy"><b>Awarded by</b> ${s}</div>
             `
         }
     }
@@ -81,12 +93,13 @@ class GrantSearch extends Searcher(LitElement) {
     renderDateInterval(grant) {
         if (grant.dateTimeIntervalStart && grant.dateTimeIntervalEnd) {
             return html`
-          <span slot="date" > Date:
+          <div slot="date">
+            <b>Date</b>
             <vivo-interval class="grant-date" 
               interval-start="${grant.dateTimeIntervalStart}"
               interval-end="${grant.dateTimeIntervalEnd}">
             </vivo-interval>
-          </span>
+          </div>
           `
         }
     }
@@ -99,6 +112,7 @@ class GrantSearch extends Searcher(LitElement) {
           <a slot="title" href="${url}">
           ${grant.title}
           </a>
+          ${this.renderContributors(grant)}
           ${this.renderDateInterval(grant)}
           ${this.renderAwardedBy(grant)}
         </vivo-grant-card>
