@@ -69,6 +69,7 @@ class GrantSearch extends Searcher(LitElement) {
         tab.textContent = `${docCount}`;
     }
 
+    // TODO: is this same thing as 'Funding Source'?
     renderAwardedBy(grant) {
         if (grant.awardedBy) {
             return html`
@@ -80,7 +81,7 @@ class GrantSearch extends Searcher(LitElement) {
     renderDateInterval(grant) {
         if (grant.dateTimeIntervalStart && grant.dateTimeIntervalEnd) {
             return html`
-          <span slot="date" >
+          <span slot="date" > Date:
             <vivo-interval class="grant-date" 
               interval-start="${grant.dateTimeIntervalStart}"
               interval-end="${grant.dateTimeIntervalEnd}">

@@ -22,6 +22,7 @@ class GrantCard extends LitElement {
       }
       :host {
           display: block;
+          margin-bottom: 1em;
       }
       
     `

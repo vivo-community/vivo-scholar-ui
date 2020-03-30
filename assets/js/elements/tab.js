@@ -26,7 +26,7 @@ class Tab extends LitElement {
       :host([vivo-tab-style="secondary"]) {
         color: var(--textColor);
         background-color: transparent;
-        padding: .5rem 1rem;
+        padding: .5rem 3rem;
         opacity: 25%;
       }
       :host([vivo-tab-style="secondary"]:hover) {
