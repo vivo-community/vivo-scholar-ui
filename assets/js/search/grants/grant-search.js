@@ -24,6 +24,7 @@ class GrantSearch extends Searcher(LitElement) {
         vivo-search-sorter {
             flex-grow: 1;
             flex-basis:35%;
+            text-align: right;
         }
         :host {
             display: block;
@@ -48,8 +49,8 @@ class GrantSearch extends Searcher(LitElement) {
 
         this.sortOptions = [
             {label: 'Relevance', field: 'score', direction: "ASC"},
-            {label: 'Title (asc)', field: 'title', 'direction': "ASC"},
-            {label: 'Title (desc)', field: 'title', 'direction': "DESC"}
+            {label: 'Title (Ascending)', field: 'title', 'direction': "ASC"},
+            {label: 'Title (Descending)', field: 'title', 'direction': "DESC"}
         ];
 
         this.setUp();

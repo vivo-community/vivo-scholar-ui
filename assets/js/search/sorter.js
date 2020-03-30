@@ -45,6 +45,16 @@ class SearchSorter extends LitElement {
         return flag;
     }
 
+    static get styles() {
+        // TODO: should make link color etc...
+        return css`
+          select {
+            font-size: .85em;
+            margin-top: 8px;
+          }
+        `
+    }
+
     render() {
         return html`<select @change="${this.handleSortSelected}">
           ${this.options.map(option => 

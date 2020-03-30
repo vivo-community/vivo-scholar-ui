@@ -33,6 +33,7 @@ class PublicationSearch extends Searcher(LitElement) {
         vivo-search-sorter {
           flex-grow: 1;
           flex-basis:35%;
+          text-align: right;
         }
       `
     }
@@ -51,10 +52,10 @@ class PublicationSearch extends Searcher(LitElement) {
 
       this.sortOptions = [
         {label: 'Relevance', field: 'score', direction: "ASC"},
-        {label: 'Title (asc)', field: 'title', 'direction': "ASC"},
-        {label: 'Title (desc)', field: 'title', 'direction': "DESC"},
-        {label: 'Date (asc)', field: 'publicationDate', 'direction': "ASC"},
-        {label: 'Date (desc)', field: 'publicationDate', 'direction': "DESC"}
+        {label: 'Title (Ascending)', field: 'title', 'direction': "ASC"},
+        {label: 'Title (Descending)', field: 'title', 'direction': "DESC"},
+        {label: 'Date (Ascending)', field: 'publicationDate', 'direction': "ASC"},
+        {label: 'Date (Ascending)', field: 'publicationDate', 'direction': "DESC"}
       ];
 
       this.setUp();
