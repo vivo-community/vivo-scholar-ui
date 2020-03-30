@@ -11,7 +11,7 @@ class PersonCard extends LitElement {
       h2 {
         color: var(--primaryColor);
         font-weight: bold;
-        font-size: 1.8em;
+        font-size: 1.2em;
         margin-top: 1em;
         margin-top: 0;
         margin-bottom: .3em
@@ -19,7 +19,7 @@ class PersonCard extends LitElement {
       h3 {
         color: var(--textColor);
         font-weight: normal;
-        font-size: 1.4em;
+        font-size: 1em;
         margin-top: 0;
         margin-bottom: .5em;
       }
