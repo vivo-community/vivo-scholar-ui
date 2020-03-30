@@ -153,18 +153,19 @@ vivo-tab-panel h4 {
   color: var(--primaryColor);
 }
 
-/*publication entity page*/
+/*entity pages*/
 
-.publication-container {
+.entity-container {
   width: 95%;
-  margin: 180px auto 0 auto;
+  margin: auto;
+  margin-top: 180px;
   padding-left: 5%;
 }
-.publication-container .page-title{
+.entity .page-title{
   margin-left: 3%;
   margin-bottom: 1%;
 }
-.publication-container button {
+.entity button {
   background-color: var(--highlightColor);
   color: white;
   border: none;
@@ -173,8 +174,8 @@ vivo-tab-panel h4 {
   width: 100%;
   text-align: center;
 }
-.pub-type{
-  grid-area: pubType;
+.publication-type{
+  grid-area: publicationType;
   margin-bottom: 0;
   margin-left: 5%;
 }
@@ -187,8 +188,8 @@ vivo-tab-panel h4 {
   margin-left: 10%;
 }
 
-.pub-date{
-  grid-area: pubDate;
+.publication-date{
+  grid-area: publicationDate;
   margin-top: 0;
   color: black;
   margin-left: 5%;
@@ -198,9 +199,14 @@ vivo-tab-panel h4 {
   grid-template-columns: repeat(12, 1fr);
   grid-template-rows: 50px;
   grid-template-areas:
-  "pubType pubType pubType pubType . . . . textButton citeButton . ."
-  "pubDate pubDate pubDate pubDate . . . . . . . .";
+  "publicationType publicationType publicationType publicationType . . . . textButton citeButton . ."
+  "publicationDate publicationDate publicationDate publicationDate . . . . . . . .";
 }
+
+.grant-date {
+  color: black;
+}
+
 
 
 /* grid experiment */
