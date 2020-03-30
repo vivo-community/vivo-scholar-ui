@@ -1,27 +1,25 @@
 <%
   let publication = data["document"]
 %>
-  <div class="publication-container">
+  <div class="entity-container">
     <h2 class="page-title"><%= raw(publication["title"]) %></h2>
     <div class="publication-heading">
       <%=if (publication["type"]) { %>
         <%= for (p) in publication["type"] { %>
-        <h3 class="pub-type" id="test"><%= SplitCamelCase(p) %></h3>
+        <h3 class="publication-type"><%= SplitCamelCase(p) %></h3>
       <% } %>
         <% } %>
       <button  onclick="window.location.href = '';" class="text-button">Full Text</button>
       <button  onclick="window.location.href = '';" class="cite-button">Export/Cite</button>
       <%= if (publication["publicationDate"]) { %>
-        <vivo-interval class="pub-date" interval-start="<%= FormatGraphqlDate(publication["publicationDate"], "yearMonthFullName") %>"></vivo-interval>
+        <vivo-interval class="publication-date" interval-start="<%= FormatGraphqlDate(publication["publicationDate"], "yearMonthFullName") %>"></vivo-interval>
       <% } %>
     </div>
   <%= if (publication["abstractText"]) { %>
     <vivo-entity-item>
         <span slot="title">Abstract</span>
         <span slot="content">
-          <vivo-truncated-text slot="abstract">
-
-          </vivo-truncated-text>
+          <vivo-truncated-text slot="abstract"></vivo-truncated-text>
         </span>
     </vivo-entity-item>
   <% } %>
