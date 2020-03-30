@@ -1,4 +1,5 @@
 import { LitElement, html, css } from "lit-element";
+import _ from 'lodash';
 
 import grantQuery from "./grant-query";
 import Searcher from '../searcher.js'
@@ -12,8 +13,6 @@ class GrantSearch extends Searcher(LitElement) {
             implements: { type: String, attribute: true, reflect: true }
         }
     }
-
-
 
     constructor() {
         super();
