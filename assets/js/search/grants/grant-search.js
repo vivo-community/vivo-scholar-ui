@@ -2,6 +2,7 @@ import { LitElement, html, css } from "lit-element";
 
 import grantQuery from "./grant-query";
 import Searcher from '../searcher.js'
+import './grant-card';
 
 class GrantSearch extends Searcher(LitElement) {
 
@@ -12,26 +13,7 @@ class GrantSearch extends Searcher(LitElement) {
         }
     }
 
-    static get styles() {
-        return css`
-        .search-actions {
-            display: flex;
-        }
-        vivo-search-pagination-summary {
-            flex-grow: 2;
-            flex-basis: 65%;
-        }
-        vivo-search-sorter {
-            flex-grow: 1;
-            flex-basis:35%;
-            text-align: right;
-        }
-        :host {
-            display: block;
-        }
-        
-      `
-    }
+
 
     constructor() {
         super();
@@ -42,15 +24,15 @@ class GrantSearch extends Searcher(LitElement) {
         this.defaultSort = [{ property: "title", direction: "ASC" }];
         this.defaultBoosts = [{ field: "title", value: 2 }];
 
-        this.defaultFilters = [{field: "type", value: "Grant"}];
+        this.defaultFilters = [{ field: "type", value: "Grant" }];
 
         this.handleSearchResultsObtained = this.handleSearchResultsObtained.bind(this);
         this.handleSearchStarted = this.handleSearchStarted.bind(this);
 
         this.sortOptions = [
-            {label: 'Relevance', field: 'score', direction: "ASC"},
-            {label: 'Title (Ascending)', field: 'title', 'direction': "ASC"},
-            {label: 'Title (Descending)', field: 'title', 'direction': "DESC"}
+            { label: 'Relevance', field: 'score', direction: "ASC" },
+            { label: 'Title (Ascending)', field: 'title', 'direction': "ASC" },
+            { label: 'Title (Descending)', field: 'title', 'direction': "DESC" }
         ];
 
         this.setUp();
@@ -95,22 +77,55 @@ class GrantSearch extends Searcher(LitElement) {
         }
     }
 
+    renderDateInterval(grant) {
+        if (grant.dateTimeIntervalStart && grant.dateTimeIntervalEnd) {
+            return html`
+          <span slot="date" >
+            <vivo-interval class="grant-date" 
+              interval-start="${grant.dateTimeIntervalStart}"
+              interval-end="${grant.dateTimeIntervalEnd}">
+            </vivo-interval>
+          </span>
+          `
+        }
+    }
+
+
     renderGrant(grant) {
         let url = `/entities/grant/${grant.id}`;
         return html`
-        <vivo-grant url="${url}" start-date="${grant.dateTimeIntervalStart}" title="${grant.title}">
-            <div>${grant.title}</div>
-            <a slot="label" href="${url}">
-              ${grant.title}
-            </a>
-            ${this.renderAwardedBy} 
-            <span slot="date">
-              <vivo-interval interval-start="${grant.dateTimeIntervalStart}" 
-                interval-end="${grant.dateTimeIntervalEnd}">
-              </vivo-interval>
-            </span>
-        </vivo-grant>
+        <vivo-grant-card>
+          <a slot="title" href="${url}">
+          ${grant.title}
+          </a>
+          ${this.renderDateInterval(grant)}
+          ${this.renderAwardedBy(grant)}
+        </vivo-grant-card>
         `;
+    }
+
+    static get styles() {
+        return css`
+        .search-actions {
+            display: flex;
+        }
+        vivo-search-pagination-summary {
+            flex-grow: 2;
+            flex-basis: 65%;
+        }
+        vivo-search-sorter {
+            flex-grow: 1;
+            flex-basis:35%;
+            text-align: right;
+        }
+        :host {
+            display: block;
+        }
+        .title {
+            font-size: 1.2em;
+        }
+        
+      `
     }
 
     render() {
@@ -134,8 +149,8 @@ class GrantSearch extends Searcher(LitElement) {
         var resultsDisplay = html`<div class="grants">
           ${_.map(results, function (i) {
             return _self.renderGrant(i);
-           })
-        }
+        })
+            }
         </div>`;
 
         let pagination = html``;
@@ -151,7 +166,7 @@ class GrantSearch extends Searcher(LitElement) {
         let pagingSummary = html``;
 
         if (this.data) {
-          pagingSummary = html`<vivo-search-pagination-summary
+            pagingSummary = html`<vivo-search-pagination-summary
             number="${this.data.relationships.page.number}"
             size="${this.data.relationships.page.size}"
             totalElements="${this.data.relationships.page.totalElements}"
