@@ -146,7 +146,7 @@ class GrantSearch extends Searcher(LitElement) {
             color: #000000;
             color: var(--primaryColor);
           }
-        #grant-search-results {
+        .grants {
             padding: 1em;
         }
       `
