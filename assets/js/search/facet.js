@@ -1,5 +1,5 @@
 import { LitElement, html, css } from "lit-element";
-import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
+
 class SearchFacet extends LitElement {
 
   // NOTE: these are properties for display (like count, value)
@@ -128,6 +128,8 @@ class SearchFacet extends LitElement {
   // https://stackoverflow.com/questions/55962214/litelement-not-updating-checkbox-in-list
   // https://github.com/Polymer/lit-html/issues/732  
   render() {
+    // NOTE: there is an input tag (that is hidden) - and only used to render check
+    // (not interactive like normal checkbox)
     return html`
           <div value=${this.value} 
             selected="${this.selected}"
