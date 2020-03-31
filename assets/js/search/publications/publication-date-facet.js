@@ -15,6 +15,7 @@ class PublicationDateFacet extends LitElement {
     }
   }
   
+  // NOTE: not making this look like other facets - to demonstrate
   static get styles() {
     return css`
       :host {

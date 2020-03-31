@@ -1,5 +1,4 @@
 import { LitElement, html, css } from "lit-element";
-import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 
 import peopleQuery from "./person-query";
 import './person-card';
@@ -108,7 +107,8 @@ class PersonSearch extends Searcher(LitElement) {
 
     renderOverview(person) {
         if (person.overview) {
-            return html`<vivo-truncated-text>${unsafeHTML(person.overview)}</vivo-truncated-text>`;
+            // more likely to show sanitized html here (eventually)
+            return html`<vivo-truncated-text>${person.overview}</vivo-truncated-text>`;
         }
     }
 
