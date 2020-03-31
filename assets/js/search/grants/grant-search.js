@@ -90,17 +90,21 @@ class GrantSearch extends Searcher(LitElement) {
     }
 
     renderDateInterval(grant) {
-        if (grant.dateTimeIntervalStart && grant.dateTimeIntervalEnd) {
-            return html`
+        if (!grant.dateTimeIntervalStart || !grant.dateTimeIntervalEnd) {
+            return html``
+        }
+        // NOTE: just showing years
+        let start = new Date(grant.dateTimeIntervalStart).getFullYear();
+        let end = new Date(grant.dateTimeIntervalEnd).getFullYear();
+        return html`
           <div slot="date">
             <b>Date</b>
             <vivo-interval class="grant-date" 
-              interval-start="${grant.dateTimeIntervalStart}"
-              interval-end="${grant.dateTimeIntervalEnd}">
+              interval-start="${start}"
+              interval-end="${end}">
             </vivo-interval>
           </div>
-          `
-        }
+        `
     }
 
 
