@@ -1,6 +1,6 @@
 import { LitElement, html, css } from "lit-element";
 
-class PersonCard extends LitElement {
+class GrantCard extends LitElement {
 
     constructor() {
       super();
@@ -20,15 +20,9 @@ class PersonCard extends LitElement {
         color: var(--primaryColor);
         text-decoration: none;
       }
-      h3 {
-        color: var(--textColor);
-        font-weight: bold;
-        font-size: 1em;
-        margin-top: 0;
-        margin-bottom: .5em;
-      }
       :host {
           display: block;
+          margin-bottom: 1em;
       }
       
     `
@@ -37,15 +31,16 @@ class PersonCard extends LitElement {
     render() {
       return html`
           <h2>          
-            <slot name="name" />
-          </h2>
-          <h3>
             <slot name="title" />
-          </h3>
+          </h2>
+          <slot name="contributors"></slot>
+          <slot name="awardedBy"></slot>
+          <slot name="admin"></slot>
+          <slot name="date"></slot>
           <slot />
           `
     }
   }
   
-  customElements.define('vivo-person-card', PersonCard);
+  customElements.define('vivo-grant-card', GrantCard);
   

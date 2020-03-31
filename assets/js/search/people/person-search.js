@@ -33,9 +33,11 @@ class PersonSearch extends Searcher(LitElement) {
             flex-grow: 2;
             flex-basis: 65%;
         }
+        /* TODO: these same values set in each search */
         vivo-search-sorter {
             flex-grow: 1;
             flex-basis:35%;
+            text-align: right;
         }
         vivo-person-card-image {
             flex-shrink: 1;
@@ -68,8 +70,8 @@ class PersonSearch extends Searcher(LitElement) {
 
         this.sortOptions = [
             {label: 'Relevance', field: 'score', direction: "ASC"},
-            {label: 'Name (asc)', field: 'name', 'direction': "ASC"},
-            {label: 'Name (desc)', field: 'name', 'direction': "DESC"}
+            {label: 'Last Name (Ascending)', field: 'name', 'direction': "ASC"},
+            {label: 'Last Name (Descending)', field: 'name', 'direction': "DESC"}
         ];
 
         this.setUp();
@@ -111,7 +113,7 @@ class PersonSearch extends Searcher(LitElement) {
     }
 
     renderPerson(person) {
-        let title = person.preferredTitle || person.id;
+        let title = person.preferredTitle || '';
         return html`<div class="person">
             <vivo-person-card-image thumbnail="${person.thumbnail}"></vivo-person-card-image>
             <vivo-person-card>

@@ -139,9 +139,6 @@ class FacetPopupMessage extends Faceter(LitElement) {
       box-sizing: border-box;
       overflow: scroll;
       position: absolute;
-      font-size: 1.5em;
-      text-align: center;
-      line-height: normal;
       height: 75%;
       width: 50%;
       transform: translate(0,-105%);

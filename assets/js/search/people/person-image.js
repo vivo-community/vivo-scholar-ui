@@ -7,6 +7,15 @@ class PersonImage extends LitElement {
       }
     }
   
+    static get styles() {
+      return css`
+      .img-thumbnail {
+        background:transparent;
+        padding: 3px;
+        border: 3px solid var(--mediumNeutralColor);
+      }
+    `
+  }
     render() {
       // TODO: how to get 'assetPath' in here?
       var url = `${defaultProfileImage}`;
@@ -16,7 +25,7 @@ class PersonImage extends LitElement {
         url = `${baseImageUrl}${this.thumbnail}`;
       }
       return html`
-          <img className="img-thumbnail" width="130" src="${url}" />
+          <img class="img-thumbnail" width="130" src="${url}" />
           `
     }
   }

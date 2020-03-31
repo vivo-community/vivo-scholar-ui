@@ -1,7 +1,9 @@
 import { LitElement, html, css } from "lit-element";
+import _ from 'lodash';
 
 import grantQuery from "./grant-query";
 import Searcher from '../searcher.js'
+import './grant-card';
 
 class GrantSearch extends Searcher(LitElement) {
 
@@ -10,26 +12,6 @@ class GrantSearch extends Searcher(LitElement) {
             graphql: { type: Object },
             implements: { type: String, attribute: true, reflect: true }
         }
-    }
-
-    static get styles() {
-        return css`
-        .search-actions {
-            display: flex;
-        }
-        vivo-search-pagination-summary {
-            flex-grow: 2;
-            flex-basis: 65%;
-        }
-        vivo-search-sorter {
-            flex-grow: 1;
-            flex-basis:35%;
-        }
-        :host {
-            display: block;
-        }
-        
-      `
     }
 
     constructor() {
@@ -41,15 +23,15 @@ class GrantSearch extends Searcher(LitElement) {
         this.defaultSort = [{ property: "title", direction: "ASC" }];
         this.defaultBoosts = [{ field: "title", value: 2 }];
 
-        this.defaultFilters = [{field: "type", value: "Grant"}];
+        this.defaultFilters = [{ field: "type", value: "Grant" }];
 
         this.handleSearchResultsObtained = this.handleSearchResultsObtained.bind(this);
         this.handleSearchStarted = this.handleSearchStarted.bind(this);
 
         this.sortOptions = [
-            {label: 'Relevance', field: 'score', direction: "ASC"},
-            {label: 'Title (asc)', field: 'title', 'direction': "ASC"},
-            {label: 'Title (desc)', field: 'title', 'direction': "DESC"}
+            { label: 'Relevance', field: 'score', direction: "ASC" },
+            { label: 'Title (Ascending)', field: 'title', 'direction': "ASC" },
+            { label: 'Title (Descending)', field: 'title', 'direction': "DESC" }
         ];
 
         this.setUp();
@@ -86,30 +68,82 @@ class GrantSearch extends Searcher(LitElement) {
         tab.textContent = `${docCount}`;
     }
 
-    renderAwardedBy(grant) {
-        if (grant.awardedBy) {
+    // TODO: is this same thing as 'Funding Source'?
+    renderContributors(grant) {
+        if (grant.contributors) {
+            var s = _.map(grant.contributors, 'label').join(',');
             return html`
-            <span slot="awardedBy"> awarded by ${grant.awardedBy.label}</span>
+            <div slot="awardedBy"><b>Contributors</b> ${s}</div>
             `
         }
     }
 
+    // TODO: is this same thing as 'Funding Source'?
+    renderAwardedBy(grant) {
+        if (grant.awardedBy) {
+            // NOTE: array
+            var s = _.map(grant.awardedBy, 'label').join(',');
+            return html`
+            <div slot="awardedBy"><b>Awarded by</b> ${s}</div>
+            `
+        }
+    }
+
+    renderDateInterval(grant) {
+        if (!grant.dateTimeIntervalStart || !grant.dateTimeIntervalEnd) {
+            return html``
+        }
+        // NOTE: just showing years
+        let start = new Date(grant.dateTimeIntervalStart).getFullYear();
+        let end = new Date(grant.dateTimeIntervalEnd).getFullYear();
+        return html`
+          <div slot="date">
+            <b>Date</b>
+            <vivo-interval class="grant-date" 
+              interval-start="${start}"
+              interval-end="${end}">
+            </vivo-interval>
+          </div>
+        `
+    }
+
+
     renderGrant(grant) {
         let url = `/entities/grant/${grant.id}`;
         return html`
-        <vivo-grant url="${url}" start-date="${grant.dateTimeIntervalStart}" title="${grant.title}">
-            <div>${grant.title}</div>
-            <a slot="label" href="${url}">
-              ${grant.title}
-            </a>
-            ${this.renderAwardedBy} 
-            <span slot="date">
-              <vivo-interval interval-start="${grant.dateTimeIntervalStart}" 
-                interval-end="${grant.dateTimeIntervalEnd}">
-              </vivo-interval>
-            </span>
-        </vivo-grant>
+        <vivo-grant-card>
+          <a slot="title" href="${url}">
+          ${grant.title}
+          </a>
+          ${this.renderContributors(grant)}
+          ${this.renderDateInterval(grant)}
+          ${this.renderAwardedBy(grant)}
+        </vivo-grant-card>
         `;
+    }
+
+    static get styles() {
+        return css`
+        .search-actions {
+            display: flex;
+        }
+        vivo-search-pagination-summary {
+            flex-grow: 2;
+            flex-basis: 65%;
+        }
+        vivo-search-sorter {
+            flex-grow: 1;
+            flex-basis:35%;
+            text-align: right;
+        }
+        :host {
+            display: block;
+        }
+        .title {
+            font-size: 1.2em;
+        }
+        
+      `
     }
 
     render() {
@@ -133,8 +167,8 @@ class GrantSearch extends Searcher(LitElement) {
         var resultsDisplay = html`<div class="grants">
           ${_.map(results, function (i) {
             return _self.renderGrant(i);
-           })
-        }
+        })
+            }
         </div>`;
 
         let pagination = html``;
@@ -150,7 +184,7 @@ class GrantSearch extends Searcher(LitElement) {
         let pagingSummary = html``;
 
         if (this.data) {
-          pagingSummary = html`<vivo-search-pagination-summary
+            pagingSummary = html`<vivo-search-pagination-summary
             number="${this.data.relationships.page.number}"
             size="${this.data.relationships.page.size}"
             totalElements="${this.data.relationships.page.totalElements}"
@@ -172,12 +206,12 @@ class GrantSearch extends Searcher(LitElement) {
 
         return html`
           <div id="grant-search-results">
-          <div class="search-actions">
-          ${pagingSummary}
-          ${sorter}
-          </div>
-          ${resultsDisplay}
-          ${pagination}
+            <div class="search-actions">
+            ${pagingSummary}
+            ${sorter}
+            </div>
+            ${resultsDisplay}
+            ${pagination}
           </div>`
     }
 
