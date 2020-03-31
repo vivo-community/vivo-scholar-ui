@@ -10,9 +10,7 @@ class PersonImage extends LitElement {
     static get styles() {
       return css`
       .img-thumbnail {
-        background:transparent;
-        padding: 3px;
-        border: 3px solid var(--mediumNeutralColor);
+        border: 3px solid #F3F2F1;
       }
     `
   }
