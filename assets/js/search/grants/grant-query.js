@@ -21,6 +21,19 @@ const grantQuery = gql`
         title
         dateTimeIntervalStart
         dateTimeIntervalEnd
+        principalInvestigators {
+          id
+          label
+        }
+        coPrincipalInvestigators {
+          id
+          label
+        }
+        contributors{
+           id
+           label
+           role
+        }
         administeredBy {
           id
           label
