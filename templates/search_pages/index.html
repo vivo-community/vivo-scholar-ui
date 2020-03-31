@@ -16,6 +16,9 @@
   vivo-sidebar {
     margin: 0;
   }
+  vivo-search-sidebar-item {
+    padding-bottom: 4px;
+  }
 </style>
 <vivo-search-navigation></vivo-search-navigation>
 
@@ -86,9 +89,14 @@
           <vivo-facet-group slot="content" key="relationships" search="grant-search">
             <h3>Funding Filters</h3>
             <!-- TODO: maybe use 'key' from parent facet-group tag -->
-            <vivo-search-facets key="relationships" field="administeredBy" tag="ab">
-              <h4>Administered By</h4>
+            <vivo-search-facets key="relationships" field="contributors" tag="contributors">
+              <h4>Contributors</h4>
             </vivo-search-facets>
+
+            <vivo-search-facets key="relationships" field="awardedBy" tag="awardedBy">
+              <h4>Funding Source</h4>
+            </vivo-search-facets>
+
           </vivo-facet-group>
         </vivo-search-sidebar-item>
 
