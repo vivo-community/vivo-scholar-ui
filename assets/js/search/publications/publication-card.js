@@ -10,8 +10,23 @@ class PublicationCard extends LitElement {
 
     constructor() {
       super();
+      this.handlePubClicked = this.handlePubClicked.bind(this);
+    }
+
+    firstUpdated() {
+        document.addEventListener('publicationClicked', this.handlePubClicked);
+    }
+
+    disconnectedCallback() {
+        super.disconnectedCallback();
+        document.removeEventListener('publicationClicked', this.handlePubClicked);
     }
   
+    handlePubClicked(e) {
+        let pubUrl = e.detail.getAttribute("publication-url");
+        window.location = pubUrl;
+    }
+
     renderPublisher(publisher) {
         if (publisher) {
             return html`
@@ -23,7 +38,7 @@ class PublicationCard extends LitElement {
     renderAbstract(abstract) {
         if (abstract) {
             return html`
-            <vivo-truncated-text slot="abstract">${abstract}</vivo-truncated-text>
+            <div slot="abstract">${abstract}</div>
             `
         }
     }
@@ -60,6 +75,13 @@ class PublicationCard extends LitElement {
           ${this.renderAbstract(p.abstractText)}
         </vivo-publication>
         `;
+    }
+
+    static get styles() {
+        return css`
+        div[slot=title]:hover {
+            cursor: pointer;
+        }`
     }
 
     render() {
