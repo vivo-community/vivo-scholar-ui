@@ -47,13 +47,6 @@ class ModalBox extends LitElement {
             transform: scale(1.0);
             transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
         }
-        ::slotted(*) {
-            /*
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            */        
-        }
         `
 
     }
