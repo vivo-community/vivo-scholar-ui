@@ -73,7 +73,7 @@ class GrantSearch extends Searcher(LitElement) {
         if (grant.contributors) {
             var s = _.map(grant.contributors, 'label').join(',');
             return html`
-            <div slot="awardedBy"><b>Contributors</b> ${s}</div>
+            <div slot="contributors"><b>Contributors:</b> ${s}</div>
             `
         }
     }
@@ -84,7 +84,7 @@ class GrantSearch extends Searcher(LitElement) {
             // NOTE: array
             var s = _.map(grant.awardedBy, 'label').join(',');
             return html`
-            <div slot="awardedBy"><b>Awarded by</b> ${s}</div>
+            <div slot="awardedBy"><b>Funding Source:</b> ${s}</div>
             `
         }
     }
@@ -98,7 +98,7 @@ class GrantSearch extends Searcher(LitElement) {
         let end = new Date(grant.dateTimeIntervalEnd).getFullYear();
         return html`
           <div slot="date">
-            <b>Date</b>
+            <b>Date:</b>
             <vivo-interval class="grant-date" 
               interval-start="${start}"
               interval-end="${end}">
@@ -142,6 +142,10 @@ class GrantSearch extends Searcher(LitElement) {
         .title {
             font-size: 1.2em;
         }
+        vivo-interval {
+            color: #000000;
+            color: var(--primaryColor);
+          }
         
       `
     }

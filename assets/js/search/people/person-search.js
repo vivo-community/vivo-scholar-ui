@@ -50,7 +50,32 @@ class PersonSearch extends Searcher(LitElement) {
         }
         :host {
             display: block;
+            --lh: 1.2rem;
+            line-height: var(--lh);
         }
+        /* https://css-tricks.com/line-clampin/ */
+        .truncate-overflow {
+            --max-lines: 2;
+            position: relative;
+            max-height: calc(var(--lh) * var(--max-lines));
+            overflow: hidden;
+            padding-right: 1rem; /* space for ellipsis */
+          }
+          .truncate-overflow::before {
+            position: absolute;
+            content: "...";
+            inset-block-end: 0; /* "bottom" */
+            inset-inline-end: 0; /* "right" */
+          }
+          .truncate-overflow::after {
+            content: "";
+            position: absolute;
+            inset-inline-end: 0; /* "right" */
+            width: 1rem;
+            height: 1rem;
+            background: white;
+          }
+
         
       `
     }
@@ -105,10 +130,16 @@ class PersonSearch extends Searcher(LitElement) {
         tab.textContent = `${docCount}`;
     }
 
+    //https://stackoverflow.com/questions/822452/strip-html-from-text-javascript/47140708#47140708
+    strip(html){
+        var doc = new DOMParser().parseFromString(html, 'text/html');
+        return doc.body.textContent || "";
+    }
+
     renderOverview(person) {
         if (person.overview) {
             // more likely to show sanitized html here (eventually)
-            return html`<vivo-truncated-text>${person.overview}</vivo-truncated-text>`;
+            return html`<div class="truncate-overflow">${this.strip(person.overview)}</div>`;
         }
     }
 
@@ -121,6 +152,7 @@ class PersonSearch extends Searcher(LitElement) {
                 <a slot="name" href="/entities/person/${person.id}">
                   ${person.name}
                 </a>
+                ${this.renderOverview(person)}
             </vivo-person-card>
         </div>
         `;
