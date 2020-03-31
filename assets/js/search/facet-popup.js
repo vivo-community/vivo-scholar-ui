@@ -143,6 +143,7 @@ class FacetPopupMessage extends Faceter(LitElement) {
     }
     ::slotted(vivo-search-facet) {
       display: block;
+      width: 200px;
     }
     h4 {
       background-color: var(--highlightBackgroundColor);
@@ -161,6 +162,20 @@ class FacetPopupMessage extends Faceter(LitElement) {
       overflow: auto;
       overflow-y: hidden;
       scrollbar-base-color:#ffeaff
+    }
+    #cancel {
+      display: inline-block;
+      background-color: var(--mediumNeutralColor);
+      color: white;
+      padding: 4px;
+      font-size: 1.2em;
+    }
+    #apply {
+      display: inline-block;
+      background-color: var(--linkColor);
+      color: white;
+      padding: 4px;
+      font-size: 1.2em;
     }
     #cancel:hover {
       cursor: pointer;
@@ -183,8 +198,8 @@ class FacetPopupMessage extends Faceter(LitElement) {
           <slot></slot>
         </div>
         <div class="actions">
-          <button id="cancel" @click=${this.cancel}>Cancel</button>
-          <button id="apply" @click=${this.apply}>Apply</button>
+          <a id="cancel" @click=${this.cancel}>Cancel</a>
+          <a id="apply" @click=${this.apply}>Apply</a>
         </div>
     </vivo-modal>
     `;
