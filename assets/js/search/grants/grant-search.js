@@ -206,12 +206,12 @@ class GrantSearch extends Searcher(LitElement) {
 
         return html`
           <div id="grant-search-results">
-          <div class="search-actions">
-          ${pagingSummary}
-          ${sorter}
-          </div>
-          ${resultsDisplay}
-          ${pagination}
+            <div class="search-actions">
+            ${pagingSummary}
+            ${sorter}
+            </div>
+            ${resultsDisplay}
+            ${pagination}
           </div>`
     }
 
