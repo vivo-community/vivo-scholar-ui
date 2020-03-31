@@ -6,7 +6,8 @@ const grantQuery = gql`
     relationships(
       boosts: $boosts,
       facets: [
-        { field: "administeredBy", exclusionTag: "ab" },
+        { field: "awardedBy", exclusionTag: "awardedBy" },
+        { field: "contributors", exclusionTag: "contributors" }
       ]
       filters: $filters,
       paging: {

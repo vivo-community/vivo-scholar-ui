@@ -23,6 +23,9 @@ class PublicationDateFacets extends Faceter(LitElement) {
       vivo-publication-date-facet[selected=""] {
         font-weight: bold;
       }
+      ::slotted(h4) {
+        text-align: right;
+      }
     `
   }
 
