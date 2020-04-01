@@ -183,12 +183,11 @@ class SearchNavigation extends LitElement {
 
       this.findCorrectFacetsToDisplay();
     }
-  
-    // NOTE: different than 'searchSubmitted' because it's the graphql
-    // query (could be faceting, paging, sorting etc... not just new search)
+
+    // TODO: this might show 'waiting' modal box for fraction of second
     handleSearchStarted(e) {
       let modal = document.querySelector('#search-waiting');
-      modal.shown = true; 
+      modal.shown = true;  
     }
 
     handleSearchResultsObtained(e) {

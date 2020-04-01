@@ -48,7 +48,6 @@ class ModalBox extends LitElement {
             transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
         }
         `
-
     }
 
     render() {
