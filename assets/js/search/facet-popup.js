@@ -135,7 +135,7 @@ class FacetPopupMessage extends Faceter(LitElement) {
       font-family: 'Font Awesome 5 Free';
       font-weight: 900;
       content: "\\f00d";
-    }    
+    }
     ::slotted(a) {
       text-decoration: none;
       color: black;
