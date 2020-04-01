@@ -23,6 +23,13 @@ class EntityItem extends LitElement {
         font-weight: bold;
       }
 
+      @media screen and (max-width: 520px) {
+        
+        slot[name="title"] {
+          margin-right: 10%;
+        }
+      }
+
     `
   }
 

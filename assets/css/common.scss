@@ -161,11 +161,11 @@ vivo-tab-panel h4 {
   margin-top: 180px;
   padding-left: 5%;
 }
-.entity .page-title{
+.publication-heading .page-title{
   margin-left: 3%;
   margin-bottom: 1%;
 }
-.entity button {
+.publication-heading button {
   background-color: var(--highlightColor);
   color: white;
   border: none;
@@ -206,8 +206,6 @@ vivo-tab-panel h4 {
 .grant-date {
   color: black;
 }
-
-
 
 /* grid experiment */
 .container {
@@ -267,6 +265,7 @@ vivo-tab-panel h4 {
   #main {
     width: 100%
   }
+  //person entity page
   .person-container {
     display: grid;
     grid-template-columns: 1fr;
@@ -327,13 +326,48 @@ vivo-tab-panel h4 {
   .section-title {
     font-size: 1em;
   }
+
+  //publication and grant entity pages
+  .publication-heading{
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: 50px;
+    grid-template-areas:
+    "publicationType publicationType publicationType textButton citeButton ."
+    "publicationDate publicationDate publicationDate . . .";
+    margin-bottom: 3%;
+  }
+  .publication-type{
+    margin-left: 0;
+  }
+  .publication-date{
+    margin-left: 0;
+  }
+
   // site search styling
   .site-search {
     width: 85%;
   }
+
 }
 
 @media (max-width: 500px) {
+   // publication entity page
+   .publication-heading{
+     display: grid;
+     grid-template-columns: repeat(2, 1fr);
+     grid-template-rows: 50px;
+     grid-template-areas:
+     "textButton citeButton"
+     "publicationType publicationType"
+     "publicationDate publicationDate";
+     margin-bottom: 3%;
+   }
+   .publication-heading button{
+     margin-top: 5%;
+     width: 80%;
+   }
+
     // site search styling
   .site-search {
     width: 90%;

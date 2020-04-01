@@ -76,7 +76,7 @@ class Tabs extends LitElement {
         panels.forEach((t) => t.removeAttribute('selected'));
         panels[index].setAttribute('selected', 'selected');
       }
-    } 
+    }
     // NOTE: this was within else statement, but wasn't sure if that
     // was right (to not fire when screenWidth <= 720)?
     if (fireEvent) {
