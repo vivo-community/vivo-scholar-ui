@@ -21,6 +21,7 @@ class SearchNavigation extends LitElement {
       this.handlePageSelected = this.handlePageSelected.bind(this);
       this.handleSortSelected = this.handleSortSelected.bind(this);
       this.handleRemoveFilters = this.handleRemoveFilters.bind(this);
+      this.handleSearchSearchStarted = this.handleSearchStarted.bind(this); 
       this.handleSearchResultsObtained = this.handleSearchResultsObtained.bind(this);
       this.handleSearchPopState = this.handleSearchPopState.bind(this); 
     }
@@ -33,7 +34,9 @@ class SearchNavigation extends LitElement {
       document.addEventListener('pageSelected', this.handlePageSelected);
       document.addEventListener('sortSelected', this.handleSortSelected);
       document.addEventListener('removeFilters', this.handleRemoveFilters);
+      document.addEventListener('searchStarted', this.handleSearchStarted);
       document.addEventListener('searchResultsObtained', this.handleSearchResultsObtained);
+      
       window.addEventListener('popstate', this.handleSearchPopState);
 
       // make search-box show text of search sent in (from home page)
@@ -76,6 +79,7 @@ class SearchNavigation extends LitElement {
       document.removeEventListener('pageSelected', this.handlePageSelected);
       document.removeEventListener('sortSelected', this.handleSortSelected);
       document.removeEventListener('removeFilters', this.handleRemoveFilters);
+      document.removeEventListener('searchStarted', this.handleSearchStarted); 
       document.removeEventListener('searchResultsObtained', this.handleSearchResultsObtained); 
       window.removeEventListener('popstate', this.handleSearchPopState); 
     }
@@ -179,12 +183,11 @@ class SearchNavigation extends LitElement {
 
       this.findCorrectFacetsToDisplay();
     }
-  
-    // NOTE: different than 'searchSubmitted' because it's the graphql
-    // query (could be faceting, paging, sorting etc... not just new search)
+
+    // TODO: this might show 'waiting' modal box for fraction of second
     handleSearchStarted(e) {
       let modal = document.querySelector('#search-waiting');
-      modal.shown = true; 
+      modal.shown = true;  
     }
 
     handleSearchResultsObtained(e) {

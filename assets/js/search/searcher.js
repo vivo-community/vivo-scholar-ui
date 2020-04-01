@@ -124,7 +124,7 @@ let Searcher = (superclass) => class extends superclass {
     }
 
     delay(sec, msg) {
-      const milliseconds = 1000 * sec; 
+      const milliseconds = 2000 * sec; 
       return new Promise(resolve => {
         setTimeout(() => {
           resolve(msg);

@@ -3,6 +3,7 @@ import { LitElement, html, css } from "lit-element";
 // needed add, remove filter functions
 import Faceter from './faceter.js'
 import * as config from './config.js'
+import { classMap } from 'lit-html/directives/class-map';
 
 class FacetPopupMessage extends Faceter(LitElement) {
 
@@ -23,11 +24,10 @@ class FacetPopupMessage extends Faceter(LitElement) {
       super();
       this.handleKeydown = this.handleKeydown.bind(this);
       this._onSlotChange = this._onSlotChange.bind(this);
-      this.pageNumber = 0;
-      this.pageBy = config.FACET_PAGE_SIZE;
-      this.pageGrouping = config.FACET_PAGE_GROUPING;
-      this.open =false;
+      this.open = false;
       this.filters = [];
+
+      this.classes = { "modal": true, "show-modal": false }
 
       this.handleFacetSelected = this.handleFacetSelected.bind(this);
   }
@@ -66,6 +66,7 @@ class FacetPopupMessage extends Faceter(LitElement) {
   }
 
   _onSlotChange() {
+    // divide into columns?
     this.facets = Array.from(this.querySelectorAll('vivo-search-facet'));
   }
 
@@ -74,24 +75,6 @@ class FacetPopupMessage extends Faceter(LitElement) {
     if (e.keyCode === 27) {
         this.closeDown();
     }
-  }
-
-  showHideFacet(index) {
-    let start = (this.pageNumber * this.pageBy);
-    let end = (this.pageNumber * this.pageBy) + this.pageBy;
-    let inRange = (index >= start && index < end);
-    return !inRange;
-  }
-
-  showHideFacets() {
-    this.facets.forEach((facet, index) => {
-      let hide = this.showHideFacet(index);
-      if (hide) {
-          facet.className = "hidden";
-      } else {
-          facet.className = "shown";
-      }
-    });
   }
 
   handleFacetPageSelected(e) {
@@ -103,52 +86,42 @@ class FacetPopupMessage extends Faceter(LitElement) {
     this.pageNumber = page;
   }
 
-  
   openUp() {
     this.open = true;
   }
 
-  closeDown() {
-    this.open = false;
-    // this should get parent vivo-facet-group
-    let group = this.getRootNode().host.parentNode;
-    let search = document.querySelector(`[id="${group.search}"]`);
-
-    // need to set filters on group
-    group.setFilters(this.filters);
-
-    // then run search
-    search.setPage(0);
-    search.setFilters(this.filters);
-    search.search();
-
+  apply() {
+    this.closeDown(true);
   }
 
-  togglePopup(){
-    this.closeDown();
+  cancel() {
+    this.closeDown(false);
+  }
+
+  closeDown(applyFilters=true) {
+    this.open = false;
+
+    if (applyFilters) {
+      // this should get parent vivo-facet-group
+      let group = this.getRootNode().host.parentNode;
+      let search = document.querySelector(`[id="${group.search}"]`);
+      // need to set filters on group
+      group.setFilters(this.filters);
+      // then run search
+      search.setPage(0);
+      search.setFilters(this.filters);
+      search.search();
+    } else {
+      // need to unselect all
+      this.facets.forEach((f) => f.removeAttribute('selected'));
+      this.setFilters([]);
+    }
+  
   }
 
   static get styles() {
     return css`
-    
-    :host {
-      display: none;
-    }
-    :host([open]) {
-      display: block;
-      box-sizing: border-box;
-      overflow: scroll;
-      position: absolute;
-      height: 75%;
-      width: 50%;
-      transform: translate(0,-105%);
-      border: 1px solid black;
-      border-radius: 25px;
-      background-color: white;
-      padding: 1em;
-      z-index: 99;
-    }
-    :host([open]) .fas {
+    vivo-modal([shown]) .fas {
       display: inline-block;
       font-style: normal;
       font-variant: normal;
@@ -170,35 +143,65 @@ class FacetPopupMessage extends Faceter(LitElement) {
     }
     ::slotted(vivo-search-facet) {
       display: block;
+      width: 200px;
     }
-    ::slotted(vivo-search-facet.hidden) {
-      display: none;
+    h4 {
+      background-color: var(--highlightBackgroundColor);
+      margin-top: 0;
+      padding: 0;
+      padding-right: 4px;
+      text-align: right;
     }
-    ::slotted(vivo-search-facet.shown) {
-      display: block;
+    .facet-container {
+      display: flex;
+      flex-direction: column;
+      flex-wrap: wrap;
+      max-height: 200px;
+      min-width: 100px;
+      max-width: 400px;
+      overflow: auto;
+      overflow-y: hidden;
+      scrollbar-base-color:#ffeaff
     }
-    
+    #cancel {
+      display: inline-block;
+      background-color: var(--mediumNeutralColor);
+      color: white;
+      padding: 4px;
+      font-size: 1.2em;
+    }
+    #apply {
+      display: inline-block;
+      background-color: var(--linkColor);
+      color: white;
+      padding: 4px;
+      font-size: 1.2em;
+    }
+    #cancel:hover {
+      cursor: pointer;
+    }
+    #apply:hover {
+      cursor: pointer;
+    }
+    .actions {
+      text-align: center;
+    }
     `;
   }
 
   render() {
-    let pagination = html``;
-
-    if (this.facets) {
-      this.showHideFacets();
-      pagination = html`<vivo-search-pagination 
-            number="${this.pageNumber}"
-            size="${this.pageBy}"
-            totalElements="${this.facets.length}"
-            totalPages="${this.facets.length/this.pageBy}"
-            pageGrouping=${this.pageGrouping}
-        />`
-    }
 
     return html`
-    <i class="fas fa-times" @click=${this.togglePopup}></i>
-    <slot></slot>
-    ${pagination}
+    <vivo-modal ?shown="${this.open}">
+        <h4><i class="fas fa-times" @click=${this.cancel}></i></h4>
+        <div class="facet-container">
+          <slot></slot>
+        </div>
+        <div class="actions">
+          <a id="cancel" @click=${this.cancel}>Cancel</a>
+          <a id="apply" @click=${this.apply}>Apply</a>
+        </div>
+    </vivo-modal>
     `;
   }
 }
