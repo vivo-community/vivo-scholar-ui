@@ -37,9 +37,6 @@ class PublicationSearch extends Searcher(LitElement) {
           flex-basis:35%;
           text-align: right;
         }
-        vivo-publication([slot=title]) {
-          margin-bottom: 0;
-        }
       `
     }
   
