@@ -67,8 +67,6 @@ class Tabs extends LitElement {
     if (screenWidth <= 720 && tab.hasAttribute('selected')) {
       tab.removeAttribute('selected');
       panels[index].removeAttribute('selected');
-      // added in case event *is* supposed to be skipped
-      fireEvent = false;
     } else {
       if (tab) {
         tabs.forEach((t) => t.removeAttribute('selected'));
@@ -77,8 +75,7 @@ class Tabs extends LitElement {
         panels[index].setAttribute('selected', 'selected');
       }
     }
-    // NOTE: this was within else statement, but wasn't sure if that
-    // was right (to not fire when screenWidth <= 720)?
+
     if (fireEvent) {
       this.dispatchEvent(new CustomEvent('tabSelected', {
         detail: tab,

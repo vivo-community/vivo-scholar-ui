@@ -23,10 +23,17 @@ class EntityItem extends LitElement {
         font-weight: bold;
       }
 
-      @media screen and (max-width: 520px) {
-        
+      @media screen and (max-width: 720px) {
+        :host{
+          flex-direction: column;
+        }
         slot[name="title"] {
-          margin-right: 10%;
+          text-align: left;
+          width: 100%;
+        }
+        slot[name="content"]{
+          width: 100%;
+          margin-bottom: 3%;
         }
       }
 
