@@ -27,6 +27,7 @@ class PersonSearch extends Searcher(LitElement) {
         }
         .search-actions {
             display: flex;
+            padding-top: 5px;
         }
         vivo-search-pagination-summary {
             flex-grow: 2;
@@ -63,7 +64,8 @@ class PersonSearch extends Searcher(LitElement) {
           }
           .truncate-overflow::before {
             position: absolute;
-            content: "...";
+            // FIXME: this overlaps text in chrome */
+            /* content: "..."; */
             inset-block-end: 0; /* "bottom" */
             inset-inline-end: 0; /* "right" */
           }

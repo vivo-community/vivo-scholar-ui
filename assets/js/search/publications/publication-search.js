@@ -26,6 +26,7 @@ class PublicationSearch extends Searcher(LitElement) {
         }
         .search-actions {
           display: flex;
+          padding-top: 5px;
         }
         vivo-search-pagination-summary {
           flex-grow: 2;
@@ -35,6 +36,9 @@ class PublicationSearch extends Searcher(LitElement) {
           flex-grow: 1;
           flex-basis:35%;
           text-align: right;
+        }
+        vivo-publication([slot=title]) {
+          margin-bottom: 0;
         }
       `
     }

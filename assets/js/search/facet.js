@@ -38,6 +38,9 @@ class SearchFacet extends LitElement {
         line-height: 16pt;
         display: inline-block;
       }
+      .label.count {
+        padding-left: 2px;
+      }
       .label::before {
         display: block;
         content: attr(title);
@@ -135,8 +138,8 @@ class SearchFacet extends LitElement {
             selected="${this.selected}"
             @click=${this.handleFacetSelected}
           >
-            <span class="label" title="${this.label} (${this.count}))">
-              ${this.label} (${this.count})
+            <span class="label" title="${this.label} (${this.count})">
+              ${this.label}&nbsp;(${this.count})
             </span>
             <!-- NOTE: adding value again so event can do parent.value -->
             <span class="checkbox-container" value=${this.value}>
