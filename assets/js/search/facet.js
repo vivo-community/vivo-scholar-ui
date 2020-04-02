@@ -33,10 +33,13 @@ class SearchFacet extends LitElement {
       }
       .label {
         flex-grow: 2;
-        flex-basis: 90%;
+        flex-basis: 95%;
         padding-right: 0.5em;
         line-height: 16pt;
         display: inline-block;
+      }
+      .label.count {
+        padding-left: 2px;
       }
       .label::before {
         display: block;
@@ -48,7 +51,7 @@ class SearchFacet extends LitElement {
       }
       .checkbox-container {
         flex-grow: 1;
-        flex-basis: 10%;
+        flex-basis: 5%;
         display:inline-block;
         position: relative;
       }
@@ -135,8 +138,8 @@ class SearchFacet extends LitElement {
             selected="${this.selected}"
             @click=${this.handleFacetSelected}
           >
-            <span class="label" title="${this.label} (${this.count}))">
-              ${this.label} (${this.count})
+            <span class="label" title="${this.label} (${this.count})">
+              ${this.label}&nbsp;(${this.count})
             </span>
             <!-- NOTE: adding value again so event can do parent.value -->
             <span class="checkbox-container" value=${this.value}>
