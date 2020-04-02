@@ -33,7 +33,7 @@ class SearchFacet extends LitElement {
       }
       .label {
         flex-grow: 2;
-        flex-basis: 90%;
+        flex-basis: 95%;
         padding-right: 0.5em;
         line-height: 16pt;
         display: inline-block;
@@ -51,7 +51,7 @@ class SearchFacet extends LitElement {
       }
       .checkbox-container {
         flex-grow: 1;
-        flex-basis: 10%;
+        flex-basis: 5%;
         display:inline-block;
         position: relative;
       }

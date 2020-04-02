@@ -37,6 +37,7 @@ class SearchFacets extends Faceter(LitElement) {
         opacity: 50%;
         font-size: 1em;
         font-weight: normal;
+        margin: 0;
       }
       ::slotted(h4) {
         padding: 0;
