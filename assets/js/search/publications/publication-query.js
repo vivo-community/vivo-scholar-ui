@@ -9,7 +9,7 @@ const publicationQuery = gql`
         { field: "type", exclusionTag: "type"  }, 
         { field: "authors", exclusionTag: "authors" },
         { field: "publisher", exclusionTag: "publisher" },
-        { field: "publicationDate", exclusionTag: "publicationDate" },
+        { field: "publicationDate", exclusionTag: "publicationDate", type: DATE_YEAR },
       ]
       filters: $filters
       paging: {

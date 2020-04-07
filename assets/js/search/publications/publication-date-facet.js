@@ -58,9 +58,10 @@ class PublicationDateFacet extends LitElement {
   }
 
   render() {
-    let theDate = new Date(this.value);
+    //let theDate = new Date(this.value);
     // FIXME: need to be able to send in localization
-    let display = theDate.toLocaleDateString("en-US");
+    //let display = theDate.toLocaleDateString("en-US");
+    let display = this.label;
     return html`
           <div value=${this.value} 
             selected="${this.selected}"
