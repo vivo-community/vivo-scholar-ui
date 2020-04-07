@@ -50,9 +50,11 @@ class PersonSearch extends Searcher(LitElement) {
             padding: 0.2em;
         }
         :host {
+            /*
             display: block;
-            --lh: 1.2rem;
+             --lh: 1.2rem;
             line-height: var(--lh);
+            */
         }
         /* https://css-tricks.com/line-clampin/ */
         .truncate-overflow {
