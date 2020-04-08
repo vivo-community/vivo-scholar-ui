@@ -20,7 +20,6 @@ let Faceter = (superclass) => class extends superclass {
   
   // see facet-group, removing filters if not in results
   // need a way to map selected filters to search results
-  // a little annoying that is has to be in facets.js AND faceter.js
   getValuesFromContent(content) {
     let values = content.map(v => v.value);
     return values;

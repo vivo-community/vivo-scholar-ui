@@ -78,7 +78,6 @@ class FacetGroup extends Faceter(LitElement) {
         if (grouped[filter.field]) {
           let entries = grouped[filter.field][0].entries;
           let content = entries.content;
-          // FIXME: seems like #getValuesFromContent would be a <vivo-search-facets> thing
           let values = facet.getValuesFromContent(content);
           if (!_.includes(values, filter.value)) {
             this.removeFilter(filter);
