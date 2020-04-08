@@ -35,6 +35,21 @@ class PublicationDateFacets extends Faceter(LitElement) {
     this.opKey = "EQUALS";
   }
   
+  // NOTE: this has to be an over-ride because trying to match
+  // incoming search results to applied filters
+  getValuesFromContent(content) {
+    console.log("calling custom map facets to filters");
+    let values = content.map(v => {
+      // for example: 
+      //let dateValue = new Date(v.value);
+      //let today = new Date();
+      //let range = `[${dateValue.getFullYear()} TO ${today.getFullYear()+1}]`;
+      //return range;
+      return v.value;
+    });
+    return values;
+  }
+
   render() {
     if (!this.data) {
       return html``
