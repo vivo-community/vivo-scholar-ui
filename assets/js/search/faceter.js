@@ -18,6 +18,14 @@ let Faceter = (superclass) => class extends superclass {
     this.filters = filters;
   }
   
+  // see facet-group, removing filters if not in results
+  // need a way to map selected filters to search results
+  // a little annoying that is has to be in facets.js AND faceter.js
+  getValuesFromContent(content) {
+    let values = content.map(v => v.value);
+    return values;
+  }
+
   // TODO: when adding filter - if already one of that field
   // turn it into a list (then join(' OR '))?
   addFilter(filter) {
