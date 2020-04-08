@@ -65,7 +65,6 @@ class FacetGroup extends Faceter(LitElement) {
 
       let cssQuery = `vivo-search-facets[key="${this.key}"],[implements="vivo-search-facets"][key="${this.key}"]`
       let allFacets = Array.from(this.querySelectorAll(cssQuery));
-      
       let groupedKeyByField = _.groupBy(allFacets, "field");
       // NOTE: this removes filters from constructed
       // search if they are no longer in search results
@@ -73,6 +72,7 @@ class FacetGroup extends Faceter(LitElement) {
       // This would happen if another facet has been applied and
       // narrowed the overall results
       this.filters.map(filter => {
+        // FIXME: why would groupedKeyByField be undefined (sometimes)?
         let facet = groupedKeyByField[filter.field][0];
         // first check if we even have any matches (avoid error)
         if (grouped[filter.field]) {
