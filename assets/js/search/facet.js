@@ -111,10 +111,13 @@ class SearchFacet extends LitElement {
 
   // see facet-group, removing filters if not in results
   // need a way to map selected filters to search results
+  /*
+  NOTE: this does not seem to be necessary, but not sure why
   getValuesFromContent(content) {
     let values = content.map(v => v.value);
     return values;
   }
+  */
 
   handleFacetSelected(e) {
     // if span clicked - need parent (note had to add 'value' to multiple 'parents')
