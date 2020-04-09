@@ -43,7 +43,8 @@ class PublicationDateFacets extends Faceter(LitElement) {
     let values = content.map(v => {
       let dateValue = new Date(v.value);
       let today = new Date();
-      let range = `[${dateValue.getFullYear()} TO ${today.getFullYear()+1}]`;
+      let end = new Date(today.getFullYear() + 1, 12, 31);
+      let range = `[${v.value} TO ${end.toISOString()}]`;
       return range;
     });
     return values;
@@ -59,7 +60,9 @@ class PublicationDateFacets extends Faceter(LitElement) {
     let facetList = content.map(facet => {
       let dateValue = new Date(facet.value);
       let today = new Date();
-      let range = `[${dateValue.getFullYear()} TO ${today.getFullYear()+1}]`;
+      let end = new Date(today.getFullYear() + 1, 12, 31);
+
+      let range = `[${facet.value} TO ${end.toISOString()}]`;
       let fakeFacet = {"value": ""+range+"", "count": facet.count, "__typename": "FacetEntry"};
       
       let selected = this.inFilters(this.field, fakeFacet); 
