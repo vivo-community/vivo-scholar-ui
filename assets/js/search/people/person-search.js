@@ -48,11 +48,11 @@ class PersonSearch extends Searcher(LitElement) {
             flex-shrink: 3;
             flex-basis: 90%;
             padding: 0.2em;
-        }
-        :host {
-            display: block;
             --lh: 1.2rem;
-            line-height: var(--lh);
+            line-height: var(--lh);  
+        }
+        #overview {
+            width: 75%;
         }
         /* https://css-tricks.com/line-clampin/ */
         .truncate-overflow {
@@ -140,7 +140,6 @@ class PersonSearch extends Searcher(LitElement) {
 
     renderOverview(person) {
         if (person.overview) {
-            // more likely to show sanitized html here (eventually)
             return html`<div class="truncate-overflow">${this.strip(person.overview)}</div>`;
         }
     }
@@ -154,7 +153,9 @@ class PersonSearch extends Searcher(LitElement) {
                 <a slot="name" href="/entities/person/${person.id}">
                   ${person.name}
                 </a>
+                <div id="overview">
                 ${this.renderOverview(person)}
+                </div>
             </vivo-person-card>
         </div>
         `;

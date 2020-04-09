@@ -81,7 +81,14 @@ class PublicationCard extends LitElement {
         return css`
         div[slot=title]:hover {
             cursor: pointer;
-        }`
+        }
+        div[slot="title"] {
+          margin-bottom: 0.0em;
+        }
+        [slot="authors"], [slot="publisher"] {
+          padding-top: 0.0em;
+        }
+        `
     }
 
     render() {

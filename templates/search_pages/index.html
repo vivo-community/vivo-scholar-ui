@@ -21,7 +21,7 @@
     margin: 0;
   }
   vivo-search-sidebar-item {
-    padding-bottom: 4px;
+    padding-bottom: 0px;
   }
   vivo-modal {
     text-align: center;
@@ -44,9 +44,7 @@
 
        <vivo-search-sidebar-item>
           <vivo-facet-group slot="content" key="people" search="person-search">
-
             <h3>Filter People</h3>
-
             <vivo-search-facets key="people" field="schools" tag="schools">
               <h4>School/Unit</h4>
             </vivo-search-facets>
@@ -57,10 +55,6 @@
             
             <vivo-search-facets key="people" field="type" tag="type">
               <h4>Position</h4>
-            </vivo-search-facets>
-
-            <vivo-search-facets key="people" field="researchAreas" tag="ra">
-              <h4>Research Area</h4>
             </vivo-search-facets>
 
           </vivo-facet-group>
