@@ -146,7 +146,7 @@ class GrantSearch extends Searcher(LitElement) {
         vivo-interval {
             color: #000000;
             color: var(--primaryColor);
-          }
+        }
         .grants {
             padding: 1em;
         }

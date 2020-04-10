@@ -38,6 +38,10 @@ class SearchFacets extends Faceter(LitElement) {
         font-size: 1em;
         font-weight: normal;
         margin: 0;
+        text-decoration: underline;
+      }
+      :host p:hover {
+        cursor: pointer;
       }
       ::slotted(h4) {
         padding: 0;

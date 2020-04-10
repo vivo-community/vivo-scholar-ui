@@ -19,6 +19,10 @@ class SearchFacetToggle extends LitElement {
             }
             span.label {
                 opacity: 50%;
+                text-decoration: underline;
+            }
+            span.label:hover {
+                cursor: pointer;
             }
         `
     }

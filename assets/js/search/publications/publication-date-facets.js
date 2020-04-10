@@ -18,13 +18,17 @@ class PublicationDateFacets extends Faceter(LitElement) {
   static get styles() {
     return css`
       :host {
-          display: block;
+        display: block;
+        line-height: 1.6em;
+        padding-bottom: 1em;
       }
       vivo-publication-date-facet[selected=""] {
         font-weight: bold;
       }
       ::slotted(h4) {
         text-align: right;
+        padding: 0;
+        margin: 0;
       }
     `
   }

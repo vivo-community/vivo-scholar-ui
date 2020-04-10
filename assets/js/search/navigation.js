@@ -2,15 +2,6 @@ import { LitElement, html, css } from "lit-element";
 import qs from "qs";
 import _ from "lodash";
 
-/*
-TODO: maybe make a tabbed-search component
-that contains search-text and tabs/searches etc..
-and have it take care of the search switching?
-
-then make this *only* hangle navigation
-(so search still works without it) like the tab-navigation
-on profile
-*/
 class SearchNavigation extends LitElement {
 
     constructor() {
