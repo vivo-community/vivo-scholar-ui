@@ -30,7 +30,7 @@ class TextBlob extends LitElement {
         }
         /* https://css-tricks.com/line-clampin/ */
         .truncate-overflow {
-            --max-lines: 2;
+            --max-lines: 3;
             position: relative;
             max-height: calc(var(--lh) * var(--max-lines));
             overflow: hidden;
