@@ -38,7 +38,6 @@ const grantQuery = gql`
         administeredBy {
           id
           label
-          type
         }   
         awardedBy {
           id
