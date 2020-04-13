@@ -169,6 +169,7 @@ vivo-tab-panel h4 {
   background-color: var(--highlightColor);
   color: white;
   border: none;
+  height: 35px;
   margin-top: 15%;
   display: block;
   width: 100%;
@@ -181,13 +182,14 @@ vivo-tab-panel h4 {
 }
 .text-button{
   grid-area: textButton;
-  margin-right: 10%;
+  margin-left: 15%;
 }
 .cite-button{
   grid-area: citeButton;
-  margin-left: 10%;
 }
-
+.abstract{
+  grid-area: abstract;
+}
 .publication-date{
   grid-area: publicationDate;
   margin-top: 0;
@@ -199,10 +201,14 @@ vivo-tab-panel h4 {
   grid-template-columns: repeat(12, 1fr);
   grid-template-rows: 50px;
   grid-template-areas:
-  "publicationType publicationType publicationType publicationType . . . . textButton citeButton . ."
-  "publicationDate publicationDate publicationDate publicationDate . . . . . . . .";
+  "publicationType publicationType publicationType publicationType . . . . textButton . citeButton ."
+  "publicationDate publicationDate publicationDate publicationDate . . . . . . . ."
+  "abstract abstract abstract abstract abstract abstract abstract abstract abstract abstract abstract abstract";
 }
-
+.linked-authors:after{
+  content: "\A";
+  white-space: pre;
+}
 .grant-date {
   color: black;
 }
@@ -328,22 +334,50 @@ vivo-tab-panel h4 {
   }
 
   //publication and grant entity pages
+  .entity-container{
+    background-color: var(--lightNeutralColor);
+    width: 100%;
+    padding-left: 0;
+  }
   .publication-heading{
+    padding: 0 5%;
+    background-color: white;
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    grid-template-rows: 50px;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: 25px;
     grid-template-areas:
-    "publicationType publicationType publicationType textButton citeButton ."
-    "publicationDate publicationDate publicationDate . . .";
-    margin-bottom: 3%;
+    "publicationType publicationType publicationType publicationType publicationType publicationType publicationType publicationType publicationType publicationType publicationType publicationType"
+    "publicationDate publicationDate publicationDate publicationDate publicationDate publicationDate . . . . . ."
+    "abstract abstract abstract abstract abstract abstract abstract abstract abstract abstract abstract abstract"
+    ". textButton textButton textButton textButton . citeButton citeButton citeButton citeButton . .";
+    padding-bottom: 10%;
   }
   .publication-type{
-    margin-left: 0;
+    margin: 0;
   }
   .publication-date{
-    margin-left: 0;
+    margin: 0;
+    margin-bottom: 5%;
   }
-
+  .entity-container .page-title {
+    text-align: left;
+    padding: 0 5%;
+    padding-bottom: 3%;
+    width: 100%;
+  }
+  .entity-content{
+    margin-top: 5%;
+    padding: 0 5%;
+    padding-top: 5%;
+    background-color: white;
+}
+  .linked-authors:after{
+    display: inline-block;
+    content: ",";
+  }
+  .linked-authors:last-child:after{
+    content: "";
+  }
   // site search styling
   .site-search {
     width: 85%;
@@ -352,21 +386,6 @@ vivo-tab-panel h4 {
 }
 
 @media (max-width: 500px) {
-   // publication entity page
-   .publication-heading{
-     display: grid;
-     grid-template-columns: repeat(2, 1fr);
-     grid-template-rows: 50px;
-     grid-template-areas:
-     "textButton citeButton"
-     "publicationType publicationType"
-     "publicationDate publicationDate";
-     margin-bottom: 3%;
-   }
-   .publication-heading button{
-     margin-top: 5%;
-     width: 80%;
-   }
 
     // site search styling
   .site-search {

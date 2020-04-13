@@ -17,13 +17,13 @@ class EntityItem extends LitElement {
       }
       slot[name="content"]{
         display: inline-block;
-        width: 70%;
+        width: 80%;
       }
       ::slotted([slot="title"]){
         font-weight: bold;
       }
 
-      @media screen and (max-width: 720px) {
+      @media screen and (max-width: 800px) {
         :host{
           flex-direction: column;
         }
