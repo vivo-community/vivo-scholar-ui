@@ -2,29 +2,28 @@ import { LitElement, html, css } from "lit-element";
 
 class TextBlob extends LitElement {
 
-    constructor() {
-        super();
+  static get properties() {
+    return {
+      text: { type: String, attribute: true }
     }
+  }
 
-    //https://stackoverflow.com/questions/822452/strip-html-from-text-javascript/47140708#47140708
-    strip(html) {
-        var doc = new DOMParser().parseFromString(html, 'text/html');
-        return doc.body.textContent || "";
+  constructor() {
+    super();
+  }
+
+  //https://stackoverflow.com/questions/822452/strip-html-from-text-javascript/47140708#47140708
+  strip(html) {
+    // not sure why 'null' is getting this far
+    if (!html || typeof(html) == 'undefined' || html == 'null') {
+      return ""
     }
+    var doc = new DOMParser().parseFromString(html, 'text/html');
+    return doc.body.textContent || "";
+  }
 
-    firstUpdated() {
-        // FIXME: this seems like the wrong way to go about this...
-        const slot = this.shadowRoot.querySelector('slot');
-        console.log(slot);
-        console.log(slot.assignedNodes({flatten: true}));
-        //let currentHtml = slot.assignedNodes()[0].innerHTML;
-        //console.log(currentHtml);
-        //let newHtml = this.strip(currentHtml);
-        //slot.assignedNodes()[0].innerHTML = newHtml;
-    }
-
-    static get styles() {
-        return css`
+  static get styles() {
+    return css`
         :host {
             --lh: 1.2rem;
             line-height: var(--lh);  
@@ -53,16 +52,17 @@ class TextBlob extends LitElement {
             background: white;
           }
       `
-    }
+  }
 
-    render() {
-        return html`
+  render() {
+    let display = this.strip(this.text);
+    return html`
         <div class="truncate-overflow">
-          <slot></slot>
+          ${display}
         </div>
       `
-    }
+  }
 
 }
 
-customElements.define("vivo-search-text-blob", TextBlob);
+customElements.define("vivo-search-truncated-text-result", TextBlob);
