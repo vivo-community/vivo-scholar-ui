@@ -35,14 +35,6 @@ class PublicationCard extends LitElement {
         }
     }
 
-    renderAbstract(abstract) {
-        if (abstract) {
-            return html`
-            <div slot="abstract">${abstract}</div>
-            `
-        }
-    }
-
     renderAuthor(author) {
       return html`
       <vivo-publication-author profile-url="/entities/person/${author.id}">
@@ -72,7 +64,7 @@ class PublicationCard extends LitElement {
           ${this.renderAuthors(p.authors)}
           ${this.renderPublisher(p.publisher)}
           <span slot="date">${dateFormatted}</span>
-          ${this.renderAbstract(p.abstractText)}
+          <div slot="abstract">${p.abstractText}</div>
         </vivo-publication>
         `;
     }
