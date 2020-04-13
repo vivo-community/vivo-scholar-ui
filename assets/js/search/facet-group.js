@@ -72,7 +72,6 @@ class FacetGroup extends Faceter(LitElement) {
       // This would happen if another facet has been applied and
       // narrowed the overall results
       this.filters.map(filter => {
-        // FIXME: why would groupedKeyByField be undefined (sometimes)?
         let facet = groupedFacetComponents[filter.field][0];
         // first check if we even have any matches (avoid error)
         if (groupedFacetResults[filter.field]) {
