@@ -38,7 +38,7 @@ class PublicationDateFacets extends Faceter(LitElement) {
     this.implements = "vivo-search-facets";
     this.opKey = "EQUALS";
   }
-  
+
   render() {
     if (!this.data) {
       return html``
