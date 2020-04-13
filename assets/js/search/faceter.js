@@ -18,6 +18,26 @@ let Faceter = (superclass) => class extends superclass {
     this.filters = filters;
   }
   
+  // see facet-group, removing filters if not in results
+  // need a way to map selected filters to search results
+  /* example usage:
+  a custom date-facet that constructed a [start TO end] filter:
+
+  getValuesFromContent(content) {
+    let values = content.map(v => {
+      let dateValue = new Date(v.value);
+      let today = new Date();
+      let range = `[${dateValue} TO ${today}]`;
+      return range;
+    });
+    return values;
+  }
+  */
+  getValuesFromContent(content) {
+    let values = content.map(v => v.value);
+    return values;
+  }
+
   // TODO: when adding filter - if already one of that field
   // turn it into a list (then join(' OR '))?
   addFilter(filter) {

@@ -29,7 +29,6 @@ const PUBLICATION_QUERY = gql`
         title
         abstractText
         doi
-        authorList
         authors {
           id
           label

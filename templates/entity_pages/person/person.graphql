@@ -46,7 +46,6 @@ query($id: String!) {
       title
       abstractText
       doi
-      authorList
       authors {
         id
         label
