@@ -23,6 +23,7 @@ class TextBlob extends LitElement {
   }
 
   static get styles() {
+    // TODO: not sure how to make max-lines a component property
     return css`
         :host {
             --lh: 1.2rem;
@@ -30,27 +31,27 @@ class TextBlob extends LitElement {
         }
         /* https://css-tricks.com/line-clampin/ */
         .truncate-overflow {
-            --max-lines: 3;
-            position: relative;
-            max-height: calc(var(--lh) * var(--max-lines));
-            overflow: hidden;
-            padding-right: 1rem; /* space for ellipsis */
-          }
-          .truncate-overflow::before {
-            position: absolute;
-            // FIXME: this overlaps text in chrome */
-            /* content: "..."; */
-            inset-block-end: 0; /* "bottom" */
-            inset-inline-end: 0; /* "right" */
-          }
-          .truncate-overflow::after {
-            content: "";
-            position: absolute;
-            inset-inline-end: 0; /* "right" */
-            width: 1rem;
-            height: 1rem;
-            background: white;
-          }
+          --max-lines: 3;
+          position: relative;
+          max-height: calc(var(--lh) * var(--max-lines));
+          overflow: hidden;
+          padding-right: 1rem; /* space for ellipsis */
+        }
+        .truncate-overflow::before {
+          position: absolute;
+          // FIXME: this overlaps text in chrome */
+          /* content: "..."; */
+          inset-block-end: 0; /* "bottom" */
+          inset-inline-end: 0; /* "right" */
+        }
+        .truncate-overflow::after {
+          content: "";
+          position: absolute;
+          inset-inline-end: 0; /* "right" */
+          width: 1rem;
+          height: 1rem;
+          background: white;
+        }
       `
   }
 
