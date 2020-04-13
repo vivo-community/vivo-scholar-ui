@@ -52,6 +52,12 @@ class PublicationCard extends LitElement {
       }
     }
 
+    //https://stackoverflow.com/questions/822452/strip-html-from-text-javascript/47140708#47140708
+    strip(html){
+      var doc = new DOMParser().parseFromString(html, 'text/html');
+      return doc.body.textContent || "";
+    }
+
     renderPublication(p) {
       let pubDate = new Date(p.publicationDate);
       let dateFormatted = pubDate.toLocaleDateString("en-US");
@@ -64,7 +70,7 @@ class PublicationCard extends LitElement {
           ${this.renderAuthors(p.authors)}
           ${this.renderPublisher(p.publisher)}
           <span slot="date">${dateFormatted}</span>
-          <div slot="abstract">${p.abstractText}</div>
+          <vivo-search-text-blob slot="abstract">${p.abstractText}</vivo-search-text-blob>
         </vivo-publication>
         `;
     }
