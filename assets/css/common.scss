@@ -208,25 +208,6 @@ vivo-tab-panel h4 {
 }
 
 
-
-/* grid experiment */
-.container {
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  width: 100%;
-  margin: 0 auto;
-  grid-auto-flow: dense;
-  grid-column-gap: .5em;
-}
-.container aside {
-  grid-column: span 2;
-  padding: 0.25em;
-}
-.container main {
-  grid-column: span 10;
-  padding: 0.25em;
-}
-
 /*Sidebar grid - person*/
 .person-container {
   display: grid;
@@ -315,7 +296,7 @@ vivo-tab-panel h4 {
   }
   vivo-sidebar-item:last-of-type {
     padding-bottom: 3%;
-}
+  }
   .sidebar-image {
     margin:0;
     padding: 0;

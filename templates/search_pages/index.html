@@ -7,14 +7,31 @@
   main {
     margin-top: 0.75em;
   }
-  .container main {
+
+  .search-container {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    width: 100%;
+    margin: 0 auto;
+    grid-auto-flow: dense;
+    grid-column-gap: .5em;
+  }
+  .search-container aside {
+    grid-column: span 2;
+    padding: 0.25em;
+  }
+  .search-container main {
+    grid-column: span 10;
+    padding: 0.25em;
+  }
+  .search-container main {
     padding-right: 10%;
   }
   aside {
     padding: 0;
     background-color: var(--highlightBackgroundColor);
   }
-  .container aside {
+  .search-container aside {
     padding: 0;
   }
   vivo-sidebar {
@@ -26,6 +43,27 @@
   vivo-modal {
     text-align: center;
   }
+
+  
+  @media screen and (max-width: 800px) {
+    #main {
+      width: 100%
+    }
+    .search-container {
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-column-gap: 0;
+      grid-template-rows: auto;
+    }
+    .search-container main {
+      padding: 0;
+    }
+    .search-container aside {
+      padding: 0;
+      margin-top: 1.25em;
+    }
+  }
+   
 </style>
 <vivo-search-navigation></vivo-search-navigation>
 
@@ -34,7 +72,7 @@
   <vivo-search-spinner></vivo-search-spinner>
 </vivo-modal>
 
-<div class="container">
+<div class="search-container">
   <!-- NOTE: facets and search are in separate sections
     the vivo-search-navigation elements uses the "search" attribute
     to figure out which search to attach to (by corresponding id)
