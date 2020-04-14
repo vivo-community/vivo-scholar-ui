@@ -143,6 +143,8 @@ class FacetPopupMessage extends Faceter(LitElement) {
     ::slotted(vivo-search-facet) {
       display: block;
       width: 200px;
+      padding-right: 1em;
+      padding-left: 1em;
     }
     ::slotted([slot="heading"]) {
       flex-grow: 1;
