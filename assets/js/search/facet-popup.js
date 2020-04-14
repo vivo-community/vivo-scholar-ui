@@ -183,7 +183,7 @@ class FacetPopupMessage extends Faceter(LitElement) {
     }
     #apply {
       display: inline-block;
-      background-color: var(--highlightBackgroundColor);
+      background-color: var(--highlightColor);
       color: white;
       padding: 8px;
       font-size: 1em;
