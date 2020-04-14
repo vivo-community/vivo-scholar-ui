@@ -73,9 +73,13 @@ class SearchFacets extends Faceter(LitElement) {
   // but it's not necessarily in the data
   generateFacetPopup(showList) {
     // just added tabindex to try and be able to focus
+
+    // FIXME: not sure how to get a heading in here
+    // ideally slotted for i18n
     var results = html`
     <p id="toggle-facet" @click=${this.togglePopup}>Show More</p>
     <vivo-facet-popup-message id="popup-facets">
+      <div slot="heading">Filter Heading</div> 
       ${this.generateFacetList(showList)}
     </vivo-facet-popup-message>`;
     return results;

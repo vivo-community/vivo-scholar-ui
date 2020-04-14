@@ -121,15 +121,14 @@ class FacetPopupMessage extends Faceter(LitElement) {
 
   static get styles() {
     return css`
-    vivo-modal([shown]) .fas {
+    .fas {
       display: inline-block;
       font-style: normal;
       font-variant: normal;
       text-rendering: auto;
-      font-size: 2em;
-      display: flex;
-      flex-direction: row-reverse;
+      font-size: 1em;
       -webkit-font-smoothing: antialiased;
+      flex-basis: 90%;
     }
     :host([open]) .fa-times::before {
       font-family: 'Font Awesome 5 Free';
@@ -145,12 +144,23 @@ class FacetPopupMessage extends Faceter(LitElement) {
       display: block;
       width: 200px;
     }
-    h4 {
+    ::slotted([slot="heading"]) {
+      flex-grow: 1;
+      flex-basis: 90%;
+      text-align: left;
+      font-weight: bold;
+    }
+    .heading {
       background-color: var(--highlightBackgroundColor);
       margin-top: 0;
       padding: 0;
       padding-right: 4px;
-      text-align: right;
+      padding-bottom: 4px;
+      padding-left: 4px;
+      display:flex;
+    }
+    .smaller-input {
+      font-size: 0.85em;
     }
     .facet-container {
       display: flex;
@@ -161,7 +171,8 @@ class FacetPopupMessage extends Faceter(LitElement) {
       max-width: 400px;
       overflow: auto;
       overflow-y: hidden;
-      scrollbar-base-color:#ffeaff
+      scrollbar-base-color:#ffeaff;
+      padding-left: 4px;
     }
     #cancel {
       display: inline-block;
@@ -193,7 +204,11 @@ class FacetPopupMessage extends Faceter(LitElement) {
 
     return html`
     <vivo-modal ?shown="${this.open}">
-        <h4><i class="fas fa-times" @click=${this.cancel}></i></h4>
+        <div class="heading">
+          <slot name="heading"></slot>
+          <input class="smaller-input" type="text" id="filter-list">
+          <i class="fas fa-times" @click=${this.cancel}></i>
+        </div>
         <div class="facet-container">
           <slot></slot>
         </div>
