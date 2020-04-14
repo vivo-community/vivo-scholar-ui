@@ -153,10 +153,7 @@ class FacetPopupMessage extends Faceter(LitElement) {
     .heading {
       background-color: var(--highlightBackgroundColor);
       margin-top: 0;
-      padding: 0;
-      padding-right: 4px;
-      padding-bottom: 4px;
-      padding-left: 4px;
+      padding: 4px;
       display:flex;
     }
     .smaller-input {
@@ -173,20 +170,25 @@ class FacetPopupMessage extends Faceter(LitElement) {
       overflow-y: hidden;
       scrollbar-base-color:#ffeaff;
       padding-left: 4px;
+      margin: 1em;
     }
     #cancel {
       display: inline-block;
       background-color: var(--mediumNeutralColor);
       color: white;
-      padding: 4px;
-      font-size: 1.2em;
+      padding: 8px;
+      font-size: 1em;
+      font-weight: bold;
+      border: none;
     }
     #apply {
       display: inline-block;
-      background-color: var(--linkColor);
+      background-color: var(--highlightBackgroundColor);
       color: white;
-      padding: 4px;
-      font-size: 1.2em;
+      padding: 8px;
+      font-size: 1em;
+      font-weight: bold;
+      border: none;
     }
     #cancel:hover {
       cursor: pointer;
@@ -196,6 +198,7 @@ class FacetPopupMessage extends Faceter(LitElement) {
     }
     .actions {
       text-align: center;
+      padding: 8px;
     }
     `;
   }
@@ -213,8 +216,8 @@ class FacetPopupMessage extends Faceter(LitElement) {
           <slot></slot>
         </div>
         <div class="actions">
-          <a id="cancel" @click=${this.cancel}>Cancel</a>
-          <a id="apply" @click=${this.apply}>Apply</a>
+          <button id="cancel" @click=${this.cancel}>Cancel</button>
+          <button id="apply" @click=${this.apply}>Apply</button>
         </div>
     </vivo-modal>
     `;
