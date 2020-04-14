@@ -1,6 +1,6 @@
 import { LitElement, html, css } from "lit-element";
 
-class TextBlob extends LitElement {
+class SearchTruncatedTextResult extends LitElement {
 
   static get properties() {
     return {
@@ -66,4 +66,4 @@ class TextBlob extends LitElement {
 
 }
 
-customElements.define("vivo-search-truncated-text-result", TextBlob);
+customElements.define("vivo-search-truncated-text-result", SearchTruncatedTextResult);
