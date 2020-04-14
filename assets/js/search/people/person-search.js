@@ -54,31 +54,6 @@ class PersonSearch extends Searcher(LitElement) {
         #overview {
             width: 75%;
         }
-        /* https://css-tricks.com/line-clampin/ */
-        .truncate-overflow {
-            --max-lines: 2;
-            position: relative;
-            max-height: calc(var(--lh) * var(--max-lines));
-            overflow: hidden;
-            padding-right: 1rem; /* space for ellipsis */
-          }
-          .truncate-overflow::before {
-            position: absolute;
-            // FIXME: this overlaps text in chrome */
-            /* content: "..."; */
-            inset-block-end: 0; /* "bottom" */
-            inset-inline-end: 0; /* "right" */
-          }
-          .truncate-overflow::after {
-            content: "";
-            position: absolute;
-            inset-inline-end: 0; /* "right" */
-            width: 1rem;
-            height: 1rem;
-            background: white;
-          }
-
-        
       `
     }
 
@@ -154,7 +129,8 @@ class PersonSearch extends Searcher(LitElement) {
                   ${person.name}
                 </a>
                 <div id="overview">
-                ${this.renderOverview(person)}
+                  <vivo-search-truncated-text-result text="${person.overview}">
+                  </vivo-search-truncated-text-result>
                 </div>
             </vivo-person-card>
         </div>

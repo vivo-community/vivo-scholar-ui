@@ -34,7 +34,6 @@ class FacetGroup extends Faceter(LitElement) {
     constructor() {
       super();
       this.selected = false;
-      // way to get this from URL?
       this.filters = [];
       this.waiting = false;
 
@@ -72,7 +71,6 @@ class FacetGroup extends Faceter(LitElement) {
       // This would happen if another facet has been applied and
       // narrowed the overall results
       this.filters.map(filter => {
-        // FIXME: why would groupedKeyByField be undefined (sometimes)?
         let facet = groupedFacetComponents[filter.field][0];
         // first check if we even have any matches (avoid error)
         if (groupedFacetResults[filter.field]) {
@@ -98,7 +96,6 @@ class FacetGroup extends Faceter(LitElement) {
     }
 
     handleFacetSelected(e) {
-      // ?? how to remove filters
       if (!(e.detail.category == this.key)) {
         return;
       }
@@ -115,7 +112,6 @@ class FacetGroup extends Faceter(LitElement) {
       let search = document.querySelector(`[id="${this.search}"]`);
 
       search.setPage(0);
-      // TODO: should it also remove filters no longer relevant?
       search.setFilters(this.filters);
       search.search();
     }

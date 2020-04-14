@@ -19,7 +19,9 @@
     <vivo-entity-item>
         <span slot="title">Abstract</span>
         <span slot="content">
-          <vivo-truncated-text slot="abstract"></vivo-truncated-text>
+          <vivo-truncated-text slot="abstract">
+            <%= publication["abstractText"] %>
+          </vivo-truncated-text>
         </span>
     </vivo-entity-item>
   <% } %>

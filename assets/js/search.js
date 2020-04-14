@@ -12,6 +12,7 @@ import './search/search-sidebar-item.js';
 import './search/filter-clearer.js';
 import './search/spinner.js';
 import './search/modal.js';
+import './search/truncated-text-result.js';
 
 // tab specific searches
 import './search/people/person-search.js';
