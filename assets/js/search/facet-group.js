@@ -34,7 +34,6 @@ class FacetGroup extends Faceter(LitElement) {
     constructor() {
       super();
       this.selected = false;
-      // way to get this from URL?
       this.filters = [];
       this.waiting = false;
 
@@ -60,6 +59,32 @@ class FacetGroup extends Faceter(LitElement) {
       this.waiting = true;
     }
 
+    removeNotApplicable() {
+      let groupedFacetResults = _.groupBy(this.data[this.key].facets, "field");
+
+      let domQuery = `vivo-search-facets[key="${this.key}"],[implements="vivo-search-facets"][key="${this.key}"]`
+      let allFacets = Array.from(this.querySelectorAll(domQuery));
+      let groupedFacetComponents = _.groupBy(allFacets, "field");
+      // NOTE: this removes filters from constructed
+      // search if they are no longer in search results
+      //
+      // This would happen if another facet has been applied and
+      // narrowed the overall results
+      this.filters.map(filter => {
+        let facet = groupedFacetComponents[filter.field][0];
+        // first check if we even have any matches (avoid error)
+        if (groupedFacetResults[filter.field]) {
+          let entries = groupedFacetResults[filter.field][0].entries;
+          let content = entries.content;
+          let values = facet.getValuesFromContent(content);
+          if (!_.includes(values, filter.value)) {
+            this.removeFilter(filter);
+          }
+        }
+      });
+
+    }
+
     handleSearchResultsObtained(e) {
       this.waiting = false;
       const data = e.detail;
@@ -67,29 +92,10 @@ class FacetGroup extends Faceter(LitElement) {
         return;
       }
       this.data = data;
-      let grouped = _.groupBy(this.data[this.key].facets, "field");
-
-      // NOTE: this removes filters from constructed
-      // search if they are no longer in search results
-      //
-      // This would happen if another facet has been applied and
-      // narrowed the overall results
-      this.filters.map(filter => {
-        // first check if we even have any matches (avoid error)
-        if (grouped[filter.field]) {
-          let entries = grouped[filter.field][0].entries;
-          let content = entries.content;
-          let values = content.map(v => v.value);
-          // remove cause no longer in search results
-          if (!_.includes(values, filter.value)) {
-            this.removeFilter(filter);
-          }
-        }
-      });
+      this.removeNotApplicable();
     }
 
     handleFacetSelected(e) {
-      // ?? how to remove filters
       if (!(e.detail.category == this.key)) {
         return;
       }
@@ -106,7 +112,6 @@ class FacetGroup extends Faceter(LitElement) {
       let search = document.querySelector(`[id="${this.search}"]`);
 
       search.setPage(0);
-      // TODO: should it also remove filters no longer relevant?
       search.setFilters(this.filters);
       search.search();
     }
@@ -120,8 +125,8 @@ class FacetGroup extends Faceter(LitElement) {
       }       
 
       // 1. get all vivo-search-facet elements or [implements=vivo-search-facets]
-      let cssQuery = `vivo-search-facets[key="${this.key}"],[implements="vivo-search-facets"]`
-      let facets = Array.from(this.querySelectorAll(cssQuery));
+      let domQuery = `vivo-search-facets[key="${this.key}"],[implements="vivo-search-facets"]`
+      let facets = Array.from(this.querySelectorAll(domQuery));
 
       // data - group by field
       let grouped = _.groupBy(this.data[this.key].facets, "field");

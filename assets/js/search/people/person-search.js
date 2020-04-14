@@ -27,6 +27,7 @@ class PersonSearch extends Searcher(LitElement) {
         }
         .search-actions {
             display: flex;
+            padding-top: 5px;
         }
         vivo-search-pagination-summary {
             flex-grow: 2;
@@ -47,36 +48,12 @@ class PersonSearch extends Searcher(LitElement) {
             flex-shrink: 3;
             flex-basis: 90%;
             padding: 0.2em;
-        }
-        :host {
-            display: block;
             --lh: 1.2rem;
-            line-height: var(--lh);
+            line-height: var(--lh);  
         }
-        /* https://css-tricks.com/line-clampin/ */
-        .truncate-overflow {
-            --max-lines: 2;
-            position: relative;
-            max-height: calc(var(--lh) * var(--max-lines));
-            overflow: hidden;
-            padding-right: 1rem; /* space for ellipsis */
-          }
-          .truncate-overflow::before {
-            position: absolute;
-            content: "...";
-            inset-block-end: 0; /* "bottom" */
-            inset-inline-end: 0; /* "right" */
-          }
-          .truncate-overflow::after {
-            content: "";
-            position: absolute;
-            inset-inline-end: 0; /* "right" */
-            width: 1rem;
-            height: 1rem;
-            background: white;
-          }
-
-        
+        #overview {
+            width: 75%;
+        }
       `
     }
 
@@ -138,7 +115,6 @@ class PersonSearch extends Searcher(LitElement) {
 
     renderOverview(person) {
         if (person.overview) {
-            // more likely to show sanitized html here (eventually)
             return html`<div class="truncate-overflow">${this.strip(person.overview)}</div>`;
         }
     }
@@ -152,7 +128,10 @@ class PersonSearch extends Searcher(LitElement) {
                 <a slot="name" href="/entities/person/${person.id}">
                   ${person.name}
                 </a>
-                ${this.renderOverview(person)}
+                <div id="overview">
+                  <vivo-search-truncated-text-result text="${person.overview}">
+                  </vivo-search-truncated-text-result>
+                </div>
             </vivo-person-card>
         </div>
         `;

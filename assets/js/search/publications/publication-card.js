@@ -35,14 +35,6 @@ class PublicationCard extends LitElement {
         }
     }
 
-    renderAbstract(abstract) {
-        if (abstract) {
-            return html`
-            <div slot="abstract">${abstract}</div>
-            `
-        }
-    }
-
     renderAuthor(author) {
       return html`
       <vivo-publication-author profile-url="/entities/person/${author.id}">
@@ -63,7 +55,6 @@ class PublicationCard extends LitElement {
     renderPublication(p) {
       let pubDate = new Date(p.publicationDate);
       let dateFormatted = pubDate.toLocaleDateString("en-US");
-
       return html`
         <vivo-publication publication-url="/entities/publication/${p.id}" 
           link-decorate="${this.linkDecorate}"
@@ -72,7 +63,8 @@ class PublicationCard extends LitElement {
           ${this.renderAuthors(p.authors)}
           ${this.renderPublisher(p.publisher)}
           <span slot="date">${dateFormatted}</span>
-          ${this.renderAbstract(p.abstractText)}
+          <vivo-search-truncated-text-result slot="abstract" text="${p.abstractText}">
+          </vivo-search-truncated-text-result>
         </vivo-publication>
         `;
     }
@@ -81,7 +73,14 @@ class PublicationCard extends LitElement {
         return css`
         div[slot=title]:hover {
             cursor: pointer;
-        }`
+        }
+        div[slot="title"] {
+          margin-bottom: 0.0em;
+        }
+        [slot="authors"], [slot="publisher"] {
+          padding-top: 0.0em;
+        }
+        `
     }
 
     render() {

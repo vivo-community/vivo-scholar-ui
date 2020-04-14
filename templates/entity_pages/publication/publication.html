@@ -14,11 +14,14 @@
       <%= if (publication["publicationDate"]) { %>
         <vivo-interval class="publication-date" interval-start="<%= FormatGraphqlDate(publication["publicationDate"], "yearMonthFullName") %>"></vivo-interval>
       <% } %>
+      <%= if (publication["abstractText"]) { %>
           <vivo-entity-item class="abstract">
               <span slot="title">Abstract</span>
-              <span slot="content"><vivo-truncated-text slot="abstract">Gene expression is regulated at both the mRNA and protein level through on‐off switches and fine‐tuned control. In their recent study, Edfors et al (2016) use highly accurate, targeted proteomics methods and examine to what extent the amount of protein produced per mRNA transcript varies across different tissues. They find that the bulk part of protein concentrations is set at a per‐gene level: This relationship, the protein/mRNA ratio, is constant across cell types and tissues, but varies by several orders of magnitude across genes.</vivo-truncated-text></span>
+              <span slot="content"><vivo-truncated-text slot="abstract">
+                <%= publication["abstractText"]%>
+              </vivo-truncated-text></span>
           </vivo-entity-item>
-
+      <% } %>
     </div>
     <div class="entity-content">
       <%= if (publication["authorList"]) { %>
