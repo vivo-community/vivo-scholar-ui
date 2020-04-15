@@ -131,7 +131,7 @@ class FacetPopupMessage extends Faceter(LitElement) {
       text-rendering: auto;
       font-size: 1em;
       -webkit-font-smoothing: antialiased;
-      flex-basis: 90%;
+      flex-basis: 10%;
     }
     :host([open]) .fa-times::before {
       font-family: 'Font Awesome 5 Free';
@@ -151,9 +151,13 @@ class FacetPopupMessage extends Faceter(LitElement) {
     }
     ::slotted([slot="heading"]) {
       flex-grow: 1;
-      flex-basis: 90%;
+      flex-basis: 20%;
       text-align: left;
       font-weight: bold;
+    }
+    ::slotted(input) {
+      flex-basis: 70%;
+      text-align: left;
     }
     .heading {
       background-color: var(--highlightBackgroundColor);
@@ -166,6 +170,7 @@ class FacetPopupMessage extends Faceter(LitElement) {
     }
     .smaller-input {
       font-size: 0.85em;
+      width: 75%;
     }
     .facet-container {
       display: flex;
@@ -173,7 +178,7 @@ class FacetPopupMessage extends Faceter(LitElement) {
       flex-wrap: wrap;
       max-height: 200px;
       min-width: 100px;
-      max-width: 400px;
+      max-width: 32rem;
       overflow: auto;
       overflow-y: hidden;
       scrollbar-base-color:#ffeaff;
