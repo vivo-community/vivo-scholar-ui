@@ -39,6 +39,8 @@ class FacetPopupMessage extends Faceter(LitElement) {
     this.addEventListener("keydown", this.handleKeydown);
     this.addEventListener("pageSelected", this.handleFacetPageSelected);
     this.addEventListener('facetSelected', this.handleFacetSelected);
+
+    this._searchBox = this.shadowRoot.querySelector("#filter-list");
   }
 
   disconnectedCallback() {
@@ -216,6 +218,28 @@ class FacetPopupMessage extends Faceter(LitElement) {
     `;
   }
 
+  // https://remysharp.com/2010/07/21/throttling-function-calls
+  debounce(fn, delay) {
+    var timer = null;
+    return function () {
+      var context = this, args = arguments;
+      clearTimeout(timer);
+      timer = setTimeout(function () {
+        fn.apply(context, args);
+      }, delay);
+    };
+  }
+
+  searchKeyUp(e) {
+    //console.log(e);
+    let filterText = this._searchBox.value;
+    if (filterText.length >= 2) {
+      // TODO: filter the facet list based on this
+      console.log(filterText);
+    }
+    
+  }
+
   render() {
 
     return html`
@@ -223,6 +247,7 @@ class FacetPopupMessage extends Faceter(LitElement) {
         <div class="heading">
           <slot name="heading"></slot>
           <input class="smaller-input" type="text" id="filter-list"
+            @keyup=${this.debounce(this.searchKeyUp,  250)}
             placeholder="Start typing to find a specific filter result">
           <i class="fas fa-times" @click=${this.cancel}></i>
         </div>
