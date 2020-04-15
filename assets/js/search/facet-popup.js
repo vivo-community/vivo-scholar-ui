@@ -121,6 +121,9 @@ class FacetPopupMessage extends Faceter(LitElement) {
 
   static get styles() {
     return css`
+    vivo-modal {
+      --modal-width: 36rem;
+    }
     .fas {
       display: inline-block;
       font-style: normal;
@@ -155,8 +158,11 @@ class FacetPopupMessage extends Faceter(LitElement) {
     .heading {
       background-color: var(--highlightBackgroundColor);
       margin-top: 0;
-      padding: 4px;
       display:flex;
+      padding-right: 4px;
+      padding-left: 1em;
+      padding-top: 1em;
+      padding-bottom: 1em;
     }
     .smaller-input {
       font-size: 0.85em;
@@ -211,7 +217,8 @@ class FacetPopupMessage extends Faceter(LitElement) {
     <vivo-modal ?shown="${this.open}">
         <div class="heading">
           <slot name="heading"></slot>
-          <input class="smaller-input" type="text" id="filter-list">
+          <input class="smaller-input" type="text" id="filter-list"
+            placeholder="Start typing to find a specific filter result">
           <i class="fas fa-times" @click=${this.cancel}></i>
         </div>
         <div class="facet-container">
