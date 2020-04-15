@@ -1,11 +1,10 @@
 <% let grant = data["relationship"] %>
 <div class="entity-container">
     <h2 class="page-title"><%= raw(grant["title"]) %></h2>
-    <div>
+    <div class="entity-content grant-page">
       <%= if (grant["dateTimeIntervalStart"] || grant["dateTimeIntervalEnd"] ) { %>
         <vivo-interval class="grant-date" interval-start="<%= FormatGraphqlDate(grant["dateTimeIntervalStart"], "year") %>" interval-end="<%= FormatGraphqlDate(grant["dateTimeIntervalEnd"], "year") %>"></vivo-interval>
       <% } %>
-    </div>
     <%= if (grant["awardedBy"]) { %>
       <vivo-entity-item>
         <span slot="title">Awarded By</span>
@@ -64,4 +63,5 @@
       </span>
     </vivo-entity-item>
     <% } %>
+  </div>
 </div>

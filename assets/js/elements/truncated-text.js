@@ -42,7 +42,7 @@ class TruncatedText extends LitElement {
         }
         :host([truncate-required]) slot::before {
           display: block;
-          content: '...';
+          content: "...";
           position: absolute;
           bottom: 0;
           right: 0;
