@@ -24,16 +24,18 @@
       <% } %>
     </div>
     <div class="entity-content">
-      <%= if (publication["authorList"]) { %>
+      <%= if (publication["authors"]) { %>
         <vivo-entity-item>
           <span slot="title">Authors</span>
           <span slot="content">
+            <%= for (p) in publication["authors"] { %>
             <vivo-publication-author-list slot="authors">
                 <vivo-publication-author>
-                    <%= publication["authorList"] %>
+                    <%= p["label"] %>
                 </vivo-publication-author>
             <% } %>
             </vivo-publication-author-list>
+            <% } %>
           </span>
         </vivo-entity-item>
       <% } %>
