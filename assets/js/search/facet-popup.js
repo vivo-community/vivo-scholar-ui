@@ -2,8 +2,8 @@ import { LitElement, html, css } from "lit-element";
 
 // needed add, remove filter functions
 import Faceter from './faceter.js'
-import * as config from './config.js'
-import { classMap } from 'lit-html/directives/class-map';
+//import * as config from './config.js'
+//import { classMap } from 'lit-html/directives/class-map';
 
 class FacetPopupMessage extends Faceter(LitElement) {
 
@@ -151,6 +151,9 @@ class FacetPopupMessage extends Faceter(LitElement) {
       padding-right: 1em;
       padding-left: 1em;
     }
+    ::slotted(vivo-search-facet[hidden=true]) {
+      display: none;
+    }
     ::slotted([slot="heading"]) {
       flex-grow: 1;
       flex-basis: 20%;
@@ -230,14 +233,34 @@ class FacetPopupMessage extends Faceter(LitElement) {
     };
   }
 
+  makeFacetsVisible(facetList) {
+    facetList.forEach((f) => f.removeAttribute("hidden"));
+  }
+
+  makeFacetsHidden(facetList) {
+    facetList.forEach((f) => f.setAttribute("hidden", true));
+  }
+
   searchKeyUp(e) {
-    //console.log(e);
     let filterText = this._searchBox.value;
     if (filterText.length >= 2) {
-      // TODO: filter the facet list based on this
-      console.log(filterText);
+      let matchList = [];
+      let hiddenList = [];
+      this.facets.forEach((f) => {
+        if (f.value.toLowerCase().startsWith(filterText.toLowerCase()) || f.selected == true) {
+           matchList.push(f);
+        } else {
+          hiddenList.push(f);
+        }
+      });
+     
+      this.makeFacetsVisible(matchList);
+      this.makeFacetsHidden(hiddenList);
+
+    } else if (filterText.length < 2) { 
+      // make sure all are seen
+      this.makeFacetsVisible(this.facets); 
     }
-    
   }
 
   render() {
