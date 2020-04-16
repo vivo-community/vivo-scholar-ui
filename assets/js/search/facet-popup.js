@@ -52,13 +52,8 @@ class FacetPopupMessage extends Faceter(LitElement) {
     });
     // if it's not in additionalFilters - then it is a de-selected one
     // from original filters - need to mark for removal (if apply button)
-    let exists = _.find(this.filters, function(x) { 
-      return (x.field == filter.field && x.value == filter.value); 
-    });
-    // FIXME: kind of hate doing this much work to see if something is in list
-    if (typeof exists !== 'undefined') {
-      this.removeFilters.push(filter);
-    } 
+    let exists = this.doesFilterExistsInList(this.filters, filter);
+    if (exists) { this.removeFilters.push(filter); }
   }
 
   doesFilterExistsInList(ary, el) {
