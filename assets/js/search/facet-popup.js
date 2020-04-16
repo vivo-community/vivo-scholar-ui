@@ -137,7 +137,6 @@ class FacetPopupMessage extends Faceter(LitElement) {
       let search = document.querySelector(`[id="${group.search}"]`);
       
       // adds
-      console.log(`additionalFilters= ${JSON.stringify(this.additionalFilters)}`);
       this.filters = this.filters.concat(this.additionalFilters);
       // removes
       this.filters = this.filters.filter((el) => !this.doesFilterExistsInList(this.removeFilters, el));
@@ -151,15 +150,13 @@ class FacetPopupMessage extends Faceter(LitElement) {
       // need to unselect all (newly added)
       this.facets.forEach((f) => {
         let newOne = _.find(this.additionalFilters, function(filter) { 
-          //console.log(`checking if ${filter.field} == ${f.field} && ${filter.value} == ${f.value}`);
           return (filter.field == f.field && filter.value == f.value); 
         })
         if (typeof newOne !== 'undefined') {
           f.removeAttribute('selected')
         } 
         // do removals? need to be reselected?
-        let oldOne = _.find(this.removeFilters, function(filter) { 
-          //console.log(`checking if ${filter.field} == ${f.field} && ${filter.value} == ${f.value}`);
+        let oldOne = _.find(this.removeFilters, function(filter) { ;
           return (filter.field == f.field && filter.value == f.value); 
         })
         if (typeof oldOne !== 'undefined') {
