@@ -247,7 +247,7 @@ class FacetPopupMessage extends Faceter(LitElement) {
       let matchList = [];
       let hiddenList = [];
       this.facets.forEach((f) => {
-        if (f.value.toLowerCase().startsWith(filterText.toLowerCase()) || f.selected == true) {
+        if (f.value.toLowerCase().includes(filterText.toLowerCase()) || f.selected == true) {
            matchList.push(f);
         } else {
           hiddenList.push(f);
