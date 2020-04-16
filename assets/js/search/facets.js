@@ -23,10 +23,6 @@ class SearchFacets extends Faceter(LitElement) {
     this.togglePopup = this.togglePopup.bind(this);
   }
 
-  firstUpdated() {
-    this._slot = this.shadowRoot.querySelector("slot");
-  }
-
   static get styles() {
     return css`
       :host {
@@ -76,13 +72,13 @@ class SearchFacets extends Faceter(LitElement) {
   // might be good to get title of facet in here
   // but it's not necessarily in the data
   generateFacetPopup(showList) {
-    console.log(this._slot);
-    // FIXME: not sure how to get a heading in here
-    // ideally slotted for i18n
+    // FIXME: <h4> then becomes required (instead of anything)
+    let heading = this.querySelector("h4");
+    let headingText = heading.innerText;
     var results = html`
     <p id="toggle-facet" @click=${this.togglePopup}>Show More</p>
     <vivo-facet-popup-message id="popup-facets">
-      <div slot="heading">Filter Heading</div> 
+      <div slot="heading">Filter ${headingText}</div> 
       ${this.generateFacetList(showList)}
     </vivo-facet-popup-message>`;
     return results;
