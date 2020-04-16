@@ -131,7 +131,7 @@ class FacetPopupMessage extends Faceter(LitElement) {
   closeDown(applyFilters=true) {
     this.open = false;
 
-    if (applyFilters) {
+    if (applyFilters) /* e.g. Apply was hit */ {
       // this should get parent vivo-facet-group
       let group = this.getRootNode().host.parentNode;
       let search = document.querySelector(`[id="${group.search}"]`);
@@ -146,23 +146,18 @@ class FacetPopupMessage extends Faceter(LitElement) {
       search.setPage(0);
       search.setFilters(this.filters);
       search.search();
-    } else {
+    } else /* e.g. Cancel was hit */ {
       // need to unselect all (newly added)
       this.facets.forEach((f) => {
-        let newOne = _.find(this.additionalFilters, function(filter) { 
-          return (filter.field == f.field && filter.value == f.value); 
-        })
-        if (typeof newOne !== 'undefined') {
-          f.removeAttribute('selected')
-        } 
+        let isNew = this.doesFilterExistsInList(this.additionalFilters, f);
+        if (isNew) { f.removeAttribute('selected') }
         // do removals? need to be reselected?
-        let oldOne = _.find(this.removeFilters, function(filter) { ;
-          return (filter.field == f.field && filter.value == f.value); 
-        })
-        if (typeof oldOne !== 'undefined') {
-          f.setAttribute('selected', true);
-        } 
+        let isOld = this.doesFilterExistsInList(this.removeFilters, f);  
+        // e.g. set to remove something that existed before?
+        // try to 'restore' it
+        if (isOld) { f.setAttribute('selected', true) }
       });
+      this.filters = [];
     }
   
     // reset when closing
