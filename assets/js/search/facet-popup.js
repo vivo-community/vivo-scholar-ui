@@ -155,7 +155,7 @@ class FacetPopupMessage extends Faceter(LitElement) {
         let isOld = this.doesFilterExistsInList(this.removeFilters, f);  
         // e.g. set to remove something that existed before?
         // try to 'restore' it
-        if (isOld) { f.setAttribute('selected', true) }
+        if (isOld) { f.setAttribute('selected', "") }
       });
       this.filters = [];
     }
