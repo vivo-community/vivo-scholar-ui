@@ -69,10 +69,9 @@ class SearchFacets extends Faceter(LitElement) {
     return results;
   }
 
-  // might be good to get title of facet in here
-  // but it's not necessarily in the data
   generateFacetPopup(showList) {
-    // FIXME: <h4> then becomes required (instead of anything)
+    // FIXME: this is getting the title of popup from
+    // <h4> which means <h4> is required in slot
     let heading = this.querySelector("h4");
     let headingText = heading.innerText;
     var results = html`
