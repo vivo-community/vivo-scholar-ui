@@ -95,6 +95,7 @@ class FacetPopupMessage extends Faceter(LitElement) {
       // keep track of *only* added
       this.queueFilter(facet);
     } else {
+      // or removed
       this.dequeueFilter(facet);
     }
   }
@@ -126,7 +127,7 @@ class FacetPopupMessage extends Faceter(LitElement) {
   closeDown(applyFilters=true) {
     this.open = false;
 
-    if (applyFilters) /* e.g. Apply was hit */ {
+    if (applyFilters) /* e.g. 'Apply' was hit */ {
       // this should get parent vivo-facet-group
       let group = this.getRootNode().host.parentNode;
       let search = document.querySelector(`[id="${group.search}"]`);
@@ -141,7 +142,7 @@ class FacetPopupMessage extends Faceter(LitElement) {
       search.setPage(0);
       search.setFilters(this.filters);
       search.search();
-    } else /* e.g. Cancel was hit */ {
+    } else /* e.g. 'Cancel' was hit */ {
       // need to unselect all (newly added)
       this.facets.forEach((f) => {
         let isNew = this.doesFilterExistsInList(this.additionalFilters, f);
