@@ -1,0 +1,52 @@
+  .search-container {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    width: 100%;
+    margin: 0 auto;
+    grid-auto-flow: dense;
+    grid-column-gap: .5em;
+  }
+  .search-container aside {
+    grid-column: span 2;
+    padding: 0.25em;
+  }
+  .search-container main {
+    grid-column: span 10;
+    padding: 0.25em;
+  }
+  .search-container main {
+    padding-right: 10%;
+  }
+  .search-container aside {
+    padding: 0;
+    background-color: var(--highlightBackgroundColor);
+  }
+  .search-container aside {
+    padding: 0;
+  }
+  .search-container vivo-sidebar {
+    margin: 0;
+  }
+  .search-container vivo-search-sidebar-item {
+    padding-bottom: 0px;
+  }
+  .search-container vivo-modal {
+    text-align: center;
+  }
+
+  
+  @media screen and (max-width: 800px) {
+    .search-container {
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-column-gap: 0;
+      grid-template-rows: auto;
+    }
+    .search-container main {
+      padding: 0;
+    }
+    .search-container aside {
+      padding: 0;
+      margin-top: 1.25em;
+    }
+  }

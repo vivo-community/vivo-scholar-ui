@@ -23,6 +23,10 @@ class SearchFacets extends Faceter(LitElement) {
     this.togglePopup = this.togglePopup.bind(this);
   }
 
+  firstUpdated() {
+    this._slot = this.shadowRoot.querySelector("slot");
+  }
+
   static get styles() {
     return css`
       :host {
@@ -72,8 +76,7 @@ class SearchFacets extends Faceter(LitElement) {
   // might be good to get title of facet in here
   // but it's not necessarily in the data
   generateFacetPopup(showList) {
-    // just added tabindex to try and be able to focus
-
+    console.log(this._slot);
     // FIXME: not sure how to get a heading in here
     // ideally slotted for i18n
     var results = html`
