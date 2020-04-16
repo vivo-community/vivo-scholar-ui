@@ -8,8 +8,8 @@ let Faceter = (superclass) => class extends superclass {
           selected: { type: Boolean, attribute: true, reflect: true },
           filters: { type: Array },
         }
-      }
-    
+    }
+  
   setData(data) {
     this.data = data;
   }

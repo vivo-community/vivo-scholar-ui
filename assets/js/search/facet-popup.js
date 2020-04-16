@@ -2,8 +2,6 @@ import { LitElement, html, css } from "lit-element";
 
 // needed add, remove filter functions
 import Faceter from './faceter.js'
-//import * as config from './config.js'
-//import { classMap } from 'lit-html/directives/class-map';
 
 class FacetPopupMessage extends Faceter(LitElement) {
 
@@ -13,9 +11,6 @@ class FacetPopupMessage extends Faceter(LitElement) {
         attribute: "open",
         type: Boolean,
         reflect: true
-      },
-      pageNumber: {
-        type: Number
       }
     };
   }
@@ -27,17 +22,60 @@ class FacetPopupMessage extends Faceter(LitElement) {
       this.open = false;
       this.filters = [];
 
-      this.classes = { "modal": true, "show-modal": false }
+      this.additionalFilters = [];
+      this.removeFilters = [];
 
+      this.classes = { "modal": true, "show-modal": false }
       this.handleFacetSelected = this.handleFacetSelected.bind(this);
   }
 
+
+  // just need *some* fields when building, otherwise would
+  // send unrecognized parameters to GraphQL
+  turnFacetToFilterParam(facet) {
+    return {
+      "field": facet.field, 
+      "value": facet.value, 
+      "opKey": facet.opKey,
+      "tag": facet.tag,
+    }
+  }
+
+  queueFilter(facet) {
+    this.additionalFilters.push(this.turnFacetToFilterParam(facet));
+  }
+
+  dequeueFilter(facet) {
+    let filter = this.turnFacetToFilterParam(facet);
+    this.additionalFilters = _.reject(this.additionalFilters, function(o) { 
+      return (o.field === filter.field && o.value == filter.value); 
+    });
+    // if it's not in additionalFilters - then it is a de-selected one
+    // from original filters - need to mark for removal (if apply button)
+    let exists = _.find(this.filters, function(x) { 
+      return (x.field == filter.field && x.value == filter.value); 
+    });
+    // FIXME: kind of hate doing this much work to see if something is in list
+    if (typeof exists !== 'undefined') {
+      this.removeFilters.push(filter);
+    } 
+  }
+
+  doesFilterExistsInList(ary, el) {
+    let exists = _.find(ary, function(x) { 
+      return (x.field == el.field && x.value == el.value); 
+    });
+    if (typeof exists !== 'undefined') {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   firstUpdated() {
     this._slot = this.shadowRoot.querySelector("slot");
     this._slot.addEventListener('slotchange', this._onSlotChange);
     this.addEventListener("keydown", this.handleKeydown);
-    this.addEventListener("pageSelected", this.handleFacetPageSelected);
     this.addEventListener('facetSelected', this.handleFacetSelected);
 
     this._searchBox = this.shadowRoot.querySelector("#filter-list");
@@ -47,7 +85,6 @@ class FacetPopupMessage extends Faceter(LitElement) {
     super.disconnectedCallback();
     this._slot.removeEventListener('slotchange', this._onSlotChange);
     this.removeEventListener("keydown", this.handleKeydown);
-    this.removeEventListener("pageSelected", this.handleFacetPageSelected);
     this.removeEventListener('facetSelected', this.handleFacetSelected);
   }
 
@@ -57,13 +94,13 @@ class FacetPopupMessage extends Faceter(LitElement) {
     e.stopPropagation();
     let selected = e.detail.checked;
     e.target.selected = selected;
-    
-    // still need it to be bolded (as if selected)
+
     const facet = e.detail;
     if (facet.checked) {
-      this.addFilter(facet);
+      // keep track of *only* added
+      this.queueFilter(facet);
     } else {
-      this.removeFilter(facet);
+      this.dequeueFilter(facet);
     }
   }
 
@@ -77,15 +114,6 @@ class FacetPopupMessage extends Faceter(LitElement) {
     if (e.keyCode === 27) {
         this.closeDown();
     }
-  }
-
-  handleFacetPageSelected(e) {
-    // NOTE: need to stop bubbling up to 'navigation' component
-    // (only paging facets, not search results)
-    e.preventDefault();
-    e.stopPropagation();
-    let page = e.detail.value;
-    this.pageNumber = page;
   }
 
   openUp() {
@@ -107,6 +135,12 @@ class FacetPopupMessage extends Faceter(LitElement) {
       // this should get parent vivo-facet-group
       let group = this.getRootNode().host.parentNode;
       let search = document.querySelector(`[id="${group.search}"]`);
+      
+      // adds
+      console.log(`additionalFilters= ${JSON.stringify(this.additionalFilters)}`);
+      this.filters = this.filters.concat(this.additionalFilters);
+      // removes
+      this.filters = this.filters.filter((el) => !this.doesFilterExistsInList(this.removeFilters, el));
       // need to set filters on group
       group.setFilters(this.filters);
       // then run search
@@ -114,11 +148,29 @@ class FacetPopupMessage extends Faceter(LitElement) {
       search.setFilters(this.filters);
       search.search();
     } else {
-      // need to unselect all
-      this.facets.forEach((f) => f.removeAttribute('selected'));
-      this.setFilters([]);
+      // need to unselect all (newly added)
+      this.facets.forEach((f) => {
+        let newOne = _.find(this.additionalFilters, function(filter) { 
+          //console.log(`checking if ${filter.field} == ${f.field} && ${filter.value} == ${f.value}`);
+          return (filter.field == f.field && filter.value == f.value); 
+        })
+        if (typeof newOne !== 'undefined') {
+          f.removeAttribute('selected')
+        } 
+        // do removals? need to be reselected?
+        let oldOne = _.find(this.removeFilters, function(filter) { 
+          //console.log(`checking if ${filter.field} == ${f.field} && ${filter.value} == ${f.value}`);
+          return (filter.field == f.field && filter.value == f.value); 
+        })
+        if (typeof oldOne !== 'undefined') {
+          f.setAttribute('selected', true);
+        } 
+      });
     }
   
+    // reset when closing
+    this.additionalFilters = [];
+    this.removeFilters = [];
   }
 
   static get styles() {

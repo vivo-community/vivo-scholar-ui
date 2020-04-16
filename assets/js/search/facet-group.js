@@ -104,14 +104,15 @@ class FacetGroup extends Faceter(LitElement) {
       } 
       const facet = e.detail;
       if (facet.checked) {
+        console.log(`adding facet ${JSON.stringify(facet)} in facet-group`);
         this.addFilter(facet);
       } else {
-
         this.removeFilter(facet);
       }
       let search = document.querySelector(`[id="${this.search}"]`);
 
       search.setPage(0);
+      console.log(`filters=${JSON.stringify(this.filters)} in facet-group`);
       search.setFilters(this.filters);
       search.search();
     }
