@@ -69,13 +69,15 @@ class SearchFacets extends Faceter(LitElement) {
     return results;
   }
 
-  // might be good to get title of facet in here
-  // but it's not necessarily in the data
   generateFacetPopup(showList) {
-    // just added tabindex to try and be able to focus
+    // FIXME: this is getting the title of popup from
+    // <h4> which means <h4> is required in slot
+    let heading = this.querySelector("h4");
+    let headingText = heading.innerText;
     var results = html`
     <p id="toggle-facet" @click=${this.togglePopup}>Show More</p>
     <vivo-facet-popup-message id="popup-facets">
+      <div slot="heading">Filter ${headingText}</div> 
       ${this.generateFacetList(showList)}
     </vivo-facet-popup-message>`;
     return results;

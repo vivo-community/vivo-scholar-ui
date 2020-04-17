@@ -37,9 +37,8 @@ class ModalBox extends LitElement {
             left: 50%;
             transform: translate(-50%, -50%);
             background-color: white;
-            padding: 1rem 1.5rem;
-            width: 24rem;
-            border-radius: 0.5rem;
+            padding: 0;
+            width: var(--modal-width, 24rem);
         }
         .show-modal {
             opacity: 1;
