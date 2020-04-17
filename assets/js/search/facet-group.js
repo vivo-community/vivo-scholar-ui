@@ -106,7 +106,6 @@ class FacetGroup extends Faceter(LitElement) {
       if (facet.checked) {
         this.addFilter(facet);
       } else {
-
         this.removeFilter(facet);
       }
       let search = document.querySelector(`[id="${this.search}"]`);

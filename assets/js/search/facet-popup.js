@@ -2,8 +2,6 @@ import { LitElement, html, css } from "lit-element";
 
 // needed add, remove filter functions
 import Faceter from './faceter.js'
-import * as config from './config.js'
-import { classMap } from 'lit-html/directives/class-map';
 
 class FacetPopupMessage extends Faceter(LitElement) {
 
@@ -13,9 +11,6 @@ class FacetPopupMessage extends Faceter(LitElement) {
         attribute: "open",
         type: Boolean,
         reflect: true
-      },
-      pageNumber: {
-        type: Number
       }
     };
   }
@@ -27,25 +22,64 @@ class FacetPopupMessage extends Faceter(LitElement) {
       this.open = false;
       this.filters = [];
 
-      this.classes = { "modal": true, "show-modal": false }
+      this.additionalFilters = [];
+      this.removeFilters = [];
 
+      this.classes = { "modal": true, "show-modal": false }
       this.handleFacetSelected = this.handleFacetSelected.bind(this);
   }
 
+
+  // just need *some* fields when building, otherwise would
+  // send unrecognized parameters to GraphQL
+  turnFacetToFilterParam(facet) {
+    return {
+      "field": facet.field, 
+      "value": facet.value, 
+      "opKey": facet.opKey,
+      "tag": facet.tag,
+    }
+  }
+
+  queueFilter(facet) {
+    this.additionalFilters.push(this.turnFacetToFilterParam(facet));
+  }
+
+  dequeueFilter(facet) {
+    let filter = this.turnFacetToFilterParam(facet);
+    this.additionalFilters = _.reject(this.additionalFilters, function(o) { 
+      return (o.field === filter.field && o.value == filter.value); 
+    });
+    // if it's not in additionalFilters - then it is a de-selected one
+    // from original filters - need to mark for removal (if apply button)
+    let exists = this.doesFilterExistsInList(this.filters, filter);
+    if (exists) { this.removeFilters.push(filter); }
+  }
+
+  doesFilterExistsInList(ary, el) {
+    let exists = _.find(ary, function(x) { 
+      return (x.field == el.field && x.value == el.value); 
+    });
+    if (typeof exists !== 'undefined') {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   firstUpdated() {
     this._slot = this.shadowRoot.querySelector("slot");
     this._slot.addEventListener('slotchange', this._onSlotChange);
     this.addEventListener("keydown", this.handleKeydown);
-    this.addEventListener("pageSelected", this.handleFacetPageSelected);
     this.addEventListener('facetSelected', this.handleFacetSelected);
+
+    this._searchBox = this.shadowRoot.querySelector("#filter-list");
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
     this._slot.removeEventListener('slotchange', this._onSlotChange);
     this.removeEventListener("keydown", this.handleKeydown);
-    this.removeEventListener("pageSelected", this.handleFacetPageSelected);
     this.removeEventListener('facetSelected', this.handleFacetSelected);
   }
 
@@ -55,13 +89,14 @@ class FacetPopupMessage extends Faceter(LitElement) {
     e.stopPropagation();
     let selected = e.detail.checked;
     e.target.selected = selected;
-    
-    // still need it to be bolded (as if selected)
+
     const facet = e.detail;
     if (facet.checked) {
-      this.addFilter(facet);
+      // keep track of *only* added
+      this.queueFilter(facet);
     } else {
-      this.removeFilter(facet);
+      // or removed
+      this.dequeueFilter(facet);
     }
   }
 
@@ -75,15 +110,6 @@ class FacetPopupMessage extends Faceter(LitElement) {
     if (e.keyCode === 27) {
         this.closeDown();
     }
-  }
-
-  handleFacetPageSelected(e) {
-    // NOTE: need to stop bubbling up to 'navigation' component
-    // (only paging facets, not search results)
-    e.preventDefault();
-    e.stopPropagation();
-    let page = e.detail.value;
-    this.pageNumber = page;
   }
 
   openUp() {
@@ -101,35 +127,53 @@ class FacetPopupMessage extends Faceter(LitElement) {
   closeDown(applyFilters=true) {
     this.open = false;
 
-    if (applyFilters) {
+    if (applyFilters) /* e.g. 'Apply' was hit */ {
       // this should get parent vivo-facet-group
       let group = this.getRootNode().host.parentNode;
       let search = document.querySelector(`[id="${group.search}"]`);
+      
+      // adds
+      this.filters = this.filters.concat(this.additionalFilters);
+      // removes
+      this.filters = this.filters.filter((el) => !this.doesFilterExistsInList(this.removeFilters, el));
       // need to set filters on group
       group.setFilters(this.filters);
       // then run search
       search.setPage(0);
       search.setFilters(this.filters);
       search.search();
-    } else {
-      // need to unselect all
-      this.facets.forEach((f) => f.removeAttribute('selected'));
-      this.setFilters([]);
+    } else /* e.g. 'Cancel' was hit */ {
+      // need to unselect all (newly added)
+      this.facets.forEach((f) => {
+        let isNew = this.doesFilterExistsInList(this.additionalFilters, f);
+        if (isNew) { f.removeAttribute('selected') }
+        // do removals? need to be reselected?
+        let isOld = this.doesFilterExistsInList(this.removeFilters, f);  
+        // e.g. set to remove something that existed before?
+        // try to 'restore' it
+        if (isOld) { f.setAttribute('selected', "") }
+      });
+      this.filters = [];
     }
   
+    // reset when closing
+    this.additionalFilters = [];
+    this.removeFilters = [];
   }
 
   static get styles() {
     return css`
-    vivo-modal([shown]) .fas {
+    vivo-modal {
+      --modal-width: 36rem;
+    }
+    .fas {
       display: inline-block;
       font-style: normal;
       font-variant: normal;
       text-rendering: auto;
-      font-size: 2em;
-      display: flex;
-      flex-direction: row-reverse;
+      font-size: 1em;
       -webkit-font-smoothing: antialiased;
+      flex-basis: 10%;
     }
     :host([open]) .fa-times::before {
       font-family: 'Font Awesome 5 Free';
@@ -144,13 +188,34 @@ class FacetPopupMessage extends Faceter(LitElement) {
     ::slotted(vivo-search-facet) {
       display: block;
       width: 200px;
+      padding-right: 1em;
+      padding-left: 1em;
     }
-    h4 {
+    ::slotted(vivo-search-facet[hidden=true]) {
+      display: none;
+    }
+    ::slotted([slot="heading"]) {
+      flex-grow: 1;
+      flex-basis: 20%;
+      text-align: left;
+      font-weight: bold;
+    }
+    ::slotted(input) {
+      flex-basis: 70%;
+      text-align: left;
+    }
+    .heading {
       background-color: var(--highlightBackgroundColor);
       margin-top: 0;
-      padding: 0;
+      display:flex;
       padding-right: 4px;
-      text-align: right;
+      padding-left: 1em;
+      padding-top: 1em;
+      padding-bottom: 1em;
+    }
+    .smaller-input {
+      font-size: 0.85em;
+      width: 75%;
     }
     .facet-container {
       display: flex;
@@ -158,24 +223,30 @@ class FacetPopupMessage extends Faceter(LitElement) {
       flex-wrap: wrap;
       max-height: 200px;
       min-width: 100px;
-      max-width: 400px;
+      max-width: 32rem;
       overflow: auto;
       overflow-y: hidden;
-      scrollbar-base-color:#ffeaff
+      scrollbar-base-color:#ffeaff;
+      padding-left: 4px;
+      margin: 1em;
     }
     #cancel {
       display: inline-block;
       background-color: var(--mediumNeutralColor);
       color: white;
-      padding: 4px;
-      font-size: 1.2em;
+      padding: 8px;
+      font-size: 1em;
+      font-weight: bold;
+      border: none;
     }
     #apply {
       display: inline-block;
-      background-color: var(--linkColor);
+      background-color: var(--highlightColor);
       color: white;
-      padding: 4px;
-      font-size: 1.2em;
+      padding: 8px;
+      font-size: 1em;
+      font-weight: bold;
+      border: none;
     }
     #cancel:hover {
       cursor: pointer;
@@ -185,21 +256,70 @@ class FacetPopupMessage extends Faceter(LitElement) {
     }
     .actions {
       text-align: center;
+      padding: 8px;
     }
     `;
+  }
+
+  // https://remysharp.com/2010/07/21/throttling-function-calls
+  debounce(fn, delay) {
+    var timer = null;
+    return function () {
+      var context = this, args = arguments;
+      clearTimeout(timer);
+      timer = setTimeout(function () {
+        fn.apply(context, args);
+      }, delay);
+    };
+  }
+
+  makeFacetsVisible(facetList) {
+    facetList.forEach((f) => f.removeAttribute("hidden"));
+  }
+
+  makeFacetsHidden(facetList) {
+    facetList.forEach((f) => f.setAttribute("hidden", true));
+  }
+
+  searchKeyUp(e) {
+    let filterText = this._searchBox.value;
+    if (filterText.length >= 2) {
+      let matchList = [];
+      let hiddenList = [];
+      this.facets.forEach((f) => {
+        if (f.value.toLowerCase().includes(filterText.toLowerCase()) || f.selected == true) {
+           matchList.push(f);
+        } else {
+          hiddenList.push(f);
+        }
+      });
+     
+      this.makeFacetsVisible(matchList);
+      this.makeFacetsHidden(hiddenList);
+
+    } else if (filterText.length < 2) { 
+      // make sure all are seen
+      this.makeFacetsVisible(this.facets); 
+    }
   }
 
   render() {
 
     return html`
     <vivo-modal ?shown="${this.open}">
-        <h4><i class="fas fa-times" @click=${this.cancel}></i></h4>
+        <div class="heading">
+          <slot name="heading"></slot>
+          <input class="smaller-input" type="text" id="filter-list"
+            @keyup=${this.debounce(this.searchKeyUp,  250)}
+            placeholder="Start typing to find a specific filter result">
+          <i class="fas fa-times" @click=${this.cancel}></i>
+        </div>
         <div class="facet-container">
           <slot></slot>
         </div>
         <div class="actions">
-          <a id="cancel" @click=${this.cancel}>Cancel</a>
-          <a id="apply" @click=${this.apply}>Apply</a>
+          <button id="cancel" @click=${this.cancel}>Cancel</button>
+          <button id="apply" @click=${this.apply}>Apply</button>
         </div>
     </vivo-modal>
     `;
