@@ -222,6 +222,7 @@ class FacetPopupMessage extends Faceter(LitElement) {
       flex-direction: column;
       flex-wrap: wrap;
       max-height: 200px;
+      min-height: 200px;
       min-width: 100px;
       max-width: 32rem;
       overflow: auto;
