@@ -105,8 +105,11 @@ class SearchFacet extends LitElement {
         }
         .label {
           flex-grow: unset;
-          flex-basis: unset;
           line-height: 22pt;
+          order: 1;
+        }
+        .checkbox-container {
+          order: 0;
         }
       }
       
