@@ -218,27 +218,21 @@ class SearchNavigation extends LitElement {
     // only for smaller/mobile version
     handleToggleFilters(e) {
       // e.detail = {show: (true|false)};
-      console.log(e.detail);
-      //let activeSearch = this.browsingState.activeSearch;
-      //let id = activeSearch.id;
-
       let show = e.detail.show;
       // note: choosing tab should mark as 'selected' 
       let facetGroups = document.querySelectorAll('vivo-facet-group[selected]');
 
       // FIXME: too dependent on name
       let searchTabs = document.querySelector('#all-search-tabs');
+      // also, maybe use attributes rather than inline style
       facetGroups.forEach(group => {
-        console.log(group);
         if (show) {
            searchTabs.style.display = 'none';
+           group.style.display = 'block';
         } else {
           searchTabs.style.display = 'block';
+          group.style.display = 'none';
         }
-        // needs to set show/hide facetGroup
-        // AND show/hide main search results
-        // #all-search-tabs
-        //group.setAttribute('display', 'block');
       });
     }
 

@@ -35,6 +35,9 @@ class FacetGroup extends Faceter(LitElement) {
         ::slotted(vivo-search-facets) {
           text-align: left;
         }
+        :host([selected]) {
+          display: none;
+        }
 
       }
       `
