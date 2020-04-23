@@ -4,11 +4,11 @@ class SearchFacetGroupToggle extends LitElement {
 
     static get properties() {
         return {
-          shown: { type: Boolean }
+            shown: { type: Boolean }
         }
-      }
-    
-      
+    }
+
+
     constructor() {
         super();
         this.shown = false;
@@ -17,12 +17,19 @@ class SearchFacetGroupToggle extends LitElement {
 
     static get styles() {
         return css`
+        :host {
+            display: none;
+        }
         a {
           font-weight: bold;
         }
         a:hover {
           cursor: pointer;
-        }`
+        }
+        @media screen and (max-width: 1000px) {
+            :host { display: inline; }
+        }        
+        `
     }
 
     handleToggleFilters(e) {
