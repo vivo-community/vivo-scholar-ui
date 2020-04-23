@@ -56,7 +56,7 @@ class OrganizationTreeListSelector extends LitElement {
     }
   }
   render () {
-    console.log('treeListId: ' + this.treelistid)
+    // console.log('treeListId: ' + this.treelistid)
     let vm = this
     //return html`<select @change="${this.handleSelection}"><option value="tree">Hierarchy</option><option value="list">Index</option></input>`
     return html`
@@ -170,22 +170,25 @@ class OrganizationTree extends LitElement {
     let func = 'getAllOrgData'
     vm.logDebug(func + ' - called - orgid: ' + orgid)
     return new Promise((resolve, reject) => {
-      getData(orgid)
+      vm.getData(orgid)
         .then((data) => {
           if (data && data.hasSubOrganizations) {
             let promises = []
             data.hasSubOrganizations.forEach((v, idx) => {
-              promises.push(getAllOrgData(v.id))
+              vm.logDebug(func + ' hasSubOrganizations - looking for: ' + v.id)
+              promises.push(vm.getAllOrgData(v.id))
             })
             Promise.all(promises)
               .then(() => {
                 resolve()
               })
+          } else {
+            resolve()
           }
         })
         .catch((err) => {
           vm.logError('getAllOrgData - getData error. OrgId: ' + orgId + ' Error: ' + err)
-          throw err
+          reject(err)
         })
     })
   }
@@ -193,9 +196,9 @@ class OrganizationTree extends LitElement {
     let vm = this
     let func = 'ensureCachePopulated'
     vm.logDebug(func + ' - called')
-    return new Promise(() => {
+    return new Promise((resolve, reject) => {
       if (!vm.getCache().isFullyPopulated()) {
-        getAllOrgData(vm.orgid)
+        vm.getAllOrgData(vm.orgid)
           .then(() => {
             vm.getCache().setFullyPopulated()
             vm.logDebug(func + ' - resolving after setting fully populated')
@@ -211,19 +214,22 @@ class OrganizationTree extends LitElement {
       }
     })
   }
-  getData () {
+  getData (orgid) {
     let func = 'organizationTree.getData'
     let vm = this
     return new Promise((resolve, reject) => {
       vm.logDebug('graphql object: ')
       vm.logDebug(vm.graphql)
-      vm.logDebug('getData tree query for orgid: ' + vm.orgid)
-      let orgData = vm.getCache().getOrg(vm.orgid)
+      if (!orgid) {
+        orgid = vm.orgid
+      }
+      vm.logDebug('getData tree query for orgid: ' + orgid)
+      let orgData = vm.getCache().getOrg(orgid)
       if (!orgData) {
         client.query({
           query: vm.graphql,
           variables: {
-            id: vm.orgid
+            id: orgid
           }
         })
           .then((resp) => {
@@ -231,8 +237,8 @@ class OrganizationTree extends LitElement {
             vm.logDebug('data returned by query: ')
             vm.logDebug(data)
             // vm.qldata = data.organization
-            vm.logDebug(func + ' - added data to cache for orgid: ' + vm.orgid)
-            vm.getCache().putOrg(vm.orgid, data.organization)
+            vm.logDebug(func + ' - added data to cache for orgid: ' + orgid)
+            vm.getCache().putOrg(orgid, data.organization)
             if (vm.logLevelDebug()) {
               vm.getCache().dump()
             }
@@ -249,19 +255,48 @@ class OrganizationTree extends LitElement {
       }
     })
   }
-  
+  onMutation (mutations, observer) {
+    // This pointer is incorrect at this point, can't call logdebug until after
+    //   set via mutation.target, but cannot set that until looping through mutations to get one
+    //   Possibly could use mutations[0].target if absolutely necessary
+    
+    // console.log('onMutation')
+    // console.log(mutations)
+    // console.log(observer)
+    for (let mutation of mutations) {
+      let vm = mutation.target // the original this of the organization-tree element
+      if (mutation.type === 'attributes') {
+        if (mutation.attributeName === 'showas') {
+          vm.logDebug(mutation.attributeName + ' changed')
+          // Call the hasChanged for manually since lit-element does not detect attributes changed
+          //  on this element by another element (it seems to only track changes made by this element)
+          //  We could obtain the old value from vm.showas, but it's not used by showAsHasChanged
+          let newVal = vm.getAttribute('showas')
+          vm.showasHasChanged(newVal, '')
+        }
+      }
+    }
+  }
   connectedCallback () {
     super.connectedCallback ()
     let vm = this
-     vm.logDebug('vivo-organizations-tree connected')
-    if (vm.opened) {
+    vm.logDebug('connectedCallback this: ' + vm)
+    vm.logDebug(vm)
+    vm.logDebug('vivo-organizations-tree connected')
+    vm.observer = new MutationObserver(vm.onMutation)
+    vm.observer.observe(vm /* element */, {
+      attributes: true,
+      childList: false,
+      subtree: false
+    })
+    // if (vm.opened) {
       vm.getData()
         .then((data) => {
           vm.logDebug('getData callback')
           vm.qldata = data
       })
-    }
-     vm.logDebug('getData complete')
+    //}
+    vm.logDebug('getData complete')
   }
   
   disconnectedCallback () {
@@ -324,7 +359,7 @@ class OrganizationTree extends LitElement {
             if (vm.isArray(vm.qldata.hasSubOrganizations)) {
               vm.qldata.hasSubOrganizations.forEach((v, idx) => {
                 this.logDebug('tree creating object elem directly for array item: ' + idx + '. ' + vm.stringify(vm.qldata))
-                templates.push(html`<vivo-organizations-tree class="${vm.getShowAsClass()}" orgid="${v.id}" orgname="${v.label}" qldata="{}" opened="false">`)
+                templates.push(html`<vivo-organizations-tree class="${vm.getShowAsClass()}" orgid="${v.id}" orgname="${v.label}" qldata="{}">`)
               })
             } //else {
               // this.logDebug('tree creating ERROR directly. ' + vm.stringify(vm.qldata))
@@ -358,7 +393,7 @@ class OrganizationTree extends LitElement {
     vm.levelWarn = 2
     vm.levelError = 1
     vm.levelNone = 0
-    vm.logLevel = vm.levelDebug // $$Log level setting
+    vm.logLevel = vm.levelError // vm.levelDebug // $$Log level setting
   }
   logLevelTrace () {
     return this.logLevel >= this.levelTrace
