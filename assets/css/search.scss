@@ -1,17 +1,17 @@
   .search-container {
     display: grid;
-    grid-template-columns: repeat(12, 1fr);
+    grid-template-columns: repeat(20, 1fr);
     width: 100%;
     margin: 0 auto;
     grid-auto-flow: dense;
     grid-column-gap: .5em;
   }
   .search-container aside {
-    grid-column: span 2;
+    grid-column: span 4;
     padding: 0.25em;
   }
   .search-container main {
-    grid-column: span 10;
+    grid-column: span 16;
     padding: 0.25em;
   }
   .search-container main {
