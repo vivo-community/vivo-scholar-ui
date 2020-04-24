@@ -106,7 +106,6 @@ class FacetPopupMessage extends Faceter(LitElement) {
   }
 
   handleKeydown(e) {
-    // TODO: note only seems to work when header on popup has focus
     if (e.keyCode === 27) {
         this.closeDown();
     }

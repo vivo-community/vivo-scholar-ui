@@ -28,6 +28,12 @@ class SearchFacetGroupToggle extends LitElement {
         }
         @media screen and (max-width: 1000px) {
             :host { display: inline; }
+            :host .fa-filter::before {
+                font-family: 'Font Awesome 5 Free';
+                font-weight: 900;
+                content: "\\f0b0";
+                font-style: normal;
+              }
         }        
         `
     }
@@ -44,10 +50,10 @@ class SearchFacetGroupToggle extends LitElement {
 
     render() {
         let cmd = this.shown ? 'Hide' : 'Show';
-        // NOTE: not seeing filter image
-        return html`<button @click="${this.handleToggleFilters}">
-           ${cmd} filters
-           <i class="fas fa-filter"></i>
+        return html`
+        <button @click="${this.handleToggleFilters}">
+          <i class="fas fa-filter"></i> 
+          ${cmd} filters
         </button>`
     }
 }
