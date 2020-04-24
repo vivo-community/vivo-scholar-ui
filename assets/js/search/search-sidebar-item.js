@@ -28,6 +28,7 @@ class SearchSidebarItem extends LitElement {
       @media screen and (max-width: 1000px) {
         ::slotted([slot="content"]) {
           font-size: unset;
+          background-color: var(--lightNeutralColor);
         }
       }
       @media screen and (max-width: 800px) {

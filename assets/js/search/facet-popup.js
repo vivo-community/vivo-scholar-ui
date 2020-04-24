@@ -259,6 +259,16 @@ class FacetPopupMessage extends Faceter(LitElement) {
       text-align: center;
       padding: 8px;
     }
+    @media screen and (max-width: 1000px) {
+
+      .facet-container {
+        flex-direction: row;
+        overflow: auto;
+        overflow-x: hidden;
+        scrollbar-base-color:#ffeaff;
+      }
+
+    }
     `;
   }
 

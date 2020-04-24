@@ -44,8 +44,10 @@ class SearchFacetGroupToggle extends LitElement {
 
     render() {
         let cmd = this.shown ? 'Hide' : 'Show';
+        // NOTE: not seeing filter image
         return html`<button @click="${this.handleToggleFilters}">
            ${cmd} filters
+           <i class="fas fa-filter"></i>
         </button>`
     }
 }

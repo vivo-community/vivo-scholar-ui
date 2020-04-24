@@ -225,6 +225,8 @@ class SearchNavigation extends LitElement {
       // FIXME: too dependent on name
       let searchTabs = document.querySelector('#all-search-tabs');
       // also, maybe use attributes rather than inline style
+
+      // TODO: try to hide header and sub-header ?
       facetGroups.forEach(group => {
         if (show) {
            searchTabs.style.display = 'none';

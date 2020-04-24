@@ -110,6 +110,7 @@ class SearchFacet extends LitElement {
         }
         .checkbox-container {
           order: 0;
+          padding: 8px;
         }
       }
       
