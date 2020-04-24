@@ -178,6 +178,7 @@ class FacetPopupMessage extends Faceter(LitElement) {
       font-family: 'Font Awesome 5 Free';
       font-weight: 900;
       content: "\\f00d";
+      padding: 4px;
     }
     ::slotted(a) {
       text-decoration: none;
@@ -259,14 +260,17 @@ class FacetPopupMessage extends Faceter(LitElement) {
       padding: 8px;
     }
     @media screen and (max-width: 1000px) {
-
+      ::slotted(vivo-search-facet) {
+         width: unset;
+       }
       .facet-container {
-        flex-direction: row;
+        display: block;
         overflow: auto;
         overflow-x: hidden;
         scrollbar-base-color:#ffeaff;
+        min-height: 50%;
+        max-height: 85%;
       }
-
     }
     `;
   }
