@@ -1,18 +1,31 @@
 <style>
-  vivo-organizations-tree {
-    margin: 1em;
-    font-size: 10px;
-    font-style: italic;
-  }
-  h2 {
+  .h2 {
+    align-items: flex-start;
     color: #0577b1;
-    font-size: 32px;
+    font-size: 40px;
+    padding-left: 20px;
+    font-weight: 600;
+    font-familiy: Fira, sans-serif;
+    padding-top: 3px;
+  }
+  .viewas {
+    font-size: 15px;
+  }
+  .top-line {
+    display: flex;
+    width: 70%;
+    justify-content: space-between;
+  }
+  .selector {
+    align-items: center;
   }
 </style>
-<h2>Organizations</h2>
+
 <!-- Testing only><%= data["organization"]["name"] %><br/> <xx%= data["organization"]["id"] %-->
 <!-- Next line will change to just accept the id passed into the page from the environment. Right now a query is done. -->
 
-<vivo-organizations-tree-list-selector treelistid="tree-list"></vivo-organizations-tree-list-selector>
-
-<vivo-organizations-tree id="tree-list" class="showastree" qldata="{}" orgid="<%= data["organization"]["id"] %>"  ></vivo-organizations-tree>
+<div class="top-line">
+  <span class="h2">Organizations</span>
+  <span class="selector"><span class="viewas">View as: </span><vivo-organizations-tree-list-selector treelistid="tree-list"></vivo-organizations-tree-list-selector></span>
+</div>
+  <vivo-organizations-tree id="tree-list" class="showastree" qldata="{}" orgid="<%= data["organization"]["id"] %>"  ></vivo-organizations-tree>

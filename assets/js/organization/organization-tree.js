@@ -1,4 +1,5 @@
 import {LitElement, html, css} from 'lit-element'
+import { ifDefined } from 'lit-html/directives/if-defined.js'
 import organizationSubOrgQuery from "./organization-query"
 import OrganizationCache from "./organization-cache"
 import client from "../lib/apollo"
@@ -7,6 +8,13 @@ import '@vaadin/vaadin-select'
      Go to the constructor near the bottom of this module to set the log level,
      or search for $$log (FIXME: use existing central logging control or factor out to create one)
 */
+// TODO: 0) Add twisties
+// TODO: 1) needs a spinner for queries
+// TODO: 2) probably needs to integrate 'organizations' query to get root orgs and filter out those with no sub-orgs for
+//     starting point (OpenVivo may not have an actual single root) -- will probably require a new lit-element as tree
+//     root
+// TODO: 3) after implementing #2, re-working the cache approach to use roots may be warranted as well
+
 import _ from "lodash"
 class OrganizationTreeListSelector extends LitElement {
   static get properties () {
@@ -153,9 +161,37 @@ class OrganizationTree extends LitElement {
       :host(.showaslist) {
         display: block;
       }
+
       :host(.showastree) {
         display: block;
         padding-left: 0.5em;
+      }
+
+      :host {
+        font-size: 18px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 1.8em;
+      }
+
+      div {
+        font-size: 18px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 1.8em;
+      }
+
+      .indicator {
+        display: none;
+      }
+
+      .opened .indicator {
+        display: inline;
+        
+      }
+
+      .closed .indicator {
+        display: inline;
       }
     `
   }
@@ -165,6 +201,7 @@ class OrganizationTree extends LitElement {
     this.logDebug('click')
     vm.opened = !vm.opened
   }
+  
   getAllOrgData (orgid) {
     let vm = this
     let func = 'getAllOrgData'
@@ -192,6 +229,7 @@ class OrganizationTree extends LitElement {
         })
     })
   }
+  
   ensureCachePopulated () {
     let vm = this
     let func = 'ensureCachePopulated'
@@ -214,6 +252,7 @@ class OrganizationTree extends LitElement {
       }
     })
   }
+  
   getData (orgid) {
     let func = 'organizationTree.getData'
     let vm = this
@@ -255,6 +294,7 @@ class OrganizationTree extends LitElement {
       }
     })
   }
+  
   onMutation (mutations, observer) {
     // This pointer is incorrect at this point, can't call logdebug until after
     //   set via mutation.target, but cannot set that until looping through mutations to get one
@@ -277,6 +317,7 @@ class OrganizationTree extends LitElement {
       }
     }
   }
+  
   connectedCallback () {
     super.connectedCallback ()
     let vm = this
@@ -318,11 +359,13 @@ class OrganizationTree extends LitElement {
   isArray (obj) {
     return Array.isArray(obj)
   }
+  
   isPrimitive (obj) {
     let rv = !(obj === undefined) && !(obj === null) && !this.isObject(obj) && !this.isArray(obj)
     this.logDebug('isPrimitive of obj: ' + JSON.stringify(obj) + ' is: ' + rv)
     return rv
   }
+  
   stringify (obj) {
     let msg = 'Error converting to string'
     let rv = msg
@@ -334,18 +377,22 @@ class OrganizationTree extends LitElement {
     }
     return rv
   }
+  
   getName (obj) {
     this.logDebug('getName: ' + this.stringify(obj))
     return obj.name || obj.label
   }
+  
   getShowAsType () {
     let rv = (this.showas ? this.showas : 'tree')
     this.logDebug('getShowAsType: ' + rv)
     return rv
   }
+  
   getShowAsClass () {
     return (this.getShowAsType() === 'list' ? 'showaslist' : 'showastree')
   }
+  
   render () {
     let vm = this
     try {
@@ -353,11 +400,11 @@ class OrganizationTree extends LitElement {
       vm.logDebug('My id(non-root is undefined): ' + vm.id)
       let templates = []
       if (vm.getShowAsType() === 'tree') {
-        templates.push(html`<div @click="${vm.handleClick}">${vm.getName(vm.qldata)}</div>`)
+        templates.push(html`<div><span class="opened indicator">&gt;&nbsp;</span><span @click="${vm.handleClick}">${vm.getName(vm.qldata)}</span></div>`)
         if (vm.opened) {
           if (vm.qldata && !_.isEmpty(vm.qldata)) {
             if (vm.isArray(vm.qldata.hasSubOrganizations)) {
-              vm.qldata.hasSubOrganizations.forEach((v, idx) => {
+              vm.qldata.hasSubOrganizations.sort((a, b) => a.label >= b.label).forEach((v, idx) => {
                 this.logDebug('tree creating object elem directly for array item: ' + idx + '. ' + vm.stringify(vm.qldata))
                 templates.push(html`<vivo-organizations-tree class="${vm.getShowAsClass()}" orgid="${v.id}" orgname="${v.label}" qldata="{}">`)
               })
@@ -383,6 +430,7 @@ class OrganizationTree extends LitElement {
       return (html`<div>${msg}</div>`)
     }
   }
+  
   constructor () {
     super ()
     let vm = this
