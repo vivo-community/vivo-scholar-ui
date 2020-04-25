@@ -416,10 +416,10 @@ class OrganizationTree extends LitElement {
         const hasOrgs = theData && !_.isEmpty(theData) && vm.isArray(theData.hasSubOrganizations)
         const classes = ['indicator']
         if (hasOrgs) {
-          if (vm.classList.contains('closed'))
-            classes.push('closed')
-          else if (vm.classList.contains('opened')) {
+          if (vm.classList.contains('opened')) {
             classes.push('opened')
+          } else {
+            classes.push('closed')
           }
         }
         vm.logDebug('openClosed - classes are: ' + classes + ' theData is: ' + vm.stringify(theData))
