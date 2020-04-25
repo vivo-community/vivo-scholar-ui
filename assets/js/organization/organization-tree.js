@@ -1,21 +1,23 @@
-import {LitElement, html, css} from 'lit-element'
-import { ifDefined } from 'lit-html/directives/if-defined.js'
+import {LitElement, css} from 'lit-element'
+import {html, directive} from 'lit-html'
 import organizationSubOrgQuery from "./organization-query"
 import OrganizationCache from "./organization-cache"
 import client from "../lib/apollo"
 import '@vaadin/vaadin-select'
+import _ from "lodash"
+
 /* NOTE: the organization-tree object has a variable to control logging level
      Go to the constructor near the bottom of this module to set the log level,
      or search for $$log (FIXME: use existing central logging control or factor out to create one)
 */
-// TODO: 0) Add twisties
+
+// TODO: 0) Add node openers/closers to tree view
 // TODO: 1) needs a spinner for queries
 // TODO: 2) probably needs to integrate 'organizations' query to get root orgs and filter out those with no sub-orgs for
 //     starting point (OpenVivo may not have an actual single root) -- will probably require a new lit-element as tree
 //     root
 // TODO: 3) after implementing #2, re-working the cache approach to use roots may be warranted as well
 
-import _ from "lodash"
 class OrganizationTreeListSelector extends LitElement {
   static get properties () {
     return {
@@ -53,11 +55,12 @@ class OrganizationTreeListSelector extends LitElement {
       if (selected === 'list') {
         this.selected = 'Index'
         // console.log('setting treelist attribute showas to list')
-        vm.treeList.setAttribute('showas','list')
+        vm.treeList.classList.add('showaslist')
+        vm.treeList.classList.remove('showastree')
       } else {
         this.selected = 'Hierarchy'
-        vm.treeList.setAttribute('showas','tree')
-        // console.log('setting treelist attribute showas to tree')
+        vm.treeList.classList.add('showastree')
+        vm.treeList.classList.remove('showaslist')
       }
     }  else {
       this.selected = 'Hierarchy'
@@ -81,6 +84,13 @@ class OrganizationTreeListSelector extends LitElement {
 }
 customElements.define('vivo-organizations-tree-list-selector', OrganizationTreeListSelector)
 
+const opener = () => {
+  return(html`<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 14 14"><path d="M0 0v16l6-6-6-6z" transform="translate(4,-3)" /></svg>`)
+}
+const closer = ()  => {
+  return(html`<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 20 20"><path d="M0 0v16l6-6-6-6z" transform="rotate(90) translate(7, -15)" /></svg>`)
+}
+
 class OrganizationTree extends LitElement {
   
   // LOG LEVEL - The initial log level is set in the constructor() near the bottom of the module
@@ -89,38 +99,6 @@ class OrganizationTree extends LitElement {
     this.logLevel = level
   }
   
-  openedHasChanged (newVal, oldVal) {
-    this.logDebug(`openHasChanged from ${oldVal} to ${newVal}`)
-    return true
-  }
-  
-  dataHasChanged (newVal, oldVal) {
-    let vm = this
-    vm.logDebug(`dataHasChanged from ${vm.stringify(oldVal)} to ${vm.stringify(newVal)}`)
-    vm.requestUpdate()
-  }
-  showasHasChanged(newVal, oldVal) {
-    let vm = this
-    vm.logDebug(`\n\nshowasHasChanged from ${vm.stringify(oldVal)} to ${vm.stringify(newVal)}\n\n`)
-    let oldClass = 'showaslist'
-    let newClass = 'showastree'
-    if (newVal === 'list') {
-      oldClass = 'showastree'
-      newClass = 'showaslist'
-    }
-    vm.classList.remove(oldClass)
-    vm.classList.add(newClass)
-    if (newVal === 'list') {
-      vm.logDebug('calling ensureCachePopulated')
-      vm.ensureCachePopulated()
-        .then(() => {
-          vm.requestUpdate()
-        })
-    } else {
-      vm.logDebug('NOT calling ensureCachePopulated')
-      vm.requestUpdate()
-    }
-  }
   static get properties () {
     return {
       id: {
@@ -131,28 +109,10 @@ class OrganizationTree extends LitElement {
         type: String,
         value: null
       },
-      showas: {
-        type: String,
-        value: null,
-        reflect: true,
-        hasChanged: this.showasHasChanged
-      },
-      opened: {
-        type: Boolean,
-        value: false,
-        reflect: true,
-        hasChanged: this.openedHasChanged
-      },
       graphql: {
         type: Object,
         value: {}
       },
-      qldata: {
-        type: Object,
-        value: {},
-        reflect: true,
-        hasChanged: this.dataHasChanged
-      }
     }
   }
 
@@ -182,16 +142,18 @@ class OrganizationTree extends LitElement {
       }
 
       .indicator {
-        display: none;
+        display: inline;
+        margin-left: 9px;
       }
 
-      .opened .indicator {
+      .opened.indicator {
         display: inline;
-        
+        margin-left: 0px;
       }
 
-      .closed .indicator {
+      .closed.indicator {
         display: inline;
+        margin-left: 0px;
       }
     `
   }
@@ -199,9 +161,36 @@ class OrganizationTree extends LitElement {
   handleClick (ev) {
     let vm = this
     this.logDebug('click')
-    vm.opened = !vm.opened
+    if (vm.showas === 'tree') {
+      vm.opened = !vm.opened
+      if (vm.opened) {
+        vm.classList.remove('closed')
+        vm.classList.add('opened')
+      } else {
+        vm.classList.remove('opened')
+        vm.classList.add('closed')
+      }
+    }
+    this.logDebug(`click ${vm.opened}`)
   }
   
+  classListChanged (newClassList, oldClassList) {
+    let vm = this
+    let func = 'classListChanged'
+    vm.logDebug(`${func} - class old value: '${oldClassList}' new value: '${newClassList}'`)
+    vm.showas = 'list'
+    if (newClassList.includes('showastree')) {
+      vm.showas = 'tree'
+    }
+    if (vm.showas === 'list') {
+      vm.ensureCachePopulated()
+        .then(() => {
+          vm.requestUpdate()
+        })
+    } else {
+      vm.requestUpdate()
+    }
+  }
   getAllOrgData (orgid) {
     let vm = this
     let func = 'getAllOrgData'
@@ -294,26 +283,44 @@ class OrganizationTree extends LitElement {
       }
     })
   }
-  
+  getDataValue () {
+    return this.qldata // this.getAttribute('qldata')
+  }
+  setDataValue (value) {
+    let vm = this
+    vm.qldata = value // setAttribute('qldata', value)
+    vm.requestUpdate()
+  }
   onMutation (mutations, observer) {
     // This pointer is incorrect at this point, can't call logdebug until after
     //   set via mutation.target, but cannot set that until looping through mutations to get one
     //   Possibly could use mutations[0].target if absolutely necessary
-    
+
     // console.log('onMutation')
     // console.log(mutations)
     // console.log(observer)
     for (let mutation of mutations) {
+      const targetAttrs = []
       let vm = mutation.target // the original this of the organization-tree element
+      targetAttrs.push(['class', vm.classListChanged])
+      // targets.push(['showas', vm.showasHasChanged])
+      // targets.push(['qldata', vm.dataHasChanged])
+      // targets.push(['opened', vm.openedHasChanged])
       if (mutation.type === 'attributes') {
-        if (mutation.attributeName === 'showas') {
-          vm.logDebug(mutation.attributeName + ' changed')
-          // Call the hasChanged for manually since lit-element does not detect attributes changed
-          //  on this element by another element (it seems to only track changes made by this element)
-          //  We could obtain the old value from vm.showas, but it's not used by showAsHasChanged
-          let newVal = vm.getAttribute('showas')
-          vm.showasHasChanged(newVal, '')
-        }
+        targetAttrs.forEach((v) => {
+          vm.logDebug(`onMutation checking for attribute: ${v[0]}`)
+          if (v[0] === mutation.attributeName) {
+            if (v[0] === 'class') {
+              vm.logDebug(`class old value: '${mutation.oldValue}' new value: '${vm.classList}'`)
+              const domTokenAsArray = v => { return v.toString().length > 0 ? v.toString().split(' ') : [] }
+              v[1].apply(vm, [domTokenAsArray(vm.classList), domTokenAsArray(mutation.oldValue)])
+            } else {
+              let newVal = vm.getAttribute(v[0])
+              vm.logDebug(`${mutation.attributeName} changed to ${newVal}`)
+              v[1].apply(vm, [newVal, '']) // called hasChanged with new value (old is not tracked)
+            }
+          }
+        })
       }
     }
   }
@@ -327,6 +334,7 @@ class OrganizationTree extends LitElement {
     vm.observer = new MutationObserver(vm.onMutation)
     vm.observer.observe(vm /* element */, {
       attributes: true,
+      attributeOldValue: true,
       childList: false,
       subtree: false
     })
@@ -334,12 +342,11 @@ class OrganizationTree extends LitElement {
       vm.getData()
         .then((data) => {
           vm.logDebug('getData callback')
-          vm.qldata = data
+          vm.setDataValue(data)
       })
     //}
     vm.logDebug('getData complete')
   }
-  
   disconnectedCallback () {
     super.disconnectedCallback ()
     this.logDebug('vivo-organizations-tree disconnected')
@@ -392,21 +399,44 @@ class OrganizationTree extends LitElement {
   getShowAsClass () {
     return (this.getShowAsType() === 'list' ? 'showaslist' : 'showastree')
   }
+  opener () {
+    return html`<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 14 14"><path d="M0 0v16l6-6-6-6z" transform="translate(4,-3)" /></svg>`
+  }
+  closer () {
+    return html`<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 20 20"><path d="M0 0v16l6-6-6-6z" transform="rotate(90) translate(7, -15)" /></svg>`
+  }
   
   render () {
     let vm = this
     try {
-      vm.logDebug('tree after graphql: ' + vm.stringify(vm.qldata))
+      vm.logDebug('tree after graphql: ' + vm.stringify(vm.getDataValue()))
       vm.logDebug('My id(non-root is undefined): ' + vm.id)
       let templates = []
       if (vm.getShowAsType() === 'tree') {
-        templates.push(html`<div><span class="opened indicator">&gt;&nbsp;</span><span @click="${vm.handleClick}">${vm.getName(vm.qldata)}</span></div>`)
+        const theData = vm.getDataValue()
+        const hasOrgs = theData && !_.isEmpty(theData) && vm.isArray(theData.hasSubOrganizations)
+        const classes = ['indicator']
+        if (hasOrgs) {
+          if (vm.classList.contains('closed'))
+            classes.push('closed')
+          else if (vm.classList.contains('opened')) {
+            classes.push('opened')
+          }
+        }
+        vm.logDebug('openClosed - classes are: ' + classes + ' theData is: ' + vm.stringify(theData))
+        if (classes.includes('opened')) {
+          templates.push(html`<div><span class="${classes.join(' ')}">${vm.closer()}</span><span @click="${vm.handleClick}">${vm.getName(theData)}</span></div>`)
+        } else if (classes.includes('closed')) {
+          templates.push(html`<div><span class="${classes.join(' ')}">${vm.opener()}</span><span @click="${vm.handleClick}">${vm.getName(theData)}</span></div>`)
+        } else {
+          templates.push(html`<div><span class="${classes.join(' ')}"></span><span @click="${vm.handleClick}">${vm.getName(theData)}</span></div>`)
+        }
         if (vm.opened) {
-          if (vm.qldata && !_.isEmpty(vm.qldata)) {
-            if (vm.isArray(vm.qldata.hasSubOrganizations)) {
-              vm.qldata.hasSubOrganizations.sort((a, b) => a.label >= b.label).forEach((v, idx) => {
-                this.logDebug('tree creating object elem directly for array item: ' + idx + '. ' + vm.stringify(vm.qldata))
-                templates.push(html`<vivo-organizations-tree class="${vm.getShowAsClass()}" orgid="${v.id}" orgname="${v.label}" qldata="{}">`)
+          if (vm.getDataValue() && !_.isEmpty(vm.getDataValue())) {
+            if (vm.isArray(vm.getDataValue().hasSubOrganizations)) {
+              vm.getDataValue().hasSubOrganizations.sort((a, b) => a.label >= b.label).forEach((v, idx) => {
+                this.logDebug('tree creating object elem directly for array item: ' + idx + '. ' + vm.stringify(vm.getDataValue()))
+                templates.push(html`<vivo-organizations-tree class="${vm.getShowAsClass()}" orgid="${v.id}" orgname="${v.label}">`)
               })
             } //else {
               // this.logDebug('tree creating ERROR directly. ' + vm.stringify(vm.qldata))
@@ -434,6 +464,9 @@ class OrganizationTree extends LitElement {
   constructor () {
     super ()
     let vm = this
+    vm.qldata = {}
+    vm.showas = 'tree'
+    vm.opened = false
     vm.graphql = organizationSubOrgQuery
     vm.levelTrace = 5
     vm.levelDebug = 4
@@ -441,7 +474,7 @@ class OrganizationTree extends LitElement {
     vm.levelWarn = 2
     vm.levelError = 1
     vm.levelNone = 0
-    vm.logLevel = vm.levelError // vm.levelDebug // $$Log level setting
+    vm.logLevel = vm.levelDebug // $$Log level setting
   }
   logLevelTrace () {
     return this.logLevel >= this.levelTrace

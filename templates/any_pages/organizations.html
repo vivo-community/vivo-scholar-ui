@@ -7,6 +7,7 @@
     font-weight: 600;
     font-familiy: Fira, sans-serif;
     padding-top: 3px;
+    margin-bottom: 35px;
   }
   .viewas {
     font-size: 15px;
@@ -28,4 +29,4 @@
   <span class="h2">Organizations</span>
   <span class="selector"><span class="viewas">View as: </span><vivo-organizations-tree-list-selector treelistid="tree-list"></vivo-organizations-tree-list-selector></span>
 </div>
-  <vivo-organizations-tree id="tree-list" class="showastree" qldata="{}" orgid="<%= data["organization"]["id"] %>"  ></vivo-organizations-tree>
+  <vivo-organizations-tree id="tree-list" class="showastree closed" orgid="<%= data["organization"]["id"] %>"  ></vivo-organizations-tree>
