@@ -11,7 +11,6 @@ import _ from "lodash"
      or search for $$log (FIXME: use existing central logging control or factor out to create one)
 */
 
-// TODO: 0) Add node openers/closers to tree view
 // TODO: 1) needs a spinner for queries
 // TODO: 2) probably needs to integrate 'organizations' query to get root orgs and filter out those with no sub-orgs for
 //     starting point (OpenVivo may not have an actual single root) -- will probably require a new lit-element as tree
@@ -474,7 +473,7 @@ class OrganizationTree extends LitElement {
     vm.levelWarn = 2
     vm.levelError = 1
     vm.levelNone = 0
-    vm.logLevel = vm.levelDebug // $$Log level setting
+    vm.logLevel = vm.levelError // vm.levelDebug // $$Log level setting
   }
   logLevelTrace () {
     return this.logLevel >= this.levelTrace
