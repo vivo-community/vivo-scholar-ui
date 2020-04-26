@@ -108,10 +108,6 @@ class OrganizationTree extends LitElement {
         type: String,
         value: null
       },
-      graphql: {
-        type: Object,
-        value: {}
-      },
     }
   }
 
