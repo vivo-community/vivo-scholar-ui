@@ -268,6 +268,7 @@ class FacetPopupMessage extends Faceter(LitElement) {
         overflow: auto;
         overflow-x: hidden;
         scrollbar-base-color:#ffeaff;
+        min-height: unset;
         max-height: 85%;
       }
     }
