@@ -28,6 +28,18 @@ class FacetGroup extends Faceter(LitElement) {
       ::slotted(vivo-search-facets) {
         text-align: right;
       }
+      @media screen and (max-width: 1000px) {
+        ::slotted(h3) {
+          text-align: left;
+        }
+        ::slotted(vivo-search-facets) {
+          text-align: left;
+        }
+        :host([selected]) {
+          display: none;
+        }
+
+      }
       `
     }
     

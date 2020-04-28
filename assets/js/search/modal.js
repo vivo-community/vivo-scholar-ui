@@ -46,6 +46,19 @@ class ModalBox extends LitElement {
             transform: scale(1.0);
             transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
         }
+        @media screen and (max-width: 1000px) {
+
+            .modal-content {
+                position: absolute;
+                top: 100%;
+                left: 100%;
+                transform: translate(-100%, -100%);
+                background-color: white;
+                padding: 0;
+                width: 100%;
+                height: 100%;
+            }
+        }
         `
     }
 

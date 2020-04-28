@@ -106,7 +106,6 @@ class FacetPopupMessage extends Faceter(LitElement) {
   }
 
   handleKeydown(e) {
-    // TODO: note only seems to work when header on popup has focus
     if (e.keyCode === 27) {
         this.closeDown();
     }
@@ -179,6 +178,7 @@ class FacetPopupMessage extends Faceter(LitElement) {
       font-family: 'Font Awesome 5 Free';
       font-weight: 900;
       content: "\\f00d";
+      padding: 4px;
     }
     ::slotted(a) {
       text-decoration: none;
@@ -258,6 +258,19 @@ class FacetPopupMessage extends Faceter(LitElement) {
     .actions {
       text-align: center;
       padding: 8px;
+    }
+    @media screen and (max-width: 1000px) {
+      ::slotted(vivo-search-facet) {
+         width: unset;
+       }
+      .facet-container {
+        display: block;
+        overflow: auto;
+        overflow-x: hidden;
+        scrollbar-base-color:#ffeaff;
+        min-height: unset;
+        max-height: 85%;
+      }
     }
     `;
   }
