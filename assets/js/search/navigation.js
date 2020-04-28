@@ -222,11 +222,10 @@ class SearchNavigation extends LitElement {
       // note: choosing tab should mark as 'selected' 
       let facetGroups = document.querySelectorAll('vivo-facet-group[selected]');
 
-      // FIXME: too dependent on name
-      let searchTabs = document.querySelector('#all-search-tabs');
-      // also, maybe use attributes rather than inline style
+      let searchTabs = this.getMainTabs();
 
       // TODO: try to hide header and sub-header ?
+      // also, maybe use attribute/properties over inline style
       facetGroups.forEach(group => {
         if (show) {
            searchTabs.style.display = 'none';
