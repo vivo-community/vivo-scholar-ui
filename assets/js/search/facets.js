@@ -21,6 +21,8 @@ class SearchFacets extends Faceter(LitElement) {
     this.popupThreshold = config.FACET_POPUP_THRESHOLD;
     this.showCount = config.FACETS_SHOW;
     this.togglePopup = this.togglePopup.bind(this);
+
+    this.toggleList = this.toggleList.bind(this);
   }
 
   static get styles() {
@@ -43,10 +45,26 @@ class SearchFacets extends Faceter(LitElement) {
       :host p:hover {
         cursor: pointer;
       }
+      .entire-facet-list {
+        padding: 0;
+        margin: 0;
+        display: block;
+      }
       ::slotted(h4) {
         padding: 0;
         margin: 0;
       }
+      @media screen and (max-width: 1000px) {
+        .entire-facet-list {
+          display: none;
+        }     
+        ::slotted(h4:hover) {
+          cursor: pointer;
+        }
+        ::slotted(h4)::after {
+           content: " >";
+        }
+      }      
     `
   }
 
@@ -59,6 +77,15 @@ class SearchFacets extends Faceter(LitElement) {
       popup.openUp();
       // when open popup - need to 'reset' filters
       popup.setFilters(this.filters);
+    }
+  }
+
+  toggleList(e) {
+    let list = this.shadowRoot.querySelector(".entire-facet-list");
+    if (list.style.display == 'none' || !list.style.display) {
+      list.style.display = 'block';
+    } else {
+      list.style.display = 'none';
     }
   }
 
@@ -165,9 +192,11 @@ class SearchFacets extends Faceter(LitElement) {
     let hideHtml = (hideList.length > 0) ? this.generateHiddenFacetList(content, hideList): html``;
     
     return html`
-        <slot></slot>
+        <slot @click="${this.toggleList}"></slot>
+        <div class="entire-facet-list">
         ${showHtml}
         ${hideHtml}
+        </div>
       `
     }
 
