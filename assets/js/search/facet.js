@@ -12,7 +12,8 @@ class SearchFacet extends LitElement {
       count: { type: Number },
       opKey: { type: String },
       tag: { type: String },
-      selected: { type: Boolean, attribute: true, reflect: true }
+      selected: { type: Boolean, attribute: true, reflect: true },
+      align: { type: String }
     }
   }
 
@@ -23,6 +24,9 @@ class SearchFacet extends LitElement {
         display: block;
         clear: both;
         text-align: right;
+      }
+      :host([align="left"]) {
+        text-align: left;
       }
       div {
         display: flex;
@@ -37,6 +41,11 @@ class SearchFacet extends LitElement {
         padding-right: 0.5em;
         line-height: 16pt;
         display: inline-block;
+      }
+      :host([align="left"]) .label {
+        flex-grow: unset;
+        order: 1;
+        margin-left: 8px;
       }
       .label.count {
         padding-left: 2px;
@@ -54,6 +63,10 @@ class SearchFacet extends LitElement {
         flex-basis: 5%;
         display:inline-block;
         position: relative;
+      }
+      :host[align="left"] .checkbox-container {
+        order: 0;
+        padding: 8px;
       }
       .checkbox-container input {
         position: absolute;
@@ -121,6 +134,7 @@ class SearchFacet extends LitElement {
     super();
     this.selected = false;
     this.opKey = "EQUALS"; // default or not?
+    this.align = "right"; // css should already default (but not < 1000)
     this.handleFacetSelected = this.handleFacetSelected.bind(this);
   }
 
