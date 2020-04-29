@@ -17,10 +17,9 @@ class PersonImage extends LitElement {
     render() {
       // TODO: how to get 'assetPath' in here?
       var url = `${defaultProfileImage}`;
-  
-      // baseImageUrl
+
       if (this.thumbnail != "null") {
-        url = `${baseImageUrl}${this.thumbnail}`;
+        url = `${this.thumbnail}`;
       }
       return html`
           <img class="img-thumbnail" width="130" src="${url}" />
