@@ -22,12 +22,8 @@
   }
 </style>
 
-<!-- Testing only>< x%= data["organization"]["name"] %><br/> <xx%= data["organization"]["id"] %-->
-<!-- Next line will change to just accept the id passed into the page from the environment. Right now a query is done. -->
-
 <div class="top-line">
   <span class="h2">Organizations</span>
   <span class="selector"><span class="viewas">View as: </span><vivo-organizations-tree-list-selector treelistid="tree-list"></vivo-organizations-tree-list-selector></span>
 </div>
 <vivo-organizations-tree id="tree-list" class="showastree closed" orgid="<%= ThemeVariable("siteOrganizationId") %>"  ></vivo-organizations-tree>
-  <!--vivo-organizations-tree id="tree-list" class="showastree closed" orgid="< x% = data["organization"]["id"] % >"  ></vivo-organizations-tree-->
