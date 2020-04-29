@@ -151,13 +151,6 @@ class SearchFacets extends Faceter(LitElement) {
        this.inFilters(this.field, facet)
     );
 
-    // shown selected list need to be removed
-    // from show list and added to hiddenSelected
-    // so can be appended to top of list
-    let shownSelected = showList.filter(facet => 
-      this.inFilters(this.field, facet)
-    );
-
     let isPopup = (content.length > this.popupThreshold) ? true : false; 
     
     // if it's NOT a popup - then make a selected facet
@@ -166,26 +159,7 @@ class SearchFacets extends Faceter(LitElement) {
       showList = _.concat(showList, hiddenSelected);
       hideList = _.difference(hideList, hiddenSelected);
     } else {
-      // otherwise, put selected on top
-      // sort by count (need to watch for nonHidden selected)
-      let reorder = true;
-
-      if (reorder) {
-        // 1. remove already visible selected
-        showList = _.difference(showList, shownSelected);
-        // 2. so that can be added to the pre-append list
-        let selected = _.concat(shownSelected, hiddenSelected);
-        
-        // before was just this:
-        //showList = _.concat(hiddenSelected, showList);
-        showList = _.concat(selected, showList);
-        //showList = showList.slice(0,this.showCount + hiddenSelected.length)  
-      } else {
-        showList = _.concat(showList, hiddenSelected);
-        // and then fall back to only showing cut-off display number
-        // (but make sure to show hiddenSelected)
-        //showList = showList.slice(0,this.showCount + hiddenSelected.length)  
-      }
+      showList = _.concat(showList, hiddenSelected);
     }
     
     let showHtml  = this.generateFacetList(showList);
