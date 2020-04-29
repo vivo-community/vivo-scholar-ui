@@ -12,10 +12,8 @@ import _ from "lodash"
 */
 // TODO: 0) Move opener/closer click handlers to openers/closers rather than text (text will link to other search)
 // TODO: 1) needs a spinner for queries
-// TODO: 2) probably needs to integrate 'organizations' query to get root orgs and filter out those with no sub-orgs for
-//     starting point (OpenVivo may not have an actual single root) -- will probably require a new lit-element as tree
-//     root
-// TODO: 3) after implementing #2, re-working the cache approach to use roots may be warranted as well
+// TODO: 2) force tree/list select to use dropdown even on mobile rather than switching to showing options off-screen at the bottom
+// TODO: 3) On smaller screens bring the tree/list select under the title to the left
 
 class OrganizationTreeListSelector extends LitElement {
   static get properties () {
