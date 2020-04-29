@@ -285,6 +285,7 @@ class FacetPopupMessage extends Faceter(LitElement) {
     .actions {
       text-align: center;
       padding: 8px;
+      margin-bottom: 4px;
     }
     @media screen and (max-width: 1000px) {
       ::slotted(vivo-search-facet) {
