@@ -19,7 +19,7 @@
     "dotenv-webpack": "^1.7.0",
     "graphql-tag": "^2.10.1",
     "history": "^4.9.0",
-    "jquery": "~3.4.0",
+    "jquery": "~3.5.0",
     "jquery-ujs": "~1.2.2",
     "lit-element": "^2.2.1",
     "lodash": "^4.17.13",
