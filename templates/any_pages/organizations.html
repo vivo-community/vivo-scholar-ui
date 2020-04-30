@@ -26,4 +26,9 @@
   <span class="h2">Organizations</span>
   <span class="selector"><span class="viewas">View as: </span><vivo-organizations-tree-list-selector treelistid="tree-list"></vivo-organizations-tree-list-selector></span>
 </div>
-<vivo-organizations-tree id="tree-list" class="showastree closed" orgid="<%= ThemeVariable("siteOrganizationId") %>"  ></vivo-organizations-tree>
+<vivo-organizations-tree
+    id="tree-list"
+    class="showastree opened"
+    orgid="<%= ThemeVariable("siteOrganizationId") %>"
+    siteorgid="<%= ThemeVariable("siteOrganizationId") %>"  >
+</vivo-organizations-tree>

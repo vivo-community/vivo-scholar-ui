@@ -10,7 +10,6 @@ import _ from "lodash"
      Go to the constructor near the bottom of this module to set the log level,
      or search for $$log (FIXME: use existing central logging control or factor out to create one)
 */
-// TODO: 0) Move opener/closer click handlers to openers/closers rather than text (text will link to other search)
 // TODO: 1) needs a spinner for queries
 // TODO: 2) force tree/list select to use dropdown even on mobile rather than switching to showing options off-screen at the bottom
 // TODO: 3) On smaller screens bring the tree/list select under the title to the left
@@ -106,6 +105,10 @@ class OrganizationTree extends LitElement {
         type: String,
         value: null
       },
+      siteorgid: {
+        type: String,
+        value: null
+      }
     }
   }
 
@@ -206,7 +209,7 @@ class OrganizationTree extends LitElement {
           }
         })
         .catch((err) => {
-          vm.logError('getAllOrgData - getData error. OrgId: ' + orgId + ' Error: ' + err)
+          vm.logError('getAllOrgData - getData error. OrgId: ' + orgid + ' Error: ' + err)
           reject(err)
         })
     })
@@ -402,8 +405,11 @@ class OrganizationTree extends LitElement {
   render () {
     let vm = this
     try {
-      vm.logDebug('tree after graphql: ' + vm.stringify(vm.getDataValue()))
-      vm.logDebug('My id(non-root is undefined): ' + vm.id)
+      if (vm.logLevelDebug()) {
+        vm.logDebug('tree after graphql: ' + vm.stringify(vm.getDataValue()))
+        vm.logDebug('My id(non-root is undefined): ' + vm.id)
+        vm.logDebug(`orgid: ${vm.orgid} - siteorgid: ${vm.siteorgid}`)
+      }
       let templates = []
       if (vm.getShowAsType() === 'tree') {
         const theData = vm.getDataValue()
@@ -412,17 +418,21 @@ class OrganizationTree extends LitElement {
         if (hasOrgs) {
           if (vm.classList.contains('opened')) {
             classes.push('opened')
+            vm.opened = true
           } else {
             classes.push('closed')
+            vm.opened = false
           }
         }
         vm.logDebug('openClosed - classes are: ' + classes + ' theData is: ' + vm.stringify(theData))
-        if (classes.includes('opened')) {
-          templates.push(html`<div><span class="${classes.join(' ')}">${vm.closer()}</span><span @click="${vm.handleClick}">${vm.getName(theData)}</span></div>`)
-        } else if (classes.includes('closed')) {
-          templates.push(html`<div><span class="${classes.join(' ')}">${vm.opener()}</span><span @click="${vm.handleClick}">${vm.getName(theData)}</span></div>`)
-        } else {
-          templates.push(html`<div><span class="${classes.join(' ')}"></span><span @click="${vm.handleClick}">${vm.getName(theData)}</span></div>`)
+        if (vm.siteorgid !== vm.orgid) {
+          if (classes.includes('opened')) {
+            templates.push(html`<div><span @click="${vm.handleClick}" class="${classes.join(' ')}">${vm.closer()}</span><span>${vm.getName(theData)}</span></div>`)
+          } else if (classes.includes('closed')) {
+            templates.push(html`<div><span @click="${vm.handleClick}" class="${classes.join(' ')}">${vm.opener()}</span><span>${vm.getName(theData)}</span></div>`)
+          } else {
+            templates.push(html`<div><span class="${classes.join(' ')}"></span><span>${vm.getName(theData)}</span></div>`)
+          }
         }
         if (vm.opened) {
           if (vm.getDataValue() && !_.isEmpty(vm.getDataValue())) {
@@ -443,7 +453,9 @@ class OrganizationTree extends LitElement {
           console.log(sorted)
         }
         sorted.forEach((v, idx) => {
-          templates.push(html`<div orgid="${v[0]}">${v[1].name}</div>`)
+          if(vm.siteorgid !== v[0]) {
+            templates.push(html`<div orgid="${v[0]}">${v[1].name}</div>`)
+          }
         })
       }
       return html`${templates}`
@@ -467,7 +479,8 @@ class OrganizationTree extends LitElement {
     vm.levelWarn = 2
     vm.levelError = 1
     vm.levelNone = 0
-    vm.logLevel = vm.levelError // vm.levelDebug // $$Log level setting
+    // vm.logLevel = vm.levelDebug // $$Log level setting
+    vm.logLevel = vm.levelError // $$Log level setting
   }
   logLevelTrace () {
     return this.logLevel >= this.levelTrace
