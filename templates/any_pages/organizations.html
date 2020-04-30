@@ -20,15 +20,27 @@
   .selector {
     align-items: center;
   }
+  vivo-modal {
+    text-align: center;
+  }
 </style>
+
+<vivo-modal id="loading">
+  <!--h3>Loading ...</h3-->
+  <vivo-search-spinner></vivo-search-spinner>
+</vivo-modal>
 
 <div class="top-line">
   <span class="h2">Organizations</span>
   <span class="selector"><span class="viewas">View as: </span><vivo-organizations-tree-list-selector treelistid="tree-list"></vivo-organizations-tree-list-selector></span>
 </div>
+
+
 <vivo-organizations-tree
     id="tree-list"
-    class="showastree opened"
+    class="showastree"
+    showas="tree"
+    opened
     orgid="<%= ThemeVariable("siteOrganizationId") %>"
     siteorgid="<%= ThemeVariable("siteOrganizationId") %>"  >
 </vivo-organizations-tree>
