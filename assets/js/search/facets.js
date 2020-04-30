@@ -147,22 +147,19 @@ class SearchFacets extends Faceter(LitElement) {
     var showList = content.slice(0,this.showCount);
     var hideList = content.slice(this.showCount);
 
-    let selected = hideList.filter(facet => 
+    let hiddenSelected = hideList.filter(facet => 
        this.inFilters(this.field, facet)
     );
 
     let isPopup = (content.length > this.popupThreshold) ? true : false; 
-    showList = _.concat(showList, selected);
-
+    
     // if it's NOT a popup - then make a selected facet
     // show up on sidebar - no matter if show more/less is chosen
     if (!isPopup) {
-      hideList = _.difference(hideList, selected);
+      showList = _.concat(showList, hiddenSelected);
+      hideList = _.difference(hideList, hiddenSelected);
     } else {
-      // otherwise, put selected on top
-      showList = _.concat(selected, showList);
-      // and then fall back to only showing 5
-      showList = showList.slice(0,this.showCount)
+      showList = _.concat(showList, hiddenSelected);
     }
     
     let showHtml  = this.generateFacetList(showList);
