@@ -103,6 +103,11 @@ class FacetPopupMessage extends Faceter(LitElement) {
   _onSlotChange() {
     // divide into columns?
     this.facets = Array.from(this.querySelectorAll('vivo-search-facet'));
+
+    // need to be aligned differently
+    this.facets.forEach(facet => {
+      facet.setAttribute('align', 'left');
+    });
   }
 
   handleKeydown(e) {
@@ -162,6 +167,10 @@ class FacetPopupMessage extends Faceter(LitElement) {
 
   static get styles() {
     return css`
+    :host {
+      --scrollbarBG: #d3dbe5;
+      --thumbBG: #2F3D4F;
+    }
     vivo-modal {
       --modal-width: 36rem;
     }
@@ -227,9 +236,26 @@ class FacetPopupMessage extends Faceter(LitElement) {
       max-width: 32rem;
       overflow: auto;
       overflow-y: hidden;
-      scrollbar-base-color:#ffeaff;
       padding-left: 4px;
       margin: 1em;
+      margin-right: 2em;
+      margin-left: 2em;
+      padding-bottom: 1.2em;
+      scrollbar-base-color:#ffeaff;
+      scrollbar-width: thin;
+      scrollbar-color: var(--thumbBG) var(--scrollbarBG);
+    }
+    .facet-container::-webkit-scrollbar {
+      -webkit-appearance: none;
+      width: 11px;
+    }
+    .facet-container::-webkit-scrollbar-track {
+      background: var(--scrollbarBG);
+    }
+    .facet-container::-webkit-scrollbar-thumb {
+      background-color: var(--thumbBG);
+      border-radius: 6px;
+      border: 3px solid var(--scrollbarBG);
     }
     #cancel {
       display: inline-block;
@@ -239,6 +265,7 @@ class FacetPopupMessage extends Faceter(LitElement) {
       font-size: 1em;
       font-weight: bold;
       border: none;
+      margin-right: 15px;
     }
     #apply {
       display: inline-block;
@@ -258,6 +285,7 @@ class FacetPopupMessage extends Faceter(LitElement) {
     .actions {
       text-align: center;
       padding: 8px;
+      margin-bottom: 4px;
     }
     @media screen and (max-width: 1000px) {
       ::slotted(vivo-search-facet) {
