@@ -87,3 +87,13 @@
   translation: "Funding"
 - id: reset_search_filters
   translation: "Reset search filters"
+- id: show_filters
+  translation: "Show filters"
+- id: hide_filters
+  translation: "Hide filters"
+- id: filter_authors
+  translation: "Filter Authors"
+- id: show_more
+  translation: "Show More"  
+- id: show_less
+  translation: "Show Less"  

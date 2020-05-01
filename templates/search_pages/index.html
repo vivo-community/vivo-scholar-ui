@@ -35,16 +35,21 @@
        <vivo-search-sidebar-item>
           <vivo-facet-group slot="content" key="people" search="person-search">
             <h3><%= t("filter_people") %></h3>
+            
+            <!--- almost more of a global thing -->
+            <div slot="show-more"><%= t("show_more") %></div>
+            <div slot="show-less"><%= t("show_less") %></div>
+
             <vivo-search-facets key="people" field="schools" tag="schools">
-              <h4><%= t("school_unit") %>School/Unit</h4>
+              <h4><%= t("school_unit") %></h4>
             </vivo-search-facets>
 
             <vivo-search-facets key="people" field="organizations" tag="organizations">
-              <h4><%= t("department") %>Department</h4>
+              <h4><%= t("department") %></h4>
             </vivo-search-facets>
             
             <vivo-search-facets key="people" field="type" tag="type">
-              <h4><%= t("position") %>Position</h4>
+              <h4><%= t("position") %></h4>
             </vivo-search-facets>
 
           </vivo-facet-group>
@@ -54,23 +59,25 @@
         <vivo-search-sidebar-item>
           <vivo-facet-group slot="content" key="documents" search="publication-search">
             <h3><%= t("filter_publications") %></h3>
+
             <!-- TODO: maybe use 'key' from parent facet-group tag -->
             <vivo-search-facets key="documents" field="type" tag="type">
-              <h4><%= t("type") %>Type</h4>
+              <h4><%= t("type") %></h4>
             </vivo-search-facets>
 
             <vivo-publication-date-facets key="documents" field="publicationDate"
               implements="vivo-search-facets" tag="publicationDate">
-              <h4><%= t("date") %>Date</h4>
+              <h4><%= t("date") %></h4>
             </vivo-publication-date-facets>
 
             <!-- NOTE: author name seemed to need 'RAW' option -->
             <vivo-search-facets key="documents" field="authors" tag="authors">
-              <h4><%= t("author") %>Author</h4>
+              <h4><%= t("author") %></h4>
+              <div slot="popup-heading"><%= t("filter_author") %></div> 
             </vivo-search-facets>
 
             <vivo-search-facets key="documents" field="publisher" tag="publisher">
-              <h4><%= t("publisher") %>Publisher</h4>
+              <h4><%= t("publisher") %></h4>
             </vivo-search-facets>
 
           </vivo-facet-group>
@@ -81,11 +88,11 @@
             <h3><%= t("filter_funding") %></h3>
             <!-- TODO: maybe use 'key' from parent facet-group tag -->
             <vivo-search-facets key="relationships" field="contributors" tag="contributors">
-              <h4><%= t("contributors") %>Contributors</h4>
+              <h4><%= t("contributors") %></h4>
             </vivo-search-facets>
 
             <vivo-search-facets key="relationships" field="awardedBy" tag="awardedBy">
-              <h4><%= t("funding_source") %>Funding Source</h4>
+              <h4><%= t("funding_source") %></h4>
             </vivo-search-facets>
 
           </vivo-facet-group>
@@ -100,9 +107,10 @@
        <span>&lt; <%= t("reset_search_filters") %></span>
     </vivo-filter-clearer>
 
+    <!-- NOTE: only seen on smaller screens -->
     <vivo-facet-group-toggle>
-      <span slot="show">Show filters</span>
-      <span slot="hide">Hide filters</span>
+      <span slot="show"><%= t("show_filters") %></span>
+      <span slot="hide"><%= t("hide_filters") %></span>
     </vivo-facet-group-toggle>
 
     <vivo-tabs id="all-search-tabs" vivo-tab-style="secondary">

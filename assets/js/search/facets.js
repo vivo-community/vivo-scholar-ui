@@ -89,6 +89,9 @@ class SearchFacets extends Faceter(LitElement) {
     }
   }
 
+  // FIXME: possible i18n problem (send in Less/More)
+  // <div slot="show-less">?
+  // <div slot="show-more">?
   generateFacetToggle(showList) {
     var results = html`<vivo-search-facet-toggle>
       ${this.generateFacetList(showList)}
@@ -96,6 +99,8 @@ class SearchFacets extends Faceter(LitElement) {
     return results;
   }
 
+  // FIXME: various i18n problem
+  // <div slot="popup-heading">?
   generateFacetPopup(showList) {
     // FIXME: this is getting the title of popup from
     // <h4> which means <h4> is required in slot
@@ -116,6 +121,7 @@ class SearchFacets extends Faceter(LitElement) {
     // the pop-up needs all options
     return this.generateFacetPopup(content)
   } else  {
+    // how to send in more/less
     return this.generateFacetToggle(hideList);
   }
  }

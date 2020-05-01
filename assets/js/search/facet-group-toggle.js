@@ -60,7 +60,6 @@ class SearchFacetGroupToggle extends LitElement {
         this.shown = !this.shown;
     }
 
-    // FIXME: i18n problem
     render() {
         return html`
         <button @click="${this.handleToggleFilters}">

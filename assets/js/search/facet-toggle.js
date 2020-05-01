@@ -77,7 +77,9 @@ class SearchFacetToggle extends LitElement {
               <slot></slot>
             </div>
             <div @click=${this.handleToggle}>
-              <span class="label" id="toggle">Show More</span>
+              <span class="label" id="toggle">
+                Show More
+              </span>
             </div>
         `
     }

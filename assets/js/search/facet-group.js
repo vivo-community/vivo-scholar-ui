@@ -82,7 +82,7 @@ class FacetGroup extends Faceter(LitElement) {
       //
       // This would happen if another facet has been applied and
       // narrowed the overall results
-      this.filters.map(filter => {
+      this.filters.forEach(filter => {
         let facet = groupedFacetComponents[filter.field][0];
         // first check if we even have any matches (avoid error)
         if (groupedFacetResults[filter.field]) {
@@ -165,6 +165,8 @@ class FacetGroup extends Faceter(LitElement) {
       // grouping of facets per vivo-sidebar-item
       return html`
          <slot></slot>
+         <slot name="show-more"></slot>
+         <slot name="show-less"></slot>
       `
     }
   };
