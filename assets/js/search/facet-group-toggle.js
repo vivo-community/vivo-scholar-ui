@@ -8,7 +8,6 @@ class SearchFacetGroupToggle extends LitElement {
         }
     }
 
-
     constructor() {
         super();
         this.shown = false;

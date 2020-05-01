@@ -285,7 +285,27 @@ class SearchNavigation extends LitElement {
       }
     }
   
+    static get styles() {
+      return css`
+      :host { 
+        display: none;
+      }
+      `
+    }
+  
+    render() {
+      return html`
+         <slot></slot>
+         <slot name="show-more"></slot>
+         <slot name="show-less"></slot>
+      `
+    }
+
   }
+
+
+
+
   
   customElements.define('vivo-search-navigation', SearchNavigation);
   

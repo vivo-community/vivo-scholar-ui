@@ -98,15 +98,14 @@ class SearchFacets extends Faceter(LitElement) {
     }
   }
 
-  // FIXME: possible i18n problem (send in Less/More)
-  // <div slot="show-less">?
-  // <div slot="show-more">?
-  // TODO: send slots into slots ...
   generateFacetToggle(showList) {
-    var results = html`<vivo-search-facet-toggle>
+    let coordinator = document.querySelector('vivo-search-navigation');
+    let more = coordinator.shadowRoot.querySelector('slot[name="show-more"]').assignedNodes()[0].textContent;
+    let less = coordinator.shadowRoot.querySelector('slot[name="show-less"]').assignedNodes()[0].textContent;
+    let results = html`<vivo-search-facet-toggle>
       ${this.generateFacetList(showList)}
-      <span slot="show-less">Show Less</span>
-      <span slot="show-more">Show More</span>
+      <span slot="show-more">${more}</span>
+      <span slot="show-less">${less}</span>
     </vivo-search-facet-toggle>`
     return results;
   }

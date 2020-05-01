@@ -21,7 +21,11 @@
   maybe use this to store 'global' settings for search, 
   such as 'cancel', 'apply', 'show (less|more)' text etc...
 -->
-<vivo-search-navigation></vivo-search-navigation>
+<vivo-search-navigation>
+  <!--- almost more of a global thing -->
+  <div slot="show-more"><%= t("show_more") %></div>
+  <div slot="show-less"><%= t("show_less") %></div>
+</vivo-search-navigation>
 
 <vivo-modal id="search-waiting">
   <h3><%= t("searching") %>...</h3>
@@ -40,10 +44,6 @@
           <vivo-facet-group slot="content" key="people" search="person-search">
             <h3><%= t("filter_people") %></h3>
             
-            <!--- almost more of a global thing -->
-            <div slot="show-more"><%= t("show_more") %></div>
-            <div slot="show-less"><%= t("show_less") %></div>
-
             <vivo-search-facets key="people" field="schools" tag="schools">
               <h4><%= t("school_unit") %></h4>
             </vivo-search-facets>
