@@ -1,24 +1,38 @@
 <style>
   .h2 {
-    align-items: flex-start;
     color: #0577b1;
     font-size: 40px;
     padding-left: 20px;
-    font-weight: 600;
-    font-familiy: Fira, sans-serif;
+    font-weight: 500;
+    font-family: Helvetica, Arial, sans-serif;
     padding-top: 3px;
     margin-bottom: 35px;
   }
+
   .viewas {
     font-size: 15px;
   }
+
   .top-line {
+    align-items: center;
     display: flex;
     width: 70%;
     justify-content: space-between;
   }
+
+  @media only screen and (max-width: 768px) {
+    .h2 {
+      font-size: 35px;
+      padding-left: 10px;
+    }
+    .top-line {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+  }
   .selector {
-    align-items: center;
+    margin-left: 15px;
+    margin-bottom: 20px;
   }
   vivo-modal {
     text-align: center;
