@@ -54,6 +54,15 @@ class SearchFacets extends Faceter(LitElement) {
         padding: 0;
         margin: 0;
       }
+      ::slotted([slot="show-more"]) {
+        display: none;
+      }
+      ::slotted([slot="show-less"]) {
+        display: none;
+      }   
+      ::slotted([slot="popup-heading"]) {
+        display: none;
+      }         
       @media screen and (max-width: 1000px) {
         .entire-facet-list {
           display: none;
@@ -92,6 +101,7 @@ class SearchFacets extends Faceter(LitElement) {
   // FIXME: possible i18n problem (send in Less/More)
   // <div slot="show-less">?
   // <div slot="show-more">?
+  // TODO: send slots into slots ...
   generateFacetToggle(showList) {
     var results = html`<vivo-search-facet-toggle>
       ${this.generateFacetList(showList)}
@@ -106,6 +116,7 @@ class SearchFacets extends Faceter(LitElement) {
   generateFacetPopup(showList) {
     // FIXME: this is getting the title of popup from
     // <h4> which means <h4> is required in slot
+    // TODO: maybe default to h4 unless popup-heading 
     let heading = this.querySelector("h4");
     let headingText = heading.innerText;
     var results = html`

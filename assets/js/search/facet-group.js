@@ -12,37 +12,7 @@ class FacetGroup extends Faceter(LitElement) {
         waiting: { type: Boolean }
       }
     }
-    
-    static get styles() {
-      return css`
-      :host { 
-        display: none;
-      }
-      :host([selected]) {
-        display: block;
-      }
-      ::slotted(h3) {
-        text-align: right;
-        font-size: 1.2em;
-      }
-      ::slotted(vivo-search-facets) {
-        text-align: right;
-      }
-      @media screen and (max-width: 1000px) {
-        ::slotted(h3) {
-          text-align: left;
-        }
-        ::slotted(vivo-search-facets) {
-          text-align: left;
-        }
-        :host([selected]) {
-          display: none;
-        }
 
-      }
-      `
-    }
-    
     constructor() {
       super();
       this.selected = false;
@@ -127,6 +97,43 @@ class FacetGroup extends Faceter(LitElement) {
       search.search();
     }
 
+
+    static get styles() {
+      return css`
+      :host { 
+        display: none;
+      }
+      :host([selected]) {
+        display: block;
+      }
+      ::slotted(h3) {
+        text-align: right;
+        font-size: 1.2em;
+      }
+      ::slotted(vivo-search-facets) {
+        text-align: right;
+      }
+      ::slotted([slot="show-more"]) {
+        display: none;
+      }
+      ::slotted([slot="show-less"]) {
+        display: none;
+      }
+      @media screen and (max-width: 1000px) {
+        ::slotted(h3) {
+          text-align: left;
+        }
+        ::slotted(vivo-search-facets) {
+          text-align: left;
+        }
+        :host([selected]) {
+          display: none;
+        }
+
+      }
+      `
+    }
+
     render() {
       if (this.waiting == true) {
         return html``
@@ -163,6 +170,7 @@ class FacetGroup extends Faceter(LitElement) {
       });
   
       // grouping of facets per vivo-sidebar-item
+      // NOTE: show-more, show-less are pass-through slots
       return html`
          <slot></slot>
          <slot name="show-more"></slot>
