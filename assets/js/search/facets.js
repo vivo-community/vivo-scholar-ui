@@ -113,6 +113,11 @@ class SearchFacets extends Faceter(LitElement) {
 
   // FIXME: various i18n problem
   // <div slot="popup-heading">?
+  /* TODO:
+  might also need placedholder="Start typing to find a specific filter result"
+  cancel -> Cancel
+  apply -> Apply
+  */
   generateFacetPopup(showList) {
     // FIXME: this is getting the title of popup from
     // <h4> which means <h4> is required in slot
@@ -121,10 +126,10 @@ class SearchFacets extends Faceter(LitElement) {
     let headingText = heading.innerText;
     var results = html`
     <p id="toggle-facet" @click=${this.togglePopup}>Show More</p>
-    <vivo-facet-popup-message id="popup-facets">
+    <vivo-facet-popup-box id="popup-facets">
       <div slot="heading">Filter ${headingText}</div> 
       ${this.generateFacetList(showList)}
-    </vivo-facet-popup-message>`;
+    </vivo-facet-popup-box>`;
     return results;
   }
 

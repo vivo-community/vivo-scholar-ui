@@ -3,15 +3,13 @@ import { LitElement, html, css } from "lit-element";
 // needed add, remove filter functions
 import Faceter from './faceter.js'
 
-class FacetPopupMessage extends Faceter(LitElement) {
+class FacetPopupBox extends Faceter(LitElement) {
 
   static get properties() {
     return {
-      open: {
-        attribute: "open",
-        type: Boolean,
-        reflect: true
-      }
+      open: { attribute: "open", type: Boolean, reflect: true },
+      searchPlaceholder: { type: String }, 
+      buttonText: { type: Array }
     };
   }
 
@@ -27,6 +25,10 @@ class FacetPopupMessage extends Faceter(LitElement) {
 
       this.classes = { "modal": true, "show-modal": false }
       this.handleFacetSelected = this.handleFacetSelected.bind(this);
+
+      // FIXME: i18n - need to set another way
+      this.searchPlaceholder = "Start typing to find a specific filter result";
+      this.buttonText = ['Cancel', 'Apply'];
   }
 
 
@@ -354,19 +356,19 @@ class FacetPopupMessage extends Faceter(LitElement) {
           <slot name="heading"></slot>
           <input class="smaller-input" type="text" id="filter-list"
             @keyup=${this.debounce(this.searchKeyUp,  250)}
-            placeholder="Start typing to find a specific filter result">
+            placeholder="${this.searchPlaceholder}">
           <i class="fas fa-times" @click=${this.cancel}></i>
         </div>
         <div class="facet-container">
           <slot></slot>
         </div>
         <div class="actions">
-          <button id="cancel" @click=${this.cancel}>Cancel</button>
-          <button id="apply" @click=${this.apply}>Apply</button>
+          <button id="cancel" @click=${this.cancel}>${this.buttonText[0]}</button>
+          <button id="apply" @click=${this.apply}>${this.buttonText[1]}</button>
         </div>
     </vivo-modal>
     `;
   }
 }
 
-customElements.define("vivo-facet-popup-message", FacetPopupMessage);
+customElements.define("vivo-facet-popup-box", FacetPopupBox);
