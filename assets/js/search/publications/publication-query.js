@@ -17,7 +17,9 @@ const publicationQuery = gql`
         pageNumber: $pageNumber
         sort: { orders: $orders }
       }
-      query: $search
+      query: {
+        q: $search
+      }
     ) {
       content {
         id

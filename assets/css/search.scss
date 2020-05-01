@@ -1,0 +1,58 @@
+  .search-container {
+    display: grid;
+    grid-template-columns: repeat(20, 1fr);
+    width: 100%;
+    margin: 0 auto;
+    grid-auto-flow: dense;
+    grid-column-gap: .5em;
+  }
+  .search-container aside {
+    grid-column: span 4;
+    padding: 0.25em;
+  }
+  .search-container main {
+    grid-column: span 16;
+    padding: 0.25em;
+  }
+  .search-container main {
+    padding-right: 10%;
+  }
+  .search-container aside {
+    padding: 0;
+    background-color: var(--highlightBackgroundColor);
+  }
+  .search-container aside {
+    padding: 0;
+  }
+  .search-container vivo-sidebar {
+    margin: 0;
+  }
+  .search-container vivo-search-sidebar-item {
+    padding-bottom: 0px;
+  }
+  .search-container vivo-modal {
+    text-align: center;
+  }
+
+  // TODO: 1000 seems high ?
+  @media screen and (max-width: 1000px) {
+    .search-container {
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-column-gap: 0;
+      grid-template-rows: auto;
+      padding: 1em;
+    }
+    .search-container main {
+      padding: 0;
+      grid-column-start: 1;
+      grid-row-start: 1;
+    }
+    .search-container aside {
+      padding: 0;
+      margin-top: 0em;
+      grid-column-start: 1;
+      grid-row-start: 2;
+      background-color: var(--lightNeutralColor);
+    }
+  }

@@ -6,7 +6,7 @@
   <vivo-sidebar class="sidebar-image">
     <%= if (person["thumbnail"]) { %>
     <!-- FIXME: should get base image path some other way -->
-    <img class="profile-image" src="<%= ThemeVariable("baseImageUrl") %><%= person["thumbnail"] %>" />
+    <img class="profile-image" src="<%= person["thumbnail"] %>" />
     <% } else { %>
     <img class="profile-image" src="<%= assetPath("images/" + ThemeVariable("defaultProfileImage")) %>" />
     <% } %>

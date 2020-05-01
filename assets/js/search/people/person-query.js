@@ -16,7 +16,10 @@ const peopleQuery = gql`
         pageNumber: $pageNumber
         sort: { orders: $orders }
       }
-      query: $search
+      query: {
+        q: $search,
+        bq: "type:(*FacultyMember)^2.0"
+      }
     ) {
       content {
         id

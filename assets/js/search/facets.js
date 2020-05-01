@@ -21,6 +21,8 @@ class SearchFacets extends Faceter(LitElement) {
     this.popupThreshold = config.FACET_POPUP_THRESHOLD;
     this.showCount = config.FACETS_SHOW;
     this.togglePopup = this.togglePopup.bind(this);
+
+    this.toggleList = this.toggleList.bind(this);
   }
 
   static get styles() {
@@ -43,10 +45,26 @@ class SearchFacets extends Faceter(LitElement) {
       :host p:hover {
         cursor: pointer;
       }
+      .entire-facet-list {
+        padding: 0;
+        margin: 0;
+        display: block;
+      }
       ::slotted(h4) {
         padding: 0;
         margin: 0;
       }
+      @media screen and (max-width: 1000px) {
+        .entire-facet-list {
+          display: none;
+        }     
+        ::slotted(h4:hover) {
+          cursor: pointer;
+        }
+        ::slotted(h4)::after {
+           content: " >";
+        }
+      }      
     `
   }
 
@@ -62,6 +80,15 @@ class SearchFacets extends Faceter(LitElement) {
     }
   }
 
+  toggleList(e) {
+    let list = this.shadowRoot.querySelector(".entire-facet-list");
+    if (list.style.display == 'none' || !list.style.display) {
+      list.style.display = 'block';
+    } else {
+      list.style.display = 'none';
+    }
+  }
+
   generateFacetToggle(showList) {
     var results = html`<vivo-search-facet-toggle>
       ${this.generateFacetList(showList)}
@@ -69,13 +96,15 @@ class SearchFacets extends Faceter(LitElement) {
     return results;
   }
 
-  // might be good to get title of facet in here
-  // but it's not necessarily in the data
   generateFacetPopup(showList) {
-    // just added tabindex to try and be able to focus
+    // FIXME: this is getting the title of popup from
+    // <h4> which means <h4> is required in slot
+    let heading = this.querySelector("h4");
+    let headingText = heading.innerText;
     var results = html`
     <p id="toggle-facet" @click=${this.togglePopup}>Show More</p>
     <vivo-facet-popup-message id="popup-facets">
+      <div slot="heading">Filter ${headingText}</div> 
       ${this.generateFacetList(showList)}
     </vivo-facet-popup-message>`;
     return results;
@@ -118,31 +147,30 @@ class SearchFacets extends Faceter(LitElement) {
     var showList = content.slice(0,this.showCount);
     var hideList = content.slice(this.showCount);
 
-    let selected = hideList.filter(facet => 
+    let hiddenSelected = hideList.filter(facet => 
        this.inFilters(this.field, facet)
     );
 
     let isPopup = (content.length > this.popupThreshold) ? true : false; 
-    showList = _.concat(showList, selected);
-
+    
     // if it's NOT a popup - then make a selected facet
     // show up on sidebar - no matter if show more/less is chosen
     if (!isPopup) {
-      hideList = _.difference(hideList, selected);
+      showList = _.concat(showList, hiddenSelected);
+      hideList = _.difference(hideList, hiddenSelected);
     } else {
-      // otherwise, put selected on top
-      showList = _.concat(selected, showList);
-      // and then fall back to only showing 5
-      showList = showList.slice(0,this.showCount)
+      showList = _.concat(showList, hiddenSelected);
     }
     
     let showHtml  = this.generateFacetList(showList);
     let hideHtml = (hideList.length > 0) ? this.generateHiddenFacetList(content, hideList): html``;
     
     return html`
-        <slot></slot>
+        <slot @click="${this.toggleList}"></slot>
+        <div class="entire-facet-list">
         ${showHtml}
         ${hideHtml}
+        </div>
       `
     }
 

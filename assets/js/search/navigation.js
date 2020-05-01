@@ -15,6 +15,8 @@ class SearchNavigation extends LitElement {
       this.handleSearchSearchStarted = this.handleSearchStarted.bind(this); 
       this.handleSearchResultsObtained = this.handleSearchResultsObtained.bind(this);
       this.handleSearchPopState = this.handleSearchPopState.bind(this); 
+
+      this.handleToggleFilters = this.handleToggleFilters.bind(this); 
     }
   
     firstUpdated() {
@@ -27,7 +29,8 @@ class SearchNavigation extends LitElement {
       document.addEventListener('removeFilters', this.handleRemoveFilters);
       document.addEventListener('searchStarted', this.handleSearchStarted);
       document.addEventListener('searchResultsObtained', this.handleSearchResultsObtained);
-      
+      document.addEventListener('toggleFilters', this.handleToggleFilters);
+
       window.addEventListener('popstate', this.handleSearchPopState);
 
       // make search-box show text of search sent in (from home page)
@@ -72,6 +75,8 @@ class SearchNavigation extends LitElement {
       document.removeEventListener('removeFilters', this.handleRemoveFilters);
       document.removeEventListener('searchStarted', this.handleSearchStarted); 
       document.removeEventListener('searchResultsObtained', this.handleSearchResultsObtained); 
+
+      document.removeEventListener('toggleFilters', this.handleToggleFilters);
       window.removeEventListener('popstate', this.handleSearchPopState); 
     }
   
@@ -209,7 +214,29 @@ class SearchNavigation extends LitElement {
         }
       })
     }
-    
+
+    // only for smaller/mobile version
+    handleToggleFilters(e) {
+      // e.detail = {show: (true|false)};
+      let show = e.detail.show;
+      // note: choosing tab should mark as 'selected' 
+      let facetGroups = document.querySelectorAll('vivo-facet-group[selected]');
+
+      let searchTabs = this.getMainTabs();
+
+      // TODO: try to hide header and sub-header ?
+      // also, maybe use attribute/properties over inline style
+      facetGroups.forEach(group => {
+        if (show) {
+           searchTabs.style.display = 'none';
+           group.style.display = 'block';
+        } else {
+          searchTabs.style.display = 'block';
+          group.style.display = 'none';
+        }
+      });
+    }
+
     // maybe move this and sort to be handled by individual search
     // (maybe in searcher.js file)
     handlePageSelected(e) {
