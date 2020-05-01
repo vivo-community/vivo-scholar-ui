@@ -69,6 +69,7 @@ class PersonSearch extends Searcher(LitElement) {
         this.handleSearchResultsObtained = this.handleSearchResultsObtained.bind(this);
         this.handleSearchStarted = this.handleSearchStarted.bind(this);
 
+        // FIXME: i18n problem
         this.sortOptions = [
             {label: 'Relevance', field: 'score', direction: "ASC"},
             {label: 'Last Name (Ascending)', field: 'name', 'direction': "ASC"},

@@ -52,12 +52,13 @@ class PublicationSearch extends Searcher(LitElement) {
       this.handleSearchResultsObtained = this.handleSearchResultsObtained.bind(this);
       this.handleSearchStarted = this.handleSearchStarted.bind(this);
 
+      // FIXME: i18n problem
       this.sortOptions = [
         {label: 'Relevance', field: 'score', direction: "ASC"},
         {label: 'Title (Ascending)', field: 'title', 'direction': "ASC"},
         {label: 'Title (Descending)', field: 'title', 'direction': "DESC"},
         {label: 'Date (Ascending)', field: 'publicationDate', 'direction': "ASC"},
-        {label: 'Date (Ascending)', field: 'publicationDate', 'direction': "DESC"}
+        {label: 'Date (Descending)', field: 'publicationDate', 'direction': "DESC"}
       ];
 
       this.setUp();

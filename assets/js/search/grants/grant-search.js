@@ -28,6 +28,7 @@ class GrantSearch extends Searcher(LitElement) {
         this.handleSearchResultsObtained = this.handleSearchResultsObtained.bind(this);
         this.handleSearchStarted = this.handleSearchStarted.bind(this);
 
+        // FIXME: i18n problem
         this.sortOptions = [
             { label: 'Relevance', field: 'score', direction: "ASC" },
             { label: 'Title (Ascending)', field: 'title', 'direction': "ASC" },
@@ -69,6 +70,7 @@ class GrantSearch extends Searcher(LitElement) {
     }
 
     // TODO: is this same thing as 'Funding Source'?
+    // FIXME: i18n problem
     renderContributors(grant) {
         if (grant.contributors) {
             var s = _.map(grant.contributors, 'label').join(',');
@@ -79,6 +81,7 @@ class GrantSearch extends Searcher(LitElement) {
     }
 
     // TODO: is this same thing as 'Funding Source'?
+    // FIXME: i18n problem
     renderAwardedBy(grant) {
         if (grant.awardedBy) {
             // NOTE: array
@@ -89,6 +92,7 @@ class GrantSearch extends Searcher(LitElement) {
         }
     }
 
+    // FIXME: i18n problem
     renderDateInterval(grant) {
         if (!grant.dateTimeIntervalStart || !grant.dateTimeIntervalEnd) {
             return html``

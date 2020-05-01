@@ -55,6 +55,7 @@ class SearchFacetToggle extends LitElement {
        }
     
 
+    // FIXME: i18n problem show less/more
     handleToggle(e) {
         if (!this.visible) {  
             let toggle = this.shadowRoot.querySelector("#toggle");

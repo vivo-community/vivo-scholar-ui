@@ -53,3 +53,35 @@
   translation: "Grants"
 - id: bio
   translation: "Bio"
+- id: searching
+  translation: "Searching"
+- id: filter_people
+  translation: "Filter People"
+- id: filter_publications
+  translation: "Filter Publications"
+- id: filter_funding
+  translation: "Filter Funding"
+- id: school_unit
+  translation: "School/Unit"
+- id: department
+  translation: "Department"
+- id: position
+  translation: "Position"
+- id: type
+  translation: "Type"
+- id: date
+  translation: "Date"
+- id: author
+  translation: "Author"
+- id: publisher
+  translation: "Publisher"
+- id: contributors
+  translation: "Contributors"      
+- id: funding_source
+  translation: "Funding Source"
+- id: people
+  translation: "People"
+- id: publications
+  translation: "Publications"
+- id: funding
+  translation: "Funding"

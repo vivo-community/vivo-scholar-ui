@@ -347,6 +347,7 @@ class FacetPopupMessage extends Faceter(LitElement) {
 
   render() {
 
+    // FIXME: i18n problem (placeholder text - cancel/apply)
     return html`
     <vivo-modal ?shown="${this.open}">
         <div class="heading">

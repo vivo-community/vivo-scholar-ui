@@ -48,6 +48,7 @@ class SearchFacetGroupToggle extends LitElement {
         this.shown = !this.shown;
     }
 
+    // FIXME: i18n problem
     render() {
         let cmd = this.shown ? 'Hide' : 'Show';
         return html`
