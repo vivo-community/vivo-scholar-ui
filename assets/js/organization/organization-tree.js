@@ -5,6 +5,7 @@ import { until } from 'lit-html/directives/until'
 import organizationSubOrgQuery from "./organization-query"
 import OrganizationCache from "./organization-cache"
 import client from "../lib/apollo"
+import '../elements/vaadin-theme.js'
 import '@vaadin/vaadin-select'
 import _ from "lodash"
 
@@ -12,8 +13,7 @@ import _ from "lodash"
      Go to the constructor near the bottom of this module to set the log level,
      or search for $$log (FIXME: use existing central logging control or factor out to create one)
 */
-// TODO: 1) force tree/list select to use dropdown even on mobile rather than switching to showing options off-screen at the bottom
-// TODO: 2) needs a spinner for queries
+// TODO: 1) needs a spinner for queries
 
 class OrganizationTreeListSelector extends LitElement {
   static get properties () {
