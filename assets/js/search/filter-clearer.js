@@ -26,10 +26,9 @@ class SearchFilterClearer extends LitElement {
         }));
     }
 
-    // FIXME: i18n problem
     render() {
         return html`<a @click="${this.handleClearFilters}">
-           < Reset search filters
+           <slot></slot>
         </a>`
     }
 }

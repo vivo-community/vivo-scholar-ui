@@ -85,3 +85,5 @@
   translation: "Publications"
 - id: funding
   translation: "Funding"
+- id: reset_search_filters
+  translation: "Reset search filters"

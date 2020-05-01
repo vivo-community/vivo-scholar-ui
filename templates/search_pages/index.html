@@ -96,8 +96,14 @@
 
   <main>
  
-    <vivo-filter-clearer></vivo-filter-clearer>
-    <vivo-facet-group-toggle></vivo-facet-group-toggle>
+    <vivo-filter-clearer>
+       <span>&lt; <%= t("reset_search_filters") %></span>
+    </vivo-filter-clearer>
+
+    <vivo-facet-group-toggle>
+      <span slot="show">Show filters</span>
+      <span slot="hide">Hide filters</span>
+    </vivo-facet-group-toggle>
 
     <vivo-tabs id="all-search-tabs" vivo-tab-style="secondary">
       <vivo-tab id="person-search-tab">

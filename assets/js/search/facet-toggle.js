@@ -70,6 +70,7 @@ class SearchFacetToggle extends LitElement {
         
     }
 
+    // FIXME: i18n problem
     render() {      
         return html`
             <div class="facets" visible="${this.visible}">

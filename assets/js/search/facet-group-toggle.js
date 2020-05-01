@@ -4,7 +4,7 @@ class SearchFacetGroupToggle extends LitElement {
 
     static get properties() {
         return {
-            shown: { type: Boolean }
+            shown: { type: Boolean, reflect: true }
         }
     }
 
@@ -33,7 +33,19 @@ class SearchFacetGroupToggle extends LitElement {
                 font-weight: 900;
                 content: "\\f0b0";
                 font-style: normal;
-              }
+            }
+            :host ::slotted([slot="show"]) {
+                display: inline;
+            }
+            :host ::slotted([slot="hide"]) {
+                display: none;
+            }
+            :host([shown]) ::slotted([slot="show"]) {
+                display: none;
+            }
+            :host([shown]) ::slotted([slot="hide"]) {
+                display: inline;
+            }
         }        
         `
     }
@@ -50,11 +62,11 @@ class SearchFacetGroupToggle extends LitElement {
 
     // FIXME: i18n problem
     render() {
-        let cmd = this.shown ? 'Hide' : 'Show';
         return html`
         <button @click="${this.handleToggleFilters}">
           <i class="fas fa-filter"></i> 
-          ${cmd} filters
+          <slot name="show"></slot>
+          <slot name="hide"></slot>
         </button>`
     }
 }
