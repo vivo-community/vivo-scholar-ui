@@ -113,16 +113,14 @@ class PublicationSearch extends Searcher(LitElement) {
 
       if (this.data && this.data.documents.content) {
         let content = this.data.documents.content;
-        _.each(content, function (item) {
+        content.forEach((item) => {
           results.push(item);
         });
       }
       
-      // FIXME: use arrow notation to get rid of _self?
-      let _self = this;
       var resultsDisplay = html`<div class="publications">
-        ${_.map(results, function (i) {
-            return _self.renderPublication(i);
+        ${results.map((i) => {
+            return this.renderPublication(i);
           })
         }
       </div>`;

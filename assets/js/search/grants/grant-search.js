@@ -69,31 +69,30 @@ class GrantSearch extends Searcher(LitElement) {
         tab.textContent = `${docCount}`;
     }
 
-    // TODO: is this same thing as 'Funding Source'?
-    // FIXME: i18n problem
-    renderContributors(grant) {
+    renderContributors(grant, label) {
         if (grant.contributors) {
             var s = _.map(grant.contributors, 'label').join(',');
             return html`
-            <div slot="contributors"><b>Contributors:</b> ${s}</div>
+            <div slot="contributors">
+                <b>${label}:</b> ${s}
+            </div>
             `
         }
     }
 
-    // TODO: is this same thing as 'Funding Source'?
-    // FIXME: i18n problem
-    renderAwardedBy(grant) {
+    renderAwardedBy(grant, label) {
         if (grant.awardedBy) {
             // NOTE: array
             var s = _.map(grant.awardedBy, 'label').join(',');
             return html`
-            <div slot="awardedBy"><b>Funding Source:</b> ${s}</div>
+            <div slot="awardedBy">
+              <b>${label}:</b> ${s}
+            </div>
             `
         }
     }
 
-    // FIXME: i18n problem
-    renderDateInterval(grant) {
+    renderDateInterval(grant, label) {
         if (!grant.dateTimeIntervalStart || !grant.dateTimeIntervalEnd) {
             return html``
         }
@@ -102,7 +101,7 @@ class GrantSearch extends Searcher(LitElement) {
         let end = new Date(grant.dateTimeIntervalEnd).getFullYear();
         return html`
           <div slot="date">
-            <b>Date:</b>
+            <b>${label}:</b>
             <vivo-interval class="grant-date" 
               interval-start="${start}"
               interval-end="${end}">
@@ -111,7 +110,7 @@ class GrantSearch extends Searcher(LitElement) {
         `
     }
 
-
+    // FIXME: i18n how to get labels in here?
     renderGrant(grant) {
         let url = `/entities/grant/${grant.id}`;
         return html`
@@ -119,9 +118,9 @@ class GrantSearch extends Searcher(LitElement) {
           <a slot="title" href="${url}">
           ${grant.title}
           </a>
-          ${this.renderContributors(grant)}
-          ${this.renderDateInterval(grant)}
-          ${this.renderAwardedBy(grant)}
+          ${this.renderContributors(grant, "Contributors")}
+          ${this.renderDateInterval(grant, "Date")}
+          ${this.renderAwardedBy(grant, "Funding Source")}
         </vivo-grant-card>
         `;
     }
@@ -168,18 +167,17 @@ class GrantSearch extends Searcher(LitElement) {
 
         if (this.data && this.data.relationships.content) {
             let content = this.data.relationships.content;
-            _.each(content, function (item) {
+            content.forEach((item) => {
                 results.push(item);
             });
         }
 
-
-        let _self = this;
-        var resultsDisplay = html`<div class="grants">
-          ${_.map(results, function (i) {
-            return _self.renderGrant(i);
-        })
-            }
+        var resultsDisplay = html`
+        <div class="grants">
+          ${results.map((i) => {
+              return this.renderGrant(i);
+            })
+          }
         </div>`;
 
         let pagination = html``;

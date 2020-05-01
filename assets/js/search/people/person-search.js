@@ -149,16 +149,14 @@ class PersonSearch extends Searcher(LitElement) {
 
         if (this.data && this.data.people.content) {
             let content = this.data.people.content;
-            _.each(content, function (item) {
+            content.forEach((item) => {
                 results.push(item);
             });
         }
 
-
-        let _self = this;
         var resultsDisplay = html`<div class="people">
-          ${_.map(results, function (i) {
-            return _self.renderPerson(i);
+          ${results.map((i) => {
+            return this.renderPerson(i);
            })
         }
         </div>`;
