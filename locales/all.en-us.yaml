@@ -91,9 +91,15 @@
   translation: "Show filters"
 - id: hide_filters
   translation: "Hide filters"
-- id: filter_authors
-  translation: "Filter Authors"
+- id: filter_author
+  translation: "Filter Author"
 - id: show_more
   translation: "Show More"  
 - id: show_less
-  translation: "Show Less"  
+  translation: "Show Less"
+- id: cancel
+  translation: "Cancel"
+- id: apply
+  translation: "Apply"
+- id: search_author_placeholder
+  translation: "Start typing to find a specific filter result"

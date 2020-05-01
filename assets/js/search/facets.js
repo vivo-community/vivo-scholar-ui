@@ -10,7 +10,9 @@ class SearchFacets extends Faceter(LitElement) {
         field: { type: String }, // e.g. researchAreas
         key: { type: String }, // e.g. people
         tag: { type: String, attribute: true }, // e.g. SOLR "tag"
-        opKey: { type: String, attribute: true } // EQUALS, RAW etc...
+        opKey: { type: String, attribute: true }, // EQUALS, RAW etc...
+        placeholder: { type: String },
+        popupHeading: { type: String }
     }
   }
 
@@ -23,6 +25,7 @@ class SearchFacets extends Faceter(LitElement) {
     this.togglePopup = this.togglePopup.bind(this);
 
     this.toggleList = this.toggleList.bind(this);
+    this.coordinator = document.querySelector('vivo-search-navigation');
   }
 
   static get styles() {
@@ -99,9 +102,10 @@ class SearchFacets extends Faceter(LitElement) {
   }
 
   generateFacetToggle(showList) {
-    let coordinator = document.querySelector('vivo-search-navigation');
-    let more = coordinator.shadowRoot.querySelector('slot[name="show-more"]').assignedNodes()[0].textContent;
-    let less = coordinator.shadowRoot.querySelector('slot[name="show-less"]').assignedNodes()[0].textContent;
+    // NOTE: just getting text not sure how to send in entire node
+    // also not sure how expensive this DOM call is - could put more in constructor
+    let more = this.coordinator.getAttribute("show-more");
+    let less = this.coordinator.getAttribute("show-less");
     let results = html`<vivo-search-facet-toggle>
       ${this.generateFacetList(showList)}
       <span slot="show-more">${more}</span>
@@ -116,12 +120,13 @@ class SearchFacets extends Faceter(LitElement) {
     // FIXME: this is getting the title of popup from
     // <h4> which means <h4> is required in slot
     // TODO: maybe default to h4 unless popup-heading 
-    let heading = this.querySelector("h4");
-    let headingText = `Filter ${heading.innerText}`;
-    let help = "Start typing to find a specific filter result";
-    let cancel = "Cancel";
-    let apply = "Apply";
-    let more = "Show More";
+    //let heading = this.querySelector("h4");
+    let headingText = this.popupHeading;
+    let help = this.placeholder;
+    // maybe attributes would be easier
+    let cancel = this.coordinator.getAttribute("cancel");
+    let apply = this.coordinator.getAttribute("apply");
+    let more = this.coordinator.getAttribute("show-more");
 
     var results = html`
     <p id="toggle-facet" @click=${this.togglePopup}>${more}</p>

@@ -17,14 +17,12 @@
     }
   }
 </style>
-<!-- 
-  maybe use this to store 'global' settings for search, 
-  such as 'cancel', 'apply', 'show (less|more)' text etc...
--->
-<vivo-search-navigation>
-  <!--- almost more of a global thing -->
-  <div slot="show-more"><%= t("show_more") %></div>
-  <div slot="show-less"><%= t("show_less") %></div>
+
+<vivo-search-navigation 
+  show-more="<%= t("show_more") %>"
+  show-less="<%= t("show_less") %>"
+  cancel="<%= t("cancel") %>"
+  apply="<%= t("apply") %>">
 </vivo-search-navigation>
 
 <vivo-modal id="search-waiting">
@@ -75,10 +73,10 @@
             </vivo-publication-date-facets>
 
             <!-- NOTE: author name seemed to need 'RAW' option -->
-            <vivo-search-facets key="documents" field="authors" tag="authors">
+            <vivo-search-facets key="documents" field="authors" tag="authors"
+              popupHeading="<%= t("filter_author") %>"
+              placeholder="<%= t("search_author_placeholder") %>">
               <h4><%= t("author") %></h4>
-              <div slot="popup-heading"><%= t("filter_author") %></div> 
-              <!-- searchPlaceholder?, cancel, apply -->
             </vivo-search-facets>
 
             <vivo-search-facets key="documents" field="publisher" tag="publisher">

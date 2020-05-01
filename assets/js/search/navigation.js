@@ -285,6 +285,7 @@ class SearchNavigation extends LitElement {
       }
     }
   
+    /*
     static get styles() {
       return css`
       :host { 
@@ -296,10 +297,9 @@ class SearchNavigation extends LitElement {
     render() {
       return html`
          <slot></slot>
-         <slot name="show-more"></slot>
-         <slot name="show-less"></slot>
       `
     }
+    */
 
   }
 
