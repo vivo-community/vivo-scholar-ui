@@ -129,7 +129,6 @@ class FacetGroup extends Faceter(LitElement) {
         :host([selected]) {
           display: none;
         }
-
       }
       `
     }
@@ -151,20 +150,16 @@ class FacetGroup extends Faceter(LitElement) {
 
       // 2. for each vivo-search-facet element, get key and field
       // and assign data (+ filters)
-      facets.map(facet => {
+      facets.forEach(facet => {
          let key = facet.key;
          let field = facet.field;
          if (key == this.key && grouped[field]) {
            facet.setData(grouped[field]);
            facet.setFilters(this.filters);
-           // facet.setKey(this.key); do this? not sure
          } else if (key == this.key && !grouped[field]) {
           // NOTE: after a new search, if there are no
           // facets - need to blank out
           facet.setData(null);
-          //facet.setSelected(false);
-          // TODO: nothing seems to be emptying out filters
-          // when tab changes
           facet.setFilters([]);
         }
       });

@@ -17,6 +17,10 @@
     }
   }
 </style>
+<!-- 
+  maybe use this to store 'global' settings for search, 
+  such as 'cancel', 'apply', 'show (less|more)' text etc...
+-->
 <vivo-search-navigation></vivo-search-navigation>
 
 <vivo-modal id="search-waiting">
@@ -74,6 +78,7 @@
             <vivo-search-facets key="documents" field="authors" tag="authors">
               <h4><%= t("author") %></h4>
               <div slot="popup-heading"><%= t("filter_author") %></div> 
+              <!-- searchPlaceholder?, cancel, apply -->
             </vivo-search-facets>
 
             <vivo-search-facets key="documents" field="publisher" tag="publisher">

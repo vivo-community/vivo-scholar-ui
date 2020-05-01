@@ -8,8 +8,7 @@ class FacetPopupBox extends Faceter(LitElement) {
   static get properties() {
     return {
       open: { attribute: "open", type: Boolean, reflect: true },
-      searchPlaceholder: { type: String }, 
-      buttonText: { type: Array }
+      placeholder: { type: String }
     };
   }
 
@@ -25,12 +24,7 @@ class FacetPopupBox extends Faceter(LitElement) {
 
       this.classes = { "modal": true, "show-modal": false }
       this.handleFacetSelected = this.handleFacetSelected.bind(this);
-
-      // FIXME: i18n - need to set another way
-      this.searchPlaceholder = "Start typing to find a specific filter result";
-      this.buttonText = ['Cancel', 'Apply'];
   }
-
 
   // just need *some* fields when building, otherwise would
   // send unrecognized parameters to GraphQL
@@ -122,11 +116,11 @@ class FacetPopupBox extends Faceter(LitElement) {
     this.open = true;
   }
 
-  apply() {
+  doApply() {
     this.closeDown(true);
   }
 
-  cancel() {
+  doCancel() {
     this.closeDown(false);
   }
 
@@ -348,23 +342,25 @@ class FacetPopupBox extends Faceter(LitElement) {
   }
 
   render() {
-
-    // FIXME: i18n problem (placeholder text - cancel/apply)
     return html`
     <vivo-modal ?shown="${this.open}">
         <div class="heading">
           <slot name="heading"></slot>
           <input class="smaller-input" type="text" id="filter-list"
             @keyup=${this.debounce(this.searchKeyUp,  250)}
-            placeholder="${this.searchPlaceholder}">
+            placeholder="${this.placeholder}">
           <i class="fas fa-times" @click=${this.cancel}></i>
         </div>
         <div class="facet-container">
           <slot></slot>
         </div>
         <div class="actions">
-          <button id="cancel" @click=${this.cancel}>${this.buttonText[0]}</button>
-          <button id="apply" @click=${this.apply}>${this.buttonText[1]}</button>
+          <button id="cancel" @click=${this.doCancel}>
+            <slot name="cancel"></slot>
+          </button>
+          <button id="apply" @click=${this.doApply}>
+            <slot name="apply"></slot>
+          </button>
         </div>
     </vivo-modal>
     `;
