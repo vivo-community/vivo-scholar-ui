@@ -95,6 +95,8 @@ class SearchFacets extends Faceter(LitElement) {
   generateFacetToggle(showList) {
     var results = html`<vivo-search-facet-toggle>
       ${this.generateFacetList(showList)}
+      <span slot="show-less">Show Less</span>
+      <span slot="show-more">Show More</span>
     </vivo-search-facet-toggle>`
     return results;
   }
