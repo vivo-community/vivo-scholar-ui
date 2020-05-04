@@ -247,6 +247,7 @@ class FacetPopupBox extends Faceter(LitElement) {
     }
     .facet-container::-webkit-scrollbar-track {
       background: var(--scrollbarBG);
+      border-radius: 6px;
     }
     .facet-container::-webkit-scrollbar-thumb {
       background-color: var(--thumbBG);
