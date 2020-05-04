@@ -20,7 +20,7 @@ class GrantSearch extends Searcher(LitElement) {
         this.active = false;
         this.waiting = false;
         // NOTE: all searches must set a default sort
-        this.defaultSort = [{ property: "title", direction: "ASC" }];
+        //this.defaultSort = [{ property: "title", direction: "ASC" }];
         this.defaultBoosts = [{ field: "title", value: 2 }];
 
         this.defaultFilters = [{ field: "type", value: "Grant" }];

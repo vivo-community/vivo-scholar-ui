@@ -10,22 +10,42 @@ class SearchSortOptions extends LitElement {
         };
     }
 
-    // pass up options to parent?
     constructor() {
         super();
-        this.options = [];
+        //this.options = [];
         this.handleSortSelected = this.handleSortSelected.bind(this);
         let search = this.parentNode;
         this.search = search;
+
+        // go ahead and parse out every <vivo-search-option>
+        this.findOptions();
+        
+        this.search.sortOptions = this.orders;
+        this.search.defaultSort = this.defaults;
     }
 
     findOptions() {
         this.searchOptions = Array.from(this.querySelectorAll('vivo-search-sort-option'));
+        // gather in different ways - once for display
         this.options = this.searchOptions.map(opt => {
             const label = opt.getAttribute("label");
             const field = opt.getAttribute("field");
             const direction = opt.getAttribute("direction");
             return {label: label, field: field, direction: direction }
+        });
+        // ... and once as parameters
+        this.orders = this.searchOptions.map(opt => {
+            const field = opt.getAttribute("field");
+            const direction = opt.getAttribute("direction");
+            return {property: field, direction: direction }
+        });
+
+        // then dfigure defaults...
+        let defaults =  this.searchOptions.filter((opt) => { return opt.default == true; });
+        this.defaults = defaults.map(opt => {
+            const field = opt.getAttribute("field");
+            const direction = opt.getAttribute("direction");
+            return {property: field, direction: direction }
         });
     }
 
@@ -67,11 +87,16 @@ class SearchSortOptions extends LitElement {
         // okay to call here?
         this.findOptions();
         let defaults =  this.options.filter((opt) => { return opt.default = true; });
-        this.search.sortOptions = this.options;
+        this.search.setAttribute("sortOptions", this.options);
         this.search.defaultSort = defaults;
          
         if (typeof this.selected == 'undefined') {
-            this.selected = `${this.search.orders[0].property}-${this.search.orders[0].direction}`;
+            if (typeof this.search.orders == 'undefined') {
+
+            } else {
+                this.selected = `${this.search.orders[0].property}-${this.search.orders[0].direction}`;
+
+            }
         }
         
         return html`

@@ -13,6 +13,7 @@ class SearchSortOption extends LitElement {
     }
 
     // TODO: not actually using render right now
+    /*
     render() {
         return html`
             <option 
@@ -21,6 +22,7 @@ class SearchSortOption extends LitElement {
               ${this.label}
             </option>`
     }
+    */
 }
 
 customElements.define('vivo-search-sort-option', SearchSortOption);

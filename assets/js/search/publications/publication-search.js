@@ -49,7 +49,7 @@ class PublicationSearch extends Searcher(LitElement) {
       super();
       this.graphql = pubQuery;
       // must set a default sort
-      this.defaultSort = [{property: 'title', direction: "ASC"}];
+      //this.defaultSort = [{property: 'title', direction: "ASC"}];
       this.defaultBoosts = [{ field: "title", value: 2 }];
 
       this.active = false;
@@ -57,8 +57,7 @@ class PublicationSearch extends Searcher(LitElement) {
       this.handleSearchResultsObtained = this.handleSearchResultsObtained.bind(this);
       this.handleSearchStarted = this.handleSearchStarted.bind(this);
 
-      // NOTE: this is slotted content, but 'searcher' needs property
-      this.sortOptions = [];
+      //this.sortOptions = [];
       this.setUp();
     }
   

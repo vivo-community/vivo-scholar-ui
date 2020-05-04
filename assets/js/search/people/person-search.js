@@ -63,21 +63,11 @@ class PersonSearch extends Searcher(LitElement) {
         this.active = false;
         this.waiting = false;
         // NOTE: all searches must set a default sort
-        this.defaultSort = [{ property: "name", direction: "ASC" }];
+        //this.defaultSort = [{ property: "name", direction: "ASC" }];
         this.defaultBoosts = [{ field: "name", value: 2 }];
 
         this.handleSearchResultsObtained = this.handleSearchResultsObtained.bind(this);
         this.handleSearchStarted = this.handleSearchStarted.bind(this);
-
-        // FIXME: i18n problem
-        /*
-        this.sortOptions = [
-            {label: 'Relevance', field: 'score', direction: "ASC"},
-            {label: 'Last Name (Ascending)', field: 'name', 'direction': "ASC"},
-            {label: 'Last Name (Descending)', field: 'name', 'direction': "DESC"}
-        ];
-        */
-
         this.setUp();
     }
 
