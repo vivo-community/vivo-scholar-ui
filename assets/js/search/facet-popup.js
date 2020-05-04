@@ -34,8 +34,8 @@ class FacetPopupMessage extends Faceter(LitElement) {
   // send unrecognized parameters to GraphQL
   turnFacetToFilterParam(facet) {
     return {
-      "field": facet.field, 
-      "value": facet.value, 
+      "field": facet.field,
+      "value": facet.value,
       "opKey": facet.opKey,
       "tag": facet.tag,
     }
@@ -47,8 +47,8 @@ class FacetPopupMessage extends Faceter(LitElement) {
 
   dequeueFilter(facet) {
     let filter = this.turnFacetToFilterParam(facet);
-    this.additionalFilters = _.reject(this.additionalFilters, function(o) { 
-      return (o.field === filter.field && o.value == filter.value); 
+    this.additionalFilters = _.reject(this.additionalFilters, function(o) {
+      return (o.field === filter.field && o.value == filter.value);
     });
     // if it's not in additionalFilters - then it is a de-selected one
     // from original filters - need to mark for removal (if apply button)
@@ -57,8 +57,8 @@ class FacetPopupMessage extends Faceter(LitElement) {
   }
 
   doesFilterExistsInList(ary, el) {
-    let exists = _.find(ary, function(x) { 
-      return (x.field == el.field && x.value == el.value); 
+    let exists = _.find(ary, function(x) {
+      return (x.field == el.field && x.value == el.value);
     });
     if (typeof exists !== 'undefined') {
       return true;
@@ -135,7 +135,7 @@ class FacetPopupMessage extends Faceter(LitElement) {
       // this should get parent vivo-facet-group
       let group = this.getRootNode().host.parentNode;
       let search = document.querySelector(`[id="${group.search}"]`);
-      
+
       // adds
       this.filters = this.filters.concat(this.additionalFilters);
       // removes
@@ -152,14 +152,14 @@ class FacetPopupMessage extends Faceter(LitElement) {
         let isNew = this.doesFilterExistsInList(this.additionalFilters, f);
         if (isNew) { f.removeAttribute('selected') }
         // do removals? need to be reselected?
-        let isOld = this.doesFilterExistsInList(this.removeFilters, f);  
+        let isOld = this.doesFilterExistsInList(this.removeFilters, f);
         // e.g. set to remove something that existed before?
         // try to 'restore' it
         if (isOld) { f.setAttribute('selected', "") }
       });
       this.filters = [];
     }
-  
+
     // reset when closing
     this.additionalFilters = [];
     this.removeFilters = [];
@@ -234,28 +234,31 @@ class FacetPopupMessage extends Faceter(LitElement) {
       min-height: 200px;
       min-width: 100px;
       max-width: 32rem;
-      overflow: auto;
+      overflow-x: scroll;
       overflow-y: hidden;
-      padding-left: 4px;
       margin: 1em;
       margin-right: 2em;
       margin-left: 2em;
+      padding-left: 4px;
       padding-bottom: 1.2em;
+      padding-top: 1.2em;
       scrollbar-base-color:#ffeaff;
       scrollbar-width: thin;
       scrollbar-color: var(--thumbBG) var(--scrollbarBG);
     }
     .facet-container::-webkit-scrollbar {
-      -webkit-appearance: none;
-      width: 11px;
-    }
-    .facet-container::-webkit-scrollbar-track {
-      background: var(--scrollbarBG);
+      background-color: white;
+      border-radius: 10px;
+      width: 20px;
     }
     .facet-container::-webkit-scrollbar-thumb {
-      background-color: var(--thumbBG);
-      border-radius: 6px;
-      border: 3px solid var(--scrollbarBG);
+      background-color: grey;
+      border-radius: 10px;
+      border: 5px solid white;
+    }
+    .hide-scrollbar::-webkit-scrollbar-thumb:horizontal{
+      height: 20px !important;
+      width: 20px !important;
     }
     #cancel {
       display: inline-block;
@@ -335,13 +338,13 @@ class FacetPopupMessage extends Faceter(LitElement) {
           hiddenList.push(f);
         }
       });
-     
+
       this.makeFacetsVisible(matchList);
       this.makeFacetsHidden(hiddenList);
 
-    } else if (filterText.length < 2) { 
+    } else if (filterText.length < 2) {
       // make sure all are seen
-      this.makeFacetsVisible(this.facets); 
+      this.makeFacetsVisible(this.facets);
     }
   }
 
