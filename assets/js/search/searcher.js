@@ -8,6 +8,7 @@ import * as config from './config.js';
 // NOTE: one way to do this, not the only way
 // http://exploringjs.com/es6/ch_classes.html
 // http://justinfagnani.com/2015/12/21/real-mixins-with-javascript-classes/
+
 let Searcher = (superclass) => class extends superclass {
 
    static get properties() {
@@ -40,6 +41,7 @@ let Searcher = (superclass) => class extends superclass {
       }      
       let order = orders[0];
       if (this.sortOptions) { 
+        // FIXME: if sortOptions are web component, how to figure this?
         // search need to define sortOptions too
         let obj =  _.find(this.sortOptions, { field: order.property, direction: order.direction });
         if (!obj) {

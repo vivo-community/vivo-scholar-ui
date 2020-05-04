@@ -37,6 +37,11 @@ class PublicationSearch extends Searcher(LitElement) {
           flex-basis:35%;
           text-align: right;
         }
+        ::slotted(vivo-search-sort-options) {
+          flex-grow: 1;
+          flex-basis:35%;
+          text-align: right;
+        }
       `
     }
   
@@ -52,15 +57,8 @@ class PublicationSearch extends Searcher(LitElement) {
       this.handleSearchResultsObtained = this.handleSearchResultsObtained.bind(this);
       this.handleSearchStarted = this.handleSearchStarted.bind(this);
 
-      // FIXME: i18n problem
-      this.sortOptions = [
-        {label: 'Relevance', field: 'score', direction: "ASC"},
-        {label: 'Title (Ascending)', field: 'title', 'direction': "ASC"},
-        {label: 'Title (Descending)', field: 'title', 'direction': "DESC"},
-        {label: 'Date (Ascending)', field: 'publicationDate', 'direction': "ASC"},
-        {label: 'Date (Descending)', field: 'publicationDate', 'direction': "DESC"}
-      ];
-
+      // NOTE: this is slotted content, but 'searcher' needs property
+      this.sortOptions = [];
       this.setUp();
     }
   
@@ -147,6 +145,7 @@ class PublicationSearch extends Searcher(LitElement) {
        />`
       }
 
+      // TODO: how to use light dom sorter?
       let selected = `${this.orders[0].property}-${this.orders[0].direction}`;
 
       let sorter = html``;
@@ -158,12 +157,16 @@ class PublicationSearch extends Searcher(LitElement) {
           </vivo-search-sorter>`
       }
 
- 
+      // let sorter = querySelector("slot[sorter]")
+      // sorter.setAttribute(selected, selected);
+      // let sorter = html`<slot name="sorter" />`;
+
+      // ${sorter}
       return html`
         <div id="publication-search-results">
           <div class="search-actions">
           ${pagingSummary}
-          ${sorter}
+          <slot name="sorter"></slot>
           </div>
         ${resultsDisplay}
         ${pagination}

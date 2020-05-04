@@ -15,6 +15,9 @@ import './search/modal.js';
 import './search/truncated-text-result.js';
 import './search/facet-group-toggle.js';
 
+import './search/sort-option.js';
+import './search/sort-options.js';
+
 // tab specific searches
 import './search/people/person-search.js';
 import './search/publications/publication-search.js';
