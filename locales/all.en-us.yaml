@@ -30,7 +30,7 @@
 - id: orgs-show-as-index
   translation: "Index"
 - id: orgs-show-as-label
-  translation: "Show as"
+  translation: "View as"
 - id: overview
   translation: "Overview"
 - id: profile_current_appointments
