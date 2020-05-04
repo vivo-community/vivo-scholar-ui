@@ -21,6 +21,14 @@ class OrganizationTreeListSelector extends LitElement {
       treelistid: {
         type: String,
         value: null
+      },
+      labelForSelectTypeTree: {
+        type: String,
+        value: null
+      },
+      labelForSelectTypeList: {
+        type: String,
+        value: null
       }
     }
   }
@@ -37,11 +45,11 @@ class OrganizationTreeListSelector extends LitElement {
   constructor () {
     super()
     let vm = this
-    vm.selected = 'Hierarchy'
     vm.treeList = null
     document.addEventListener('DOMContentLoaded', (event) => {
       vm.contentLoadedCallback(event)
     })
+    vm.selected = vm.labelForSelectTypeTree
   }
   handleSelection (e) {
     let vm = this
@@ -50,15 +58,15 @@ class OrganizationTreeListSelector extends LitElement {
     if (vm.treeList) {
       // console.log('tree-list-id: ' + vm.treelistid)
       if (selected === 'list') {
-        this.selected = 'Index'
+        this.selected = vm.labelForSelectTypeList
         // console.log('setting treelist attribute showas to list')
         vm.treeList.showas = 'list'
       } else {
-        this.selected = 'Hierarchy'
+        this.selected = vm.labelForSelectTypeTree
         vm.treeList.showas = 'tree'
       }
     }  else {
-      this.selected = 'Hierarchy'
+      this.selected = vm.labelForSelectTypeTree
     }
   }
   render () {
@@ -66,11 +74,11 @@ class OrganizationTreeListSelector extends LitElement {
     let vm = this
     //return html`<select @change="${this.handleSelection}"><option value="tree">Hierarchy</option><option value="list">Index</option></input>`
     return html`
-      <vaadin-select placeholder="${vm.selected}" value="${vm.selected}" @value-changed="${vm.handleSelection}">
+      <vaadin-select placeholder="${vm.labelForSelectTypeTree}" value="${vm.labelForSelectTypeTree}" @value-changed="${vm.handleSelection}">
       <template>
         <vaadin-list-box>
-          <vaadin-item value="tree">Hierarchy</vaadin-item>
-          <vaadin-item value="list">Index</vaadin-item>
+          <vaadin-item value="tree">${vm.labelForSelectTypeTree}</vaadin-item>
+          <vaadin-item value="list">${vm.labelForSelectTypeList}</vaadin-item>
         </vaadin-list-box>
       </template>
       </vaadin-select>

@@ -45,8 +45,16 @@
 </vivo-modal>
 
 <div class="top-line">
-  <span class="h2">Organizations</span>
-  <span class="selector"><span class="viewas">View as: </span><vivo-organizations-tree-list-selector treelistid="tree-list"></vivo-organizations-tree-list-selector></span>
+  <span class="h2"><%= t("orgs-header") %></span>
+  <span class="selector">
+    <span class="viewas"><%= t("orgs-show-as-label") %>:&nbsp;</span>
+    <vivo-organizations-tree-list-selector
+        treelistid="tree-list"
+        labelForSelectTypeTree="<%= t("orgs-show-as-hierarchy") %>"
+        labelForSelectTypeList="<%= t("orgs-show-as-index") %>"
+        >
+    </vivo-organizations-tree-list-selector>
+  </span>
 </div>
 
 
