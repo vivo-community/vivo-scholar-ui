@@ -7,7 +7,6 @@ query GetSubOrgs($id: String = "n6236") {
 ) {
     id
     name
-    orgId
     hasSubOrganizations {
       id
       label
