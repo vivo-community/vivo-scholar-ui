@@ -70,11 +70,13 @@ class PersonSearch extends Searcher(LitElement) {
         this.handleSearchStarted = this.handleSearchStarted.bind(this);
 
         // FIXME: i18n problem
+        /*
         this.sortOptions = [
             {label: 'Relevance', field: 'score', direction: "ASC"},
             {label: 'Last Name (Ascending)', field: 'name', 'direction': "ASC"},
             {label: 'Last Name (Descending)', field: 'name', 'direction': "DESC"}
         ];
+        */
 
         this.setUp();
     }
@@ -183,23 +185,11 @@ class PersonSearch extends Searcher(LitElement) {
          />`
         }
 
-        let sorter = html``;
-
-        // TODO: might be better if 'searcher.js' code took care of this
-        let selected = `${this.orders[0].property}-${this.orders[0].direction}`;
-
-        if (this.data) {
-            sorter = html`<vivo-search-sorter
-              selected=${selected}
-              options=${JSON.stringify(this.sortOptions)}>
-            </vivo-search-sorter>`
-        }
-
         return html`
           <div id="people-search-results">
           <div class="search-actions">
           ${pagingSummary}
-          ${sorter}
+          <slot name="sorter"></slot>
           </div>
           ${resultsDisplay}
           ${pagination}

@@ -53,6 +53,9 @@ class FacetGroup extends Faceter(LitElement) {
       // This would happen if another facet has been applied and
       // narrowed the overall results
       this.filters.forEach(filter => {
+        // NOTE: sometimes get this error:
+        // "TypeError: groupedFacetComponents[filter.field] is undefined"
+        // not sure why ...
         let facet = groupedFacetComponents[filter.field][0];
         // first check if we even have any matches (avoid error)
         if (groupedFacetResults[filter.field]) {

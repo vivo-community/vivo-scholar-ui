@@ -123,6 +123,8 @@ class PublicationSearch extends Searcher(LitElement) {
         }
       </div>`;
 
+      // TODO: could probably use slots for pagination
+      // and paging summary so they are more flexible
       let pagination = html``;
 
       if (this.data) {
@@ -144,24 +146,7 @@ class PublicationSearch extends Searcher(LitElement) {
           totalPages="${this.data.documents.page.totalPages}"
        />`
       }
-
-      // TODO: how to use light dom sorter?
-      let selected = `${this.orders[0].property}-${this.orders[0].direction}`;
-
-      let sorter = html``;
-      if (this.data) {
-          // make sorter
-          sorter = html`<vivo-search-sorter
-            selected=${selected}
-            options=${JSON.stringify(this.sortOptions)}>
-          </vivo-search-sorter>`
-      }
-
-      // let sorter = querySelector("slot[sorter]")
-      // sorter.setAttribute(selected, selected);
-      // let sorter = html`<slot name="sorter" />`;
-
-      // ${sorter}
+ 
       return html`
         <div id="publication-search-results">
           <div class="search-actions">

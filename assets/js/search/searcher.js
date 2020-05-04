@@ -41,8 +41,7 @@ let Searcher = (superclass) => class extends superclass {
       }      
       let order = orders[0];
       if (this.sortOptions) { 
-        // FIXME: if sortOptions are web component, how to figure this?
-        // search need to define sortOptions too
+        // NOTE: this means all searches need sortOptions defined
         let obj =  _.find(this.sortOptions, { field: order.property, direction: order.direction });
         if (!obj) {
           return this.figureDefaultSort(searchStr);

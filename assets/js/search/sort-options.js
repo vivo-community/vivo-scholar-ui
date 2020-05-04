@@ -63,11 +63,17 @@ class SearchSortOptions extends LitElement {
         return flag;
     }
     
-    // <slot></slot> or this.options.map(?)
     render() {
         // okay to call here?
         this.findOptions();
-        this.search.setAttribute("sortOptions", this.options);
+        let defaults =  this.options.filter((opt) => { return opt.default = true; });
+        this.search.sortOptions = this.options;
+        this.search.defaultSort = defaults;
+         
+        if (typeof this.selected == 'undefined') {
+            this.selected = `${this.search.orders[0].property}-${this.search.orders[0].direction}`;
+        }
+        
         return html`
         <select @change="${this.handleSortSelected}">  
            ${this.options.map(option => 

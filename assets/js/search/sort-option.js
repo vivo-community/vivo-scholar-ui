@@ -7,20 +7,12 @@ class SearchSortOption extends LitElement {
           field: { type: String },
           direction: { type: String },
           label: { type: String },
-          selected: { type: Boolean }
+          selected: { type: Boolean },
+          default: { type: Boolean }
         }
     }
 
-    /*
-    isSelected(option) {
-        // options look like this: 
-        // {label: 'Name (asc)', field: 'name', 'direction': "ASC"},
-        // TODO: not crazy about having to make this parseable version
-        let flag = (this.selected === `${option.field}-${option.direction}`);
-        return flag;
-    }
-    */
-
+    // TODO: not actually using render right now
     render() {
         return html`
             <option 

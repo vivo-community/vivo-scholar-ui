@@ -127,7 +127,14 @@
           out the active search id - if it could detect a <vivo-search>
           child element interface that might be better
         -->
-        <vivo-person-search id="person-search" implements="vivo-search"/>
+        <vivo-person-search id="person-search" implements="vivo-search">
+          <vivo-search-sort-options slot="sorter">
+            <vivo-search-sort-option label="Relevance" field="score" direction="ASC"/>
+            <vivo-search-sort-option label="Last Name (Ascending)" field="name" direction="ASC" default="true" />
+            <vivo-search-sort-option label="Last Name (Descending)" field="name" direction="DESC" />
+          </vivo-search-sort-options>
+        </vivo-person-search>
+
       </vivo-tab-panel>
 
       <vivo-tab id="publication-search-tab">
@@ -135,7 +142,16 @@
       </vivo-tab>
 
       <vivo-tab-panel>
-          <vivo-publication-search id="publication-search" implements="vivo-search"/>
+          <vivo-publication-search id="publication-search" implements="vivo-search">
+            <vivo-search-sort-options slot="sorter">
+              <vivo-search-sort-option label="Relevance" field="score" direction="ASC" />
+              <vivo-search-sort-option label="Title (Ascending)" field="title" direction="ASC" default="true"/>
+              <vivo-search-sort-option label="Title (Descending)" field="title" direction="DESC" />
+              <vivo-search-sort-option label="Date (Ascending)" field="publicationDate" direction="ASC" />
+              <vivo-search-sort-option label="Date (Descending)" field="publicationDate" direction="DESC" />
+            </vivo-search-sort-options>
+          </vivo-publication-search>
+
       </vivo-tab-panel>
 
       <vivo-tab id="grant-search-tab">
@@ -143,7 +159,14 @@
       </vivo-tab>
 
       <vivo-tab-panel>
-          <vivo-grant-search id="grant-search" implements="vivo-search"/>
+          <vivo-grant-search id="grant-search" implements="vivo-search">
+            <vivo-search-sort-options slot="sorter">
+              <vivo-search-sort-option label="Relevance" field="score" direction="ASC" />
+              <vivo-search-sort-option label="Title (Ascending)" field="title" direction="ASC" default="true"/>
+              <vivo-search-sort-option label="Title (Descending)" field="title" direction="DESC" />
+            </vivo-search-sort-options>
+          </vivo-grant-search>
+
       </vivo-tab-panel>
 
     </vivo-tabs>
