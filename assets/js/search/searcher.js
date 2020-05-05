@@ -98,7 +98,7 @@ let Searcher = (superclass) => class extends superclass {
       this.search(true);
     }
 
-    
+    // NOTE: these next two functions assume a DOM of some sort (unlike others)
     markSortOptionSelected(selected) {
       let options = this.querySelector('vivo-search-sort-options');
       //options.selected = selected;
@@ -120,13 +120,14 @@ let Searcher = (superclass) => class extends superclass {
           const direction = opt.getAttribute("direction");
           return {property: field, direction: direction }
       });
-  }
+    }
   
-
     // allow each search override this way?
     setUp(pageSize = config.PAGE_SIZE) {
       const parsed = qs.parse(window.location.search.substring(1));
-      // note this has to happen *before* trying to read search parameters ...
+      
+      // note this has to happen *before* trying to read search parameters
+      // so the sort select box can be marked from parameters
       this.sortOptions = [];
       this.findSortOptions();
       const { query, page, filters, orders, boosts } = this.deriveSearchFromParameters(parsed);
