@@ -63,9 +63,7 @@ let Searcher = (superclass) => class extends superclass {
       // NOTE: each search must have defaultSort defined
       const defaultOrders = this.figureOrders(orders, defaultQuery);
 
-      // good place to tell sorter what is 'selected'?
-      console.log(defaultOrders);
-      // not necessarily 'default'
+      // NOTE: not necessarily 'default' - could be from URL
       this.markSortOptionSelected(defaultOrders[0]);
       const defaultBoosts = this.defaultBoosts;
 
@@ -103,31 +101,18 @@ let Searcher = (superclass) => class extends superclass {
     
     markSortOptionSelected(selected) {
       let options = this.querySelector('vivo-search-sort-options');
-      console.log(`trying to set selected: ${JSON.stringify(selected)}`);
       //options.selected = selected;
       // NOTE: needs in exact format to match
       options.selected = `${selected.property}-${selected.direction}`;
-      console.log(`trying to set selected: ${JSON.stringify(selected)} on ${JSON.stringify(options)}`);
     }
 
     findSortOptions() {
       let searchOptions = Array.from(this.querySelectorAll('vivo-search-sort-option'));
-     /*
-      // gather in different ways - once for display
-      this.options = this.searchOptions.map(opt => {
-          const label = opt.getAttribute("label");
-          const field = opt.getAttribute("field");
-          const direction = opt.getAttribute("direction");
-          return {label: label, field: field, direction: direction}
-      });
-      */
-      // ... and once as parameters
       this.sortOptions = searchOptions.map(opt => {
           const field = opt.getAttribute("field");
           const direction = opt.getAttribute("direction");
           return {property: field, direction: direction }
       });
-
       // then figure defaults...
       let defaults =  searchOptions.filter((opt) => { return opt.default == true; });
       this.defaultSort = defaults.map(opt => {

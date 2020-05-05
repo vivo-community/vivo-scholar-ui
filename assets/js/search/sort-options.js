@@ -82,16 +82,11 @@ class SearchSortOptions extends LitElement {
     isSelected(option) {
         // options look like this: 
         // {label: 'Name (asc)', field: 'name', 'direction': "ASC"},
-
-        console.log(`${JSON.stringify(this.selected)} === ${option.field}-${option.direction}`);
-
         let flag = (this.selected === `${option.field}-${option.direction}`);
         return flag;
     }
     
-    render() {
-        console.log(this.selected);
-        
+    render() { 
         return html`
         <select @change="${this.handleSortSelected}">  
            ${this.options.map(option => 
