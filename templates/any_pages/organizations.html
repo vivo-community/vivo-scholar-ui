@@ -1,0 +1,70 @@
+<style>
+  .h2 {
+    color: #0577b1;
+    font-size: 40px;
+    padding-left: 20px;
+    font-weight: 500;
+    font-family: Helvetica, Arial, sans-serif;
+    padding-top: 3px;
+    margin-bottom: 35px;
+  }
+
+  .viewas {
+    font-size: 15px;
+  }
+
+  .top-line {
+    align-items: center;
+    display: flex;
+    width: 70%;
+    justify-content: space-between;
+  }
+
+  @media only screen and (max-width: 768px) {
+    .h2 {
+      font-size: 35px;
+      padding-left: 10px;
+    }
+    .top-line {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+  }
+  .selector {
+    margin-left: 15px;
+    margin-bottom: 20px;
+  }
+  vivo-modal {
+    text-align: center;
+  }
+</style>
+
+<vivo-modal id="loading">
+  <!--h3>Loading ...</h3-->
+  <vivo-search-spinner></vivo-search-spinner>
+</vivo-modal>
+
+<div class="top-line">
+  <span class="h2"><%= t("orgs-header") %></span>
+  <span class="selector">
+    <span class="viewas"><%= t("orgs-show-as-label") %>:&nbsp;</span>
+    <vivo-organizations-tree-list-selector
+        treelistid="tree-list"
+        labelForSelectTypeTree="<%= t("orgs-show-as-hierarchy") %>"
+        labelForSelectTypeList="<%= t("orgs-show-as-index") %>"
+        >
+    </vivo-organizations-tree-list-selector>
+  </span>
+</div>
+
+
+<vivo-organizations-tree
+    id="tree-list"
+    class="showastree"
+    showas="tree"
+    opened
+    orgid="<%= ThemeVariable("siteOrganizationId") %>"
+    siteorgid="<%= ThemeVariable("siteOrganizationId") %>"
+    notFoundMsg="<%= t("orgs-not-found") %>"
+    loadingMsg="<%= t("orgs-loading") %>" >
+</vivo-organizations-tree>

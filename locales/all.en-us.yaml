@@ -23,6 +23,18 @@
   translation: "Telephone"
 - id: address_1
   translation: "Address 1"
+- id: orgs-header
+  translation: "Organizations"
+- id: orgs-loading
+  translation: "Loading organizations ..."
+- id: orgs-not-found
+  translation: "No organizations found. Check SITE_ORGANIZATION_ID"
+- id: orgs-show-as-hierarchy
+  translation: "Hierarchy"
+- id: orgs-show-as-index
+  translation: "Index"
+- id: orgs-show-as-label
+  translation: "View as"
 - id: overview
   translation: "Overview"
 - id: profile_current_appointments
