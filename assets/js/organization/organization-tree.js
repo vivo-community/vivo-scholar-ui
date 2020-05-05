@@ -108,6 +108,14 @@ class OrganizationTree extends LitElement {
         type: String,
         value: null
       },
+      loadingMsg: {
+        type: String,
+        value: null
+      },
+      notFoundMsg: {
+        type: String,
+        value: null
+      },
       orgid: {
         type: String,
         value: null
@@ -280,7 +288,6 @@ class OrganizationTree extends LitElement {
           })
       } else {
         vm.logDebug(func + ' - resolved data from cache for orgid: ' + vm.orgid)
-        // vm.qldata = orgData
         resolve(orgData)
       }
     })
@@ -367,9 +374,10 @@ class OrganizationTree extends LitElement {
   }
   render () {
     let vm = this
+    let theData = vm.getDataValue()
     try {
       if (vm.logLevelDebug()) {
-        vm.logDebug('tree after graphql: ' + vm.stringify(vm.getDataValue()))
+        vm.logDebug('tree after graphql: ' + vm.stringify(theData))
         vm.logDebug('My id(non-root is undefined): ' + vm.id)
         vm.logDebug(`orgid: ${vm.orgid} - siteorgid: ${vm.siteorgid}`)
         vm.logDebug(`showas: ${vm.showas}`)
@@ -380,20 +388,24 @@ class OrganizationTree extends LitElement {
         if (vm.siteorgid !== vm.orgid) {
           if (vm.opened && vm.hasOrgs()) {
             vm.classes = {indicator: true, opened: vm.opened, closed: !!!vm.opened}
-            templates.push(html`<div><span @click="${vm.handleClick}" class="${classMap(vm.classes)}">${vm.closer()}</span><span>${vm.getName(vm.getDataValue())}</span></div>`)
+            templates.push(html`<div><span @click="${vm.handleClick}" class="${classMap(vm.classes)}">${vm.closer()}</span><span>${vm.getName(theData)}</span></div>`)
           } else if (vm.hasOrgs()) {
             vm.classes = {indicator: true, opened: vm.opened, closed: !!!vm.opened}
-            templates.push(html`<div><span @click="${vm.handleClick}" class="${classMap(vm.classes)}">${vm.opener()}</span><span>${vm.getName(vm.getDataValue())}</span></div>`)
+            templates.push(html`<div><span @click="${vm.handleClick}" class="${classMap(vm.classes)}">${vm.opener()}</span><span>${vm.getName(theData)}</span></div>`)
           } else {
             vm.classes = {indicator: true, opened: false, closed: false}
-            templates.push(html`<div><span class="${classMap(vm.classes)}"></span><span>${vm.getName(vm.getDataValue())}</span></div>`)
+            templates.push(html`<div><span class="${classMap(vm.classes)}"></span><span>${vm.getName(theData)}</span></div>`)
+          }
+        } else {
+          if (!theData || _.isEmpty(theData)) {
+            templates.push(html`<div>${vm.notFoundMsg}</div>`)
           }
         }
         if (vm.opened) {
-          if (vm.getDataValue() && !_.isEmpty(vm.getDataValue())) {
+          if (vm.getDataValue() && !_.isEmpty(theData)) {
             if (vm.hasOrgs()) {
-              vm.getDataValue().hasSubOrganizations.sort((a, b) => a.label >= b.label).forEach((v, idx) => {
-                vm.logDebug('tree creating object elem directly for array item: ' + idx + '. ' + vm.stringify(vm.getDataValue()))
+              theData.hasSubOrganizations.sort((a, b) => a.label >= b.label).forEach((v, idx) => {
+                vm.logDebug('tree creating object elem directly for array item: ' + idx + '. ' + vm.stringify(theData))
                 templates.push(html`<vivo-organizations-tree class="${vm.getShowAsClass()}" orgid="${v.id}" showas="tree" orgname="${v.label}">`)
               })
             } //else {
@@ -421,11 +433,12 @@ class OrganizationTree extends LitElement {
             })
             .catch((err) => {
               vm.logError(`ensureCachePopulated error: ${err}`)
-              reject(err)
+              templates.push(html`<div>${vm.notFoundMsg}</div>`)
+              resolve(templates) // resolve with error msg instead of reject(err)
             })
         })
   
-       return html`${until(loader,html`<span>Loading...</span>`)}`
+       return html`${until(loader,html`<span>${vm.loadingMsg}</span>`)}`
     }
     
     } catch (err) {
