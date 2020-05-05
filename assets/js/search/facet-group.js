@@ -42,6 +42,8 @@ class FacetGroup extends Faceter(LitElement) {
     }
 
     removeNotApplicable() {
+      return;
+      /*
       let groupedFacetResults = _.groupBy(this.data[this.key].facets, "field");
 
       let domQuery = `vivo-search-facets[key="${this.key}"],[implements="vivo-search-facets"][key="${this.key}"]`
@@ -67,7 +69,7 @@ class FacetGroup extends Faceter(LitElement) {
           }
         }
       });
-
+      */
     }
 
     handleSearchResultsObtained(e) {
