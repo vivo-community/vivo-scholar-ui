@@ -114,15 +114,13 @@ class SearchFacets extends Faceter(LitElement) {
     return results;
   }
 
-  // FIXME: various i18n problem
-  // <div slot="popup-heading">?
   generateFacetPopup(showList) {
-    // FIXME: this is getting the title of popup from
-    // <h4> which means <h4> is required in slot
-    // TODO: maybe default to h4 unless popup-heading 
-    //let heading = this.querySelector("h4");
-    let headingText = this.popupHeading;
-    let help = this.placeholder;
+    // maybe default to an h4 if popup-heading not specified? 
+    let heading = this.querySelector("h4");
+    let headingText = this.popupHeading || heading.innerText;
+
+    // not sure a good way to default this
+    let help = this.placeholder || '';
     // maybe attributes would be easier
     let cancel = this.coordinator.getAttribute("cancel");
     let apply = this.coordinator.getAttribute("apply");

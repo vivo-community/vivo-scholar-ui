@@ -19,23 +19,12 @@ class GrantSearch extends Searcher(LitElement) {
         this.graphql = grantQuery;
         this.active = false;
         this.waiting = false;
-        // NOTE: all searches must set a default sort
-        //this.defaultSort = [{ property: "title", direction: "ASC" }];
         this.defaultBoosts = [{ field: "title", value: 2 }];
 
         this.defaultFilters = [{ field: "type", value: "Grant" }];
 
         this.handleSearchResultsObtained = this.handleSearchResultsObtained.bind(this);
         this.handleSearchStarted = this.handleSearchStarted.bind(this);
-
-        // FIXME: i18n problem
-        /*
-        this.sortOptions = [
-            { label: 'Relevance', field: 'score', direction: "ASC" },
-            { label: 'Title (Ascending)', field: 'title', 'direction': "ASC" },
-            { label: 'Title (Descending)', field: 'title', 'direction': "DESC" }
-        ];
-        */
         this.setUp();
     }
 
