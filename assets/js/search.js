@@ -7,7 +7,6 @@ import './search/facet-toggle.js';
 import './search/pagination.js';
 import './search/pagination-summary.js';
 import './search/facet-popup.js';
-import './search/sorter.js';
 import './search/search-sidebar-item.js';
 import './search/filter-clearer.js';
 import './search/spinner.js';

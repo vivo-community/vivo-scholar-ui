@@ -33,8 +33,7 @@ class PersonSearch extends Searcher(LitElement) {
             flex-grow: 2;
             flex-basis: 65%;
         }
-        /* TODO: these same values set in each search */
-        vivo-search-sorter {
+        ::slotted(vivo-search-sort-options) {
             flex-grow: 1;
             flex-basis:35%;
             text-align: right;
