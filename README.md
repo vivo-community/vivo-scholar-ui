@@ -23,6 +23,8 @@ A possible front-end to the [Scholars Discovery](https://github.com/vivo-communi
 Update the value of GRAPHQL_ENDPOINT to the address of a running instance of Scholars Discovery. The default
 value of one running locally has been prepopulated in .env.example.
 
+Set the SITE_ORGANIZATION_ID value to the institution's root organization id. 
+
 ### Native
      buffalo dev
 
