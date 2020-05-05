@@ -12,18 +12,10 @@ class SearchSortOptions extends LitElement {
 
     constructor() {
         super();
-        //this.options = [];
         this.handleSortSelected = this.handleSortSelected.bind(this);
         // parent should always be search
-        //let search = this.parentNode;
-        //this.search = search;
-
         // go ahead and parse out every <vivo-search-option>
         this.findOptions();
-        
-        // pass up to search
-        //this.search.sortOptions = this.sortOptions;
-        //this.search.defaultSort = this.defaults;
     }
 
     findOptions() {
@@ -35,22 +27,6 @@ class SearchSortOptions extends LitElement {
             const direction = opt.getAttribute("direction");
             return {label: label, field: field, direction: direction}
         });
-        /*
-        // ... and once as parameters
-        this.sortOptions = this.searchOptions.map(opt => {
-            const field = opt.getAttribute("field");
-            const direction = opt.getAttribute("direction");
-            return {property: field, direction: direction }
-        });
-
-        // then figure defaults...
-        let defaults =  this.searchOptions.filter((opt) => { return opt.default == true; });
-        this.defaults = defaults.map(opt => {
-            const field = opt.getAttribute("field");
-            const direction = opt.getAttribute("direction");
-            return {property: field, direction: direction }
-        });
-        */
     }
 
     handleSortSelected(e) {

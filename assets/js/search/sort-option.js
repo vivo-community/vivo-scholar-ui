@@ -12,17 +12,7 @@ class SearchSortOption extends LitElement {
         }
     }
 
-    // TODO: not actually using render right now
-    /*
-    render() {
-        return html`
-            <option 
-              ?selected=${this.selected}
-              value="${this.field}-${this.direction}">
-              ${this.label}
-            </option>`
-    }
-    */
+    // NOTE: no render, seemed easier
 }
 
 customElements.define('vivo-search-sort-option', SearchSortOption);
