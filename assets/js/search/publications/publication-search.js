@@ -32,7 +32,7 @@ class PublicationSearch extends Searcher(LitElement) {
           flex-grow: 2;
           flex-basis: 65%;
         }
-        vivo-search-sorter {
+        ::slotted(vivo-search-sort-options) {
           flex-grow: 1;
           flex-basis:35%;
           text-align: right;
@@ -43,23 +43,11 @@ class PublicationSearch extends Searcher(LitElement) {
     constructor() {
       super();
       this.graphql = pubQuery;
-      // must set a default sort
-      this.defaultSort = [{property: 'title', direction: "ASC"}];
       this.defaultBoosts = [{ field: "title", value: 2 }];
-
       this.active = false;
 
       this.handleSearchResultsObtained = this.handleSearchResultsObtained.bind(this);
       this.handleSearchStarted = this.handleSearchStarted.bind(this);
-
-      this.sortOptions = [
-        {label: 'Relevance', field: 'score', direction: "ASC"},
-        {label: 'Title (Ascending)', field: 'title', 'direction': "ASC"},
-        {label: 'Title (Descending)', field: 'title', 'direction': "DESC"},
-        {label: 'Date (Ascending)', field: 'publicationDate', 'direction': "ASC"},
-        {label: 'Date (Ascending)', field: 'publicationDate', 'direction': "DESC"}
-      ];
-
       this.setUp();
     }
   
@@ -112,20 +100,20 @@ class PublicationSearch extends Searcher(LitElement) {
 
       if (this.data && this.data.documents.content) {
         let content = this.data.documents.content;
-        _.each(content, function (item) {
+        content.forEach((item) => {
           results.push(item);
         });
       }
       
-      // FIXME: use arrow notation to get rid of _self?
-      let _self = this;
       var resultsDisplay = html`<div class="publications">
-        ${_.map(results, function (i) {
-            return _self.renderPublication(i);
+        ${results.map((i) => {
+            return this.renderPublication(i);
           })
         }
       </div>`;
 
+      // TODO: could probably use slots for pagination
+      // and paging summary so they are more flexible
       let pagination = html``;
 
       if (this.data) {
@@ -147,24 +135,12 @@ class PublicationSearch extends Searcher(LitElement) {
           totalPages="${this.data.documents.page.totalPages}"
        />`
       }
-
-      let selected = `${this.orders[0].property}-${this.orders[0].direction}`;
-
-      let sorter = html``;
-      if (this.data) {
-          // make sorter
-          sorter = html`<vivo-search-sorter
-            selected=${selected}
-            options=${JSON.stringify(this.sortOptions)}>
-          </vivo-search-sorter>`
-      }
-
  
       return html`
         <div id="publication-search-results">
           <div class="search-actions">
           ${pagingSummary}
-          ${sorter}
+          <slot name="sorter"></slot>
           </div>
         ${resultsDisplay}
         ${pagination}

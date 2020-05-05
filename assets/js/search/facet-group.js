@@ -12,37 +12,7 @@ class FacetGroup extends Faceter(LitElement) {
         waiting: { type: Boolean }
       }
     }
-    
-    static get styles() {
-      return css`
-      :host { 
-        display: none;
-      }
-      :host([selected]) {
-        display: block;
-      }
-      ::slotted(h3) {
-        text-align: right;
-        font-size: 1.2em;
-      }
-      ::slotted(vivo-search-facets) {
-        text-align: right;
-      }
-      @media screen and (max-width: 1000px) {
-        ::slotted(h3) {
-          text-align: left;
-        }
-        ::slotted(vivo-search-facets) {
-          text-align: left;
-        }
-        :host([selected]) {
-          display: none;
-        }
 
-      }
-      `
-    }
-    
     constructor() {
       super();
       this.selected = false;
@@ -82,7 +52,10 @@ class FacetGroup extends Faceter(LitElement) {
       //
       // This would happen if another facet has been applied and
       // narrowed the overall results
-      this.filters.map(filter => {
+      this.filters.forEach(filter => {
+        // NOTE: sometimes get this error:
+        // "TypeError: groupedFacetComponents[filter.field] is undefined"
+        // not sure why ...
         let facet = groupedFacetComponents[filter.field][0];
         // first check if we even have any matches (avoid error)
         if (groupedFacetResults[filter.field]) {
@@ -127,6 +100,42 @@ class FacetGroup extends Faceter(LitElement) {
       search.search();
     }
 
+
+    static get styles() {
+      return css`
+      :host { 
+        display: none;
+      }
+      :host([selected]) {
+        display: block;
+      }
+      ::slotted(h3) {
+        text-align: right;
+        font-size: 1.2em;
+      }
+      ::slotted(vivo-search-facets) {
+        text-align: right;
+      }
+      ::slotted([slot="show-more"]) {
+        display: none;
+      }
+      ::slotted([slot="show-less"]) {
+        display: none;
+      }
+      @media screen and (max-width: 1000px) {
+        ::slotted(h3) {
+          text-align: left;
+        }
+        ::slotted(vivo-search-facets) {
+          text-align: left;
+        }
+        :host([selected]) {
+          display: none;
+        }
+      }
+      `
+    }
+
     render() {
       if (this.waiting == true) {
         return html``
@@ -144,27 +153,26 @@ class FacetGroup extends Faceter(LitElement) {
 
       // 2. for each vivo-search-facet element, get key and field
       // and assign data (+ filters)
-      facets.map(facet => {
+      facets.forEach(facet => {
          let key = facet.key;
          let field = facet.field;
          if (key == this.key && grouped[field]) {
            facet.setData(grouped[field]);
            facet.setFilters(this.filters);
-           // facet.setKey(this.key); do this? not sure
          } else if (key == this.key && !grouped[field]) {
           // NOTE: after a new search, if there are no
           // facets - need to blank out
           facet.setData(null);
-          //facet.setSelected(false);
-          // TODO: nothing seems to be emptying out filters
-          // when tab changes
           facet.setFilters([]);
         }
       });
   
       // grouping of facets per vivo-sidebar-item
+      // NOTE: show-more, show-less are pass-through slots
       return html`
          <slot></slot>
+         <slot name="show-more"></slot>
+         <slot name="show-less"></slot>
       `
     }
   };

@@ -8,6 +8,7 @@ import * as config from './config.js';
 // NOTE: one way to do this, not the only way
 // http://exploringjs.com/es6/ch_classes.html
 // http://justinfagnani.com/2015/12/21/real-mixins-with-javascript-classes/
+
 let Searcher = (superclass) => class extends superclass {
 
    static get properties() {
@@ -40,7 +41,7 @@ let Searcher = (superclass) => class extends superclass {
       }      
       let order = orders[0];
       if (this.sortOptions) { 
-        // search need to define sortOptions too
+        // NOTE: this means all searches need sortOptions defined
         let obj =  _.find(this.sortOptions, { field: order.property, direction: order.direction });
         if (!obj) {
           return this.figureDefaultSort(searchStr);
@@ -62,6 +63,8 @@ let Searcher = (superclass) => class extends superclass {
       // NOTE: each search must have defaultSort defined
       const defaultOrders = this.figureOrders(orders, defaultQuery);
 
+      // NOTE: not necessarily 'default' - could be from URL
+      this.markSortOptionSelected(defaultOrders[0]);
       const defaultBoosts = this.defaultBoosts;
 
       let searchTab = parsed["search-tab"];
@@ -95,9 +98,38 @@ let Searcher = (superclass) => class extends superclass {
       this.search(true);
     }
 
+    // NOTE: these next two functions assume a DOM of some sort (unlike others)
+    markSortOptionSelected(selected) {
+      let options = this.querySelector('vivo-search-sort-options');
+      //options.selected = selected;
+      // NOTE: needs in exact format to match
+      options.selected = `${selected.property}-${selected.direction}`;
+    }
+
+    findSortOptions() {
+      let searchOptions = Array.from(this.querySelectorAll('vivo-search-sort-option'));
+      this.sortOptions = searchOptions.map(opt => {
+          const field = opt.getAttribute("field");
+          const direction = opt.getAttribute("direction");
+          return {property: field, direction: direction }
+      });
+      // then figure defaults...
+      let defaults =  searchOptions.filter((opt) => { return opt.default == true; });
+      this.defaultSort = defaults.map(opt => {
+          const field = opt.getAttribute("field");
+          const direction = opt.getAttribute("direction");
+          return {property: field, direction: direction }
+      });
+    }
+  
     // allow each search override this way?
     setUp(pageSize = config.PAGE_SIZE) {
       const parsed = qs.parse(window.location.search.substring(1));
+      
+      // note this has to happen *before* trying to read search parameters
+      // so the sort select box can be marked from parameters
+      this.sortOptions = [];
+      this.findSortOptions();
       const { query, page, filters, orders, boosts } = this.deriveSearchFromParameters(parsed);
       
       this.query = query;

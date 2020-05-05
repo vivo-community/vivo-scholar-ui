@@ -33,8 +33,7 @@ class PersonSearch extends Searcher(LitElement) {
             flex-grow: 2;
             flex-basis: 65%;
         }
-        /* TODO: these same values set in each search */
-        vivo-search-sorter {
+        ::slotted(vivo-search-sort-options) {
             flex-grow: 1;
             flex-basis:35%;
             text-align: right;
@@ -62,19 +61,10 @@ class PersonSearch extends Searcher(LitElement) {
         this.graphql = peopleQuery;
         this.active = false;
         this.waiting = false;
-        // NOTE: all searches must set a default sort
-        this.defaultSort = [{ property: "name", direction: "ASC" }];
         this.defaultBoosts = [{ field: "name", value: 2 }];
 
         this.handleSearchResultsObtained = this.handleSearchResultsObtained.bind(this);
         this.handleSearchStarted = this.handleSearchStarted.bind(this);
-
-        this.sortOptions = [
-            {label: 'Relevance', field: 'score', direction: "ASC"},
-            {label: 'Last Name (Ascending)', field: 'name', 'direction': "ASC"},
-            {label: 'Last Name (Descending)', field: 'name', 'direction': "DESC"}
-        ];
-
         this.setUp();
     }
 
@@ -148,16 +138,14 @@ class PersonSearch extends Searcher(LitElement) {
 
         if (this.data && this.data.people.content) {
             let content = this.data.people.content;
-            _.each(content, function (item) {
+            content.forEach((item) => {
                 results.push(item);
             });
         }
 
-
-        let _self = this;
         var resultsDisplay = html`<div class="people">
-          ${_.map(results, function (i) {
-            return _self.renderPerson(i);
+          ${results.map((i) => {
+            return this.renderPerson(i);
            })
         }
         </div>`;
@@ -184,23 +172,11 @@ class PersonSearch extends Searcher(LitElement) {
          />`
         }
 
-        let sorter = html``;
-
-        // TODO: might be better if 'searcher.js' code took care of this
-        let selected = `${this.orders[0].property}-${this.orders[0].direction}`;
-
-        if (this.data) {
-            sorter = html`<vivo-search-sorter
-              selected=${selected}
-              options=${JSON.stringify(this.sortOptions)}>
-            </vivo-search-sorter>`
-        }
-
         return html`
           <div id="people-search-results">
           <div class="search-actions">
           ${pagingSummary}
-          ${sorter}
+          <slot name="sorter"></slot>
           </div>
           ${resultsDisplay}
           ${pagination}

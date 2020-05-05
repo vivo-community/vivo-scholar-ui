@@ -28,7 +28,7 @@ class SearchFilterClearer extends LitElement {
 
     render() {
         return html`<a @click="${this.handleClearFilters}">
-           < Reset search filters
+           <slot></slot>
         </a>`
     }
 }

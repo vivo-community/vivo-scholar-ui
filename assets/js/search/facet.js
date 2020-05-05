@@ -46,6 +46,7 @@ class SearchFacet extends LitElement {
         flex-grow: unset;
         order: 1;
         margin-left: 8px;
+        padding-left: 4px;
       }
       .label.count {
         padding-left: 2px;

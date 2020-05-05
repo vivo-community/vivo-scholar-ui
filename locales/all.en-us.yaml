@@ -65,3 +65,68 @@
   translation: "Grants"
 - id: bio
   translation: "Bio"
+- id: searching
+  translation: "Searching"
+- id: filter_people
+  translation: "Filter People"
+- id: filter_publications
+  translation: "Filter Publications"
+- id: filter_funding
+  translation: "Filter Funding"
+- id: school_unit
+  translation: "School/Unit"
+- id: department
+  translation: "Department"
+- id: position
+  translation: "Position"
+- id: type
+  translation: "Type"
+- id: date
+  translation: "Date"
+- id: author
+  translation: "Author"
+- id: publisher
+  translation: "Publisher"
+- id: contributors
+  translation: "Contributors"      
+- id: funding_source
+  translation: "Funding Source"
+- id: people
+  translation: "People"
+- id: publications
+  translation: "Publications"
+- id: funding
+  translation: "Funding"
+- id: reset_search_filters
+  translation: "Reset search filters"
+- id: show_filters
+  translation: "Show filters"
+- id: hide_filters
+  translation: "Hide filters"
+- id: filter_author
+  translation: "Filter Author"
+- id: show_more
+  translation: "Show More"  
+- id: show_less
+  translation: "Show Less"
+- id: cancel
+  translation: "Cancel"
+- id: apply
+  translation: "Apply"
+- id: search_author_placeholder
+  translation: "Start typing to find a specific filter result"
+- id: relevance
+  translation: "Relevance"
+- id: last_name_ascending
+  translation: "Last Name (Ascending)"
+- id: last_name_descending
+  translation: "Last Name (Descending)"
+- id: title_ascending
+  translation: "Title (Ascending)"
+- id: title_descending
+  translation: "Title (Descending)"
+- id: date_ascending
+  translation: "Date (Ascending)"
+- id: date_descending
+  translation: "Date (Descending)" 
+

@@ -16,6 +16,7 @@ class SearchPaginationSummary extends LitElement {
   }
 
 
+  // FIXME: i18n problem
   render() {
     let pagingText = html``;
 

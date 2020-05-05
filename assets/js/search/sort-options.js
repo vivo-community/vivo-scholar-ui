@@ -1,20 +1,32 @@
 import { LitElement, html, css } from "lit-element";
 
-class SearchSorter extends LitElement {
+class SearchSortOptions extends LitElement {
 
     // NOT multi-select
     static get properties() {
         return {
             options: { type: Array },
-            selected: { type: String, attribute: true }
+            selected: { type: String }
         };
     }
 
     constructor() {
         super();
-        // just hard-coding here for now
-        this.options = [];
         this.handleSortSelected = this.handleSortSelected.bind(this);
+        // parent should always be search
+        // go ahead and parse out every <vivo-search-option>
+        this.findOptions();
+    }
+
+    findOptions() {
+        this.searchOptions = Array.from(this.querySelectorAll('vivo-search-sort-option'));
+        // gather in different ways - once for display
+        this.options = this.searchOptions.map(opt => {
+            const label = opt.getAttribute("label");
+            const field = opt.getAttribute("field");
+            const direction = opt.getAttribute("direction");
+            return {label: label, field: field, direction: direction}
+        });
     }
 
     handleSortSelected(e) {
@@ -26,7 +38,6 @@ class SearchSorter extends LitElement {
 
         this.selected = value;
         const [field, direction] = value.split("-", 2);
-
         // also, reset paging?  
         this.dispatchEvent(new CustomEvent('sortSelected', {
             detail: { property: field, direction: direction },
@@ -36,28 +47,25 @@ class SearchSorter extends LitElement {
         }));
     }
 
-
-    isSelected(option) {
-        // options look like this: 
-        // {label: 'Name (asc)', field: 'name', 'direction': "ASC"},
-        // TODO: not crazy about having to make this parseable version
-        let flag = (this.selected === `${option.field}-${option.direction}`);
-        return flag;
-    }
-
     static get styles() {
-        // TODO: should make link color etc...
         return css`
-          select {
-            font-size: .85em;
-            margin-top: 8px;
+          :host {
+            display: block;
           }
         `
     }
 
-    render() {
-        return html`<select @change="${this.handleSortSelected}">
-          ${this.options.map(option => 
+    isSelected(option) {
+        // options look like this: 
+        // {label: 'Name (asc)', field: 'name', 'direction': "ASC"},
+        let flag = (this.selected === `${option.field}-${option.direction}`);
+        return flag;
+    }
+    
+    render() { 
+        return html`
+        <select @change="${this.handleSortSelected}">  
+           ${this.options.map(option => 
             html`
             <option 
               ?selected=${this.isSelected(option)}
@@ -69,4 +77,4 @@ class SearchSorter extends LitElement {
     }
 }
 
-customElements.define('vivo-search-sorter', SearchSorter);
+customElements.define('vivo-search-sort-options', SearchSortOptions);

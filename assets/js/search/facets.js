@@ -10,7 +10,9 @@ class SearchFacets extends Faceter(LitElement) {
         field: { type: String }, // e.g. researchAreas
         key: { type: String }, // e.g. people
         tag: { type: String, attribute: true }, // e.g. SOLR "tag"
-        opKey: { type: String, attribute: true } // EQUALS, RAW etc...
+        opKey: { type: String, attribute: true }, // EQUALS, RAW etc...
+        placeholder: { type: String },
+        popupHeading: { type: String }
     }
   }
 
@@ -23,6 +25,7 @@ class SearchFacets extends Faceter(LitElement) {
     this.togglePopup = this.togglePopup.bind(this);
 
     this.toggleList = this.toggleList.bind(this);
+    this.coordinator = document.querySelector('vivo-search-navigation');
   }
 
   static get styles() {
@@ -54,6 +57,15 @@ class SearchFacets extends Faceter(LitElement) {
         padding: 0;
         margin: 0;
       }
+      ::slotted([slot="show-more"]) {
+        display: none;
+      }
+      ::slotted([slot="show-less"]) {
+        display: none;
+      }   
+      ::slotted([slot="popup-heading"]) {
+        display: none;
+      }         
       @media screen and (max-width: 1000px) {
         .entire-facet-list {
           display: none;
@@ -90,23 +102,38 @@ class SearchFacets extends Faceter(LitElement) {
   }
 
   generateFacetToggle(showList) {
-    var results = html`<vivo-search-facet-toggle>
+    // NOTE: just getting text not sure how to send in entire node
+    // also not sure how expensive this DOM call is - could put more in constructor
+    let more = this.coordinator.getAttribute("show-more");
+    let less = this.coordinator.getAttribute("show-less");
+    let results = html`<vivo-search-facet-toggle>
       ${this.generateFacetList(showList)}
+      <span slot="show-more">${more}</span>
+      <span slot="show-less">${less}</span>
     </vivo-search-facet-toggle>`
     return results;
   }
 
   generateFacetPopup(showList) {
-    // FIXME: this is getting the title of popup from
-    // <h4> which means <h4> is required in slot
+    // maybe default to an h4 if popup-heading not specified? 
     let heading = this.querySelector("h4");
-    let headingText = heading.innerText;
+    let headingText = this.popupHeading || heading.innerText;
+
+    // not sure a good way to default this
+    let help = this.placeholder || '';
+    // maybe attributes would be easier
+    let cancel = this.coordinator.getAttribute("cancel");
+    let apply = this.coordinator.getAttribute("apply");
+    let more = this.coordinator.getAttribute("show-more");
+
     var results = html`
-    <p id="toggle-facet" @click=${this.togglePopup}>Show More</p>
-    <vivo-facet-popup-message id="popup-facets">
-      <div slot="heading">Filter ${headingText}</div> 
+    <p id="toggle-facet" @click=${this.togglePopup}>${more}</p>
+    <vivo-facet-popup-box id="popup-facets" placeholder="${help}">
+      <div slot="heading">${headingText}</div> 
       ${this.generateFacetList(showList)}
-    </vivo-facet-popup-message>`;
+      <span slot="cancel">${cancel}</span>
+      <span slot="apply">${apply}</span>
+    </vivo-facet-popup-box>`;
     return results;
   }
 
@@ -116,6 +143,7 @@ class SearchFacets extends Faceter(LitElement) {
     // the pop-up needs all options
     return this.generateFacetPopup(content)
   } else  {
+    // how to send in more/less
     return this.generateFacetToggle(hideList);
   }
  }

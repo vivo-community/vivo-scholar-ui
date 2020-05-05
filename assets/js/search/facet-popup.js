@@ -3,15 +3,12 @@ import { LitElement, html, css } from "lit-element";
 // needed add, remove filter functions
 import Faceter from './faceter.js'
 
-class FacetPopupMessage extends Faceter(LitElement) {
+class FacetPopupBox extends Faceter(LitElement) {
 
   static get properties() {
     return {
-      open: {
-        attribute: "open",
-        type: Boolean,
-        reflect: true
-      }
+      open: { attribute: "open", type: Boolean, reflect: true },
+      placeholder: { type: String }
     };
   }
 
@@ -28,7 +25,6 @@ class FacetPopupMessage extends Faceter(LitElement) {
       this.classes = { "modal": true, "show-modal": false }
       this.handleFacetSelected = this.handleFacetSelected.bind(this);
   }
-
 
   // just need *some* fields when building, otherwise would
   // send unrecognized parameters to GraphQL
@@ -120,11 +116,11 @@ class FacetPopupMessage extends Faceter(LitElement) {
     this.open = true;
   }
 
-  apply() {
+  doApply() {
     this.closeDown(true);
   }
 
-  cancel() {
+  doCancel() {
     this.closeDown(false);
   }
 
@@ -349,26 +345,29 @@ class FacetPopupMessage extends Faceter(LitElement) {
   }
 
   render() {
-
     return html`
     <vivo-modal ?shown="${this.open}">
         <div class="heading">
           <slot name="heading"></slot>
           <input class="smaller-input" type="text" id="filter-list"
             @keyup=${this.debounce(this.searchKeyUp,  250)}
-            placeholder="Start typing to find a specific filter result">
+            placeholder="${this.placeholder}">
           <i class="fas fa-times" @click=${this.cancel}></i>
         </div>
         <div class="facet-container">
           <slot></slot>
         </div>
         <div class="actions">
-          <button id="cancel" @click=${this.cancel}>Cancel</button>
-          <button id="apply" @click=${this.apply}>Apply</button>
+          <button id="cancel" @click=${this.doCancel}>
+            <slot name="cancel"></slot>
+          </button>
+          <button id="apply" @click=${this.doApply}>
+            <slot name="apply"></slot>
+          </button>
         </div>
     </vivo-modal>
     `;
   }
 }
 
-customElements.define("vivo-facet-popup-message", FacetPopupMessage);
+customElements.define("vivo-facet-popup-box", FacetPopupBox);
