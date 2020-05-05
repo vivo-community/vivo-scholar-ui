@@ -6,10 +6,10 @@ const publicationQuery = gql`
     documents(
       boosts: $boosts,
       facets: [
-        { field: "type", exclusionTag: "type"  }, 
-        { field: "authors", exclusionTag: "authors" },
-        { field: "publisher", exclusionTag: "publisher" },
-        { field: "publicationDate", exclusionTag: "publicationDate" },
+        { field: "type", exclusionTag: "type", minCount: 0 }, 
+        { field: "authors", exclusionTag: "authors", minCount: 0 },
+        { field: "publisher", exclusionTag: "publisher", minCount: 0 },
+        { field: "publicationDate", exclusionTag: "publicationDate", minCount: 0 },
       ]
       filters: $filters
       paging: {
