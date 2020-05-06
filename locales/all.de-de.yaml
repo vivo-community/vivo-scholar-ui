@@ -1,0 +1,67 @@
+# For more information on using i18n see: https://github.com/nicksnyder/go-i18n
+- id: home_greeting
+  translation:  "Entdecken Sie die Welt der Forschung und Wissenschaft."
+- id: profile_contact
+  translation: "Kontakt"
+- id: profile_professional_links
+  translation: "Professionelle Links"
+- id: tab_bio
+  translation: "Bio"
+- id: tab_publications
+  translation: "Veröffentlichungen"
+- id: tab_research_expertise
+  translation: "Forschung & Expertise"
+- id: tab_teaching_mentoring
+  translation: "Lehren & Mentoring"
+- id: tab_professional_activities
+  translation: "Berufliche Tätigkeiten"
+- id: publications
+  translation: "Veröffentlichungen"
+- id: email
+  translation: "Email"
+- id: telephone
+  translation: "Telefon"
+- id: address_1
+  translation: "Adresse 1"
+- id: orgs-header
+  translation: "Organisationen"
+- id: orgs-loading
+  translation: "Laden von Organisationen ..."
+- id: orgs-not-found
+  translation: "Keine Organisationen gefunden. Überprüfen Sie SITE_ORGANIZATION_ID"
+- id: orgs-show-as-hierarchy
+  translation: "Hierarchie"
+- id: orgs-show-as-index
+  translation: "Index"
+- id: orgs-show-as-label
+  translation: "Ansicht als"
+- id: overview
+  translation: "Überblick"
+- id: profile_current_appointments
+  translation: "Positionen"
+- id: education
+  translation: "Bildung"
+- id: subject_headings
+  translation: "Betreffzeilen"
+- id: courses
+  translation: "Kurse"
+- id: teaching_overview
+  translation: "Unterrichtsübersicht"
+- id: about
+  translation: "Über"
+- id: browse
+  translation: "Durchsuche"
+- id: sign_in
+  translation: "Anmelden"
+- id: scholar
+  translation: "Gelehrte"
+- id: search
+  translation: "Suche"
+- id: home_search_text
+  translation: "Suchen Sie nach Namen von Wissenschaftlern oder Forschungsthemen"
+- id: keywords
+  translation: "Schlüsselwörter"
+- id: grants
+  translation: "Grants"
+- id: bio
+  translation: "Bio"
