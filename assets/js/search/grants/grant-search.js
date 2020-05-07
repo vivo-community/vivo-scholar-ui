@@ -99,10 +99,9 @@ class GrantSearch extends Searcher(LitElement) {
         `
     }
 
-    // FIXME: i18n how to get labels in here?
     renderGrant(grant) {
         let url = `/entities/grant/${grant.id}`;
-        // what to do if not specfied?
+        // TODO: what is best if labels not supplied?
         let contribLabel = this.i18n["contributors"] || "";
         let dateLabel = this.i18n["date"] || "";
         let fundingSourceLabel = this.i18n["funding_source"] || "";
