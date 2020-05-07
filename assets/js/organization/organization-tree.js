@@ -377,9 +377,13 @@ class OrganizationTree extends LitElement {
     const rv = theData && !_.isEmpty(theData) && vm.isArray(theData.hasSubOrganizations)
     return rv
   }
-  getPeopleSearchLink (orgName) {
+  getPeopleSearchLink (orgName, hasSubOrgs) {
     let vm = this
     vm.logDebug('getPeopleSearchLink: ' + orgName)
+    let theFilters = [{field: 'organizations', value: orgName, 'opKey': 'EQUALS', 'tag': 'organizations'}]
+    if (hasSubOrgs) {
+      theFilters = [{field: 'schools', value: orgName, 'opKey': 'EQUALS', 'tag': 'schools'}]
+    }
     let link = '/search'
     let src = {
       search: '*',
@@ -387,13 +391,10 @@ class OrganizationTree extends LitElement {
       orders: [
         {property: 'name', direction: 'ASC'}
       ],
-      filters: [
-        {field: 'schools', value: orgName, 'opKey': 'EQUALS', 'tag': 'schools'}
-      ],
+      filters: theFilters,
       'search-tab': 'person-search'
     }
     let query = qs.stringify(src)
-    // query = encodeURIComponent(query) // qs does not seem to be encoding as it should given no encode: false specified
     return '/search?' + query
   }
   render () {
@@ -406,20 +407,19 @@ class OrganizationTree extends LitElement {
         vm.logDebug(`orgid: ${vm.orgid} - siteorgid: ${vm.siteorgid}`)
         vm.logDebug(`showas: ${vm.showas}`)
         vm.logDebug(`opened: ${vm.opened}`)
-      } // http://localhost:4200/search/?search=%2A&page=0&orders%5B0%5D%5Bproperty%5D=name&orders%5B0%5D%5Bdirection%5D=ASC&filters%5B0%5D%5Bfield%5D=schools&filters%5B0%5D%5Bvalue%5D=School%20of%20Arts%20and%20Sciences&filters%5B0%5D%5BopKey%5D=EQUALS&filters%5B0%5D%5Btag%5D=schools&search-tab=person-search
-      // search=*&page=0&orders[0][property]=name&orders[0][direction]=ASC&filters[0][field]=schools&filters[0][value]=School of Arts and Sciences&filters[0][opKey]=EQUALS&filters[0][tag]=schools&search-tab=person-search
+      }
       let templates = []
       if (vm.showas === 'tree') {
         if (vm.siteorgid !== vm.orgid) {
           if (vm.opened && vm.hasOrgs()) {
             vm.classes = {indicator: true, opened: vm.opened, closed: !!!vm.opened}
-            templates.push(html`<div><span @click="${vm.handleOpenClose}" class="${classMap(vm.classes)}">${vm.closer()}</span><a href="${vm.getPeopleSearchLink(vm.getName(theData))}" orgid="${vm.orgid}">${vm.getName(theData)}</a></div>`)
+            templates.push(html`<div><span @click="${vm.handleOpenClose}" class="${classMap(vm.classes)}">${vm.closer()}</span><a href="${vm.getPeopleSearchLink(vm.getName(theData), vm.hasOrgs())}" orgid="${vm.orgid}">${vm.getName(theData)}</a></div>`)
           } else if (vm.hasOrgs()) {
             vm.classes = {indicator: true, opened: vm.opened, closed: !!!vm.opened}
-            templates.push(html`<div><span @click="${vm.handleOpenClose}" class="${classMap(vm.classes)}">${vm.opener()}</span><a href="${vm.getPeopleSearchLink(vm.getName(theData))}" orgid="${vm.orgid}">${vm.getName(theData)}</a></div>`)
+            templates.push(html`<div><span @click="${vm.handleOpenClose}" class="${classMap(vm.classes)}">${vm.opener()}</span><a href="${vm.getPeopleSearchLink(vm.getName(theData), vm.hasOrgs())}" orgid="${vm.orgid}">${vm.getName(theData)}</a></div>`)
           } else {
             vm.classes = {indicator: true, opened: false, closed: false}
-            templates.push(html`<div><span class="${classMap(vm.classes)}"></span><a href="${vm.getPeopleSearchLink(vm.getName(theData))}" orgid="${vm.orgid}">${vm.getName(theData)}</a></div>`)
+            templates.push(html`<div><span class="${classMap(vm.classes)}"></span><a href="${vm.getPeopleSearchLink(vm.getName(theData), vm.hasOrgs())}" orgid="${vm.orgid}">${vm.getName(theData)}</a></div>`)
           }
         } else {
           if (!theData || _.isEmpty(theData)) {
@@ -451,7 +451,7 @@ class OrganizationTree extends LitElement {
               }
               sorted.forEach((v, idx) => {
                 if(vm.siteorgid !== v[0]) {
-                  templates.push(html`<div><a href="${vm.getPeopleSearchLink(v[1].name)}" orgid="${v[0]}">${v[1].name}</a></div>`)
+                  templates.push(html`<div><a href="${vm.getPeopleSearchLink(v[1].name, v[1].hasOrgs())}" orgid="${v[0]}">${v[1].name}</a></div>`)
                 }
               })
               resolve(templates)
@@ -487,8 +487,8 @@ class OrganizationTree extends LitElement {
     vm.levelWarn = 2
     vm.levelError = 1
     vm.levelNone = 0
-    vm.logLevel = vm.levelDebug // $$Log level setting
-    // vm.logLevel = vm.levelError // $$Log level setting
+    // vm.logLevel = vm.levelDebug // $$Log level setting
+    vm.logLevel = vm.levelError // $$Log level setting
   }
   logLevelTrace () {
     return this.logLevel >= this.levelTrace
