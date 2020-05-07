@@ -122,12 +122,12 @@ let Searcher = (superclass) => class extends superclass {
       });
     }
   
-    setInternationlization() {
-      let values = Array.from(this.querySelectorAll('vivo-search-i18n-label'));
-      this.i18n = values.map(opt => {
+    setInternationalization() {
+      let values = Array.from(this.querySelectorAll('vivo-i18n-label'));
+      values.forEach(opt => {
           const key = opt.getAttribute("key");
-          const value = opt.getAttribute("value");
-          return {key: key, value: value}
+          const label = opt.getAttribute("label");
+          this.i18n[key] = label;
       });
     }
 
@@ -140,8 +140,10 @@ let Searcher = (superclass) => class extends superclass {
       this.sortOptions = [];
       this.findSortOptions();
 
-      // this.i18n = [];
-      // this.setInternationlization();
+      // this too
+      this.i18n = {};
+      this.setInternationalization();
+
       const { query, page, filters, orders, boosts } = this.deriveSearchFromParameters(parsed);
       
       this.query = query;
