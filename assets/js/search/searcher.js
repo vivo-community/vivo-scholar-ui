@@ -122,6 +122,15 @@ let Searcher = (superclass) => class extends superclass {
       });
     }
   
+    setInternationlization() {
+      let values = Array.from(this.querySelectorAll('vivo-search-i18n-label'));
+      this.i18n = values.map(opt => {
+          const key = opt.getAttribute("key");
+          const value = opt.getAttribute("value");
+          return {key: key, value: value}
+      });
+    }
+
     // allow each search override this way?
     setUp(pageSize = config.PAGE_SIZE) {
       const parsed = qs.parse(window.location.search.substring(1));
@@ -130,6 +139,9 @@ let Searcher = (superclass) => class extends superclass {
       // so the sort select box can be marked from parameters
       this.sortOptions = [];
       this.findSortOptions();
+
+      // this.i18n = [];
+      // this.setInternationlization();
       const { query, page, filters, orders, boosts } = this.deriveSearchFromParameters(parsed);
       
       this.query = query;

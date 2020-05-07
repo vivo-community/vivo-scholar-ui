@@ -20,7 +20,6 @@ class GrantSearch extends Searcher(LitElement) {
         this.active = false;
         this.waiting = false;
         this.defaultBoosts = [{ field: "title", value: 2 }];
-
         this.defaultFilters = [{ field: "type", value: "Grant" }];
 
         this.handleSearchResultsObtained = this.handleSearchResultsObtained.bind(this);
