@@ -487,8 +487,8 @@ class OrganizationTree extends LitElement {
     vm.levelWarn = 2
     vm.levelError = 1
     vm.levelNone = 0
-    // vm.logLevel = vm.levelDebug // $$Log level setting
-    vm.logLevel = vm.levelError // $$Log level setting
+    vm.logLevel = vm.levelDebug // $$Log level setting
+    // vm.logLevel = vm.levelError // $$Log level setting
   }
   logLevelTrace () {
     return this.logLevel >= this.levelTrace
