@@ -103,7 +103,6 @@ class GrantSearch extends Searcher(LitElement) {
     renderGrant(grant) {
         let url = `/entities/grant/${grant.id}`;
         // what to do if not specfied?
-        console.log(this.i18n);
         let contribLabel = this.i18n["contributors"] || "";
         let dateLabel = this.i18n["date"] || "";
         let fundingSourceLabel = this.i18n["funding_source"] || "";
