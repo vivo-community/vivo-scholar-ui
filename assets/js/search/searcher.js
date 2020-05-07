@@ -140,7 +140,7 @@ let Searcher = (superclass) => class extends superclass {
       this.sortOptions = [];
       this.findSortOptions();
 
-      // this too
+      // NOTE: this needs to be called in setUp - so #render has values
       this.i18n = {};
       this.setInternationalization();
 
