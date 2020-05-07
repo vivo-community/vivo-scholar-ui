@@ -30,23 +30,23 @@
                 </a>
               </li>
             <% } %>
-        </ul> 
+        </ul>
 
     <section class="author-list">
             <ul class="list-group">
             <%= for (p) in data["documents"]["content"] { %>
                <li class="list-group-item">
-    
+
                    <span class="person-name">
                       <a href="/entities/publication/<%= p["id"] %>">
                         <%= raw(p["title"]) %>
-                     </a> 
+                     </a>
                    </span>
                </li>
             <% } %>
             </ul>
         </section>
-    
+
         <div><%= currentPage + 1 %> of Total Pages: <%= totalPages %></div>
 
         <ul class="pagination">
@@ -69,7 +69,4 @@
                     </a>
                   </li>
                 <% } %>
-            </ul> 
-    
-    
-    
+            </ul>
