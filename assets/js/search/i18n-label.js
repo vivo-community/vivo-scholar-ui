@@ -9,4 +9,4 @@ class InternationalizationLabel extends LitElement {
     }
 }
 
-customElements.define('vivo-search-i18n-label', InternationalizationLabel);
+customElements.define('vivo-i18n-label', InternationalizationLabel);
