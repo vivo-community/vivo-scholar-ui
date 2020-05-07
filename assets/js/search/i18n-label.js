@@ -1,6 +1,6 @@
 import { LitElement, html, css } from "lit-element";
 
-class InternationlizationLabel extends LitElement {
+class InternationalizationLabel extends LitElement {
     static get properties() {
         return {
           key: { type: String },
@@ -9,4 +9,4 @@ class InternationlizationLabel extends LitElement {
     }
 }
 
-customElements.define('vivo-search-i18n-label', InternationlizationLabel);
+customElements.define('vivo-search-i18n-label', InternationalizationLabel);
