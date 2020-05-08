@@ -127,6 +127,20 @@ class PersonSearch extends Searcher(LitElement) {
         `;
     }
 
+    setPagination() {
+        // set all properties
+        let props = {
+          number: this.data.people.page.number,
+          size: this.data.people.page.size,
+          totalElements: this.data.people.page.totalElements,
+          totalPages: this.data.people.page.totalPages
+        };
+        let pager = this.querySelector('vivo-search-pagination');
+        if(pager) { Object.assign(pager, props) };
+        let summary = this.querySelector('vivo-search-pagination-summary');
+        if(summary) { Object.assign(summary, props) };
+    }
+
     render() {
         if (this.active == true && this.waiting == true) {
             return html``
@@ -150,6 +164,8 @@ class PersonSearch extends Searcher(LitElement) {
         }
         </div>`;
 
+        this.setPagination();
+        /*
         let pagination = html``;
 
         if (this.data) {
@@ -171,15 +187,16 @@ class PersonSearch extends Searcher(LitElement) {
             totalPages="${this.data.people.page.totalPages}"
          />`
         }
+        */
 
         return html`
           <div id="people-search-results">
           <div class="search-actions">
-          ${pagingSummary}
-          <slot name="sorter"></slot>
+            <slot name="pagination-summary"></slot>
+            <slot name="sorter"></slot>
           </div>
           ${resultsDisplay}
-          ${pagination}
+          <slot name="pagination"></slot>
           </div>`
     }
 

@@ -12,7 +12,9 @@ class SearchPagination extends LitElement {
       totalPages: { type: Number },
       number: { type: Number },
       size: { type: Number },
-      pageGrouping: { type: Number }
+      pageGrouping: { type: Number },
+      nextLabel: { type: String },
+      previousLabel: { type: String }
     }
   }
 
@@ -89,19 +91,19 @@ class SearchPagination extends LitElement {
       }
     </div>`
 
-
-    var previousLink = function () {
+    let _self = this;
+    let previousLink = function () {
       if (previous.display) {
         return html`<li>
-             <a value="${previous.start}" @click=${callback}><span>«</span> Previous</a>
+             <a value="${previous.start}" @click=${callback}><span>«</span> ${_self.previousLabel}</a>
            </li>`
       }
     };
 
-    var nextLink = function () {
+    let nextLink = function () {
       if (next.display) {
         return html`<li>
-              <a value="${next.start}" @click=${callback}>Next <span>»</span></a>
+              <a value="${next.start}" @click=${callback}>${_self.nextLabel} <span>»</span></a>
             </li>`
       }
     };

@@ -12,6 +12,8 @@ class SearchPaginationSummary extends LitElement {
       totalPages: { type: Number },
       number: { type: Number },
       size: { type: Number },
+      showingLabel: { type: String },
+      ofLabel: { type: String }
     }
   }
 
@@ -25,7 +27,7 @@ class SearchPaginationSummary extends LitElement {
     let end = start+this.size;
     end = end > total ? total : end;
     let rangeText = `${start}-${end}`;
-    pagingText = html`<span>Showing of ${rangeText} of ${total}</span>`  
+    pagingText = html`<span>${this.showingLabel} ${rangeText} ${this.ofLabel} ${total}</span>`  
 
     return html`${pagingText}`
   }

@@ -88,6 +88,20 @@ class PublicationSearch extends Searcher(LitElement) {
       `
     }
 
+    setPagination() {
+      // set all properties
+      let props = {
+        number: this.data.documents.page.number,
+        size: this.data.documents.page.size,
+        totalElements: this.data.documents.page.totalElements,
+        totalPages: this.data.documents.page.totalPages
+      };
+      let pager = this.querySelector('vivo-search-pagination');
+      if(pager) { Object.assign(pager, props) };
+      let summary = this.querySelector('vivo-search-pagination-summary');
+      if(summary) { Object.assign(summary, props) };
+    }
+
     render() {
       if (this.active == true && this.waiting == true) {
         return html``
@@ -112,8 +126,10 @@ class PublicationSearch extends Searcher(LitElement) {
         }
       </div>`;
 
+      this.setPagination();
       // TODO: could probably use slots for pagination
       // and paging summary so they are more flexible
+      /*
       let pagination = html``;
 
       if (this.data) {
@@ -135,15 +151,19 @@ class PublicationSearch extends Searcher(LitElement) {
           totalPages="${this.data.documents.page.totalPages}"
        />`
       }
+
+      ${pagingSummary}
+      ${pagination}
+      */
  
       return html`
         <div id="publication-search-results">
           <div class="search-actions">
-          ${pagingSummary}
-          <slot name="sorter"></slot>
+            <slot name="pagination-summary"></slot>
+            <slot name="sorter"></slot>
           </div>
         ${resultsDisplay}
-        ${pagination}
+        <slot name="pagination"></slot>
         </div>`
     }
   

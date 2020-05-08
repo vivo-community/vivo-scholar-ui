@@ -133,6 +133,12 @@
             <vivo-search-sort-option label="<%= t("last_name_ascending") %>" field="name" direction="ASC" default="true" />
             <vivo-search-sort-option label="<%= t("last_name_descending") %>" field="name" direction="DESC" />
           </vivo-search-sort-options>
+          <vivo-search-pagination slot="pagination" 
+            nextLabel="<%= t("next") %>" previousLabel="<%= t("previous") %>">
+          </vivo-search-pagination>
+          <vivo-search-pagination-summary slot="pagination-summary" 
+              showingLabel="<%= t("showing") %>" ofLabel="<%= t("of") %>">
+          </vivo-search-pagination-summary>
         </vivo-person-search>
 
       </vivo-tab-panel>
@@ -150,6 +156,12 @@
               <vivo-search-sort-option label="<%= t("date_ascending") %>" field="publicationDate" direction="ASC" />
               <vivo-search-sort-option label="<%= t("date_descending") %>" field="publicationDate" direction="DESC" />
             </vivo-search-sort-options>
+            <vivo-search-pagination slot="pagination" 
+              nextLabel="<%= t("next") %>" previousLabel="<%= t("previous") %>">
+           </vivo-search-pagination>
+           <vivo-search-pagination-summary slot="pagination-summary" 
+             showingLabel="<%= t("showing") %>" ofLabel="<%= t("of") %>">
+          </vivo-search-pagination-summary>
           </vivo-publication-search>
 
       </vivo-tab-panel>
@@ -165,6 +177,13 @@
               <vivo-search-sort-option label="<%= t("title_ascending") %>" field="title" direction="ASC" default="true"/>
               <vivo-search-sort-option label="<%= t("title_descending") %>" field="title" direction="DESC" />
             </vivo-search-sort-options>
+            <!-- TODO: these are always the same -->
+            <vivo-search-pagination slot="pagination" 
+              nextLabel="<%= t("next") %>" previousLabel="<%= t("previous") %>">
+            </vivo-search-pagination>
+            <vivo-search-pagination-summary slot="pagination-summary" 
+               showingLabel="<%= t("showing") %>" ofLabel="<%= t("of") %>">
+            </vivo-search-pagination-summary>
           </vivo-grant-search>
 
       </vivo-tab-panel>

@@ -146,6 +146,20 @@ class GrantSearch extends Searcher(LitElement) {
       `
     }
 
+    setPagination() {
+        // set all properties
+        let props = {
+          number: this.data.relationships.page.number,
+          size: this.data.relationships.page.size,
+          totalElements: this.data.relationships.page.totalElements,
+          totalPages: this.data.relationships.page.totalPages
+        };
+        let pager = this.querySelector('vivo-search-pagination');
+        if(pager) { Object.assign(pager, props) };
+        let summary = this.querySelector('vivo-search-pagination-summary');
+        if(summary) { Object.assign(summary, props) };
+    }
+
     render() {
         if (this.active == true && this.waiting == true) {
             return html``
@@ -170,6 +184,8 @@ class GrantSearch extends Searcher(LitElement) {
           }
         </div>`;
 
+        this.setPagination();
+        /*
         let pagination = html``;
         if (this.data) {
             pagination = html`<vivo-search-pagination 
@@ -190,15 +206,16 @@ class GrantSearch extends Searcher(LitElement) {
             totalPages="${this.data.relationships.page.totalPages}"
          />`
         }
+        */
 
         return html`
           <div id="grant-search-results">
             <div class="search-actions">
-            ${pagingSummary}
-            <slot name="sorter"></slot>
+              <slot name="pagination-summary"></slot>
+              <slot name="sorter"></slot>
             </div>
             ${resultsDisplay}
-            ${pagination}
+            <slot name="pagination"></slot>
           </div>`
     }
 
