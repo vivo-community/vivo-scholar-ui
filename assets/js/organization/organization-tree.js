@@ -7,7 +7,8 @@ import OrganizationCache from "./organization-cache"
 import client from "../lib/apollo"
 import '../elements/vaadin-theme.js'
 import '@vaadin/vaadin-select'
-import _ from "lodash"
+import _ from 'lodash'
+import qs from 'qs'
 
 /* NOTE: the organization-tree object has a variable to control logging level
      Go to the constructor near the bottom of this module to set the log level,
@@ -141,6 +142,10 @@ class OrganizationTree extends LitElement {
 
   static get styles () {
     return css`
+      a {
+        color: #000000;
+        text-decoration: none;
+      }
       :host(.showaslist) {
         display: block;
       }
@@ -180,15 +185,15 @@ class OrganizationTree extends LitElement {
       }
     `
   }
-  handleClick (ev) {
+  handleOpenClose (ev) {
     let vm = this
-    this.logDebug('click')
+    this.logDebug('handleOpenClose: ' + vm.showas)
     if (vm.showas === 'tree') {
       vm.opened = (vm.opened ? false : true)
     }
-    this.logDebug(`click ${vm.opened}`)
+    this.logDebug(`handleOpenClose ${vm.opened}`)
   }
-  
+
   getAllOrgData (orgid) {
     let vm = this
     let func = 'getAllOrgData'
@@ -372,6 +377,26 @@ class OrganizationTree extends LitElement {
     const rv = theData && !_.isEmpty(theData) && vm.isArray(theData.hasSubOrganizations)
     return rv
   }
+  getPeopleSearchLink (orgName, hasSubOrgs) {
+    let vm = this
+    vm.logDebug('getPeopleSearchLink: ' + orgName)
+    let theFilters = [{field: 'organizations', value: orgName, 'opKey': 'EQUALS', 'tag': 'organizations'}]
+    if (hasSubOrgs) {
+      theFilters = [{field: 'schools', value: orgName, 'opKey': 'EQUALS', 'tag': 'schools'}]
+    }
+    let link = '/search'
+    let src = {
+      search: '*',
+      page: '0',
+      orders: [
+        {property: 'name', direction: 'ASC'}
+      ],
+      filters: theFilters,
+      'search-tab': 'person-search'
+    }
+    let query = qs.stringify(src)
+    return '/search?' + query
+  }
   render () {
     let vm = this
     let theData = vm.getDataValue()
@@ -388,13 +413,13 @@ class OrganizationTree extends LitElement {
         if (vm.siteorgid !== vm.orgid) {
           if (vm.opened && vm.hasOrgs()) {
             vm.classes = {indicator: true, opened: vm.opened, closed: !!!vm.opened}
-            templates.push(html`<div><span @click="${vm.handleClick}" class="${classMap(vm.classes)}">${vm.closer()}</span><span>${vm.getName(theData)}</span></div>`)
+            templates.push(html`<div><span @click="${vm.handleOpenClose}" class="${classMap(vm.classes)}">${vm.closer()}</span><a href="${vm.getPeopleSearchLink(vm.getName(theData), vm.hasOrgs())}" orgid="${vm.orgid}">${vm.getName(theData)}</a></div>`)
           } else if (vm.hasOrgs()) {
             vm.classes = {indicator: true, opened: vm.opened, closed: !!!vm.opened}
-            templates.push(html`<div><span @click="${vm.handleClick}" class="${classMap(vm.classes)}">${vm.opener()}</span><span>${vm.getName(theData)}</span></div>`)
+            templates.push(html`<div><span @click="${vm.handleOpenClose}" class="${classMap(vm.classes)}">${vm.opener()}</span><a href="${vm.getPeopleSearchLink(vm.getName(theData), vm.hasOrgs())}" orgid="${vm.orgid}">${vm.getName(theData)}</a></div>`)
           } else {
             vm.classes = {indicator: true, opened: false, closed: false}
-            templates.push(html`<div><span class="${classMap(vm.classes)}"></span><span>${vm.getName(theData)}</span></div>`)
+            templates.push(html`<div><span class="${classMap(vm.classes)}"></span><a href="${vm.getPeopleSearchLink(vm.getName(theData), vm.hasOrgs())}" orgid="${vm.orgid}">${vm.getName(theData)}</a></div>`)
           }
         } else {
           if (!theData || _.isEmpty(theData)) {
@@ -426,7 +451,7 @@ class OrganizationTree extends LitElement {
               }
               sorted.forEach((v, idx) => {
                 if(vm.siteorgid !== v[0]) {
-                  templates.push(html`<div orgid="${v[0]}">${v[1].name}</div>`)
+                  templates.push(html`<div><a href="${vm.getPeopleSearchLink(v[1].name, v[1].hasOrgs())}" orgid="${v[0]}">${v[1].name}</a></div>`)
                 }
               })
               resolve(templates)
