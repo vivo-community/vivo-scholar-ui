@@ -98,9 +98,7 @@ class EmbeddedGrantList extends LitElement {
 
   render() {
     let grantElements = this.grants.map((p) => this.grantTemplate(p));
-    console.log(grantElements);
     return html`
-    <p>test</p>
       <vivo-grant-list>
         ${grantElements}
       </vivo-grant-list>

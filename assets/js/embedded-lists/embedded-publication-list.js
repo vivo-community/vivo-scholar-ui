@@ -126,8 +126,6 @@ class EmbeddedPubList extends LitElement {
   render() {
     let publicationElements = this.publications.map((p) => this.publicationTemplate(p));
     return html`
-
-    <p>test</p>
       <vivo-publication-list>
         ${publicationElements}
       </vivo-publication-list>

@@ -159,15 +159,17 @@
               </section>
               <section>
                <h4 class="section-title"><%= t("courses") %></h4>
-             <% let courses = person["teachingActivities"] %>
-             <vivo-course>
-             <%= for (c) in courses { %>
-                  <div slot="course-title"><%= c["label"] %></div>
-               <%= if (c["role"]) { %>
-                 <span slot="course-role"><%= c["role"] %></span>
+            <!-- <vivo-sortable-list id="course-list" item-type="courses" sortProperty="title" sortDirection="desc"> -->
+               <% let courses = person["teachingActivities"] %>
+               <%= for (c) in courses { %>
+               <vivo-course>
+                    <span slot="course-title"><%= c["label"] %></span>
+                 <%= if (c["role"]) { %>
+                   <span slot="course-role"><%= c["role"] %></span><br>
+                 <% } %>
+               </vivo-course>
                <% } %>
-             <% } %>
-             </vivo-course>
+              <!-- </vivo-sortable-list> -->
              </section>
           </vivo-tab-panel>
           <% } %>

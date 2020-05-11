@@ -18,6 +18,15 @@ if (pubList) {
     {property : "title", direction : "desc", label: "Publication z-a"}
   ];
 }
+
+const courseList = document.getElementById('course-list');
+if (courseList) {
+  courseList.sorts = [
+    {property : "title", direction : "asc", label: "Course a-z"} ,
+    {property : "title", direction : "desc", label: "Course z-a"}
+  ];
+}
+
 const screenWidth = window.innerWidth;
 if (screenWidth < 800) {
   document.getElementById("contact-info").setAttribute("hidden", true);
