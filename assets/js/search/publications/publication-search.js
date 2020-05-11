@@ -127,35 +127,7 @@ class PublicationSearch extends Searcher(LitElement) {
       </div>`;
 
       this.setPagination();
-      // TODO: could probably use slots for pagination
-      // and paging summary so they are more flexible
-      /*
-      let pagination = html``;
 
-      if (this.data) {
-        pagination = html`<vivo-search-pagination 
-              number="${this.data.documents.page.number}"
-              size="${this.data.documents.page.size}"
-              totalElements="${this.data.documents.page.totalElements}"
-              totalPages="${this.data.documents.page.totalPages}"
-          />`
-      }
-
-      let pagingSummary = html``;
-
-      if (this.data) {
-        pagingSummary = html`<vivo-search-pagination-summary
-          number="${this.data.documents.page.number}"
-          size="${this.data.documents.page.size}"
-          totalElements="${this.data.documents.page.totalElements}"
-          totalPages="${this.data.documents.page.totalPages}"
-       />`
-      }
-
-      ${pagingSummary}
-      ${pagination}
-      */
- 
       return html`
         <div id="publication-search-results">
           <div class="search-actions">

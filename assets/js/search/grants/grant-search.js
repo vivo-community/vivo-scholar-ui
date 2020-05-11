@@ -187,28 +187,6 @@ class GrantSearch extends Searcher(LitElement) {
         </div>`;
 
         this.setPagination();
-        /*
-        let pagination = html``;
-        if (this.data) {
-            pagination = html`<vivo-search-pagination 
-              number="${this.data.relationships.page.number}"
-              size="${this.data.relationships.page.size}"
-              totalElements="${this.data.relationships.page.totalElements}"
-              totalPages="${this.data.relationships.page.totalPages}"
-          />`
-        }
-
-        let pagingSummary = html``;
-
-        if (this.data) {
-            pagingSummary = html`<vivo-search-pagination-summary
-            number="${this.data.relationships.page.number}"
-            size="${this.data.relationships.page.size}"
-            totalElements="${this.data.relationships.page.totalElements}"
-            totalPages="${this.data.relationships.page.totalPages}"
-         />`
-        }
-        */
 
         return html`
           <slot name="i18n"></slot>

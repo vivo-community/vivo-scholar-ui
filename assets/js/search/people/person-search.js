@@ -165,30 +165,7 @@ class PersonSearch extends Searcher(LitElement) {
         </div>`;
 
         this.setPagination();
-        /*
-        let pagination = html``;
-
-        if (this.data) {
-            pagination = html`<vivo-search-pagination 
-              number="${this.data.people.page.number}"
-              size="${this.data.people.page.size}"
-              totalElements="${this.data.people.page.totalElements}"
-              totalPages="${this.data.people.page.totalPages}"
-          />`
-        }
-
-        let pagingSummary = html``;
-
-        if (this.data) {
-          pagingSummary = html`<vivo-search-pagination-summary
-            number="${this.data.people.page.number}"
-            size="${this.data.people.page.size}"
-            totalElements="${this.data.people.page.totalElements}"
-            totalPages="${this.data.people.page.totalPages}"
-         />`
-        }
-        */
-
+ 
         return html`
           <div id="people-search-results">
           <div class="search-actions">
