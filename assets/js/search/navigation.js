@@ -71,12 +71,8 @@ class SearchNavigation extends LitElement {
   }
 
   setInternationalization() {
-    let values = Array.from(this.querySelectorAll('vivo-i18n-label'));
-    values.forEach(opt => {
-        const key = opt.getAttribute("key");
-        const label = opt.getAttribute("label");
-        this.i18n[key] = label;
-    });
+    let labels = document.querySelector(`#${this.getAttribute("labels")}`);
+    this.i18n = labels.getLabels();
   }
 
   getLabel(key) {

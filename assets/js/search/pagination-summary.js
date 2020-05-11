@@ -1,9 +1,6 @@
 import { LitElement, html, css } from "lit-element";
 import _ from "lodash";
 
-import slicePages from '../lib/paging-helper';
-
-import * as config from './config.js'
 class SearchPaginationSummary extends LitElement {
 
   static get properties() {
@@ -17,6 +14,7 @@ class SearchPaginationSummary extends LitElement {
 
   constructor() {
     super();
+    // TODO: maybe it would better to have <vivo-i18n-labels> ?
     this.coordinator = document.querySelector('vivo-search-navigation');
   }
 
