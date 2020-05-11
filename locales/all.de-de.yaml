@@ -1,0 +1,130 @@
+- id: home_greeting
+  translation: "Entdecken Sie die Welt der Forschung und Wissenschaft."
+- id: profile_contact
+  translation: "Kontakt"
+- id: profile_professional_links
+  translation: "professionelle Verbindungen"
+- id: tab_bio
+  translation: "Bio"
+- id: tab_publications
+  translation: "Veröffentlichungen"
+- id: tab_research_expertise
+  translation: "Research & Expertise"
+- id: tab_teaching_mentoring
+  translation: "Teaching & Mentoring"
+- id: tab_professional_activities
+  translation: "Berufliche Tätigkeiten"
+- id: publications
+  translation: "Veröffentlichungen"
+- id: email
+  translation: "Email"
+- id: telephone
+  translation: "Telefon"
+- id: address_1
+  translation: "Adresse 1"
+- id: orgs-header
+  translation: "Organisationen"
+- id: orgs-loading
+  translation: "Laden Organisationen ..."
+- id: orgs-not-found
+  translation: "Keine Organisationen gefunden. prüfen SITE_ORGANIZATION_ID"
+- id: orgs-show-as-hierarchy
+  translation: "Hierarchie"
+- id: orgs-show-as-index
+  translation: "Index"
+- id: orgs-show-as-label
+  translation: "Ansicht als"
+- id: overview
+  translation: "Überblick"
+- id: profile_current_appointments
+  translation: "Positionen"
+- id: education
+  translation: "Bildung"
+- id: subject_headings
+  translation: "Schlagwort"
+- id: courses
+  translation: "Kurse"
+- id: teaching_overview
+  translation: "Lehre Übersicht"
+- id: about
+  translation: "Über"
+- id: browse
+  translation: "Durchsuche"
+- id: sign_in
+  translation: "Anmelden"
+- id: scholar
+  translation: "Gelehrte"
+- id: search
+  translation: "Suche"
+- id: home_search_text
+  translation: "Suchen Sie nach scholar Namen oder Forschungsthemen"
+- id: keywords
+  translation: "Schlüsselwörter"
+- id: grants
+  translation: "Grants"
+- id: bio
+  translation: "Bio"
+- id: searching
+  translation: "Searching"
+- id: filter_people
+  translation: "Filter Menschen"
+- id: filter_publications
+  translation: "Filter Publikationen"
+- id: filter_funding
+  translation: "Filter Finanzierung"
+- id: school_unit
+  translation: "Schule / Einheit"
+- id: department
+  translation: "Abteilung"
+- id: position
+  translation: "Position"
+- id: type
+  translation: "Art"
+- id: date
+  translation: "Datum"
+- id: author
+  translation: "Autor"
+- id: publisher
+  translation: "Verleger"
+- id: contributors
+  translation: "Mitwirkende"
+- id: funding_source
+  translation: "Finanzierungsquelle"
+- id: people
+  translation: "Menschen"
+- id: publications
+  translation: "Veröffentlichungen"
+- id: funding
+  translation: "Finanzierung"
+- id: reset_search_filters
+  translation: "Suche zurücksetzen Filter"
+- id: show_filters
+  translation: "Filter anzeigen"
+- id: hide_filters
+  translation: "Filter verbergen"
+- id: filter_author
+  translation: "Filter Autor"
+- id: show_more
+  translation: "Zeig mehr"
+- id: show_less
+  translation: "Zeige weniger"
+- id: cancel
+  translation: "Stornieren"
+- id: apply
+  translation: "Anwenden"
+- id: search_author_placeholder
+  translation: "Eingabe startet ein bestimmtes Filterergebnis zu finden"
+- id: relevance
+  translation: "Relevanz"
+- id: last_name_ascending
+  translation: "Nachname (aufsteigend)"
+- id: last_name_descending
+  translation: "Nachname (absteigend)"
+- id: title_ascending
+  translation: "Titel (aufsteigend)"
+- id: title_descending
+  translation: "Titel (absteigend)"
+- id: date_ascending
+  translation: "Datum (aufsteigend)"
+- id: date_descending
+  translation: "Datum (absteigend)"

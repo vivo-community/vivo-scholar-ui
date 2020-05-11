@@ -19,21 +19,12 @@ class GrantSearch extends Searcher(LitElement) {
         this.graphql = grantQuery;
         this.active = false;
         this.waiting = false;
-        // NOTE: all searches must set a default sort
-        this.defaultSort = [{ property: "title", direction: "ASC" }];
         this.defaultBoosts = [{ field: "title", value: 2 }];
 
         this.defaultFilters = [{ field: "type", value: "Grant" }];
 
         this.handleSearchResultsObtained = this.handleSearchResultsObtained.bind(this);
         this.handleSearchStarted = this.handleSearchStarted.bind(this);
-
-        this.sortOptions = [
-            { label: 'Relevance', field: 'score', direction: "ASC" },
-            { label: 'Title (Ascending)', field: 'title', 'direction': "ASC" },
-            { label: 'Title (Descending)', field: 'title', 'direction': "DESC" }
-        ];
-
         this.setUp();
     }
 
@@ -68,28 +59,30 @@ class GrantSearch extends Searcher(LitElement) {
         tab.textContent = `${docCount}`;
     }
 
-    // TODO: is this same thing as 'Funding Source'?
-    renderContributors(grant) {
+    renderContributors(grant, label) {
         if (grant.contributors) {
             var s = _.map(grant.contributors, 'label').join(',');
             return html`
-            <div slot="contributors"><b>Contributors:</b> ${s}</div>
+            <div slot="contributors">
+                <b>${label}:</b> ${s}
+            </div>
             `
         }
     }
 
-    // TODO: is this same thing as 'Funding Source'?
-    renderAwardedBy(grant) {
+    renderAwardedBy(grant, label) {
         if (grant.awardedBy) {
             // NOTE: array
             var s = _.map(grant.awardedBy, 'label').join(',');
             return html`
-            <div slot="awardedBy"><b>Funding Source:</b> ${s}</div>
+            <div slot="awardedBy">
+              <b>${label}:</b> ${s}
+            </div>
             `
         }
     }
 
-    renderDateInterval(grant) {
+    renderDateInterval(grant, label) {
         if (!grant.dateTimeIntervalStart || !grant.dateTimeIntervalEnd) {
             return html``
         }
@@ -98,7 +91,7 @@ class GrantSearch extends Searcher(LitElement) {
         let end = new Date(grant.dateTimeIntervalEnd).getFullYear();
         return html`
           <div slot="date">
-            <b>Date:</b>
+            <b>${label}:</b>
             <vivo-interval class="grant-date" 
               interval-start="${start}"
               interval-end="${end}">
@@ -107,7 +100,7 @@ class GrantSearch extends Searcher(LitElement) {
         `
     }
 
-
+    // FIXME: i18n how to get labels in here?
     renderGrant(grant) {
         let url = `/entities/grant/${grant.id}`;
         return html`
@@ -115,9 +108,9 @@ class GrantSearch extends Searcher(LitElement) {
           <a slot="title" href="${url}">
           ${grant.title}
           </a>
-          ${this.renderContributors(grant)}
-          ${this.renderDateInterval(grant)}
-          ${this.renderAwardedBy(grant)}
+          ${this.renderContributors(grant, "Contributors")}
+          ${this.renderDateInterval(grant, "Date")}
+          ${this.renderAwardedBy(grant, "Funding Source")}
         </vivo-grant-card>
         `;
     }
@@ -132,7 +125,7 @@ class GrantSearch extends Searcher(LitElement) {
             flex-grow: 2;
             flex-basis: 65%;
         }
-        vivo-search-sorter {
+        ::slotted(vivo-search-sort-options) {
             flex-grow: 1;
             flex-basis:35%;
             text-align: right;
@@ -164,18 +157,17 @@ class GrantSearch extends Searcher(LitElement) {
 
         if (this.data && this.data.relationships.content) {
             let content = this.data.relationships.content;
-            _.each(content, function (item) {
+            content.forEach((item) => {
                 results.push(item);
             });
         }
 
-
-        let _self = this;
-        var resultsDisplay = html`<div class="grants">
-          ${_.map(results, function (i) {
-            return _self.renderGrant(i);
-        })
-            }
+        var resultsDisplay = html`
+        <div class="grants">
+          ${results.map((i) => {
+              return this.renderGrant(i);
+            })
+          }
         </div>`;
 
         let pagination = html``;
@@ -199,23 +191,11 @@ class GrantSearch extends Searcher(LitElement) {
          />`
         }
 
-        let sorter = html``;
-
-        // TODO: might be better if 'searcher.js' code took care of this
-        let selected = `${this.orders[0].property}-${this.orders[0].direction}`;
-
-        if (this.data) {
-            sorter = html`<vivo-search-sorter
-              selected=${selected}
-              options=${JSON.stringify(this.sortOptions)}>
-            </vivo-search-sorter>`
-        }
-
         return html`
           <div id="grant-search-results">
             <div class="search-actions">
             ${pagingSummary}
-            ${sorter}
+            <slot name="sorter"></slot>
             </div>
             ${resultsDisplay}
             ${pagination}

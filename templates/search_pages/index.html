@@ -17,10 +17,16 @@
     }
   }
 </style>
-<vivo-search-navigation></vivo-search-navigation>
+
+<vivo-search-navigation 
+  show-more="<%= t("show_more") %>"
+  show-less="<%= t("show_less") %>"
+  cancel="<%= t("cancel") %>"
+  apply="<%= t("apply") %>">
+</vivo-search-navigation>
 
 <vivo-modal id="search-waiting">
-  <h3>Searching...</h3>
+  <h3><%= t("searching") %>...</h3>
   <vivo-search-spinner></vivo-search-spinner>
 </vivo-modal>
 
@@ -34,17 +40,18 @@
 
        <vivo-search-sidebar-item>
           <vivo-facet-group slot="content" key="people" search="person-search">
-            <h3>Filter People</h3>
+            <h3><%= t("filter_people") %></h3>
+            
             <vivo-search-facets key="people" field="schools" tag="schools">
-              <h4>School/Unit</h4>
+              <h4><%= t("school_unit") %></h4>
             </vivo-search-facets>
 
             <vivo-search-facets key="people" field="organizations" tag="organizations">
-              <h4>Department</h4>
+              <h4><%= t("department") %></h4>
             </vivo-search-facets>
             
             <vivo-search-facets key="people" field="type" tag="type">
-              <h4>Position</h4>
+              <h4><%= t("position") %></h4>
             </vivo-search-facets>
 
           </vivo-facet-group>
@@ -53,24 +60,27 @@
 
         <vivo-search-sidebar-item>
           <vivo-facet-group slot="content" key="documents" search="publication-search">
-            <h3>Filter Publications</h3>
+            <h3><%= t("filter_publications") %></h3>
+
             <!-- TODO: maybe use 'key' from parent facet-group tag -->
             <vivo-search-facets key="documents" field="type" tag="type">
-              <h4>Type</h4>
+              <h4><%= t("type") %></h4>
             </vivo-search-facets>
 
             <vivo-publication-date-facets key="documents" field="publicationDate"
               implements="vivo-search-facets" tag="publicationDate">
-              <h4>Date</h4>
+              <h4><%= t("date") %></h4>
             </vivo-publication-date-facets>
 
             <!-- NOTE: author name seemed to need 'RAW' option -->
-            <vivo-search-facets key="documents" field="authors" tag="authors">
-              <h4>Author</h4>
+            <vivo-search-facets key="documents" field="authors" tag="authors"
+              popupHeading="<%= t("filter_author") %>"
+              placeholder="<%= t("search_author_placeholder") %>">
+              <h4><%= t("author") %></h4>
             </vivo-search-facets>
 
             <vivo-search-facets key="documents" field="publisher" tag="publisher">
-              <h4>Publisher</h4>
+              <h4><%= t("publisher") %></h4>
             </vivo-search-facets>
 
           </vivo-facet-group>
@@ -78,14 +88,14 @@
 
         <vivo-search-sidebar-item>
           <vivo-facet-group slot="content" key="relationships" search="grant-search">
-            <h3>Filter Funding</h3>
+            <h3><%= t("filter_funding") %></h3>
             <!-- TODO: maybe use 'key' from parent facet-group tag -->
             <vivo-search-facets key="relationships" field="contributors" tag="contributors">
-              <h4>Contributors</h4>
+              <h4><%= t("contributors") %></h4>
             </vivo-search-facets>
 
             <vivo-search-facets key="relationships" field="awardedBy" tag="awardedBy">
-              <h4>Funding Source</h4>
+              <h4><%= t("funding_source") %></h4>
             </vivo-search-facets>
 
           </vivo-facet-group>
@@ -96,12 +106,19 @@
 
   <main>
  
-    <vivo-filter-clearer></vivo-filter-clearer>
-    <vivo-facet-group-toggle></vivo-facet-group-toggle>
+    <vivo-filter-clearer>
+       <span>&lt; <%= t("reset_search_filters") %></span>
+    </vivo-filter-clearer>
+
+    <!-- NOTE: only seen on smaller screens -->
+    <vivo-facet-group-toggle>
+      <span slot="show"><%= t("show_filters") %></span>
+      <span slot="hide"><%= t("hide_filters") %></span>
+    </vivo-facet-group-toggle>
 
     <vivo-tabs id="all-search-tabs" vivo-tab-style="secondary">
       <vivo-tab id="person-search-tab">
-        People (<span id="person-search-count">0</span>)
+        <%= t("people") %> (<span id="person-search-count">0</span>)
       </vivo-tab>
 
       <vivo-tab-panel >
@@ -110,23 +127,46 @@
           out the active search id - if it could detect a <vivo-search>
           child element interface that might be better
         -->
-        <vivo-person-search id="person-search" implements="vivo-search"/>
+        <vivo-person-search id="person-search" implements="vivo-search">
+          <vivo-search-sort-options slot="sorter">
+            <vivo-search-sort-option label="<%= t("relevance") %>" field="score" direction="ASC"/>
+            <vivo-search-sort-option label="<%= t("last_name_ascending") %>" field="name" direction="ASC" default="true" />
+            <vivo-search-sort-option label="<%= t("last_name_descending") %>" field="name" direction="DESC" />
+          </vivo-search-sort-options>
+        </vivo-person-search>
+
       </vivo-tab-panel>
 
       <vivo-tab id="publication-search-tab">
-        Publications (<span id="publication-search-count">0</span>)
+        <%= t("publications") %> (<span id="publication-search-count">0</span>)
       </vivo-tab>
 
       <vivo-tab-panel>
-          <vivo-publication-search id="publication-search" implements="vivo-search"/>
+          <vivo-publication-search id="publication-search" implements="vivo-search">
+            <vivo-search-sort-options slot="sorter">
+              <vivo-search-sort-option label="<%= t("relevance") %>" field="score" direction="ASC" />
+              <vivo-search-sort-option label="<%= t("title_ascending") %>" field="title" direction="ASC" default="true"/>
+              <vivo-search-sort-option label="<%= t("title_descending") %>" field="title" direction="DESC" />
+              <vivo-search-sort-option label="<%= t("date_ascending") %>" field="publicationDate" direction="ASC" />
+              <vivo-search-sort-option label="<%= t("date_descending") %>" field="publicationDate" direction="DESC" />
+            </vivo-search-sort-options>
+          </vivo-publication-search>
+
       </vivo-tab-panel>
 
       <vivo-tab id="grant-search-tab">
-        Funding (<span id="grant-search-count">0</span>)
+        <%= t("funding") %> (<span id="grant-search-count">0</span>)
       </vivo-tab>
 
       <vivo-tab-panel>
-          <vivo-grant-search id="grant-search" implements="vivo-search"/>
+          <vivo-grant-search id="grant-search" implements="vivo-search">
+            <vivo-search-sort-options slot="sorter">
+              <vivo-search-sort-option label="<%= t("relevance") %>" field="score" direction="ASC" />
+              <vivo-search-sort-option label="<%= t("title_ascending") %>" field="title" direction="ASC" default="true"/>
+              <vivo-search-sort-option label="<%= t("title_descending") %>" field="title" direction="DESC" />
+            </vivo-search-sort-options>
+          </vivo-grant-search>
+
       </vivo-tab-panel>
 
     </vivo-tabs>
