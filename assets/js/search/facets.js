@@ -102,10 +102,9 @@ class SearchFacets extends Faceter(LitElement) {
   }
 
   generateFacetToggle(showList) {
-    // NOTE: just getting text not sure how to send in entire node
-    // also not sure how expensive this DOM call is - could put more in constructor
-    let more = this.coordinator.getAttribute("show-more");
-    let less = this.coordinator.getAttribute("show-less");
+    let more = this.coordinator.getLabel("show-more");
+    let less = this.coordinator.getLabel("show-less");
+
     let results = html`<vivo-search-facet-toggle>
       ${this.generateFacetList(showList)}
       <span slot="show-more">${more}</span>
@@ -121,10 +120,10 @@ class SearchFacets extends Faceter(LitElement) {
 
     // not sure a good way to default this
     let help = this.placeholder || '';
-    // maybe attributes would be easier
-    let cancel = this.coordinator.getAttribute("cancel");
-    let apply = this.coordinator.getAttribute("apply");
-    let more = this.coordinator.getAttribute("show-more");
+
+    let cancel = this.coordinator.getLabel("cancel");
+    let apply = this.coordinator.getLabel("apply");
+    let more = this.coordinator.getLabel("show-more");
 
     var results = html`
     <p id="toggle-facet" @click=${this.togglePopup}>${more}</p>

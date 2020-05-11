@@ -11,14 +11,15 @@ class SearchPaginationSummary extends LitElement {
       totalElements: { type: Number },
       totalPages: { type: Number },
       number: { type: Number },
-      size: { type: Number },
-      showingLabel: { type: String },
-      ofLabel: { type: String }
+      size: { type: Number }
     }
   }
 
+  constructor() {
+    super();
+    this.coordinator = document.querySelector('vivo-search-navigation');
+  }
 
-  // FIXME: i18n problem
   render() {
     let pagingText = html``;
 
@@ -27,7 +28,10 @@ class SearchPaginationSummary extends LitElement {
     let end = start+this.size;
     end = end > total ? total : end;
     let rangeText = `${start}-${end}`;
-    pagingText = html`<span>${this.showingLabel} ${rangeText} ${this.ofLabel} ${total}</span>`  
+
+    let showingLabel = this.coordinator.getLabel("showing");
+    let ofLabel = this.coordinator.getLabel("of");
+    pagingText = html`<span>${showingLabel} ${rangeText} ${ofLabel} ${total}</span>`  
 
     return html`${pagingText}`
   }

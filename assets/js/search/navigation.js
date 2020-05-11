@@ -17,6 +17,8 @@ class SearchNavigation extends LitElement {
     this.handleSearchPopState = this.handleSearchPopState.bind(this);
 
     this.handleToggleFilters = this.handleToggleFilters.bind(this);
+
+    this.i18n = {};
   }
 
   firstUpdated() {
@@ -60,10 +62,26 @@ class SearchNavigation extends LitElement {
     }
     // NOTE: which facets to display depends on active search  
     this.findCorrectFacetsToDisplay(params.filters);
+
+    this.setInternationalization();
   }
 
   getMainTabs() {
     return document.querySelector('vivo-tabs');
+  }
+
+  setInternationalization() {
+    let values = Array.from(this.querySelectorAll('vivo-i18n-label'));
+    values.forEach(opt => {
+        const key = opt.getAttribute("key");
+        const label = opt.getAttribute("label");
+        this.i18n[key] = label;
+    });
+  }
+
+  getLabel(key) {
+    // TODO: what if no match?
+    return this.i18n[key];
   }
 
   disconnectedCallback() {

@@ -12,9 +12,7 @@ class SearchPagination extends LitElement {
       totalPages: { type: Number },
       number: { type: Number },
       size: { type: Number },
-      pageGrouping: { type: Number },
-      nextLabel: { type: String },
-      previousLabel: { type: String }
+      pageGrouping: { type: Number }
     }
   }
 
@@ -62,6 +60,8 @@ class SearchPagination extends LitElement {
     super();
     this.handlePageSelected = this.handlePageSelected.bind(this);
     this.pageGrouping = config.PAGE_GROUPING;
+
+    this.coordinator = document.querySelector('vivo-search-navigation');
   }
 
   handlePageSelected(e) {
@@ -76,6 +76,9 @@ class SearchPagination extends LitElement {
   }
 
   render() {
+    let nextLabel = this.coordinator.getLabel("next");
+    let previousLabel = this.coordinator.getLabel("previous");
+
     let { previous, pageList, next } = slicePages(this.totalPages, this.number, this.pagesGrouping)
 
     let callback = this.handlePageSelected;
@@ -95,7 +98,7 @@ class SearchPagination extends LitElement {
     let previousLink = function () {
       if (previous.display) {
         return html`<li>
-             <a value="${previous.start}" @click=${callback}><span>«</span> ${_self.previousLabel}</a>
+             <a value="${previous.start}" @click=${callback}><span>«</span> ${previousLabel}</a>
            </li>`
       }
     };
@@ -103,7 +106,7 @@ class SearchPagination extends LitElement {
     let nextLink = function () {
       if (next.display) {
         return html`<li>
-              <a value="${next.start}" @click=${callback}>${_self.nextLabel} <span>»</span></a>
+              <a value="${next.start}" @click=${callback}>${nextLabel} <span>»</span></a>
             </li>`
       }
     };
