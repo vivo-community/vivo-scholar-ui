@@ -20,7 +20,6 @@ class GrantSearch extends Searcher(LitElement) {
         this.active = false;
         this.waiting = false;
         this.defaultBoosts = [{ field: "title", value: 2 }];
-
         this.defaultFilters = [{ field: "type", value: "Grant" }];
 
         this.handleSearchResultsObtained = this.handleSearchResultsObtained.bind(this);
@@ -100,17 +99,20 @@ class GrantSearch extends Searcher(LitElement) {
         `
     }
 
-    // FIXME: i18n how to get labels in here?
     renderGrant(grant) {
         let url = `/entities/grant/${grant.id}`;
+        // TODO: what is best if labels not supplied?
+        let contribLabel = this.i18n["contributors"] || "";
+        let dateLabel = this.i18n["date"] || "";
+        let fundingSourceLabel = this.i18n["funding_source"] || "";
         return html`
         <vivo-grant-card>
           <a slot="title" href="${url}">
           ${grant.title}
           </a>
-          ${this.renderContributors(grant, "Contributors")}
-          ${this.renderDateInterval(grant, "Date")}
-          ${this.renderAwardedBy(grant, "Funding Source")}
+          ${this.renderContributors(grant, contribLabel)}
+          ${this.renderDateInterval(grant, dateLabel)}
+          ${this.renderAwardedBy(grant, fundingSourceLabel)}
         </vivo-grant-card>
         `;
     }
@@ -209,6 +211,7 @@ class GrantSearch extends Searcher(LitElement) {
         */
 
         return html`
+          <slot name="i18n"></slot>
           <div id="grant-search-results">
             <div class="search-actions">
               <slot name="pagination-summary"></slot>
