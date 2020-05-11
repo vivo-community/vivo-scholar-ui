@@ -63,8 +63,7 @@ class SearchPagination extends LitElement {
     this.pageGrouping = config.PAGE_GROUPING;
 
     // NOTE: downside of this, needs vivo-search-navigation component
-    // maybe it would better to have <vivo-i18n-labels> ?
-    // alternatate way to set (so don't need coordaintor for pagination)
+    // maybe it would better to just use <vivo-i18n-labels> ?
     this.coordinator = document.querySelector('vivo-search-navigation');
   }
 
