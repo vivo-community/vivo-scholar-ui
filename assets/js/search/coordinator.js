@@ -167,17 +167,9 @@ class SearchCoordinator extends LitElement {
     const search = (e.detail != '') ? e.detail : "*";
 
     this.browsingState.currentQuery = search;
-    //let activeSearch = this.browsingState.activeSearch;
-
-    // could get active search from route ? e.g.
-    // /search/person?query=*
-    // /search/publications?query=* etc...
-
-    // set the query on all - so if we switch tabs it has
-    // the new query to run
+    // set the query on all - so if we switch tabs it has the new query to run
     let searches = this.querySelectorAll(`[implements="vivo-search"]`);
 
-    // TODO: should this set orders too?
     searches.forEach(s => {
       s.setQuery(search);
       s.setPage(0);
@@ -196,7 +188,6 @@ class SearchCoordinator extends LitElement {
     this.findCorrectFacetsToDisplay();
   }
 
-  // TODO: this might show 'waiting' modal box for fraction of second
   handleSearchStarted(e) {
     let modal = this.querySelector('#search-waiting');
     modal.shown = true;
@@ -207,8 +198,6 @@ class SearchCoordinator extends LitElement {
     modal.shown = false;
   }
 
-  // TODO: this feels a little fragile - works/doesn't work
-  // depending on precise arrangement on page
   findCorrectFacetsToDisplay(filters = null) {
     let activeSearch = this.browsingState.activeSearch;
     let id = activeSearch.id;
