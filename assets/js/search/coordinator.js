@@ -128,10 +128,9 @@ class SearchCoordinator extends LitElement {
 
   handleTabSelected(e) {
     const tab = e.detail;
-    // FIXME: this seems to be called by clicking anywhere on tab panel
-    // not sure it's really an error
+    // NOTE: event called by clicking anywhere on tab panel
+    // so ignoring (not error)
     if (tab == null) {
-      console.error("called handleTabSelected with wrong event");
       return;
     }
     this.browsingState.currentTab = tab.id
