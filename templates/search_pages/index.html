@@ -20,11 +20,6 @@
   }
 </style>
 
-<vivo-modal id="search-waiting">
-  <h3><%= t("searching") %>...</h3>
-  <vivo-search-spinner></vivo-search-spinner>
-</vivo-modal>
-
 <vivo-search-coordinator>
   <vivo-i18n-label key="show-more" label="<%= t("show_more") %>"></vivo-i18n-label>
   <vivo-i18n-label key="show-less" label="<%= t("show_less") %>"></vivo-i18n-label>
@@ -35,10 +30,15 @@
   <vivo-i18n-label key="showing" label="<%= t("showing") %>"></vivo-i18n-label>
   <vivo-i18n-label key="of" label="<%= t("of") %>"></vivo-i18n-label>
 
+  <vivo-modal id="search-waiting">
+    <h3><%= t("searching") %>...</h3>
+    <vivo-search-spinner></vivo-search-spinner>
+  </vivo-modal>
+
   <div class="search-container">
     <!-- NOTE: facets and search are in separate sections
-    the vivo-search-navigation elements uses the "search" attribute
-    to figure out which search to attach to (by corresponding id)
+    the vivo-search-coordinator elements uses the "search" attribute
+    to figure out which search to attaches to which facets (by corresponding id)
   -->
     <aside>
       <vivo-sidebar>
