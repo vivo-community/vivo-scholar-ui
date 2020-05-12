@@ -25,7 +25,8 @@ class SearchFacets extends Faceter(LitElement) {
     this.togglePopup = this.togglePopup.bind(this);
 
     this.toggleList = this.toggleList.bind(this);
-    this.coordinator = document.querySelector('vivo-search-navigation');
+    this.coordinator = this.closest('vivo-search-coordinator');
+
   }
 
   static get styles() {

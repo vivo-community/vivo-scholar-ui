@@ -14,8 +14,7 @@ class SearchPaginationSummary extends LitElement {
 
   constructor() {
     super();
-    // TODO: maybe it would better to have <vivo-i18n-labels> ?
-    this.coordinator = document.querySelector('vivo-search-navigation');
+    this.coordinator = this.closest('vivo-search-coordinator');
   }
 
   render() {

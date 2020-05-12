@@ -1,5 +1,5 @@
 import './search/searcher.js';
-import './search/navigation.js';
+import './search/coordinator.js';
 import './search/facet.js';
 import './search/facets.js';
 import './search/facet-group.js';
@@ -14,7 +14,6 @@ import './search/modal.js';
 import './search/truncated-text-result.js';
 import './search/facet-group-toggle.js';
 import './search/i18n-label.js';
-import './search/i18n-labels.js';
 
 import './search/sort-option.js';
 import './search/sort-options.js';

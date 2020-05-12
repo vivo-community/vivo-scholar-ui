@@ -2,7 +2,7 @@ import { LitElement, html, css } from "lit-element";
 import qs from "qs";
 import _ from "lodash";
 
-class SearchNavigation extends LitElement {
+class SearchCoordinator extends LitElement {
 
   constructor() {
     super();
@@ -71,13 +71,17 @@ class SearchNavigation extends LitElement {
   }
 
   setInternationalization() {
-    let labels = document.querySelector(`#${this.getAttribute("labels")}`);
-    this.i18n = labels.getLabels();
+    let values = Array.from(this.querySelectorAll('vivo-i18n-label'));
+    values.forEach(opt => {
+        const key = opt.getAttribute("key");
+        const label = opt.getAttribute("label");
+        this.i18n[key] = label;
+    });
   }
 
   getLabel(key) {
     // TODO: what if no match?
-    return this.i18n[key];
+    return this.i18n[key] || '**i18n key not found**';
   }
 
   disconnectedCallback() {
@@ -165,7 +169,7 @@ class SearchNavigation extends LitElement {
     const search = (e.detail != '') ? e.detail : "*";
 
     this.browsingState.currentQuery = search;
-    let activeSearch = this.browsingState.activeSearch;
+    //let activeSearch = this.browsingState.activeSearch;
 
     // could get active search from route ? e.g.
     // /search/person?query=*
@@ -299,6 +303,11 @@ class SearchNavigation extends LitElement {
     }
   }
 
+
+  render() {
+    return html`<slot></slot>`
+  }
+
 }
 
-customElements.define('vivo-search-navigation', SearchNavigation);
+customElements.define('vivo-search-coordinator', SearchCoordinator);

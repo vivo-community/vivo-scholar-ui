@@ -189,7 +189,6 @@ class GrantSearch extends Searcher(LitElement) {
         this.setPagination();
 
         return html`
-          <slot name="i18n"></slot>
           <div id="grant-search-results">
             <div class="search-actions">
               <slot name="pagination-summary"></slot>
