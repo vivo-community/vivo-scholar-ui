@@ -78,7 +78,6 @@ class PublicationSearch extends Searcher(LitElement) {
       var docCount = this.data ? this.data.documents.page.totalElements : 0;
       let tab = document.querySelector('#publication-search-count');
       tab.textContent = `${docCount}`;
-
     }
   
     renderPublication(p) {

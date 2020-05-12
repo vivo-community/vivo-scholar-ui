@@ -101,7 +101,6 @@ let Searcher = (superclass) => class extends superclass {
     // NOTE: these next two functions assume a DOM of some sort (unlike others)
     markSortOptionSelected(selected) {
       let options = this.querySelector('vivo-search-sort-options');
-      //options.selected = selected;
       // NOTE: needs in exact format to match
       options.selected = `${selected.property}-${selected.direction}`;
     }
@@ -122,6 +121,7 @@ let Searcher = (superclass) => class extends superclass {
       });
     }
   
+    // TODO: move this out, use i18n-labels somehow?
     setInternationalization() {
       let values = Array.from(this.querySelectorAll('vivo-i18n-label'));
       values.forEach(opt => {
