@@ -52,6 +52,22 @@ class SearchSortOptions extends LitElement {
           :host {
             display: block;
           }
+          select::before {
+            content: var(--lumo-icons-chevron-down);
+            color: var(--textColor);
+            background-color: var(--lightNeutralColor);
+          }
+          select {
+            font-size: 1em;
+            line-height: 1em;
+            min-height: 1em;
+            padding: 0 0.25em;
+          }
+          option {
+            font-weight:normal;
+            line-height: 1.6em;
+            padding: 0.5em 1em;
+          }
         `
     }
 

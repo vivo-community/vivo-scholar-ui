@@ -1,5 +1,7 @@
 import { LitElement, html, css } from "lit-element";
 
+import uncamelCase from '../lib/string-helper';
+
 class SearchFacet extends LitElement {
 
   // NOTE: these are properties for display (like count, value)
@@ -37,7 +39,7 @@ class SearchFacet extends LitElement {
       }
       .label {
         flex-grow: 2;
-        flex-basis: 95%;
+        flex-basis: 92%;
         padding-right: 0.5em;
         line-height: 16pt;
         display: inline-block;
@@ -61,7 +63,7 @@ class SearchFacet extends LitElement {
       }
       .checkbox-container {
         flex-grow: 1;
-        flex-basis: 5%;
+        flex-basis: 8%;
         display:inline-block;
         position: relative;
       }
@@ -161,6 +163,8 @@ class SearchFacet extends LitElement {
   // https://stackoverflow.com/questions/55962214/litelement-not-updating-checkbox-in-list
   // https://github.com/Polymer/lit-html/issues/732  
   render() {
+    //add space between certain facet results (ex: "FacultyMember")
+    let newLabel = uncamelCase(this.label);
     // NOTE: there is an input tag (that is hidden) - and only used to render check
     // (not interactive like normal checkbox)
     return html`
@@ -169,7 +173,7 @@ class SearchFacet extends LitElement {
             @click=${this.handleFacetSelected}
           >
             <span class="label" title="${this.label} (${this.count})">
-              ${this.label}&nbsp;(${this.count})
+              ${newLabel}&nbsp;(${this.count})
             </span>
             <!-- NOTE: adding value again so event can do parent.value -->
             <span class="checkbox-container" value=${this.value}>

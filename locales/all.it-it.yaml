@@ -128,3 +128,5 @@
   translation: "Data (Ascendente)"
 - id: date_descending
   translation: "Data (decrescente)"
+- id: filter_authors
+  translation: "Filtro Autori"

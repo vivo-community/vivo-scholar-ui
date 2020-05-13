@@ -128,3 +128,6 @@
   translation: "Date (Croissant)"
 - id: date_descending
   translation: "Date (décroissant)"
+- id: filter_authors
+  translation: "filtre Auteurs"
+  

@@ -136,3 +136,5 @@
   translation: "Zeigen"
 - id: of
   translation: "von"
+- id: filter_authors
+  translation: "Filter Autoren"
