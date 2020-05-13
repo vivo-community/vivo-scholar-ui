@@ -114,6 +114,8 @@ class FacetPopupBox extends Faceter(LitElement) {
 
   openUp() {
     this.open = true;
+    //NOTE: should work in theory, but doesn't
+    this.shadowRoot.querySelector("#filter-list").focus();
   }
 
   doApply() {
@@ -177,13 +179,16 @@ class FacetPopupBox extends Faceter(LitElement) {
       text-rendering: auto;
       font-size: 1em;
       -webkit-font-smoothing: antialiased;
-      flex-basis: 10%;
+      flex-basis: 15%;
     }
     :host([open]) .fa-times::before {
       font-family: 'Font Awesome 5 Free';
       font-weight: 900;
       content: "\\f00d";
       padding: 4px;
+      font-size: 1.5em;
+      padding-right: 1em;
+      padding-top: 4px;
     }
     ::slotted(a) {
       text-decoration: none;
@@ -201,12 +206,15 @@ class FacetPopupBox extends Faceter(LitElement) {
     }
     ::slotted([slot="heading"]) {
       flex-grow: 1;
-      flex-basis: 20%;
+      flex-basis: 30%;
       text-align: left;
       font-weight: bold;
+      font-size: 1.25em;
+      padding-left: 12px;
+      padding-top: 4px;
     }
     ::slotted(input) {
-      flex-basis: 70%;
+      flex-basis: 55%;
       text-align: left;
     }
     .heading {
@@ -220,7 +228,7 @@ class FacetPopupBox extends Faceter(LitElement) {
     }
     .smaller-input {
       font-size: 0.85em;
-      width: 75%;
+      width: 65%;
     }
     .facet-container {
       display: flex;
@@ -352,7 +360,7 @@ class FacetPopupBox extends Faceter(LitElement) {
           <input class="smaller-input" type="text" id="filter-list"
             @keyup=${this.debounce(this.searchKeyUp,  250)}
             placeholder="${this.placeholder}">
-          <i class="fas fa-times" @click=${this.cancel}></i>
+          <i class="fas fa-times" @click=${this.doCancel}></i>
         </div>
         <div class="facet-container">
           <slot></slot>

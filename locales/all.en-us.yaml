@@ -137,4 +137,6 @@
   translation: "Showing"
 - id: of
   translation: "of"
+- id: filter_authors
+  translation: "Filter Authors"
 
