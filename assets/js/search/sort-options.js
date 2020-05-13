@@ -47,10 +47,28 @@ class SearchSortOptions extends LitElement {
         }));
     }
 
+    // https://www.filamentgroup.com/lab/select-css.html
+
     static get styles() {
         return css`
           :host {
             display: block;
+          }
+          select::before {
+            content: var(--lumo-icons-chevron-down);
+            color: var(--textColor);
+            background-color: var(--lightNeutralColor);
+          }
+          select {
+            font-size: 1em;
+            line-height: 1em;
+            min-height: 1em;
+            padding: 0 0.25em;
+          }
+          option {
+            font-weight:normal;
+            line-height: 1.6em;
+            padding: 0.5em 1em;
           }
         `
     }
@@ -64,7 +82,7 @@ class SearchSortOptions extends LitElement {
     
     render() { 
         return html`
-        <select @change="${this.handleSortSelected}">  
+        <select class="select-css" @change="${this.handleSortSelected}">  
            ${this.options.map(option => 
             html`
             <option 
