@@ -234,8 +234,8 @@ class FacetPopupBox extends Faceter(LitElement) {
       display: flex;
       flex-direction: column;
       flex-wrap: wrap;
-      max-height: 200px;
-      min-height: 200px;
+      max-height: 250px;
+      min-height: 250px;
       min-width: 100px;
       max-width: 32rem;
       overflow-x: scroll;
@@ -249,6 +249,7 @@ class FacetPopupBox extends Faceter(LitElement) {
       scrollbar-base-color:#ffeaff;
       scrollbar-width: thin;
       scrollbar-color: var(--thumbBG) var(--scrollbarBG);
+      font-size: 0.90em;
     }
     .facet-container::-webkit-scrollbar {
       background-color: white;
@@ -268,8 +269,11 @@ class FacetPopupBox extends Faceter(LitElement) {
       display: inline-block;
       background-color: var(--mediumNeutralColor);
       color: white;
-      padding: 8px;
-      font-size: 1em;
+      padding-top: 0.65em;
+      padding-bottom: 0.65em;
+      padding-left: 1.25em;
+      padding-right: 1.25em;
+      font-size: 1.15em;
       font-weight: bold;
       border: none;
       margin-right: 15px;
@@ -278,8 +282,11 @@ class FacetPopupBox extends Faceter(LitElement) {
       display: inline-block;
       background-color: var(--highlightColor);
       color: white;
-      padding: 8px;
-      font-size: 1em;
+      padding-top: 0.65em;
+      padding-bottom: 0.65em;
+      padding-left: 1.25em;
+      padding-right: 1.25em;
+      font-size: 1.15em;
       font-weight: bold;
       border: none;
     }
@@ -292,12 +299,15 @@ class FacetPopupBox extends Faceter(LitElement) {
     .actions {
       text-align: center;
       padding: 8px;
-      margin-bottom: 4px;
+      margin-bottom: 1.5em;
     }
     @media screen and (max-width: 1000px) {
       ::slotted(vivo-search-facet) {
          width: unset;
        }
+       :host([open]) .fa-times::before {
+        padding-right: unset;
+      }
       .facet-container {
         display: block;
         overflow: auto;
@@ -305,6 +315,7 @@ class FacetPopupBox extends Faceter(LitElement) {
         scrollbar-base-color:#ffeaff;
         min-height: unset;
         max-height: 85%;
+        font-size: unset;
       }
     }
     `;
