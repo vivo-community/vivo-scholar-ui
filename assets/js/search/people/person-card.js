@@ -29,6 +29,11 @@ class PersonCard extends LitElement {
       :host {
           display: block;
       }
+      @media screen and (max-width: 1000px) {
+        ::slotted(#overview) {
+           display: none;
+         }
+      }
       
     `
   }
