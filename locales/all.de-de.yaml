@@ -128,3 +128,11 @@
   translation: "Datum (aufsteigend)"
 - id: date_descending
   translation: "Datum (absteigend)"
+- id: next
+  translation: "Nächste"
+- id: previous
+  translation: "Früher"
+- id: showing
+  translation: "Zeigen"
+- id: of
+  translation: "von"

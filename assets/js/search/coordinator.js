@@ -2,7 +2,7 @@ import { LitElement, html, css } from "lit-element";
 import qs from "qs";
 import _ from "lodash";
 
-class SearchNavigation extends LitElement {
+class SearchCoordinator extends LitElement {
 
   constructor() {
     super();
@@ -17,23 +17,24 @@ class SearchNavigation extends LitElement {
     this.handleSearchPopState = this.handleSearchPopState.bind(this);
 
     this.handleToggleFilters = this.handleToggleFilters.bind(this);
+
+    this.i18n = {};
   }
 
   firstUpdated() {
-    document.addEventListener('tabSelected', this.handleTabSelected);
-    document.addEventListener('searchSubmitted', this.handleSearchSubmitted);
-    // NOTE: these are search specific - should maybe be in searcher.js
-    // code instead of here
-    document.addEventListener('pageSelected', this.handlePageSelected);
-    document.addEventListener('sortSelected', this.handleSortSelected);
-    document.addEventListener('removeFilters', this.handleRemoveFilters);
-    document.addEventListener('searchStarted', this.handleSearchStarted);
-    document.addEventListener('searchResultsObtained', this.handleSearchResultsObtained);
-    document.addEventListener('toggleFilters', this.handleToggleFilters);
+    this.addEventListener('tabSelected', this.handleTabSelected);
+    this.addEventListener('searchSubmitted', this.handleSearchSubmitted);
+    this.addEventListener('pageSelected', this.handlePageSelected);
+    this.addEventListener('sortSelected', this.handleSortSelected);
+    this.addEventListener('removeFilters', this.handleRemoveFilters);
+    this.addEventListener('searchStarted', this.handleSearchStarted);
+    this.addEventListener('searchResultsObtained', this.handleSearchResultsObtained);
+    this.addEventListener('toggleFilters', this.handleToggleFilters);
 
     window.addEventListener('popstate', this.handleSearchPopState);
 
     // make search-box show text of search sent in (from home page)
+    // NOTE: this is *not* a child element of this tag
     let searchBox = document.querySelector(`vivo-site-search-box`);
     // parse all other params here?
     const params = qs.parse(window.location.search.substring(1));
@@ -43,7 +44,7 @@ class SearchNavigation extends LitElement {
     searchBox.query = defaultQuery;
 
     let searchTab = params["search-tab"];
-    let matchedSearch = document.querySelector(`#${searchTab}`);
+    let matchedSearch = this.querySelector(`#${searchTab}`);
     if (matchedSearch) {
       matchedSearch.setActive(true);
       this.browsingState.activeSearch = matchedSearch;
@@ -54,29 +55,45 @@ class SearchNavigation extends LitElement {
         tabs.selectTabById(`${searchTab}-tab`);
       }
     } else {
-      let defaultSearch = document.querySelector(`[implements="vivo-search"]`);
+      let defaultSearch = this.querySelector(`[implements="vivo-search"]`);
       defaultSearch.setActive(true);
       this.browsingState.activeSearch = defaultSearch;
     }
     // NOTE: which facets to display depends on active search  
     this.findCorrectFacetsToDisplay(params.filters);
+
+    this.setInternationalization();
   }
 
   getMainTabs() {
-    return document.querySelector('vivo-tabs');
+    return this.querySelector('vivo-tabs');
+  }
+
+  setInternationalization() {
+    let values = Array.from(this.querySelectorAll('vivo-i18n-label'));
+    values.forEach(opt => {
+        const key = opt.getAttribute("key");
+        const label = opt.getAttribute("label");
+        this.i18n[key] = label;
+    });
+  }
+
+  getLabel(key) {
+    // TODO: what if no match?
+    return this.i18n[key] || '**i18n key not found**';
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
-    document.removeEventListener('tabSelected', this.handleTabSelected);
-    document.removeEventListener('searchSubmitted', this.handleSearchSubmitted);
-    document.removeEventListener('pageSelected', this.handlePageSelected);
-    document.removeEventListener('sortSelected', this.handleSortSelected);
-    document.removeEventListener('removeFilters', this.handleRemoveFilters);
-    document.removeEventListener('searchStarted', this.handleSearchStarted);
-    document.removeEventListener('searchResultsObtained', this.handleSearchResultsObtained);
+    this.removeEventListener('tabSelected', this.handleTabSelected);
+    this.removeEventListener('searchSubmitted', this.handleSearchSubmitted);
+    this.removeEventListener('pageSelected', this.handlePageSelected);
+    this.removeEventListener('sortSelected', this.handleSortSelected);
+    this.removeEventListener('removeFilters', this.handleRemoveFilters);
+    this.removeEventListener('searchStarted', this.handleSearchStarted);
+    this.removeEventListener('searchResultsObtained', this.handleSearchResultsObtained);
 
-    document.removeEventListener('toggleFilters', this.handleToggleFilters);
+    this.removeEventListener('toggleFilters', this.handleToggleFilters);
     window.removeEventListener('popstate', this.handleSearchPopState);
   }
 
@@ -101,7 +118,7 @@ class SearchNavigation extends LitElement {
     // 1. remove from active search
     search.setFilters([]);
     // 2. remove from facet group
-    let facets = document.querySelectorAll(`[search="${id}"]`);
+    let facets = this.querySelectorAll(`[search="${id}"]`);
     facets.forEach(facet => {
       facet.setFilters([]);
     })
@@ -111,10 +128,9 @@ class SearchNavigation extends LitElement {
 
   handleTabSelected(e) {
     const tab = e.detail;
-    // FIXME: this seems to be called by clicking anywhere on tab panel
-    // not sure it's really an error
+    // NOTE: event called by clicking anywhere on tab panel
+    // so ignoring (not error)
     if (tab == null) {
-      console.error("called handleTabSelected with wrong event");
       return;
     }
     this.browsingState.currentTab = tab.id
@@ -151,17 +167,9 @@ class SearchNavigation extends LitElement {
     const search = (e.detail != '') ? e.detail : "*";
 
     this.browsingState.currentQuery = search;
-    let activeSearch = this.browsingState.activeSearch;
+    // set the query on all - so if we switch tabs it has the new query to run
+    let searches = this.querySelectorAll(`[implements="vivo-search"]`);
 
-    // could get active search from route ? e.g.
-    // /search/person?query=*
-    // /search/publications?query=* etc...
-
-    // set the query on all - so if we switch tabs it has
-    // the new query to run
-    let searches = document.querySelectorAll(`[implements="vivo-search"]`);
-
-    // TODO: should this set orders too?
     searches.forEach(s => {
       s.setQuery(search);
       s.setPage(0);
@@ -172,7 +180,7 @@ class SearchNavigation extends LitElement {
     })
 
     // clear all the 'filters' 
-    let facets = document.querySelectorAll('vivo-facet-group');
+    let facets = this.querySelectorAll('vivo-facet-group');
     facets.forEach(s => {
       s.setFilters([]);
     })
@@ -180,29 +188,26 @@ class SearchNavigation extends LitElement {
     this.findCorrectFacetsToDisplay();
   }
 
-  // TODO: this might show 'waiting' modal box for fraction of second
   handleSearchStarted(e) {
-    let modal = document.querySelector('#search-waiting');
+    let modal = this.querySelector('#search-waiting');
     modal.shown = true;
   }
 
   handleSearchResultsObtained(e) {
-    let modal = document.querySelector('#search-waiting');
+    let modal = this.querySelector('#search-waiting');
     modal.shown = false;
   }
 
-  // TODO: this feels a little fragile - works/doesn't work
-  // depending on precise arrangement on page
   findCorrectFacetsToDisplay(filters = null) {
     let activeSearch = this.browsingState.activeSearch;
     let id = activeSearch.id;
 
-    let facets = document.querySelectorAll('vivo-facet-group');
+    let facets = this.querySelectorAll('vivo-facet-group');
     // hiding all
     facets.forEach((t) => t.removeAttribute('selected'));
 
     // should this really be multiple?
-    let facetGroups = document.querySelectorAll(`[search="${id}"]`);
+    let facetGroups = this.querySelectorAll(`[search="${id}"]`);
     facetGroups.forEach(group => {
       group.setAttribute('selected', 'selected');
       if (filters && filters.length > 0) {
@@ -220,7 +225,7 @@ class SearchNavigation extends LitElement {
     // e.detail = {show: (true|false)};
     let show = e.detail.show;
     // note: choosing tab should mark as 'selected' 
-    let facetGroups = document.querySelectorAll('vivo-facet-group[selected]');
+    let facetGroups = this.querySelectorAll('vivo-facet-group[selected]');
 
     let searchTabs = this.getMainTabs();
 
@@ -259,12 +264,12 @@ class SearchNavigation extends LitElement {
     const params = qs.parse(window.location.search.substring(1));
 
     let searchTab = params["search-tab"];
-    let matchedSearch = document.querySelector(`#${searchTab}`);
+    let matchedSearch = this.querySelector(`#${searchTab}`);
     if (matchedSearch) {
       this.browsingState.activeSearch = matchedSearch;
     } else {
       // first one??
-      let defaultSearch = document.querySelector(`[implements="vivo-search"]`);
+      let defaultSearch = this.querySelector(`[implements="vivo-search"]`);
       this.browsingState.activeSearch = defaultSearch;
     }
     let search = this.browsingState.activeSearch;
@@ -285,6 +290,11 @@ class SearchNavigation extends LitElement {
     }
   }
 
+
+  render() {
+    return html`<slot></slot>`
+  }
+
 }
 
-customElements.define('vivo-search-navigation', SearchNavigation);
+customElements.define('vivo-search-coordinator', SearchCoordinator);
