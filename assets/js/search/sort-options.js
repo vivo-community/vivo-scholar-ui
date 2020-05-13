@@ -47,8 +47,6 @@ class SearchSortOptions extends LitElement {
         }));
     }
 
-    // https://www.filamentgroup.com/lab/select-css.html
-
     static get styles() {
         return css`
           :host {
