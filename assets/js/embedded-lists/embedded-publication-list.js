@@ -1,8 +1,8 @@
 import { LitElement, html, css } from 'lit-element';
-import './elements/publication';
-import './elements/publication-list';
-import './elements/publication-author-list';
-import './elements/publication-author';
+import '../elements/publication';
+import '../elements/publication-list';
+import '../elements/publication-author-list';
+import '../elements/publication-author';
 import {unsafeHTML} from 'lit-html/directives/unsafe-html.js';
 
 
@@ -93,7 +93,6 @@ class EmbeddedPubList extends LitElement {
   abstractTemplate(abstract) {
     if (abstract) {
       let abstractText = html`
-        Look out, potentially unsafe HTML ahead:
         ${unsafeHTML(abstract)}
       `;
       return html`
@@ -126,9 +125,10 @@ class EmbeddedPubList extends LitElement {
   render() {
     let publicationElements = this.publications.map((p) => this.publicationTemplate(p));
     return html`
-      <vivo-publication-list>
+    <h2>test</h2>
+      <vivo-sortable-list>
         ${publicationElements}
-      </vivo-publication-list>
+      </vivo-sortable-list>
     `
   }
 }

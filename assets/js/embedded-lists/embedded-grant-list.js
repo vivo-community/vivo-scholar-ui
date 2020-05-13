@@ -1,6 +1,6 @@
 import { LitElement, html, css } from 'lit-element';
-import './elements/grant';
-import './elements/interval';
+import '../elements/grant';
+import '../elements/interval';
 
 
 import gql from 'graphql-tag'
@@ -42,13 +42,20 @@ class EmbeddedGrantList extends LitElement {
   static get properties() {
     return {
       grants: { type: Array },
-      person_url: { type: String}
+      person_url: { type: String},
+      sorts: { type: Object, reflect: true}
     }
   }
 
   constructor() {
     super();
     this.grants = [];
+    this.sorts = [
+      {property : "startDate", direction : "asc", label: "Oldest First"} ,
+      {property : "startDate", direction : "desc", label: "Newest First"},
+      {property : "title", direction : "asc", label: "Grant a-z"} ,
+      {property : "title", direction : "desc", label: "Grant z-a"}
+    ];
   }
 
   connectedCallback() {
@@ -82,8 +89,7 @@ class EmbeddedGrantList extends LitElement {
     let endDate = new Date(p.endDate);
     endDate = endDate.getFullYear();
     return html`
-      <vivo-grant url="/entities/grant/${p.id}"
-      start-date="${p.title}" title="<%= p["label"] %>">
+      <vivo-grant url="/entities/grant/${p.id}" start-date="${p.title}" title="<%= p["label"] %>">
       <a slot="label" href="/entities/grant/${p.id}">
        ${p.label}
       </a>
@@ -99,9 +105,9 @@ class EmbeddedGrantList extends LitElement {
   render() {
     let grantElements = this.grants.map((p) => this.grantTemplate(p));
     return html`
-      <vivo-grant-list>
+      <vivo-sortable-list .sorts="${this.sorts}">
         ${grantElements}
-      </vivo-grant-list>
+      </vivo-sortable-list>
     `
   }
 }

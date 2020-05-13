@@ -41,7 +41,7 @@ class EmbeddedCourseList extends LitElement {
   constructor() {
     super();
     this.courses = [];
-  }
+}
 
   connectedCallback() {
     super.connectedCallback();
@@ -59,31 +59,20 @@ class EmbeddedCourseList extends LitElement {
     });
   }
 
-
   courseTemplate(p) {
     return html`
       <vivo-course>
-      <!-- work on this logic, probably add other template information -->
-      <%= for (c) in courses { %>
-           <span slot="course-title"><%= c["label"] %></span>
-        <%= if (c["role"]) { %>
-          <span slot="course-role"><%= c["role"] %></span>
-        <% } %>
-      <% } %>
+           <span slot="course-title">${p.label}</span>
+          <span slot="course-role">${p.role}</span>
      </vivo-course>
     `
   }
 
 
-
-
   render() {
-    let course Elements = this.courses.map((p) => this.courseTemplate(p));
+    let courseElements = this.courses.map((p) => this.courseTemplate(p));
     return html`
-    <p>test</p>
-      <vivo-course-list>
         ${courseElements}
-      </vivo-course-list>
     `
   }
 }

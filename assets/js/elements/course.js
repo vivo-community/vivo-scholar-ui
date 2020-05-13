@@ -23,6 +23,7 @@ class Course extends LitElement{
         reflect: true
       },
   }
+}
 
 
   static get styles() {
@@ -47,7 +48,7 @@ class Course extends LitElement{
   render() {
     return html `
     <slot name="course-title"></slot>
-    <slot name="course-role"></slot>
+    <slot name="course-role"></slot><br>
     `;
   }
 }
