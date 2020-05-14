@@ -46,6 +46,8 @@
       padding: 0;
       grid-column-start: 1;
       grid-row-start: 1;
+      display: flex;
+      justify-content: flex-end; 
     }
     .search-container aside {
       padding: 0;
@@ -53,5 +55,12 @@
       grid-column-start: 1;
       grid-row-start: 2;
       background-color: var(--lightNeutralColor);
+    }
+    .search-container vivo-filter-clearer {
+      display: none;
+    }
+
+    .search-container vivo-facet-group-toggle {
+      order: 2;
     }
   }

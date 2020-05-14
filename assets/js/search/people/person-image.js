@@ -11,6 +11,13 @@ class PersonImage extends LitElement {
     return css`
       .img-thumbnail {
         border: 3px solid #F3F2F1;
+        width: 130px;
+      }
+
+      @media screen and (max-width: 1000px) {
+        .img-thumbnail {
+          width: 110px;
+        }
       }
     `
   }
@@ -23,7 +30,7 @@ class PersonImage extends LitElement {
       url = `${this.thumbnail}`;
     }
     return html`
-          <img class="img-thumbnail" width="130" src="${url}" />
+          <img class="img-thumbnail" src="${url}" />
           `
   }
 }
