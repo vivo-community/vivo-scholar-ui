@@ -141,4 +141,10 @@
   translation: "Filter Authors"
 - id: filter
   translation: "Filter"  
+- id: show
+  translation: "Show"
+- id: hide
+  translation: "Hide"
+- id: reset
+  translation: "Reset"
 

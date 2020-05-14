@@ -131,4 +131,10 @@
 - id: filter_authors
   translation: "Filtro Autori"
 - id: filter
-  translation: "Filtro"  
+  translation: "Filtro"
+- id: show
+  translation: "Mostra"
+- id: hide
+  translation: "Nascondi"
+- id: reset
+  translation: "Ripristina"  
