@@ -130,3 +130,5 @@
   translation: "Data (decrescente)"
 - id: filter_authors
   translation: "Filtro Autori"
+- id: filter
+  translation: "Filtro"  

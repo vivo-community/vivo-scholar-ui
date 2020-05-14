@@ -17,6 +17,18 @@ class SearchPaginationSummary extends LitElement {
     this.coordinator = this.closest('vivo-search-coordinator');
   }
 
+  static get styles() {
+    // TODO: should make link color etc...
+    return css`
+    @media screen and (max-width: 1000px) {
+      span {
+        display:none;
+        font-size: 0.85em;
+      }
+    }   
+    `
+  }
+
   render() {
     let pagingText = html``;
 

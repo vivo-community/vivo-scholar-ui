@@ -138,3 +138,5 @@
   translation: "von"
 - id: filter_authors
   translation: "Filter Autoren"
+- id: filter
+  translation: "Filter"    

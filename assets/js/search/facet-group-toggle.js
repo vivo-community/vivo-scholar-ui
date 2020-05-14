@@ -27,12 +27,14 @@ class SearchFacetGroupToggle extends LitElement {
         }
         @media screen and (max-width: 1000px) {
             :host { display: inline; }
+            /*
             :host .fa-filter::before {
                 font-family: 'Font Awesome 5 Free';
                 font-weight: 900;
                 content: "\\f0b0";
                 font-style: normal;
             }
+            */
             :host ::slotted([slot="show"]) {
                 display: inline;
             }

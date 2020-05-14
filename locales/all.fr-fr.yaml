@@ -129,5 +129,7 @@
 - id: date_descending
   translation: "Date (décroissant)"
 - id: filter_authors
-  translation: "filtre Auteurs"
+  translation: "Filtre Auteurs"
+- id: filter
+  translation: "Filtre"    
   

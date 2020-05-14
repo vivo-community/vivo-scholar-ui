@@ -145,6 +145,27 @@ class GrantSearch extends Searcher(LitElement) {
         .grants {
             padding: 1em;
         }
+        @media screen and (max-width: 1000px) {
+            .grants {
+                padding-left: 0;
+                padding-right: 0;
+            }
+            .search-actions {
+                display: flex;
+                flex-direction: column;
+                padding-left: 0;
+                padding-right: 0;
+            }
+            ::slotted(vivo-search-sort-options) {
+                flex-basis: auto;
+                flex-grow: 1;
+                text-align: left;
+            }
+            ::slotted(vivo-pagination-summary) {
+               flex-basis; auto;
+               flex-grow: 1;
+            }
+        }
       `
     }
 

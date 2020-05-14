@@ -139,4 +139,6 @@
   translation: "of"
 - id: filter_authors
   translation: "Filter Authors"
+- id: filter
+  translation: "Filter"  
 
