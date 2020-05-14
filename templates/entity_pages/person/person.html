@@ -13,23 +13,24 @@
   </vivo-sidebar>
 
 
-   <main>
+   <main id="profile">
+     <div id="profile-heading">
       <h2 class="page-title"><%= person["name"] %></h2>
       <h2 class="page-subtitle"><%= person["preferredTitle"] %></h2>
       <%= if (person["primaryEmail"] || person["phone"] || person["streetAddress"]) { %>
-      <span id="contact-info"><p>
+      <span id="contact-info" >
         <%= if (person["primaryEmail"]){ %>
-          <%= person["primaryEmail"] %>&nbsp&nbsp
+          <span><%= person["primaryEmail"] %></span>
         <% } %>
         <%= if (person["phone"]) { %>
-          <%= person["phone"] %>&nbsp&nbsp
+          <span><%= person["phone"] %></span>
         <% } %>
         <%= if (person["streetAddress"]) { %>
-          <%= person["streetAddress"] %>
+          <span><%= person["streetAddress"] %></span>
         <% } %>
-        </p>
       <% } %>
       </span>
+    </div>
       <!-- tabs -->
       <vivo-tabs tabindex="0">
          <%= if (person["overview"] || person["positions"] || person["educationAndTraining"]) { %>
@@ -179,7 +180,7 @@
          <vivo-sidebar-item id="person-contact" hidden>
             <h3 slot="heading"><%= t("profile_contact") %></h3>
                <%= if (person["primaryEmail"]) { %>
-              <div slot="content" class="testing">
+              <div slot="content">
                <h4><%= t("email") %></h4><br>
                <span title="<%= person["primaryEmail"] %>">secondary.email<wbr>@duke.edu</span>
                <!-- <span title="<%= person["primaryEmail"] %>"><%= person["primaryEmail"] %></span> -->
@@ -192,7 +193,7 @@
               </div>
                <% } %>
                <%= if (person["streetAddress"]) { %>
-              <div slot="content" class="testing">
+              <div slot="content">
                <h4><%= t("address_1") %></h4><br>
                <span title="<%= person["streetAddress"] %>"><%= person["streetAddress"] %></span>
               </div>

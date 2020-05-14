@@ -88,7 +88,13 @@ aside {
   margin-bottom: .5em;
 }
 #contact-info {
-  margin-top: 0;
+margin: 0;
+}
+#contact-info span::after{
+  content: " | "
+}
+#contact-info span:last-child::after{
+  content: none;
 }
 .section-title {
   color: var(--primaryColor);
@@ -103,6 +109,24 @@ aside {
   font-size: 1.2em;
   margin-top: 1.2em;
   margin-bottom: .6em;
+}
+
+// profile entity page
+#profile .page-title {
+  margin-top: .3em;
+}
+#profile .page-subtitle{
+  margin-top: 0;
+}
+#profile .contact-info{
+  margin-top: 0;
+}
+#profile aside h3{
+  margin: 0;
+  padding: 0;
+}
+#profile-heading {
+  height: 134px;
 }
 
 /* elements */
@@ -127,9 +151,7 @@ vivo-sidebar-item a {
   text-decoration: none;
   border-bottom: 1px dotted currentColor;
 }
-.testing{
-  white-space: normal;
-}
+
 vivo-sidebar-item  > div:first-of-type {
   padding-top: .25em;
 }
@@ -159,6 +181,7 @@ vivo-tab-panel h4 {
   width: 95%;
   margin: auto;
   margin-top: 180px;
+  margin-bottom: 5%;
   padding-left: 5%;
 }
 .publication-heading .page-title{
@@ -226,6 +249,9 @@ vivo-tab-panel h4 {
 .person-container aside {
   grid-column: span 2;
   padding-right: 0.25em;
+}
+.person-container aside vivo-sidebar vivo-sidebar-item:nth-child(2) h3:first-of-type {
+  margin-top:0;
 }
 .person-container .sidebar-image {
   grid-column: span 2;
