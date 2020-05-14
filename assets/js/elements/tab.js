@@ -98,10 +98,8 @@ class Tab extends LitElement {
           width: 90%;
           color: var(--textColor);
           padding-top:0;
+          padding-left: 0;
           border-top: none;
-        }
-        :host([vivo-tab-style="combo"]) {
-          padding-top:0;
         }
       }
     `
