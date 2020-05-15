@@ -8,9 +8,7 @@
  let paging = FigurePagingInfo(currentPage, totalPages)
 %>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-    <!-- NOTE: with list pages could just do this, and it 
-         would take care of pagination - wouldn't have to
-         feature list pages in site    
+    <!-- NOTE: list pages could also do this e.g.  
     <url>
       <loc><%= siteUrl %>/lists/publications</loc>
     </url>
