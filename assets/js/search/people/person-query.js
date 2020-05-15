@@ -29,7 +29,7 @@ const peopleQuery = gql`
         preferredTitle
         overview
         positions {
-          title
+          label
         }
         publications {
           title
