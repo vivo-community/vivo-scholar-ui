@@ -1,11 +1,23 @@
-# FIXME: need a way to get all
-query {
+
+query($pageNumber: Int!, $pageSize: Int!) {
     people(
+      paging: {
+        pageSize: $pageSize,
+        pageNumber: $pageNumber,
         sort:{ 
-          orders: [{direction: ASC, property:"modTime"}]
+          orders: [{direction: ASC, property: "modTime"}]
         }
+      }  
     ) {
-    id
-    modTime
+      content {
+        id
+        modTime
+      }
+      page {
+        totalElements
+        totalPages
+        number
+        size
+      }
   }
 }
