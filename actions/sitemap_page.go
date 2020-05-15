@@ -10,6 +10,8 @@ import (
 	"github.com/gobuffalo/plush"
 	"github.com/machinebox/graphql"
 	"github.com/pkg/errors"
+
+	"github.com/OIT-ADS-Web/vivo-scholar/helpers"
 )
 
 // this is effectivily a sitemap index
@@ -48,11 +50,7 @@ func SiteMapPageHandler(c buffalo.Context) error {
 	viewTemplatePath := fmt.Sprintf("sitemap_pages/%s/%s.xml", listType, listType)
 	queryTemplatePath := fmt.Sprintf("sitemap_pages/%s/%s.graphql", listType, listType)
 
-	fmt.Printf("view path=%v\n", viewTemplatePath)
-	fmt.Printf("query path=%v\n", queryTemplatePath)
-
 	queryTemplate, err := graphqlBox.FindString(queryTemplatePath)
-	fmt.Printf("query=%v\n", string(queryTemplate))
 	if err != nil {
 		return errors.Wrap(err, "reading query template")
 	}
@@ -69,14 +67,20 @@ func SiteMapPageHandler(c buffalo.Context) error {
 	}
 	client := graphql.NewClient(endpoint)
 
-	fmt.Printf("trying to run: %v\n", query)
 	req := graphql.NewRequest(query)
 
-	// FIXME: for some reason I have to set one variable
-	// even though the query has no variables
-	// otherwise:
-	// ... graphql.AssertException: Object required to be not null]
-	req.Var("bogus", "variable")
+	req.Var("pageSize", "1000")
+	req.Var("pageNumber", "0")
+
+	pageNumber := c.Params().Get("pageNumber")
+	// check null or "" ??
+	if pageNumber != "" {
+		req.Var("pageNumber", pageNumber)
+	}
+	pageSize := c.Params().Get("pageSize")
+	if pageSize != "" {
+		req.Var("pageSize", pageSize)
+	}
 
 	var results map[string]interface{}
 
@@ -84,17 +88,16 @@ func SiteMapPageHandler(c buffalo.Context) error {
 		return errors.Wrap(err, "running query")
 	}
 
-	fmt.Printf("got results=%v\n", results)
-
 	viewTemplate, err := graphqlBox.FindString(viewTemplatePath)
-
-	fmt.Printf("view=%v\n", string(viewTemplate))
 
 	ctx2 := plush.NewContext()
 	// if err ???
 	v, err := envy.MustGet("SITE_URL")
 	ctx2.Set("siteUrl", v)
 	ctx2.Set("data", results)
+	// need a few helper functions
+	ctx2.Set("FloatToInt", helpers.FloatToInt)
+	ctx2.Set("FigurePagingInfo", helpers.FigurePagingInfo)
 
 	xml, err := plush.Render(string(viewTemplate), ctx2)
 
