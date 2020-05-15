@@ -39,6 +39,7 @@ class Course extends LitElement{
         }
       ::slotted([slot="course-role"]) {
         margin-top: 0;
+        padding-left: 2%;
         color: var(--darkNeutralColor);
         }
     `;
