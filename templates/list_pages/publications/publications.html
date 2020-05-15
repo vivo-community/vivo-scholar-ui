@@ -13,68 +13,6 @@
     <%= for (p) in data["documents"]["content"] { %>
     <li class="list-group-item">
 
-<<<<<<< HEAD
-    <ul class="pagination">
-            <%= if (paging.First.HasMore == true) { %>
-              <li>
-                <a class="page-link" href="?pageNumber=<%= paging.First.Previous %>">
-                  <span>&laquo; Previous</span>
-                </a>
-              </li>
-            <% } %>
-            <%= for (number) in paging.PageList { %>
-                <li class="page-item <%=if (number == currentPage) { %>active<% } %>">
-                    <a class="page-link" href="?pageNumber=<%= number %>"><%= number + 1 %></a>
-                </li>
-            <% } %>
-            <%= if (paging.Last.HasMore == true) { %>
-              <li>
-                <a class="page-link" href="?pageNumber=<%= paging.Last.Next %>">
-                  <span>&raquo; Next</span>
-                </a>
-              </li>
-            <% } %>
-        </ul>
-
-    <section class="author-list">
-            <ul class="list-group">
-            <%= for (p) in data["documents"]["content"] { %>
-               <li class="list-group-item">
-
-                   <span class="person-name">
-                      <a href="/entities/publication/<%= p["id"] %>">
-                        <%= raw(p["title"]) %>
-                     </a>
-                   </span>
-               </li>
-            <% } %>
-            </ul>
-        </section>
-
-        <div><%= currentPage + 1 %> of Total Pages: <%= totalPages %></div>
-
-        <ul class="pagination">
-                <%= if (paging.First.HasMore == true) { %>
-                  <li>
-                    <a class="page-link" href="?pageNumber=<%= paging.First.Previous %>">
-                      <span>&laquo; Previous</span>
-                    </a>
-                  </li>
-                <% } %>
-                <%= for (number) in paging.PageList { %>
-                    <li class="page-item <%=if (number == currentPage) { %>active<% } %>">
-                        <a class="page-link" href="?pageNumber=<%= number %>"><%= number + 1 %></a>
-                    </li>
-                <% } %>
-                <%= if (paging.Last.HasMore == true) { %>
-                  <li>
-                    <a class="page-link" href="?pageNumber=<%= paging.Last.Next %>">
-                      <span>&raquo; Next</span>
-                    </a>
-                  </li>
-                <% } %>
-            </ul>
-=======
       <span class="person-name">
         <a href="/entities/publication/<%= p["id"] %>">
           <%= raw(p["title"]) %>
@@ -108,4 +46,3 @@
   </li>
   <% } %>
 </ul>
->>>>>>> master
