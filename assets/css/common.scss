@@ -121,13 +121,14 @@ margin: 0;
 #profile .contact-info{
   margin-top: 0;
 }
+#profile vivo-tabs {
+  margin-top: 2.34%;
+}
 #profile aside h3{
   margin: 0;
   padding: 0;
 }
-#profile-heading {
-  height: 134px;
-}
+
 
 /* elements */
 vivo-sidebar {
@@ -237,7 +238,7 @@ vivo-tab-panel h4 {
 }
 
 
-/*Sidebar grid - person*/
+/*grid - person*/
 .person-container {
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
@@ -341,7 +342,9 @@ vivo-tab-panel h4 {
   .section-title {
     font-size: 1em;
   }
-
+  #profile .page-title{
+    margin-top: 0;
+  }
   //publication and grant entity pages
   .entity-container{
     background-color: var(--lightNeutralColor);

@@ -9,8 +9,6 @@
         <h3 class="publication-type"><%= SplitCamelCase(p) %></h3>
       <% } %>
         <% } %>
-      <button  onclick="window.location.href = '';" class="text-button">Full Text</button>
-      <button  onclick="window.location.href = '';" class="cite-button">Export/Cite</button>
       <%= if (publication["publicationDate"]) { %>
         <vivo-interval class="publication-date" interval-start="<%= FormatGraphqlDate(publication["publicationDate"], "yearMonthFullName") %>"></vivo-interval>
       <% } %>
