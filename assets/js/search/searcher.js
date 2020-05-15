@@ -101,7 +101,6 @@ let Searcher = (superclass) => class extends superclass {
     // NOTE: these next two functions assume a DOM of some sort (unlike others)
     markSortOptionSelected(selected) {
       let options = this.querySelector('vivo-search-sort-options');
-      //options.selected = selected;
       // NOTE: needs in exact format to match
       options.selected = `${selected.property}-${selected.direction}`;
     }
@@ -122,6 +121,16 @@ let Searcher = (superclass) => class extends superclass {
       });
     }
   
+    // TODO: move this out, use i18n-labels somehow?
+    setInternationalization() {
+      let values = Array.from(this.querySelectorAll('vivo-i18n-label'));
+      values.forEach(opt => {
+          const key = opt.getAttribute("key");
+          const label = opt.getAttribute("label");
+          this.i18n[key] = label;
+      });
+    }
+
     // allow each search override this way?
     setUp(pageSize = config.PAGE_SIZE) {
       const parsed = qs.parse(window.location.search.substring(1));
@@ -130,6 +139,11 @@ let Searcher = (superclass) => class extends superclass {
       // so the sort select box can be marked from parameters
       this.sortOptions = [];
       this.findSortOptions();
+
+      // NOTE: this needs to be called in setUp - so #render has values
+      this.i18n = {};
+      this.setInternationalization();
+
       const { query, page, filters, orders, boosts } = this.deriveSearchFromParameters(parsed);
       
       this.query = query;

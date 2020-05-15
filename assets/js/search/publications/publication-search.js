@@ -78,7 +78,6 @@ class PublicationSearch extends Searcher(LitElement) {
       var docCount = this.data ? this.data.documents.page.totalElements : 0;
       let tab = document.querySelector('#publication-search-count');
       tab.textContent = `${docCount}`;
-
     }
   
     renderPublication(p) {
@@ -86,6 +85,20 @@ class PublicationSearch extends Searcher(LitElement) {
       return html`
       <vivo-publication-card publication="${JSON.stringify(p)}"></vivo-publication-card>
       `
+    }
+
+    setPagination() {
+      // set all properties
+      let props = {
+        number: this.data.documents.page.number,
+        size: this.data.documents.page.size,
+        totalElements: this.data.documents.page.totalElements,
+        totalPages: this.data.documents.page.totalPages
+      };
+      let pager = this.querySelector('vivo-search-pagination');
+      if(pager) { Object.assign(pager, props) };
+      let summary = this.querySelector('vivo-search-pagination-summary');
+      if(summary) { Object.assign(summary, props) };
     }
 
     render() {
@@ -112,38 +125,16 @@ class PublicationSearch extends Searcher(LitElement) {
         }
       </div>`;
 
-      // TODO: could probably use slots for pagination
-      // and paging summary so they are more flexible
-      let pagination = html``;
+      this.setPagination();
 
-      if (this.data) {
-        pagination = html`<vivo-search-pagination 
-              number="${this.data.documents.page.number}"
-              size="${this.data.documents.page.size}"
-              totalElements="${this.data.documents.page.totalElements}"
-              totalPages="${this.data.documents.page.totalPages}"
-          />`
-      }
-
-      let pagingSummary = html``;
-
-      if (this.data) {
-        pagingSummary = html`<vivo-search-pagination-summary
-          number="${this.data.documents.page.number}"
-          size="${this.data.documents.page.size}"
-          totalElements="${this.data.documents.page.totalElements}"
-          totalPages="${this.data.documents.page.totalPages}"
-       />`
-      }
- 
       return html`
         <div id="publication-search-results">
           <div class="search-actions">
-          ${pagingSummary}
-          <slot name="sorter"></slot>
+            <slot name="pagination-summary"></slot>
+            <slot name="sorter"></slot>
           </div>
         ${resultsDisplay}
-        ${pagination}
+        <slot name="pagination"></slot>
         </div>`
     }
   

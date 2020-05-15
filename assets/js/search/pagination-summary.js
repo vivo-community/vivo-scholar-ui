@@ -1,9 +1,6 @@
 import { LitElement, html, css } from "lit-element";
 import _ from "lodash";
 
-import slicePages from '../lib/paging-helper';
-
-import * as config from './config.js'
 class SearchPaginationSummary extends LitElement {
 
   static get properties() {
@@ -11,12 +8,15 @@ class SearchPaginationSummary extends LitElement {
       totalElements: { type: Number },
       totalPages: { type: Number },
       number: { type: Number },
-      size: { type: Number },
+      size: { type: Number }
     }
   }
 
+  constructor() {
+    super();
+    this.coordinator = this.closest('vivo-search-coordinator');
+  }
 
-  // FIXME: i18n problem
   render() {
     let pagingText = html``;
 
@@ -25,7 +25,10 @@ class SearchPaginationSummary extends LitElement {
     let end = start+this.size;
     end = end > total ? total : end;
     let rangeText = `${start}-${end}`;
-    pagingText = html`<span>Showing of ${rangeText} of ${total}</span>`  
+
+    let showingLabel = this.coordinator.getLabel("showing");
+    let ofLabel = this.coordinator.getLabel("of");
+    pagingText = html`<span>${showingLabel} ${rangeText} ${ofLabel} ${total}</span>`  
 
     return html`${pagingText}`
   }

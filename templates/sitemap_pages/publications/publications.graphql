@@ -1,13 +1,21 @@
-query {
-    documentsPaged(paging: {
-        pageNumber: 0 pageSize: 10000,
+query($pageNumber: Int!, $pageSize: Int!) {
+    documents(
+      paging: {
+        pageSize: $pageSize,
+        pageNumber: $pageNumber,
         sort:{ 
-          orders: [{direction: ASC, property:"modTime"}]
+          orders: [{direction: ASC, property: "modTime"}]
         }
-      }
+      }  
     ) {
     content {
         id
     }
+    page {
+        totalElements
+        totalPages
+        number
+        size
+      }
   }
 }

@@ -9,39 +9,31 @@
 
 <h4>People (<span><%= data["people"]["page"]["totalElements"] %>)</span></h4>
 
-<div><%= FloatToInt(data["people"]["page"]["number"]) + 1 %> of Total Pages: <%= data["people"]["page"]["totalPages"] %></div>
+<div><%= FloatToInt(data["people"]["page"]["number"]) + 1 %> of Total Pages: <%= data["people"]["page"]["totalPages"] %>
+</div>
+
+<section class="people">
+    <ul class="list-group">
+        <%= for (p) in data["people"]["content"] { %>
+        <li class="list-group-item">
+
+            <span class="person-name">
+                <a href="/entities/person/<%= p["id"] %>">
+                    <%= p["name"] %>
+                </a>
+            </span>
+            <% if (p["thumbnail"] != "") { %>
+            <img width="90" src="http://openvivo.org<%=p["thumbnail"] %>" />
+            <% } %>
+        </li>
+        <% } %>
+    </ul>
+</section>
 
 <ul class="pagination">
     <%= for (index, number) in range(0, FloatToInt(data["people"]["page"]["totalPages"]) - 1) { %>
-        <li class="page-item <%=if (number == FloatToInt(data["people"]["page"]["number"])) { %>active<% } %>">
-            <a class="page-link" href="?pageNumber=<%= number %>"><%= number + 1 %></a>
-        </li>
+    <li class="page-item <%=if (number == FloatToInt(data["people"]["page"]["number"])) { %>active<% } %>">
+        <a class="page-link" href="?pageNumber=<%= number %>"><%= number + 1 %></a>
+    </li>
     <% } %>
-</ul> 
-<section class="author-list">
-        <ul class="list-group">
-        <%= for (p) in data["people"]["content"] { %>
-           <li class="list-group-item">
-
-               <span class="person-name">
-                  <a href="/entities/person/<%= p["id"] %>">
-                    <%= p["name"] %>
-                 </a> 
-               </span>
-               <% if (p["thumbnail"] != "") { %>
-               <img width="90" src="http://openvivo.org<%=p["thumbnail"] %>" />
-               <% } %>
-           </li>
-        <% } %>
-        </ul>
-    </section>
-
-    <ul class="pagination">
-            <%= for (index, number) in range(0, FloatToInt(data["people"]["page"]["totalPages"]) - 1) { %>
-                <li class="page-item <%=if (number == FloatToInt(data["people"]["page"]["number"])) { %>active<% } %>">
-                    <a class="page-link" href="?pageNumber=<%= number %>"><%= number + 1 %></a>
-                </li>
-            <% } %>
-    </ul> 
-
-
+</ul>

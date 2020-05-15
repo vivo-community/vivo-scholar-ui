@@ -11,7 +11,7 @@ class GrantCard extends LitElement {
       h2 {
         color: var(--primaryColor);
         font-weight: bold;
-        font-size: 1.2em;
+        font-size: 1em;
         margin-top: 1em;
         margin-top: 0;
         margin-bottom: .3em

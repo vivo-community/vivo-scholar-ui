@@ -114,6 +114,8 @@ class FacetPopupBox extends Faceter(LitElement) {
 
   openUp() {
     this.open = true;
+    //NOTE: should work in theory, but doesn't
+    this.shadowRoot.querySelector("#filter-list").focus();
   }
 
   doApply() {
@@ -177,13 +179,16 @@ class FacetPopupBox extends Faceter(LitElement) {
       text-rendering: auto;
       font-size: 1em;
       -webkit-font-smoothing: antialiased;
-      flex-basis: 10%;
+      flex-basis: 15%;
     }
     :host([open]) .fa-times::before {
       font-family: 'Font Awesome 5 Free';
       font-weight: 900;
       content: "\\f00d";
       padding: 4px;
+      font-size: 1.5em;
+      padding-right: 1em;
+      padding-top: 4px;
     }
     ::slotted(a) {
       text-decoration: none;
@@ -201,12 +206,15 @@ class FacetPopupBox extends Faceter(LitElement) {
     }
     ::slotted([slot="heading"]) {
       flex-grow: 1;
-      flex-basis: 20%;
+      flex-basis: 30%;
       text-align: left;
       font-weight: bold;
+      font-size: 1.25em;
+      padding-left: 12px;
+      padding-top: 4px;
     }
     ::slotted(input) {
-      flex-basis: 70%;
+      flex-basis: 55%;
       text-align: left;
     }
     .heading {
@@ -220,14 +228,14 @@ class FacetPopupBox extends Faceter(LitElement) {
     }
     .smaller-input {
       font-size: 0.85em;
-      width: 75%;
+      width: 65%;
     }
     .facet-container {
       display: flex;
       flex-direction: column;
       flex-wrap: wrap;
-      max-height: 200px;
-      min-height: 200px;
+      max-height: 250px;
+      min-height: 250px;
       min-width: 100px;
       max-width: 32rem;
       overflow-x: scroll;
@@ -241,6 +249,7 @@ class FacetPopupBox extends Faceter(LitElement) {
       scrollbar-base-color:#ffeaff;
       scrollbar-width: thin;
       scrollbar-color: var(--thumbBG) var(--scrollbarBG);
+      font-size: 0.90em;
     }
     .facet-container::-webkit-scrollbar {
       background-color: white;
@@ -260,8 +269,11 @@ class FacetPopupBox extends Faceter(LitElement) {
       display: inline-block;
       background-color: var(--mediumNeutralColor);
       color: white;
-      padding: 8px;
-      font-size: 1em;
+      padding-top: 0.65em;
+      padding-bottom: 0.65em;
+      padding-left: 1.25em;
+      padding-right: 1.25em;
+      font-size: 1.15em;
       font-weight: bold;
       border: none;
       margin-right: 15px;
@@ -270,8 +282,11 @@ class FacetPopupBox extends Faceter(LitElement) {
       display: inline-block;
       background-color: var(--highlightColor);
       color: white;
-      padding: 8px;
-      font-size: 1em;
+      padding-top: 0.65em;
+      padding-bottom: 0.65em;
+      padding-left: 1.25em;
+      padding-right: 1.25em;
+      font-size: 1.15em;
       font-weight: bold;
       border: none;
     }
@@ -284,12 +299,15 @@ class FacetPopupBox extends Faceter(LitElement) {
     .actions {
       text-align: center;
       padding: 8px;
-      margin-bottom: 4px;
+      margin-bottom: 1.5em;
     }
     @media screen and (max-width: 1000px) {
       ::slotted(vivo-search-facet) {
          width: unset;
        }
+       :host([open]) .fa-times::before {
+        padding-right: unset;
+      }
       .facet-container {
         display: block;
         overflow: auto;
@@ -297,6 +315,7 @@ class FacetPopupBox extends Faceter(LitElement) {
         scrollbar-base-color:#ffeaff;
         min-height: unset;
         max-height: 85%;
+        font-size: unset;
       }
     }
     `;
@@ -352,7 +371,7 @@ class FacetPopupBox extends Faceter(LitElement) {
           <input class="smaller-input" type="text" id="filter-list"
             @keyup=${this.debounce(this.searchKeyUp,  250)}
             placeholder="${this.placeholder}">
-          <i class="fas fa-times" @click=${this.cancel}></i>
+          <i class="fas fa-times" @click=${this.doCancel}></i>
         </div>
         <div class="facet-container">
           <slot></slot>

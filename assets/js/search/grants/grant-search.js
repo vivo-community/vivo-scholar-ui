@@ -20,7 +20,6 @@ class GrantSearch extends Searcher(LitElement) {
         this.active = false;
         this.waiting = false;
         this.defaultBoosts = [{ field: "title", value: 2 }];
-
         this.defaultFilters = [{ field: "type", value: "Grant" }];
 
         this.handleSearchResultsObtained = this.handleSearchResultsObtained.bind(this);
@@ -100,17 +99,20 @@ class GrantSearch extends Searcher(LitElement) {
         `
     }
 
-    // FIXME: i18n how to get labels in here?
     renderGrant(grant) {
         let url = `/entities/grant/${grant.id}`;
+        // TODO: what is best if labels not supplied?
+        let contribLabel = this.i18n["contributors"] || "";
+        let dateLabel = this.i18n["date"] || "";
+        let fundingSourceLabel = this.i18n["funding_source"] || "";
         return html`
         <vivo-grant-card>
           <a slot="title" href="${url}">
           ${grant.title}
           </a>
-          ${this.renderContributors(grant, "Contributors")}
-          ${this.renderDateInterval(grant, "Date")}
-          ${this.renderAwardedBy(grant, "Funding Source")}
+          ${this.renderContributors(grant, contribLabel)}
+          ${this.renderDateInterval(grant, dateLabel)}
+          ${this.renderAwardedBy(grant, fundingSourceLabel)}
         </vivo-grant-card>
         `;
     }
@@ -146,6 +148,20 @@ class GrantSearch extends Searcher(LitElement) {
       `
     }
 
+    setPagination() {
+        // set all properties
+        let props = {
+          number: this.data.relationships.page.number,
+          size: this.data.relationships.page.size,
+          totalElements: this.data.relationships.page.totalElements,
+          totalPages: this.data.relationships.page.totalPages
+        };
+        let pager = this.querySelector('vivo-search-pagination');
+        if(pager) { Object.assign(pager, props) };
+        let summary = this.querySelector('vivo-search-pagination-summary');
+        if(summary) { Object.assign(summary, props) };
+    }
+
     render() {
         if (this.active == true && this.waiting == true) {
             return html``
@@ -170,35 +186,16 @@ class GrantSearch extends Searcher(LitElement) {
           }
         </div>`;
 
-        let pagination = html``;
-        if (this.data) {
-            pagination = html`<vivo-search-pagination 
-              number="${this.data.relationships.page.number}"
-              size="${this.data.relationships.page.size}"
-              totalElements="${this.data.relationships.page.totalElements}"
-              totalPages="${this.data.relationships.page.totalPages}"
-          />`
-        }
-
-        let pagingSummary = html``;
-
-        if (this.data) {
-            pagingSummary = html`<vivo-search-pagination-summary
-            number="${this.data.relationships.page.number}"
-            size="${this.data.relationships.page.size}"
-            totalElements="${this.data.relationships.page.totalElements}"
-            totalPages="${this.data.relationships.page.totalPages}"
-         />`
-        }
+        this.setPagination();
 
         return html`
           <div id="grant-search-results">
             <div class="search-actions">
-            ${pagingSummary}
-            <slot name="sorter"></slot>
+              <slot name="pagination-summary"></slot>
+              <slot name="sorter"></slot>
             </div>
             ${resultsDisplay}
-            ${pagination}
+            <slot name="pagination"></slot>
           </div>`
     }
 

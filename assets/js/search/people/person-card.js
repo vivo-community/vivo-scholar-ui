@@ -11,9 +11,8 @@ class PersonCard extends LitElement {
       h2 {
         color: var(--primaryColor);
         font-weight: bold;
-        font-size: 1.2em;
-        margin-top: 1em;
-        margin-top: 0;
+        font-size: 1em;
+        margin-top: 0.75em;
         margin-bottom: .3em
       }
       ::slotted(a) {
@@ -29,6 +28,11 @@ class PersonCard extends LitElement {
       }
       :host {
           display: block;
+      }
+      @media screen and (max-width: 1000px) {
+        ::slotted(#overview) {
+           display: none;
+         }
       }
       
     `

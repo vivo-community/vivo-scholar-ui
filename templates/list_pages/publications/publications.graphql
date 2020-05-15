@@ -1,8 +1,10 @@
 query($pageSize: Int!, $pageNumber: Int!) {
-    documents(paging: {
-        pageNumber: $pageNumber, pageSize: $pageSize,
+    documents(
+      paging: {
+        pageSize: $pageSize,
+        pageNumber: $pageNumber,
         sort:{ 
-          orders: [{direction: ASC, property:"title"}]
+          orders: [{direction: ASC, property: "title"}]
         }
     })
       {
