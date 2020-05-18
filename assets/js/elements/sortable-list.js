@@ -121,6 +121,7 @@ class SortableList extends LitElement {
       cancelable: false,
       composed: true
     }));
+    console.log(sortItems);
     return sortItems;
   }
 

@@ -49,13 +49,20 @@ class EmbeddedPubList extends LitElement {
   static get properties() {
     return {
       publications: { type: Array },
-      person_url: { type: String}
+      person_url: { type: String},
+      sorts: {type: Object, reflect: true}
     }
   }
 
   constructor() {
     super();
     this.publications = [];
+    this.sorts = [
+        {property : "publishedDate", direction : "asc", label: "Oldest First"} ,
+        {property : "publishedDate", direction : "desc", label: "Newest First"},
+        {property : "title", direction : "asc", label: "Publication a-z"} ,
+        {property : "title", direction : "desc", label: "Publication z-a"}
+      ];
   }
 
   connectedCallback() {
@@ -107,7 +114,7 @@ class EmbeddedPubList extends LitElement {
     let dateFormatted = pubDate.toLocaleDateString("en-US");
     return html`
       <vivo-publication publication-url="/entities/publication/${p.id}"
-          published-date="${p.publicationDate}">
+          published-date="${p.publicationDate}" title="${p.title}">
         <div slot="title">${p.title}</div>
         <vivo-publication-author-list slot="authors">
         ${p.authors.map((a) => this.authorTemplate(a))}
@@ -125,7 +132,7 @@ class EmbeddedPubList extends LitElement {
   render() {
     let publicationElements = this.publications.map((p) => this.publicationTemplate(p));
     return html`
-      <vivo-sortable-list>
+      <vivo-sortable-list item-type="publications" sortProperty="publishedDate" sortDirection="desc" .sorts="${this.sorts}">
         ${publicationElements}
       </vivo-sortable-list>
     `

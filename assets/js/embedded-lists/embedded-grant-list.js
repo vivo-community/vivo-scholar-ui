@@ -89,7 +89,7 @@ class EmbeddedGrantList extends LitElement {
     let endDate = new Date(p.endDate);
     endDate = endDate.getFullYear();
     return html`
-      <vivo-grant url="/entities/grant/${p.id}" start-date="${p.title}" title="<%= p["label"] %>">
+      <vivo-grant url="/entities/grant/${p.id}" start-date="${startDate}" title=${p.label}>
       <a slot="label" href="/entities/grant/${p.id}">
        ${p.label}
       </a>
