@@ -53,12 +53,14 @@ class Grant extends LitElement{
       :host {
         display: block;
         padding-top: 1em;
+        line-height: 1.6em;
       }
       ::slotted([slot="label"]) {
           color: var(--linkColor);
           font-weight: bold;
           text-decoration: none;
           font-size: 1.55em;
+          margin-bottom: 1em;
         }
     `;
   }
