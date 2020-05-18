@@ -10,8 +10,6 @@ import (
 	"github.com/gobuffalo/plush"
 	"github.com/machinebox/graphql"
 	"github.com/pkg/errors"
-
-	"github.com/OIT-ADS-Web/vivo-scholar/helpers"
 )
 
 // this is effectivily a sitemap index
@@ -39,12 +37,12 @@ func SiteMapHandler(c buffalo.Context) error {
 	return c.Render(200, r.Func("application/xml", renderer))
 }
 
-// TODO: still have to work out details
-// the general idea is you can combine this with the
-// above sitemap.xml template to make a full sitemap
-// of all entity pages (you want)
-// including being able to limit to 50,000 (limit of
-// size of any particular sitemap file)
+// NOTE: you can combine with above sitemap.xml template to make a full sitemap
+// of all entity pages based on graphql query.
+//
+// There is a hard limit to sitemaps of 50,000 - so this sets that as pageSize.  
+// If you have more than 50,000 you would have to split up file - this also takes
+// pageSize and pageNumber parameter in such cases
 func SiteMapPageHandler(c buffalo.Context) error {
 	listType := c.Params().Get("type")
 	viewTemplatePath := fmt.Sprintf("sitemap_pages/%s/%s.xml", listType, listType)
@@ -69,7 +67,7 @@ func SiteMapPageHandler(c buffalo.Context) error {
 
 	req := graphql.NewRequest(query)
 
-	req.Var("pageSize", "1000")
+	req.Var("pageSize", "50000")
 	req.Var("pageNumber", "0")
 
 	pageNumber := c.Params().Get("pageNumber")
@@ -95,9 +93,6 @@ func SiteMapPageHandler(c buffalo.Context) error {
 	v, err := envy.MustGet("SITE_URL")
 	ctx2.Set("siteUrl", v)
 	ctx2.Set("data", results)
-	// need a few helper functions
-	ctx2.Set("FloatToInt", helpers.FloatToInt)
-	ctx2.Set("FigurePagingInfo", helpers.FigurePagingInfo)
 
 	xml, err := plush.Render(string(viewTemplate), ctx2)
 
@@ -105,7 +100,5 @@ func SiteMapPageHandler(c buffalo.Context) error {
 		_, err = w.Write([]byte(xml))
 		return err
 	}
-	// not sending data in
 	return c.Render(200, r.Func("application/xml", renderer))
-
 }

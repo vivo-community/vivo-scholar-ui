@@ -1,12 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<%
- let totalItems = data["people"]["page"]["totalElements"]
- let totalPages = FloatToInt(data["people"]["page"]["totalPages"])
- let currentPage = FloatToInt(data["people"]["page"]["number"])
- let results = data["people"]["content"]
-
- let paging = FigurePagingInfo(currentPage, totalPages)
-%>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <!-- NOTE: list pages could also do this e.g.  
     <url>
@@ -18,11 +10,5 @@
       <loc><%= siteUrl %>/entity_pages/people/<%= document["id"] %></loc>
    </url>
    <% } %>
-
-   <%= if ((currentPage + 1) < totalPages) { %>
-   <url>
-      <loc><%= siteUrl %>/sitemaps/people.xml?pageNumber=<%= currentPage + 1 %></loc>
-   </url>
-   <% } %>
-
+   
 </urlset> 
