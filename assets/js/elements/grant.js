@@ -53,7 +53,7 @@ class Grant extends LitElement{
       :host {
         display: block;
         padding-top: 1em;
-        line-height: 1.6em;
+        line-height: 1.6;
       }
       ::slotted([slot="label"]) {
           color: var(--linkColor);

@@ -13,23 +13,24 @@
   </vivo-sidebar>
 
 
-   <main>
+   <main id="profile">
+     <div>
       <h2 class="page-title"><%= person["name"] %></h2>
       <h2 class="page-subtitle"><%= person["preferredTitle"] %></h2>
       <%= if (person["primaryEmail"] || person["phone"] || person["streetAddress"]) { %>
-      <span id="contact-info"><p>
+      <span id="contact-info" >
         <%= if (person["primaryEmail"]){ %>
-          <%= person["primaryEmail"] %>&nbsp&nbsp
+          <span><%= person["primaryEmail"] %></span>
         <% } %>
         <%= if (person["phone"]) { %>
-          <%= person["phone"] %>&nbsp&nbsp
+          <span><%= person["phone"] %></span>
         <% } %>
         <%= if (person["streetAddress"]) { %>
-          <%= person["streetAddress"] %>
+          <span><%= person["streetAddress"] %></span>
         <% } %>
-        </p>
       <% } %>
       </span>
+    </div>
       <!-- tabs -->
       <vivo-tabs tabindex="0">
          <%= if (person["overview"] || person["positions"] || person["educationAndTraining"]) { %>
@@ -48,17 +49,23 @@
             <h4 class="section-title"><%= t("profile_current_appointments") %></h4>
             <section>
                <% let positions = person["positions"] %>
-               <% SortByGraphqlDateFieldDesc(positions, "dateTimeIntervalStart") %>
+               <% SortByISODateField(positions, "startDate") %>
                <%= for (p) in positions { %>
                <div class="position">
-                  <div class="position-title"><%= p["title"] %></div>
-                  <% if (p["organization"]) { %>
-                     <% let orgs = p["organization"] %>
+                  <div class="position-title"><%= p["label"] %></div>
+                  <% let orgs = p["organizations"] %>
+                  <%= if (orgs && len(orgs) > 0) { %>
                      <%= for (o) in orgs { %>
                        <span class="position-organization"><%= o["label"] %></span>
+                        <% let schools = o["parent"] %>
+                        <%= if (schools && len(schools) > 0) { %>
+                           <%= for (s) in schools { %>
+                           <span class="position-organization"><%= s["label"] %></span>
+                           <% } %>
+                       <% } %>
                      <% } %>
                    <% } %>
-                  <vivo-interval interval-start="<%= FormatGraphqlDate(p["dateTimeIntervalStart"], "year") %>" interval-end="<%= FormatGraphqlDate(p["dateTimeIntervalEnd"], "year") %>" separate-open></vivo-interval>
+                  <vivo-interval interval-start="<%= FormatISODate(p["startDate"], "year") %>" interval-end="<%= FormatISODate(p["endDate"], "year") %>" separate-open></vivo-interval>
                </div>
                <% } %>
             </section>
@@ -159,15 +166,17 @@
               </section>
               <section>
                <h4 class="section-title"><%= t("courses") %></h4>
-             <% let courses = person["teachingActivities"] %>
-             <vivo-course>
-             <%= for (c) in courses { %>
-                  <div slot="course-title"><%= c["label"] %></div>
-               <%= if (c["role"]) { %>
-                 <span slot="course-role"><%= c["role"] %></span>
+            <!-- <vivo-sortable-list id="course-list" item-type="courses" sortProperty="title" sortDirection="desc"> -->
+               <% let courses = person["teachingActivities"] %>
+               <%= for (c) in courses { %>
+               <vivo-course>
+                    <span slot="course-title"><%= c["label"] %></span>
+                 <%= if (c["role"]) { %>
+                   <span slot="course-role"><%= c["role"] %></span><br>
+                 <% } %>
+               </vivo-course>
                <% } %>
-             <% } %>
-             </vivo-course>
+              <!-- </vivo-sortable-list> -->
              </section>
           </vivo-tab-panel>
           <% } %>
@@ -179,7 +188,7 @@
          <vivo-sidebar-item id="person-contact" hidden>
             <h3 slot="heading"><%= t("profile_contact") %></h3>
                <%= if (person["primaryEmail"]) { %>
-              <div slot="content" class="testing">
+              <div slot="content">
                <h4><%= t("email") %></h4><br>
                <span title="<%= person["primaryEmail"] %>">secondary.email<wbr>@duke.edu</span>
                <!-- <span title="<%= person["primaryEmail"] %>"><%= person["primaryEmail"] %></span> -->
@@ -192,7 +201,7 @@
               </div>
                <% } %>
                <%= if (person["streetAddress"]) { %>
-              <div slot="content" class="testing">
+              <div slot="content">
                <h4><%= t("address_1") %></h4><br>
                <span title="<%= person["streetAddress"] %>"><%= person["streetAddress"] %></span>
               </div>

@@ -2,6 +2,30 @@ import {LitElement, html, css } from "lit-element";
 
 class Course extends LitElement{
 
+  static get properties() {
+    return {
+      id: { type: String },
+      title: {
+        attribute: "title",
+        converter: {
+          fromAttribute: (value, type) => {
+            if (value) {
+              let newValue = value.toUpperCase();
+              return newValue;
+            }
+          },
+          toAttribute: (value, type) => {
+            if (value) {
+              return value;
+            }
+          }
+        },
+        reflect: true
+      },
+  }
+}
+
+
   static get styles() {
     return css `
 
@@ -15,6 +39,7 @@ class Course extends LitElement{
         }
       ::slotted([slot="course-role"]) {
         margin-top: 0;
+        padding-left: 2%;
         color: var(--darkNeutralColor);
         }
     `;
@@ -23,10 +48,8 @@ class Course extends LitElement{
 
   render() {
     return html `
-
     <slot name="course-title"></slot>
-    <slot name="course-role"></slot>
-
+    <slot name="course-role"></slot><br>
     `;
   }
 }

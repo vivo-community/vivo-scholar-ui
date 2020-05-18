@@ -149,7 +149,6 @@ class PublicationList extends LitElement {
       }
       vivo-publication {
         font-size: var(--publication-font-size, 18px);
-        border-top: 1px solid var(--lightNeutralColor);
       }
       .pub-summary {
         display: flex;
