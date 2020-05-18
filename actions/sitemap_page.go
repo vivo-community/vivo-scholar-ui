@@ -93,7 +93,6 @@ func SiteMapPageHandler(c buffalo.Context) error {
 
 	xml, err := plush.Render(string(viewTemplate), ctx2)
 
-	fmt.Printf("%v\n", xml)
 	renderer := func(w io.Writer, d render.Data) error {
 		_, err = w.Write([]byte(xml))
 		return err
