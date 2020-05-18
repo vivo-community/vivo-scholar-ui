@@ -13,7 +13,6 @@ import (
 )
 
 // this is effectivily a sitemap index
-// could run a query that gets max modTimes or something
 func SiteMapHandler(c buffalo.Context) error {
 	viewTemplatePath := "sitemap_pages/sitemap.xml"
 	viewTemplate, err := graphqlBox.FindString(viewTemplatePath)
@@ -23,26 +22,23 @@ func SiteMapHandler(c buffalo.Context) error {
 	ctx := plush.NewContext()
 	v, err := envy.MustGet("SITE_URL")
 	ctx.Set("siteUrl", v)
-	// how to figure out lastMod ??? - would need to be
-	// a max of each sitemap .... but (as of now)
-	// were leaving it up to the template to know this
-	//
 	xml, err := plush.Render(string(viewTemplate), ctx)
 
 	renderer := func(w io.Writer, d render.Data) error {
 		_, err = w.Write([]byte(xml))
 		return err
 	}
-	// not sending data in
 	return c.Render(200, r.Func("application/xml", renderer))
 }
 
 // NOTE: you can combine with above sitemap.xml template to make a full sitemap
-// of all entity pages based on graphql query.
+// of all entity pages based on graphql query
 //
-// There is a hard limit to sitemaps of 50,000 - so this sets that as pageSize.  
-// If you have more than 50,000 you would have to split up file - this also takes
-// pageSize and pageNumber parameter in such cases
+// There is a hard limit to sitemaps of 50,000 - so this sets that as pageSize
+// 
+// If you have more than 50,000 you would have to split up the indexes in some
+// way - either sending in page parameters from the base sitemap, or linking to 
+// a series of filtered queries
 func SiteMapPageHandler(c buffalo.Context) error {
 	listType := c.Params().Get("type")
 	viewTemplatePath := fmt.Sprintf("sitemap_pages/%s/%s.xml", listType, listType)
@@ -71,7 +67,6 @@ func SiteMapPageHandler(c buffalo.Context) error {
 	req.Var("pageNumber", "0")
 
 	pageNumber := c.Params().Get("pageNumber")
-	// check null or "" ??
 	if pageNumber != "" {
 		req.Var("pageNumber", pageNumber)
 	}
@@ -89,13 +84,16 @@ func SiteMapPageHandler(c buffalo.Context) error {
 	viewTemplate, err := graphqlBox.FindString(viewTemplatePath)
 
 	ctx2 := plush.NewContext()
-	// if err ???
 	v, err := envy.MustGet("SITE_URL")
+	if err != nil {
+		return errors.Wrap(err, "getting SITE_URL environment variable")
+	}
 	ctx2.Set("siteUrl", v)
 	ctx2.Set("data", results)
 
 	xml, err := plush.Render(string(viewTemplate), ctx2)
 
+	fmt.Printf("%v\n", xml)
 	renderer := func(w io.Writer, d render.Data) error {
 		_, err = w.Write([]byte(xml))
 		return err

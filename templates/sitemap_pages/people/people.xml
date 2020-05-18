@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-    <!-- NOTE: list pages could also do this e.g.  
-    <url>
-      <loc><%= siteUrl %>/lists/people</loc>
-    </url>
-   -->
-   <%= for (document) in data["people"]["content"] { %>
+   <%= for (document) in data["data"]["content"] { %>
    <url>
       <loc><%= siteUrl %>/entity_pages/people/<%= document["id"] %></loc>
    </url>
