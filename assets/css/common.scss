@@ -42,6 +42,12 @@
   .position-organization {
     margin-top: 0;
   }
+  .position-organization:after {
+    content: ' | ';
+  }
+  .position-organization:nth-last-child(-n+2):after {
+    content: '';
+  }
 }
 .education {
   margin-bottom: 0.75em;

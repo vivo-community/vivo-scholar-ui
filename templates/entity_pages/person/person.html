@@ -49,17 +49,23 @@
             <h4 class="section-title"><%= t("profile_current_appointments") %></h4>
             <section>
                <% let positions = person["positions"] %>
-               <% SortByGraphqlDateFieldDesc(positions, "dateTimeIntervalStart") %>
+               <% SortByISODateField(positions, "startDate") %>
                <%= for (p) in positions { %>
                <div class="position">
-                  <div class="position-title"><%= p["title"] %></div>
-                  <% if (p["organization"]) { %>
-                     <% let orgs = p["organization"] %>
+                  <div class="position-title"><%= p["label"] %></div>
+                  <% let orgs = p["organizations"] %>
+                  <%= if (orgs && len(orgs) > 0) { %>
                      <%= for (o) in orgs { %>
                        <span class="position-organization"><%= o["label"] %></span>
+                        <% let schools = o["parent"] %>
+                        <%= if (schools && len(schools) > 0) { %>
+                           <%= for (s) in schools { %>
+                           <span class="position-organization"><%= s["label"] %></span>
+                           <% } %>
+                       <% } %>
                      <% } %>
                    <% } %>
-                  <vivo-interval interval-start="<%= FormatGraphqlDate(p["dateTimeIntervalStart"], "year") %>" interval-end="<%= FormatGraphqlDate(p["dateTimeIntervalEnd"], "year") %>" separate-open></vivo-interval>
+                  <vivo-interval interval-start="<%= FormatISODate(p["startDate"], "year") %>" interval-end="<%= FormatISODate(p["endDate"], "year") %>" separate-open></vivo-interval>
                </div>
                <% } %>
             </section>
@@ -160,15 +166,17 @@
               </section>
               <section>
                <h4 class="section-title"><%= t("courses") %></h4>
-             <% let courses = person["teachingActivities"] %>
-             <vivo-course>
-             <%= for (c) in courses { %>
-                  <div slot="course-title"><%= c["label"] %></div>
-               <%= if (c["role"]) { %>
-                 <span slot="course-role"><%= c["role"] %></span>
+            <!-- <vivo-sortable-list id="course-list" item-type="courses" sortProperty="title" sortDirection="desc"> -->
+               <% let courses = person["teachingActivities"] %>
+               <%= for (c) in courses { %>
+               <vivo-course>
+                    <span slot="course-title"><%= c["label"] %></span>
+                 <%= if (c["role"]) { %>
+                   <span slot="course-role"><%= c["role"] %></span><br>
+                 <% } %>
+               </vivo-course>
                <% } %>
-             <% } %>
-             </vivo-course>
+              <!-- </vivo-sortable-list> -->
              </section>
           </vivo-tab-panel>
           <% } %>

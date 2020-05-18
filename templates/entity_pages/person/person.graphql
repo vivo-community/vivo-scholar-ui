@@ -24,13 +24,17 @@ query($id: String!) {
     }
     positions {
       id
+      label
       type
-      title
-      dateTimeIntervalStart
-      dateTimeIntervalEnd
-      organization {
+      startDate
+      endDate
+      organizations {
         id
         label
+        parent {
+          id
+          label
+        }
       }
     }
     researchAreas {

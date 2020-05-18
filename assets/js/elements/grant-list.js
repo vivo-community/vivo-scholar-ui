@@ -150,7 +150,6 @@ class GrantList extends LitElement {
       }
       vivo-grant {
         font-size: 18px;
-        border-top: 1px solid var(--lightNeutralColor);
       }
       .grant-summary {
         display: flex;
