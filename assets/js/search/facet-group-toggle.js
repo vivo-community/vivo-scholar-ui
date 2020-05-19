@@ -12,6 +12,7 @@ class SearchFacetGroupToggle extends LitElement {
         super();
         this.shown = false;
         this.handleToggleFilters = this.handleToggleFilters.bind(this);
+        this.handleClearFilters = this.handleClearFilters.bind(this);
     }
 
     static get styles() {
@@ -27,23 +28,37 @@ class SearchFacetGroupToggle extends LitElement {
         }
 
         @media screen and (max-width: 1000px) {
-            :host { display: inline; }
+            :host { display: block; }
+            div { display: flex; }
+            :host ::slotted([slot=clear]) {
+                display:none;
+            }
             :host([shown]) {
                 display:block;
-                margin-left: 85%;
-            }
-            :host([shown]) vivo-filter-clearer {
-                display:block;
-                margin-left: 85%;
-            }
+                width: 100%;
+            }   
             :host .fa-filter::before {
                 font-family: 'Font Awesome 5 Free';
                 font-weight: 900;
                 content: "\\f0b0";
                 font-style: normal;
             }
+            :host([shown]) ::slotted([slot=clear]) {
+                display:block; 
+                flex-grow: 4;
+                font-weight: bold;
+            }
         }        
         `
+    }
+
+    handleClearFilters(e) {
+        this.dispatchEvent(new CustomEvent('removeFilters', {
+            detail: { clear: true }, // not sure what to put
+            bubbles: true,
+            cancelable: false,
+            composed: true
+        }));
     }
 
     handleToggleFilters(e) {
@@ -60,9 +75,12 @@ class SearchFacetGroupToggle extends LitElement {
 
     render() {
         return html`
-        <button @click="${this.handleToggleFilters}">
-          <i class="fas fa-filter"></i> 
-        </button>
+        <div>
+          <slot name="clear" @click="${this.handleClearFilters}"></slot>
+          <button @click="${this.handleToggleFilters}">
+            <i class="fas fa-filter"></i> 
+          </button>
+        </div>
         `
     }
 }

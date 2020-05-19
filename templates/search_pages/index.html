@@ -123,9 +123,9 @@
 
       <!-- NOTE: only seen on smaller screens -->
       <vivo-facet-group-toggle>
-        <span slot="show"><%= t("show") %></span>
-        <span slot="hide"><%= t("hide") %></span>
-        <span slot="clear"><%= t("reset") %></span>
+        <div slot="clear">
+          <span>&lt; <%= t("reset_search_filters") %></span>
+        </div>
       </vivo-facet-group-toggle>
 
       <vivo-tabs id="all-search-tabs" vivo-tab-style="combo">
