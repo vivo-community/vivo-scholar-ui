@@ -314,7 +314,7 @@ class FacetPopupBox extends Faceter(LitElement) {
         overflow-x: hidden;
         scrollbar-base-color:#ffeaff;
         min-height: unset;
-        max-height: 85%;
+        max-height: 65%;
         font-size: unset;
       }
     }

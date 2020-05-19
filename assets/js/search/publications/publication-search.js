@@ -37,6 +37,27 @@ class PublicationSearch extends Searcher(LitElement) {
           flex-basis:35%;
           text-align: right;
         }
+        @media screen and (max-width: 1000px) {
+          .publications {
+              padding-left: 0;
+              padding-right: 0;
+          }
+          .search-actions {
+              display: flex;
+              flex-direction: column;
+              padding-left: 0;
+              padding-right: 0;
+          }
+          ::slotted(vivo-search-sort-options) {
+              flex-basis: auto;
+              flex-grow: 1;
+              text-align: left;
+          }
+          ::slotted(vivo-pagination-summary) {
+             flex-basis; auto;
+             flex-grow: 1;
+          }
+      }
       `
     }
   

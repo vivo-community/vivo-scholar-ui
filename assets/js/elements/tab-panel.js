@@ -22,7 +22,6 @@ class TabPanel extends LitElement {
     }
 
     :host([vivo-tab-style="secondary"]) {
-      border-top: 1px solid var(--mediumNeutralColor);
       border-top: none;
     }
     @media (max-width: 45em) {
