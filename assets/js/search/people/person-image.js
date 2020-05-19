@@ -23,7 +23,6 @@ class PersonImage extends LitElement {
   }
 
   render() {
-    // TODO: how to get 'assetPath' in here?
     var url = `${defaultProfileImage}`;
 
     if (this.thumbnail != "null") {

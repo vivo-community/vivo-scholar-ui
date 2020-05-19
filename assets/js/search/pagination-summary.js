@@ -18,7 +18,6 @@ class SearchPaginationSummary extends LitElement {
   }
 
   static get styles() {
-    // TODO: should make link color etc...
     return css`
     @media screen and (max-width: 1000px) {
       span {
