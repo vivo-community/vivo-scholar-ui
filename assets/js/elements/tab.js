@@ -95,7 +95,7 @@ class Tab extends LitElement {
 
       @media screen and (max-width: 1000px) {
         :host([vivo-tab-style="combo"]) {
-          width: 90%;
+          width: 85%;
           color: var(--textColor);
           padding-top:0;
           padding-left: 0;

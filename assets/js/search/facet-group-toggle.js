@@ -27,75 +27,24 @@ class SearchFacetGroupToggle extends LitElement {
           cursor: pointer;
         }
 
-
-
         @media screen and (max-width: 1000px) {
             :host { display: inline; }
-            
+            :host([shown]) {
+                display:block;
+                margin-left: 85%;
+            }
+            :host([shown]) vivo-filter-clearer {
+                display:block;
+                margin-left: 85%;
+            }
             :host .fa-filter::before {
                 font-family: 'Font Awesome 5 Free';
                 font-weight: 900;
                 content: "\\f0b0";
                 font-style: normal;
             }
-            
-            #menu {
-                display: none;
-            }
-            #menu.open {
-                display: block;
-                color: var(--textColor);
-                background-color: var(--lightNeutralColor);  
-            }
-            #menu.open ul {
-                list-style: none;
-                padding-left: 8px;
-                padding-right: 4px;
-                margin-top: 0;
-            }
-            #menu.open ul li {
-                font-weight: bold;
-            }
-            :host ::slotted([slot="clear"]) {
-                cursor: pointer;
-                display: inline;
-            }
-            :host ::slotted([slot="show"]) {
-                display: inline;
-                cursor: pointer;
-            }
-            :host ::slotted([slot="hide"]) {
-                display: none;
-            }
-            :host([shown]) ::slotted([slot="show"]) {
-                display: none;
-            }
-            :host([shown]) ::slotted([slot="hide"]) {
-                display: inline;
-                cursor: pointer;
-            }
         }        
         `
-    }
-
-    toggleOptions() {   
-        const showMenu = this.shadowRoot.querySelector("#menu");
-        if (showMenu.classList.contains('open')){
-          showMenu.classList.remove('open');
-        } else {
-          showMenu.classList.add('open');
-        }
-    }
-
-    handleClearFilters(e) {
-        this.dispatchEvent(new CustomEvent('removeFilters', {
-            detail: { clear: true }, // not sure what to put
-            bubbles: true,
-            cancelable: false,
-            composed: true
-        }));
-
-        this.toggleOptions();
     }
 
     handleToggleFilters(e) {
@@ -112,19 +61,11 @@ class SearchFacetGroupToggle extends LitElement {
         this.toggleOptions();
     }
 
-    //<button @click="${this.handleToggleFilters}">
     render() {
         return html`
-        <button @click="${this.toggleOptions}">
+        <button @click="${this.handleToggleFilters}">
           <i class="fas fa-filter"></i> 
         </button>
-        <div id="menu">
-          <ul>
-            <li><slot name="show" @click="${this.handleToggleFilters}"></slot></li>
-            <li><slot name="hide" @click="${this.handleToggleFilters}"></slot></li>
-            <li><slot name="clear" @click="${this.handleClearFilters}"></slot></li>
-          </ul>
-        </div>
         `
     }
 }
