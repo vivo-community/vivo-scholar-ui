@@ -63,4 +63,12 @@
       float:right;
       height: 1em;
     }
+
+    .search-container vivo-tab {
+        width: 85%;
+        color: var(--textColor);
+        padding-top:0;
+        padding-left: 0;
+        border-top: none;
+    }
   }

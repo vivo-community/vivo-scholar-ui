@@ -39,23 +39,6 @@ class Tab extends LitElement {
         opacity: 100%;
       }
 
-      :host([vivo-tab-style="combo"]) {
-        color: var(--textColor);
-        background-color: transparent;
-        padding: .5rem 3rem;
-        opacity: 25%;
-      }
-      :host([vivo-tab-style="combo"]:hover) {
-        color: var(--textColor);
-        border-bottom: 3px solid var(--textColor);
-      }
-      :host([vivo-tab-style="combo"][selected]) {
-        color: var(--textColor);
-        border-bottom: 3px solid var(--textColor);
-        opacity: 100%;
-      }
-
-
       .fas { display: none; }
       @media (max-width: 45em) {
         .fas {
@@ -90,16 +73,6 @@ class Tab extends LitElement {
         }
         :host([vivo-tab-style="secondary"]) {
           color: var(--textColor);
-        }
-      }
-
-      @media screen and (max-width: 1000px) {
-        :host([vivo-tab-style="combo"]) {
-          width: 85%;
-          color: var(--textColor);
-          padding-top:0;
-          padding-left: 0;
-          border-top: none;
         }
       }
     `

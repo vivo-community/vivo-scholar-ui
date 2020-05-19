@@ -24,9 +24,6 @@ class TabPanel extends LitElement {
     :host([vivo-tab-style="secondary"]) {
       border-top: none;
     }
-    :host([vivo-tab-style="combo"]) {
-      border-top: none;
-    }
     @media (max-width: 45em) {
       :host {
         order: initial;
