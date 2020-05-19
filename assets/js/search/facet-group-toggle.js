@@ -12,7 +12,6 @@ class SearchFacetGroupToggle extends LitElement {
         super();
         this.shown = false;
         this.handleToggleFilters = this.handleToggleFilters.bind(this);
-        this.handleClearFilters = this.handleClearFilters.bind(this);
     }
 
     static get styles() {
@@ -48,8 +47,6 @@ class SearchFacetGroupToggle extends LitElement {
     }
 
     handleToggleFilters(e) {
-        
-        // actually show menu instead ...
         this.dispatchEvent(new CustomEvent('toggleFilters', {
             detail: { show: !this.shown }, // not sure what to put
             bubbles: true,
