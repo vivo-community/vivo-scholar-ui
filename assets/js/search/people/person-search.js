@@ -17,13 +17,13 @@ class PersonSearch extends Searcher(LitElement) {
     static get styles() {
         return css`
         .people {
-            display: block; 
+            display: block;
             padding: 1em;
         }
         .person {
             display: flex;
             flex-direction: row;
-            flex-wrap: nowrap; 
+            flex-wrap: nowrap;
         }
         .search-actions {
             display: flex;
@@ -48,7 +48,7 @@ class PersonSearch extends Searcher(LitElement) {
             flex-basis: 90%;
             padding: 0.2em;
             --lh: 1.2rem;
-            line-height: var(--lh);  
+            line-height: var(--lh);
         }
         #overview {
             width: 75%;
@@ -165,7 +165,7 @@ class PersonSearch extends Searcher(LitElement) {
         </div>`;
 
         this.setPagination();
- 
+
         return html`
           <div id="people-search-results">
           <div class="search-actions">
