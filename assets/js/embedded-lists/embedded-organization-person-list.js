@@ -71,6 +71,9 @@ class EmbeddedOrgPeopleList extends LitElement {
         --lh: 1.2rem;
         line-height: var(--lh);
     }
+    #overview {
+        width: 75%;
+    }
     `
   }
 
