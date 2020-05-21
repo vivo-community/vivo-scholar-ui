@@ -11,10 +11,11 @@ class GrantCard extends LitElement {
       h2 {
         color: var(--primaryColor);
         font-weight: bold;
-        font-size: 1em;
+        font-size: 1.1em;
         margin-top: 1em;
         margin-top: 0;
-        margin-bottom: .3em
+        margin-bottom: .3em;
+        line-height: 1.1em;
       }
       ::slotted(a) {
         color: var(--linkColor);
