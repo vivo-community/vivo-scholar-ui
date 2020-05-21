@@ -58,7 +58,7 @@ class Publication extends LitElement {
         font-weight: bold;
         color: var(--linkColor);
         text-decoration: none;
-        font-size: 1.2em;
+        font-size: 1.1em;
         line-height: 1.6;
       }
       ::slotted([slot="authors"]), ::slotted([slot="publisher"]) {

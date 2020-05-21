@@ -47,7 +47,7 @@ class PersonSearch extends Searcher(LitElement) {
             flex-shrink: 3;
             flex-basis: 90%;
             padding: 0.2em;
-            --lh: 1.2rem;
+            --lh: 1.1rem;
             line-height: var(--lh);  
         }
         #overview {
