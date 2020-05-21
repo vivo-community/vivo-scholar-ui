@@ -76,6 +76,8 @@ class PublicationCard extends LitElement {
         }
         div[slot="title"] {
           margin-bottom: 0.0em;
+          font-size: 1.1em;
+          line-height: 1.1em;
         }
         [slot="authors"], [slot="publisher"] {
           padding-top: 0.0em;
