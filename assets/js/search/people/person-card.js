@@ -5,7 +5,7 @@ class PersonCard extends LitElement {
     constructor() {
       super();
     }
-  
+
     static get styles() {
       return css`
       h2 {
@@ -34,13 +34,13 @@ class PersonCard extends LitElement {
            display: none;
          }
       }
-      
+
     `
   }
 
     render() {
       return html`
-          <h2>          
+          <h2>
             <slot name="name" />
           </h2>
           <h3>
@@ -50,6 +50,5 @@ class PersonCard extends LitElement {
           `
     }
   }
-  
+
   customElements.define('vivo-person-card', PersonCard);
-  
