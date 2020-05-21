@@ -1,10 +1,12 @@
-# Scholars React
-A possible front-end to the [Scholars Discovery](https://github.com/vivo-community/scholars-discovery) GraphQL endpoint.  
+# Scholars WebComponent UI
+A front-end to the [Scholars Discovery](https://github.com/vivo-community/scholars-discovery) GraphQL endpoint.  
+
+**NOTE** This project does nothing without a running instance of `scholars-discovery`.  To get that running see [Getting Started](#getting-started)
 
 ## Technology
 * [Go Buffalo](http://gobuffalo.io) - for server side rendering, and asset pipeline
+* [Web Components](https://www.webcomponents.org/specs/) - for UI components as well as search 
 * [LitElement](https://lit-element.polymer-project.org/) - for generating web components
-* [React](https://reactjs.org/) - for client side search code - *to be replaced with web components, this project will be renamed at that time*
 
 ## Development Dependencies
 
@@ -18,59 +20,88 @@ A possible front-end to the [Scholars Discovery](https://github.com/vivo-communi
 * [Docker Compose](https://docs.docker.com/compose/)
 
 ## Getting Started
+
+### Scholars Discovery
+
+This project is a UI meant to be run atop a running instance.  In order to see any data in the site, you will need to import data
+
+### Scholars WebComponent UI
      cp .env.example .env
 
 Update the value of GRAPHQL_ENDPOINT to the address of a running instance of Scholars Discovery. The default
-value of one running locally has been prepopulated in .env.example.
+value of one running locally has been prepopulated in `.env.example`
 
-Set the SITE_ORGANIZATION_ID value to the institution's root organization id. 
+Set the SITE_ORGANIZATION_ID value to the institution's root organization id 
 
-### Native
+#### Native
      buffalo dev
 
-### Docker Only
+#### Docker Only
      docker-compose up
 
 The app will be available at: [http://localhost:4200](http://localhost:4200)
 
-## Philosophy
-It should be easy to add and/or customize pages with basic knowledge of HTML and GraphQL.
+### Background
+The underlying motivation of how this code works and is organized is that it should be easy to add and/or customize pages with basic knowledge of HTML and GraphQL.
 
-Pages are represented by a template file and corresponding GraphQL query file.
-Adding new or editing existing templates and queries are the expected means of customization.
+Pages are represented by a template file and corresponding GraphQL query file. Adding new or editing existing templates and queries are the expected means of customization.
 
-Web Components will be the primary method of encapsulating of core styles and behaviors.
-They can be used to build new templates and will also provide embeddable 'widgets' for
-use on other sites.
+Web Components are be the primary method of encapsulating of core styles and behaviors. They can be used to build new templates and will also provide embeddable 'widgets' for use on other sites.
 
-Server side rendering should be used for most pages where primary content is part of the
-document and then progressively enhanced with javascript. Searches and other complex UIs
-will be an exception.
+Server side rendering should be used for most pages where primary content is part of the document and then progressively enhanced with javascript. Searches and other complex UIs will be an exception.
 
-## Pages and Queries
+### Pages and Queries
+
+There is a system of routing set up using the `go buffalo` project.  The idea is that the URL route gives the application the information to pick what files to run.  It is highly flexible, but assuming you will be sending the results of a `GraphQL` query as data into a template.
+
+#### Routes
+
+##### Base
+
 * "/"
     * Template: templates/index.html
     * Query: no query
+
+##### Entity Pages 
+
+Such as for a person, publication etc...
+
 * "/entities/{type}/{id}" - fetches data for the given entity by 'id'
     * Template: templates/entity_pages/{type}.html
     * Query: templates/entity_pages/{type}.graphql
     * Query Parameters: id
+
+##### Search 
+
+The search is essentially an SPA
+
 * "/search/{type}" - search pages, any html/javascript
     * Template: templates/search_pages/{type}.html
     * Query: assumes javascript will query GraphQL endpoint directly
+
+##### List Pages
+
+Although we do not use them, there is the capability of adding a browseable list of all entities
+
+##### Any Pages
+
+Very flexible pages that can contain anything
+
 * "/pages/{name}" - generic pages, any/html javascript with optional GraphQL query
     * Template: templates/any_pages/{name}.html
     * Query (optional): templates/any_pages/{name}.graphql
     * Query Parameters: Dynamic, derived from query string
     * [Adding an Any Page](http://localhost:4200/docs/elements/any-page)
 
-## Theme
+### Theme
 
-Theme variables are set using the environment. The default values are populated in .env.example. Configurable theme variables include:
+Theme variables are set using the environment. The default values are populated in `.env.example`
+
+Configurable theme variables include:
 
 * Site Name - TODO
 * Site Logo - TODO
-* Home Page Background (image or color) - TODO
+* Home Page Background (image or color) - THEME_BACKGROUND_IMAGE
 * Color Palette: [http://localhost:4200/docs/elements/color-palette](http://localhost:4200/docs/elements/color-palette)
 
 Additionally, custom styles may be added to:
