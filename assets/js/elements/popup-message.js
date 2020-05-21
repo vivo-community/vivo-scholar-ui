@@ -148,15 +148,15 @@ class PopupMessage extends LitElement {
 
   render() {
     return html`
-    <vivo-modal ?shown="${this.open}">
+    <vivo-message-modal ?shown="${this.open}">
         <div class="heading">
           <slot name="heading"></slot>
-          <i class="fas fa-times" @click=${this.doCancel}></i>
+          <i class="fas fa-times" @click=${this.closeDown}></i>
         </div>
         <div class="message-container">
           <slot></slot>
         </div>
-    </vivo-modal>
+    </vivo-message-modal>
     `;
   }
 }
