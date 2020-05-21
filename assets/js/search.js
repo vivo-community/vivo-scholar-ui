@@ -27,4 +27,5 @@ import './search/grants/grant-search.js';
 import './search/publications/publication-date-facets.js';
 import './search/publications/publication-date-facet.js';
 
-
+//embedded-list
+import './embedded-lists/embedded-organization-person-list.js'
