@@ -47,11 +47,32 @@ class PersonSearch extends Searcher(LitElement) {
             flex-shrink: 3;
             flex-basis: 90%;
             padding: 0.2em;
-            --lh: 1.2rem;
+            --lh: 1.1rem;
             line-height: var(--lh);
         }
         #overview {
             width: 75%;
+        }
+        @media screen and (max-width: 1000px) {
+            .people {
+                padding-left: 0;
+                padding-right: 0;
+            }
+            .search-actions {
+                display: flex;
+                flex-direction: column;
+                padding-left: 0;
+                padding-right: 0;
+            }
+            ::slotted(vivo-search-sort-options) {
+                flex-basis: auto;
+                flex-grow: 1;
+                text-align: left;
+            }
+            ::slotted(vivo-pagination-summary) {
+                flex-basis; auto;
+                flex-grow: 1;
+            }
         }
       `
     }

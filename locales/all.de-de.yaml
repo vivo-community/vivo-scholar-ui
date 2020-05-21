@@ -138,3 +138,11 @@
   translation: "von"
 - id: filter_authors
   translation: "Filter Autoren"
+- id: filter
+  translation: "Filter"   
+- id: show
+  translation: "Anzeigen"
+- id: hide
+  translation: "Verbergen"
+- id: reset
+  translation: "Zurücksetzen"   
