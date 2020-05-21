@@ -19,6 +19,7 @@ class SiteSearchBox extends LitElement {
     this.label = "Search"; //default
     this.placeholder = "Search";
     this.externalSubmit = false;
+    this.togglePopup = this.togglePopup.bind(this);
   }
 
   static get styles() {
@@ -61,13 +62,6 @@ class SiteSearchBox extends LitElement {
         flex: 1;
         margin-left: 0.5em;
       }
-      #popup-text {
-        margin-top: 1em;
-        margin-right: 3em;
-      }
-      #popup-text.no-show {
-        display: none;
-      }
       @media (max-width: 500px) {
         #search-box {
           flex-flow: column;
@@ -99,6 +93,15 @@ class SiteSearchBox extends LitElement {
     }
   }
 
+  togglePopup() {
+    let popup = this.shadowRoot.querySelector("#popup-text");
+    if (popup.getAttribute("open")) {
+      popup.closeDown();
+    } else {
+      popup.openUp();
+    }
+  }
+
 
   render() {
     return html`
@@ -109,7 +112,14 @@ class SiteSearchBox extends LitElement {
             ${this.label}
           </button>
         </form>
-        <slot name="after"></slot>
+        <slot name="after" @click="${this.togglePopup}"></slot>
+        <vivo-popup-message id="popup-text">
+          <h3 slot="title">About VIVO Scholars</h3>
+          <p slot="content">VIVO Scholar showcases the scholarly contributions and activities
+          of the VIVO community. It includes up-to-date information on scholars'
+          publications, grants, and contact information.</p>
+          <a slot="link" href=" ">Learn more...</a>
+        </vivo-popup-message>
       </div>
 
 
