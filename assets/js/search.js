@@ -11,7 +11,6 @@ import './search/search-sidebar-item.js';
 import './search/filter-clearer.js';
 import './search/spinner.js';
 import './search/modal.js';
-import './search/truncated-text-result.js';
 import './search/facet-group-toggle.js';
 import './search/i18n-label.js';
 
@@ -26,6 +25,3 @@ import './search/grants/grant-search.js';
 // custom facets
 import './search/publications/publication-date-facets.js';
 import './search/publications/publication-date-facet.js';
-
-//embedded-list
-import './embedded-lists/embedded-organization-person-list.js'
