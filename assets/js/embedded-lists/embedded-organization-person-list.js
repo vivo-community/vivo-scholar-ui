@@ -1,6 +1,6 @@
-import '../search/people/person-image.js';
-import '../search/people/person-card.js';
-import '../search/truncated-text-result.js';
+import '../elements/person-image.js';
+import '../elements/person-card.js';
+import '../elements/truncated-text-result.js';
 
 
 import { LitElement, html, css } from 'lit-element';
@@ -43,8 +43,8 @@ class EmbeddedOrgPeopleList extends LitElement {
   static get properties() {
     return {
       people: { type: Array },
-      organization: { type: String}
-      //find out property for org
+      organization: { type: String },
+      type: { type: String }
     }
   }
 
@@ -80,6 +80,7 @@ class EmbeddedOrgPeopleList extends LitElement {
   constructor() {
     super();
     this.people = [];
+    this.type = this.getAttribute("type");
     this.organization = this.getAttribute("organization");
 }
 
@@ -89,7 +90,7 @@ class EmbeddedOrgPeopleList extends LitElement {
       query: ORG_QUERY,
       variables: {
         //here get attribute person_url then strip all but the last bit for the id
-        filters:  {field: "organizations", opKey: "EQUALS", tag: "organizations",value: this.organization}
+        filters:  {field: this.type, opKey: "EQUALS", tag: this.type, value: this.organization}
       }
     }).then(({data}) =>  {
       let peopleData = data.people.content;
@@ -126,7 +127,6 @@ class EmbeddedOrgPeopleList extends LitElement {
 
 
   render() {
-    console.log(this.people);
     let peopleElements = this.people.map((p) => this.orgPersonTemplate(p));
     return html`
     ${peopleElements}
