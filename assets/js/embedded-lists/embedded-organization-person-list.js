@@ -127,7 +127,6 @@ class EmbeddedOrgPeopleList extends LitElement {
 
 
   render() {
-    console.log(this.type);
     let peopleElements = this.people.map((p) => this.orgPersonTemplate(p));
     return html`
     ${peopleElements}
