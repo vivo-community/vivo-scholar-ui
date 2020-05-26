@@ -1,8 +1,8 @@
 import { LitElement, html, css } from "lit-element";
 
 import peopleQuery from "./person-query";
-import './person-card';
-import './person-image';
+// import '../../elements/person-card';
+// import '../../elements/person-image';
 import Searcher from '../searcher.js'
 
 class PersonSearch extends Searcher(LitElement) {
