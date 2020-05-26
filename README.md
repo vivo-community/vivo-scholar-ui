@@ -1,8 +1,6 @@
 # Scholars WebComponent UI
 
-A front-end to the [Scholars Discovery](https://github.com/vivo-community/scholars-discovery) GraphQL endpoint.  
-
-**NOTE** This project does nothing without a running instance of `scholars-discovery`.  To get that running see [Getting Started](#getting-started)
+A front-end to the [Scholars Discovery](https://github.com/vivo-community/scholars-discovery) GraphQL endpoint.  **NOTE** This project does nothing without a running instance of `scholars-discovery`.  To get that running see [Getting Started](#getting-started)
 
 ## Technology
 * [Go Buffalo](http://gobuffalo.io) - for server side rendering, and asset pipeline
@@ -24,7 +22,9 @@ A front-end to the [Scholars Discovery](https://github.com/vivo-community/schola
 
 ### Scholars Discovery
 
-`Scholars WebComponent UI` is a meant to be run atop a running instance of `scholars-discovery`.  In order to see any working data in the site, you will need to import data into `scholars-discovery`
+`Scholars WebComponent UI` is a meant to be run atop a running instance of `scholars-discovery`, which in turn imports data from a `VIVO` instance
+
+See [Scholars Discovery](https://github.com/vivo-community/scholars-discovery) for more details about importing data and getting started
 
 ### Scholars WebComponent UI
      cp .env.example .env
@@ -43,17 +43,18 @@ Set the SITE_ORGANIZATION_ID value to the institution's root organization id
 The app will be available at: [http://localhost:4200](http://localhost:4200)
 
 #### Background
-The underlying motivation of how this code works and is organized is that it should be easy to add and/or customize pages with basic knowledge of HTML and GraphQL.
+
+The underlying motivation of this project is to make it easier to customize the UI of VIVO.  It should be easy to add and/or customize pages with basic knowledge of HTML, GraphQL and Javascript - no Sparql, freemarker templates, listview-config etc... 
 
 Pages are represented by a template file and corresponding GraphQL query file. Adding new or editing existing templates and queries are the expected means of customization.
 
-Web Components are be the primary method of encapsulating of core styles and behaviors. They can be used to build new templates and will also provide embeddable 'widgets' for use on other sites.
+Web Components are the primary method of encapsulating core styles and behaviors. They can be used to build new templates and will also provide embeddable 'widgets' for use on other sites.
 
 Server side rendering should be used for most pages where primary content is part of the document and then progressively enhanced with javascript. Searches and other complex UIs will be an exception.
 
 #### Pages and Queries
 
-There is a system of routing set up using the `go buffalo` project.  The idea is that the URL route gives the application the information to pick what files to run.  It is highly flexible, but assuming you will be sending the results of a `GraphQL` query as data into a template.
+URL routing determines what content to serve. It is highly flexible, but the core idea is sending the results of a `GraphQL` query as data into a template.  What query and what template are determined by the route
 
 #### Routes
 
@@ -65,7 +66,7 @@ There is a system of routing set up using the `go buffalo` project.  The idea is
 
 ##### Entity Pages 
 
-Such as for a person, publication etc...
+Such as for a person, publication, grant etc...
 
 * "/entities/{type}/{id}" - fetches data for the given entity by 'id'
     * Template: templates/entity_pages/{type}.html
@@ -82,7 +83,13 @@ The search is essentially an SPA
 
 ##### List Pages
 
-Although we do not use them, there is the capability of adding a browseable list of all entities
+Although the purpose is already served by the search, there is also the capability of adding a browseable list of all entities.  The examples here are rudimentary, since our demo site does not use the list views
+
+* "/lists/{type}" - search pages, any html/javascript
+    * Template: templates/list_pages/{type}/{type}.html
+    * Query: templates/list_pages/{type}/{type}.graphql
+
+This will send also accept paging parameters  
 
 ##### Any Pages
 
