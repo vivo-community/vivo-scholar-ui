@@ -224,15 +224,15 @@
          <% } %>
 
          <%= if (person["researchAreas"]) { %>
-           <vivo-sidebar-item>
+           <vivo-sidebar-item id="keywords">
             <h3 slot="heading"><%= t("keywords") %></h3>
             <% let researchAreas = person["researchAreas"] %>
              <% SortByStringField(researchAreas, "label") %>
             <%= for (k) in researchAreas { %>
             <div slot="content">
-              <a title="<%= k["label"] %>" href="/entities/concepts/<%= k["id"] %>">
+              <p title="<%= k["label"] %>">
                 <%= k["label"] %>
-              </a>
+              </p>
             </div>
             <% } %>
            </vivo-sidebar-item>
