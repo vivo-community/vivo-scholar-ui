@@ -35,7 +35,7 @@ class Course extends LitElement{
       ::slotted([slot="course-title"]) {
         font-weight: bold;
         margin-bottom: 0;
-        font-size: 1.55em;
+        /* font-size: 1.55em; */
         }
       ::slotted([slot="course-role"]) {
         margin-top: 0;
