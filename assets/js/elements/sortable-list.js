@@ -37,28 +37,82 @@ class SortableList extends LitElement {
     this.sortDirection = null;
     this.slotChanged = this.slotChanged.bind(this);
     this.itemType = 'items';
-    this.sorts = null
+    this.sorts = null;
+    //this.searchOptions = Array.from(this.querySelectorAll('vivo-sort-option'));
+    //this.setSortOptions();
+
+    //let slot = this.querySelector('span[slot="sorter"]');
+    //console.log(slot);
   }
 
   slotChanged(e) {
     const itemElements = Array.from(e.target.assignedNodes()).filter((n) => n.tagName ).map((n) => n.cloneNode(true));
     this.items = itemElements;
     this.setItems();
+
+    this.setSortOptions();
+    //this.setSortOptions();
+    console.log(`sorts=${JSON.stringify(this.sorts)}:${this.sortProperty}`);
+
   }
 
   firstUpdated() {
     this.shadowRoot.addEventListener("slotchange",this.slotChanged);
   }
 
+
+  connectedCallBack() {
+    super.connectedCallBack();
+  }
+
   disconnectedCallBack() {
     super.disconnectedCallBack();
   }
-
 
   setItems() {
     this.items = this.sortBy(this.items, this.sortProperty, this.sortDirection);
     this.setTruncation();
     this.refreshHides();
+  }
+
+  setSortOptions() {
+    //let slot = this.shadowRoot.querySelector('slot[name="sorter"]');
+    let slot = this.querySelector('span[slot="sorter"]');
+    
+    // don't reset sorts ...
+    if (slot == null) {
+      console.log(`sorts=${JSON.stringify(this.sorts)}`);
+      return
+    }
+
+    console.log(slot);
+    console.log(slot.children);
+    console.log(slot.children.length);
+    //console.log(slot.children["0"]);
+    //let sortOptions = Array.from(slot.querySelectorAll('vivo-sort-option'));
+    let sortOptions = Array.from(slot.children);
+    console.log(sortOptions);
+    this.sorts = sortOptions.map(opt => {
+      console.log(opt);
+      const label = opt.getAttribute("label");
+      const field = opt.getAttribute("field");
+      const direction = opt.getAttribute("direction");
+      return {property: field, direction: direction, label: label}
+    });
+    //console.log(sortOptions);
+    //console.log(sortOptions.getOptions());
+    //this.sorts = sortOptions.getOptions();
+    //this.sorts = (typeof this.sortOptions != 'undefined') ? this.sortOptions.getOptions() : null;
+    //,{"property":"publishedDate","direction":"desc","label":"Newest First"},
+    /*
+      pubList.sorts = [
+    {property : "publishedDate", direction : "asc", label: "Oldest First"} ,
+    {property : "publishedDate", direction : "desc", label: "Newest First"},
+    {property : "title", direction : "asc", label: "Publication a-z"} ,
+    {property : "title", direction : "desc", label: "Publication z-a"}
+  ];
+  */
+    console.log(`sorts=${JSON.stringify(this.sorts)}`);
   }
 
   setTruncation() {
@@ -159,7 +213,6 @@ class SortableList extends LitElement {
       slot {
         display: none;
       }
-
       #items > * {
         margin-bottom: 1em;
         font-size: 18px;
@@ -188,7 +241,11 @@ class SortableList extends LitElement {
   }
 
   render() {
+    //if (this.sorts == null) {
+    //  return html``
+    //}
     return html`
+      <slot name="sorter"></slot>
       <div class="item-summary">
         ${this.truncationRequired && this.truncate ? html`
           <span>

@@ -99,6 +99,15 @@
          </vivo-tab>
          <vivo-tab-panel id="publications-panel">
             <vivo-sortable-list id="publication-list" item-type="publications" sortProperty="publishedDate" sortDirection="desc">
+              
+              <span slot="sorter">
+                <vivo-sort-option field="publishedDate" direction="asc" label="Oldest First"></vivo-sort-option>
+                <vivo-sort-option field="publishedDate" direction="desc" label="Newest First"></vivo-sort-option>
+                <vivo-sort-option field="title" direction="asc" label="Publication a-z"></vivo-sort-option>
+                <vivo-sort-option field="publishedDate" direction="desc" label="Publication z-a"></vivo-sort-option>
+              </span>
+               
+               
                <%= for (idx, p) in person["publications"] { %>
                  <vivo-publication url="/entities/publication/<%= p["id"] %>" published-date="<%= p["publicationDate"] %>" title="<%= p["title"] %>">
                     <a slot="title" href="/entities/publication/<%= p["id"] %>">
@@ -124,6 +133,7 @@
                     <% } %>
                  </vivo-publication>
                <% } %>
+
             </vivo-sortable-list>
          </vivo-tab-panel>
          <% } %>
@@ -135,6 +145,7 @@
          <vivo-tab-panel id="research-expertise-panel">
            <h4 class="section-title"><%= t("grants") %></h4>
            <vivo-sortable-list id="grant-list" item-type="grants" sortProperty="startDate" sortDirection="desc">
+
             <%= for (idx, p) in person["researcherOn"] { %>
               <vivo-grant url="/entities/grant/<%= p["id"] %>" start-date="<%= p["startDate"] %>" title="<%= p["label"] %>">
               <a slot="label" href="/entities/grant/<%= p["id"] %>">

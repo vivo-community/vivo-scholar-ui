@@ -8,7 +8,7 @@ if (grantList) {
     {property : "title", direction : "desc", label: "Grant z-a"}
   ];
 }
-
+/*
 const pubList = document.getElementById('publication-list');
 if (pubList) {
   pubList.sorts = [
@@ -18,7 +18,7 @@ if (pubList) {
     {property : "title", direction : "desc", label: "Publication z-a"}
   ];
 }
-
+*/
 const courseList = document.getElementById('course-list');
 if (courseList) {
   courseList.sorts = [
