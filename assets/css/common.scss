@@ -4,10 +4,14 @@
 *:focus {
     outline: none;
 }
-
 :root {
   font-family: Verdana, sans-serif;
   line-height: 1.6em;
+}
+// NOTE: chrome specific
+// https://stackoverflow.com/questions/9328832/how-to-apply-specific-css-rules-to-chrome-only
+.selector:not(*:root), :root {
+  font-size: 0.85em;
 }
 .site-header {
   position: fixed;
@@ -41,6 +45,12 @@
   }
   .position-organization {
     margin-top: 0;
+  }
+  .position-organization:after {
+    content: ' | ';
+  }
+  .position-organization:nth-last-child(-n+2):after {
+    content: '';
   }
 }
 .education {
@@ -88,7 +98,13 @@ aside {
   margin-bottom: .5em;
 }
 #contact-info {
-  margin-top: 0;
+margin: 0;
+}
+#contact-info span::after{
+  content: " | "
+}
+#contact-info span:last-child::after{
+  content: none;
 }
 .section-title {
   color: var(--primaryColor);
@@ -104,6 +120,25 @@ aside {
   margin-top: 1.2em;
   margin-bottom: .6em;
 }
+
+// profile entity page
+#profile .page-title {
+  margin-top: .3em;
+}
+#profile .page-subtitle{
+  margin-top: 0;
+}
+#profile .contact-info{
+  margin-top: 0;
+}
+#profile vivo-tabs {
+  margin-top: 2.34%;
+}
+#profile aside h3{
+  margin: 0;
+  padding: 0;
+}
+
 
 /* elements */
 vivo-sidebar {
@@ -121,15 +156,12 @@ vivo-sidebar-item h4 {
 vivo-sidebar-item h4:after {
   content: ":";
 }
-vivo-sidebar-item a {
+#keywords p {
   color: black;
   font-weight: bold;
-  text-decoration: none;
-  border-bottom: 1px dotted currentColor;
+  margin: 0;
 }
-.testing{
-  white-space: normal;
-}
+
 vivo-sidebar-item  > div:first-of-type {
   padding-top: .25em;
 }
@@ -159,6 +191,7 @@ vivo-tab-panel h4 {
   width: 95%;
   margin: auto;
   margin-top: 180px;
+  margin-bottom: 5%;
   padding-left: 5%;
 }
 .publication-heading .page-title{
@@ -214,7 +247,7 @@ vivo-tab-panel h4 {
 }
 
 
-/*Sidebar grid - person*/
+/*grid - person*/
 .person-container {
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
@@ -226,6 +259,9 @@ vivo-tab-panel h4 {
 .person-container aside {
   grid-column: span 2;
   padding-right: 0.25em;
+}
+.person-container aside vivo-sidebar vivo-sidebar-item:nth-child(2) h3:first-of-type {
+  margin-top:0;
 }
 .person-container .sidebar-image {
   grid-column: span 2;
@@ -248,6 +284,36 @@ vivo-tab-panel h4 {
   width: 100%;
   height: auto;
 }
+}
+@media screen and (max-width: 1200px){
+  .person-container{
+    grid-template-columns: repeat(10, minmax(0, 1fr));
+  }
+  .person-container .sidebar-image {
+    grid-column: 1 / span 2;
+  }
+  .person-container aside {
+    grid-column: 1 / span 2;
+    max-width: 230px
+  }
+  .person-container main {
+    grid-column: span 7;
+  }
+}
+@media screen and (max-width: 1150px){
+  .person-container{
+    grid-template-columns: repeat(9, minmax(0, 1fr));
+  }
+  .person-container .sidebar-image {
+    grid-column: 1 / span 2;
+  }
+  .person-container aside {
+    grid-column: 1 / span 2;
+    max-width: 230px
+  }
+  .person-container main {
+    grid-column: span 7;
+  }
 }
 @media screen and (max-width: 800px) {
 // person.html styling
@@ -315,7 +381,9 @@ vivo-tab-panel h4 {
   .section-title {
     font-size: 1em;
   }
-
+  #profile .page-title{
+    margin-top: 0;
+  }
   //publication and grant entity pages
   .entity-container{
     background-color: var(--lightNeutralColor);

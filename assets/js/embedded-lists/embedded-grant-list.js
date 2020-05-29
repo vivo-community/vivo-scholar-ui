@@ -43,12 +43,19 @@ class EmbeddedGrantList extends LitElement {
     return {
       grants: { type: Array },
       person_url: { type: String},
+      sorts: { type: Object, reflect: true}
     }
   }
 
   constructor() {
     super();
     this.grants = [];
+    this.sorts = [
+      {property : "startDate", direction : "asc", label: "Oldest First"} ,
+      {property : "startDate", direction : "desc", label: "Newest First"},
+      {property : "title", direction : "asc", label: "Grant a-z"} ,
+      {property : "title", direction : "desc", label: "Grant z-a"}
+    ];
   }
 
   connectedCallback() {
@@ -82,7 +89,7 @@ class EmbeddedGrantList extends LitElement {
     let endDate = new Date(p.endDate);
     endDate = endDate.getFullYear();
     return html`
-      <vivo-grant url="/entities/grant/${p.id}" start-date="${p.title}" title="<%= p["label"] %>">
+      <vivo-grant url="/entities/grant/${p.id}" start-date="${startDate}" title=${p.label}>
       <a slot="label" href="/entities/grant/${p.id}">
        ${p.label}
       </a>
@@ -98,7 +105,7 @@ class EmbeddedGrantList extends LitElement {
   render() {
     let grantElements = this.grants.map((p) => this.grantTemplate(p));
     return html`
-      <vivo-sortable-list>
+      <vivo-sortable-list item-type="grants" sortProperty="startDate" sortDirection="desc" .sorts="${this.sorts}">
         ${grantElements}
       </vivo-sortable-list>
     `

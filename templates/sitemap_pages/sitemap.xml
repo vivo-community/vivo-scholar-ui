@@ -14,10 +14,7 @@ If you need more than that, split them across multiple sitemaps.
 
   -->
    <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-    <!-- FIXME: this will need to ba a valid list -->
    <sitemap>
       <loc><%= siteUrl %>/sitemaps/people.xml</loc>
-      <loc><%= siteUrl %>/sitemaps/publications.xml</loc>
    </sitemap>
-   <!-- FIXME: etc... -->
    </sitemapindex>

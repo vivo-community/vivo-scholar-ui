@@ -12,6 +12,7 @@ class SearchFacetGroupToggle extends LitElement {
         super();
         this.shown = false;
         this.handleToggleFilters = this.handleToggleFilters.bind(this);
+        this.handleClearFilters = this.handleClearFilters.bind(this);
     }
 
     static get styles() {
@@ -25,28 +26,39 @@ class SearchFacetGroupToggle extends LitElement {
         a:hover {
           cursor: pointer;
         }
+
         @media screen and (max-width: 1000px) {
-            :host { display: inline; }
+            :host { display: block; }
+            div { display: flex; }
+            :host ::slotted([slot=clear]) {
+                display:none;
+            }
+            :host([shown]) {
+                display:block;
+                width: 100%;
+            }   
             :host .fa-filter::before {
                 font-family: 'Font Awesome 5 Free';
                 font-weight: 900;
                 content: "\\f0b0";
                 font-style: normal;
             }
-            :host ::slotted([slot="show"]) {
-                display: inline;
-            }
-            :host ::slotted([slot="hide"]) {
-                display: none;
-            }
-            :host([shown]) ::slotted([slot="show"]) {
-                display: none;
-            }
-            :host([shown]) ::slotted([slot="hide"]) {
-                display: inline;
+            :host([shown]) ::slotted([slot=clear]) {
+                display:block; 
+                flex-grow: 4;
+                font-weight: bold;
             }
         }        
         `
+    }
+
+    handleClearFilters(e) {
+        this.dispatchEvent(new CustomEvent('removeFilters', {
+            detail: { clear: true }, // not sure what to put
+            bubbles: true,
+            cancelable: false,
+            composed: true
+        }));
     }
 
     handleToggleFilters(e) {
@@ -57,15 +69,19 @@ class SearchFacetGroupToggle extends LitElement {
             composed: true
         }));
         this.shown = !this.shown;
+
+        this.toggleOptions();
     }
 
     render() {
         return html`
-        <button @click="${this.handleToggleFilters}">
-          <i class="fas fa-filter"></i> 
-          <slot name="show"></slot>
-          <slot name="hide"></slot>
-        </button>`
+        <div>
+          <slot name="clear" @click="${this.handleClearFilters}"></slot>
+          <button @click="${this.handleToggleFilters}">
+            <i class="fas fa-filter"></i> 
+          </button>
+        </div>
+        `
     }
 }
 

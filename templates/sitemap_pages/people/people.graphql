@@ -1,6 +1,6 @@
 
 query($pageNumber: Int!, $pageSize: Int!) {
-    people(
+    data: people(
       paging: {
         pageSize: $pageSize,
         pageNumber: $pageNumber,

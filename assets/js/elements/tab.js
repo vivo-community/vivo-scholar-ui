@@ -39,7 +39,6 @@ class Tab extends LitElement {
         opacity: 100%;
       }
 
-
       .fas { display: none; }
       @media (max-width: 45em) {
         .fas {

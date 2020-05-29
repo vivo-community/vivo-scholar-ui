@@ -54,6 +54,15 @@ class SearchPagination extends LitElement {
         background-color: #337ab7;
         color: #fff;
       }
+      @media screen and (max-width: 1000px) {
+        :host {
+          font-size: 0.9em;
+        }
+        li a {
+          padding: 4px 10px;
+        }
+      }   
+
     `
   }
 

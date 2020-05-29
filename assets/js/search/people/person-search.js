@@ -1,8 +1,8 @@
 import { LitElement, html, css } from "lit-element";
 
 import peopleQuery from "./person-query";
-import './person-card';
-import './person-image';
+// import '../../elements/person-card';
+// import '../../elements/person-image';
 import Searcher from '../searcher.js'
 
 class PersonSearch extends Searcher(LitElement) {
@@ -17,13 +17,13 @@ class PersonSearch extends Searcher(LitElement) {
     static get styles() {
         return css`
         .people {
-            display: block; 
+            display: block;
             padding: 1em;
         }
         .person {
             display: flex;
             flex-direction: row;
-            flex-wrap: nowrap; 
+            flex-wrap: nowrap;
         }
         .search-actions {
             display: flex;
@@ -47,11 +47,32 @@ class PersonSearch extends Searcher(LitElement) {
             flex-shrink: 3;
             flex-basis: 90%;
             padding: 0.2em;
-            --lh: 1.2rem;
-            line-height: var(--lh);  
+            --lh: 1.1rem;
+            line-height: var(--lh);
         }
         #overview {
             width: 75%;
+        }
+        @media screen and (max-width: 1000px) {
+            .people {
+                padding-left: 0;
+                padding-right: 0;
+            }
+            .search-actions {
+                display: flex;
+                flex-direction: column;
+                padding-left: 0;
+                padding-right: 0;
+            }
+            ::slotted(vivo-search-sort-options) {
+                flex-basis: auto;
+                flex-grow: 1;
+                text-align: left;
+            }
+            ::slotted(vivo-pagination-summary) {
+                flex-basis; auto;
+                flex-grow: 1;
+            }
         }
       `
     }
@@ -165,7 +186,7 @@ class PersonSearch extends Searcher(LitElement) {
         </div>`;
 
         this.setPagination();
- 
+
         return html`
           <div id="people-search-results">
           <div class="search-actions">
