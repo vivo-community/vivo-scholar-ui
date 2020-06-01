@@ -114,7 +114,7 @@ class SiteSearchBox extends LitElement {
         </form>
         <slot name="after" @click="${this.togglePopup}"></slot>
         <vivo-popup-message id="popup-text">
-          <slot name="title">About VIVO Scholars</slot>
+          <h1 slot="title">About VIVO Scholars</h1>
           <p slot="content">VIVO Scholar showcases the scholarly contributions and activities
           of the VIVO community. It includes up-to-date information on scholars'
           publications, grants, and contact information.</p>

@@ -39,8 +39,12 @@ class PopupMessage extends LitElement {
   static get styles() {
     return css`
     :host {
+      display: none;
       --scrollbarBG: #d3dbe5;
       --thumbBG: #2F3D4F;
+    }
+    :host([open]){
+      display: flex;
     }
     vivo-modal {
       --modal-width: 36rem;
@@ -68,7 +72,7 @@ class PopupMessage extends LitElement {
       color: black;
       font-weight: bold;
     }
-    ::slotted([slot="heading"]) {
+    ::slotted([slot="title"]) {
       flex-grow: 1;
       flex-basis: 30%;
       text-align: left;
@@ -150,11 +154,12 @@ class PopupMessage extends LitElement {
     return html`
     <vivo-message-modal ?shown="${this.open}">
         <div class="heading">
-          <slot name="heading"></slot>
+          <slot name="title"></slot>
           <i class="fas fa-times" @click=${this.closeDown}></i>
         </div>
         <div class="message-container">
-          <slot></slot>
+          <slot name="content"></slot>
+          <slot name="link"></slot>
         </div>
     </vivo-message-modal>
     `;
