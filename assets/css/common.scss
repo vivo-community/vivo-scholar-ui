@@ -156,11 +156,10 @@ vivo-sidebar-item h4 {
 vivo-sidebar-item h4:after {
   content: ":";
 }
-vivo-sidebar-item a {
+#keywords p {
   color: black;
   font-weight: bold;
-  text-decoration: none;
-  border-bottom: 1px dotted currentColor;
+  margin: 0;
 }
 
 vivo-sidebar-item  > div:first-of-type {
@@ -285,6 +284,36 @@ vivo-tab-panel h4 {
   width: 100%;
   height: auto;
 }
+}
+@media screen and (max-width: 1200px){
+  .person-container{
+    grid-template-columns: repeat(10, minmax(0, 1fr));
+  }
+  .person-container .sidebar-image {
+    grid-column: 1 / span 2;
+  }
+  .person-container aside {
+    grid-column: 1 / span 2;
+    max-width: 230px
+  }
+  .person-container main {
+    grid-column: span 7;
+  }
+}
+@media screen and (max-width: 1150px){
+  .person-container{
+    grid-template-columns: repeat(9, minmax(0, 1fr));
+  }
+  .person-container .sidebar-image {
+    grid-column: 1 / span 2;
+  }
+  .person-container aside {
+    grid-column: 1 / span 2;
+    max-width: 230px
+  }
+  .person-container main {
+    grid-column: span 7;
+  }
 }
 @media screen and (max-width: 800px) {
 // person.html styling

@@ -23,7 +23,7 @@ class SearchCoordinator extends LitElement {
 
   firstUpdated() {
     this.addEventListener('tabSelected', this.handleTabSelected);
-    this.addEventListener('searchSubmitted', this.handleSearchSubmitted);
+    
     this.addEventListener('pageSelected', this.handlePageSelected);
     this.addEventListener('sortSelected', this.handleSortSelected);
     this.addEventListener('removeFilters', this.handleRemoveFilters);
@@ -31,6 +31,7 @@ class SearchCoordinator extends LitElement {
     this.addEventListener('searchResultsObtained', this.handleSearchResultsObtained);
     this.addEventListener('toggleFilters', this.handleToggleFilters);
 
+    document.addEventListener('searchSubmitted', this.handleSearchSubmitted);
     window.addEventListener('popstate', this.handleSearchPopState);
 
     // make search-box show text of search sent in (from home page)
@@ -86,7 +87,6 @@ class SearchCoordinator extends LitElement {
   disconnectedCallback() {
     super.disconnectedCallback();
     this.removeEventListener('tabSelected', this.handleTabSelected);
-    this.removeEventListener('searchSubmitted', this.handleSearchSubmitted);
     this.removeEventListener('pageSelected', this.handlePageSelected);
     this.removeEventListener('sortSelected', this.handleSortSelected);
     this.removeEventListener('removeFilters', this.handleRemoveFilters);
@@ -94,6 +94,8 @@ class SearchCoordinator extends LitElement {
     this.removeEventListener('searchResultsObtained', this.handleSearchResultsObtained);
 
     this.removeEventListener('toggleFilters', this.handleToggleFilters);
+
+    document.removeEventListener('searchSubmitted', this.handleSearchSubmitted);
     window.removeEventListener('popstate', this.handleSearchPopState);
   }
 
