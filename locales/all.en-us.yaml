@@ -147,4 +147,20 @@
   translation: "Hide"
 - id: reset
   translation: "Reset"
+- id: oldest_first
+  translation: "Oldest First"
+- id: newest_first
+  translation: "Newest First"
+- id: grant_a_z
+  translation: "Grant a-z"
+- id: grant_z_a
+  translation: "Grant z-a"
+- id: publication_a_z
+  translation: "Publication a-z"
+- id: publication_z_a
+  translation: "Publcation z-a"
+- id: awarded_by
+  translation: "awarded by"  
+
+
 

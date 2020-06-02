@@ -1,5 +1,4 @@
 import { LitElement, html, css } from "lit-element";
-import '@vaadin/vaadin-select';
 
 class SortableList extends LitElement {
   static get properties() {
@@ -15,15 +14,16 @@ class SortableList extends LitElement {
         reflect: true
       },
       items: { type: Array },
+      sortItems: { type: Array },
       itemCount: { type: Number },
       truncatedItemCount: { type: Number },
       truncate: { type: Boolean, reflect: true },
       truncationRequired: { type: Boolean },
       sortProperty: { type: String },
       sortDirection: { type: String },
-      sorts: {type: Object}
-  };
-}
+      sorts: { type: Array }
+    };
+  }
 
   constructor() {
     super();
@@ -37,28 +37,44 @@ class SortableList extends LitElement {
     this.sortDirection = null;
     this.slotChanged = this.slotChanged.bind(this);
     this.itemType = 'items';
-    this.sorts = null
+    this.sorts = [];
   }
 
   slotChanged(e) {
-    const itemElements = Array.from(e.target.assignedNodes()).filter((n) => n.tagName ).map((n) => n.cloneNode(true));
+    const itemElements = Array.from(e.target.assignedNodes()).filter((n) => n.tagName && (n.tagName != 'VIVO-SORT-OPTION')).map((n) => n.cloneNode(true));
     this.items = itemElements;
     this.setItems();
+
+    const sortElements = Array.from(e.target.assignedNodes()).filter((n) => n.tagName && n.tagName == 'VIVO-SORT-OPTION').map((n) => n.cloneNode(true));
+    this.sortItems = sortElements;
+    this.setSortItems();
   }
 
   firstUpdated() {
-    this.shadowRoot.addEventListener("slotchange",this.slotChanged);
+    this.shadowRoot.addEventListener("slotchange", this.slotChanged);
+  }
+
+  connectedCallBack() {
+    super.connectedCallBack();
   }
 
   disconnectedCallBack() {
     super.disconnectedCallBack();
   }
 
-
   setItems() {
     this.items = this.sortBy(this.items, this.sortProperty, this.sortDirection);
     this.setTruncation();
     this.refreshHides();
+  }
+
+  setSortItems() {
+    this.sorts = this.sortItems.map(opt => {
+      let label = opt.getAttribute("label");
+      let field = opt.getAttribute("field");
+      let direction = opt.getAttribute("direction");
+      return { property: field, direction: direction, label: label }
+    });;
   }
 
   setTruncation() {
@@ -82,14 +98,22 @@ class SortableList extends LitElement {
     this.refreshHides();
   }
 
-  selectSort({detail: {value}}) {
+  selectSort(e) {
+    let value = e.target.value;
+    if (!value) {
+      console.error('no value for sorter');
+      return;
+    }
     this.setSort(value);
   }
 
   setSort(value) {
     const [property, direction] = value.split("-");
+
     this.sortProperty = property;
     this.sortDirection = direction;
+
+
     this.setItems();
   }
 
@@ -99,22 +123,22 @@ class SortableList extends LitElement {
 
   sortBy(items, sortProperty, sortDirection) {
     const sortItems = items.slice();
-      sortItems.sort((a,b) => {
-        // send missing values to the bottom of the list regardless of sort order
-        if (!a[sortProperty] && !b[sortProperty]) return 0;
-        if (!a[sortProperty]) return 1;
-        if (!b[sortProperty]) return -1;
-        if (sortDirection === 'asc') {
-          if (a[sortProperty] == b[sortProperty]) return 0;
-          if (a[sortProperty] > b[sortProperty]) return 1;
-          if (a[sortProperty] < b[sortProperty]) return -1;
-        }
-        if (sortDirection === 'desc') {
-          if (a[sortProperty] == b[sortProperty]) return 0;
-          if (a[sortProperty] < b[sortProperty]) return 1;
-          if (a[sortProperty] > b[sortProperty]) return -1;
-        }
-      });
+    sortItems.sort((a, b) => {
+      // send missing values to the bottom of the list regardless of sort order
+      if (!a[sortProperty] && !b[sortProperty]) return 0;
+      if (!a[sortProperty]) return 1;
+      if (!b[sortProperty]) return -1;
+      if (sortDirection === 'asc') {
+        if (a[sortProperty] == b[sortProperty]) return 0;
+        if (a[sortProperty] > b[sortProperty]) return 1;
+        if (a[sortProperty] < b[sortProperty]) return -1;
+      }
+      if (sortDirection === 'desc') {
+        if (a[sortProperty] == b[sortProperty]) return 0;
+        if (a[sortProperty] < b[sortProperty]) return 1;
+        if (a[sortProperty] > b[sortProperty]) return -1;
+      }
+    });
     this.dispatchEvent(new CustomEvent('itemsSorted', {
       detail: this,
       bubbles: true,
@@ -125,7 +149,7 @@ class SortableList extends LitElement {
   }
 
   refreshHides() {
-    this.items.forEach((p,i) => {
+    this.items.forEach((p, i) => {
       if (this.truncate) {
         if (i < this.displayedItemCount) {
           p.style.display = "block";
@@ -159,7 +183,6 @@ class SortableList extends LitElement {
       slot {
         display: none;
       }
-
       #items > * {
         margin-bottom: 1em;
         font-size: 18px;
@@ -187,6 +210,11 @@ class SortableList extends LitElement {
     `;
   }
 
+  isSelected(option) {
+    let flag = (`${this.sortProperty}-${this.sortDirection}` === `${option.property}-${option.direction}`);
+    return flag;
+  }
+
   render() {
     return html`
       <div class="item-summary">
@@ -207,20 +235,16 @@ class SortableList extends LitElement {
         `}
         <span>
           ${this.sorts ? html`
-          <vaadin-select value="${this.sortProperty}-${this.sortDirection}" @value-changed="${this.selectSort}">
-          <template>
-            <vaadin-list-box>
-              ${this.sorts.map((s) => html`<vaadin-item value="${s.property}-${s.direction}">${s.label}</vaadin-item>`)}
-            </vaadin-list-box>
-          </template>
-          </vaadin-select>
+          <select @change="${this.selectSort}">
+              ${this.sorts.map((s) => html`<option ?selected=${this.isSelected(s)} value="${s.property}-${s.direction}">${s.label}</option>`)}
+          </select>
           ` : null}
           ${this.truncationRequired && this.truncate ? html`
             <button @click="${this.showTruncatedItems}">
               Show all ${this.itemCount} ${this.itemType} &gt;
             </button>
           `
-          : html`
+        : html`
             ${this.truncatedItemCount > 0 ? html`
               <button @click="${this.hideTruncatedItems}">
                 &lt; Show fewer ${this.itemType}

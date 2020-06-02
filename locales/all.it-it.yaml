@@ -137,4 +137,18 @@
 - id: hide
   translation: "Nascondi"
 - id: reset
-  translation: "Ripristina"  
+  translation: "Ripristina"
+- id: oldest_first
+  translation: "Prima i Più Vecchi"
+- id: newest_first
+  translation: "Prima i Più Nuovi"
+- id: grant_a_z
+  translation: "Concedere a-z"
+- id: grant_z_a
+  translation: "Concedere z-a"
+- id: publication_a_z
+  translation: "Pubblicazione a-z"
+- id: publication_z_a
+  translation: "Pubblicazione z-a"
+- id: awarded_by
+  translation: "premiato da"      
