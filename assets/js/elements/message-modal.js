@@ -1,5 +1,7 @@
 import { LitElement, html, css } from "lit-element";
 
+import { classMap } from 'lit-html/directives/class-map';
+// This web component copied from the search modal
 class MessageModal extends LitElement {
 
     static get properties() {
@@ -45,7 +47,7 @@ class MessageModal extends LitElement {
             transform: scale(1.0);
             transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
         }
-        @media screen and (max-width: 1000px) {
+        @media screen and (max-width: 750px) {
 
             .modal-content {
                 position: absolute;
@@ -64,6 +66,7 @@ class MessageModal extends LitElement {
     render() {
         this.classes = { "modal": true, "show-modal": this.shown };
         return html`
+        <div class="${classMap(this.classes)}">
           <div class="modal-content">
             <slot></slot>
           </div>

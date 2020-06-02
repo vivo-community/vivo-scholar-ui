@@ -169,7 +169,7 @@ class SortableList extends LitElement {
         flex-flow: row wrap;
         justify-content: space-between;
         align-items: flex-start;
-        padding: 0.75em 0;
+        padding: 0.75em 0 0 0;
       }
       .items-shown-message {
         padding-bottom: 1em;

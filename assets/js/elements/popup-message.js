@@ -1,4 +1,4 @@
-import "../search/modal";
+
 
 import { LitElement, html, css } from "lit-element";
 
@@ -46,8 +46,8 @@ class PopupMessage extends LitElement {
     :host([open]){
       display: flex;
     }
-    vivo-modal {
-      --modal-width: 36rem;
+    vivo-message-modal {
+      --modal-width: 25rem;
     }
     .fas {
       display: inline-block;
@@ -77,7 +77,7 @@ class PopupMessage extends LitElement {
       flex-basis: 30%;
       text-align: left;
       font-weight: bold;
-      font-size: 1.25em;
+      font-size: .99em;
       padding-left: 12px;
       padding-top: 4px;
     }
@@ -99,7 +99,7 @@ class PopupMessage extends LitElement {
       flex-direction: column;
       flex-wrap: wrap;
       max-height: 250px;
-      min-height: 250px;
+      min-height: 175px;
       min-width: 100px;
       max-width: 32rem;
       overflow-x: scroll;
@@ -130,9 +130,6 @@ class PopupMessage extends LitElement {
       width: 20px !important;
     }
     @media screen and (max-width: 1000px) {
-      ::slotted(vivo-search-facet) {
-         width: unset;
-       }
        :host([open]) .fa-times::before {
         padding-right: unset;
       }
@@ -142,7 +139,7 @@ class PopupMessage extends LitElement {
         overflow-x: hidden;
         scrollbar-base-color:#ffeaff;
         min-height: unset;
-        max-height: 65%;
+        max-height: 60%;
         font-size: unset;
       }
     }
@@ -158,7 +155,7 @@ class PopupMessage extends LitElement {
           <i class="fas fa-times" @click=${this.closeDown}></i>
         </div>
         <div class="message-container">
-          <slot name="content"></slot>
+          <slot name="content"></slot><br><br>
           <slot name="link"></slot>
         </div>
     </vivo-message-modal>
