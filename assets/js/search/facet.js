@@ -114,7 +114,7 @@ class SearchFacet extends LitElement {
         -webkit-transform: rotate(45deg);
         -ms-transform: rotate(45deg);
         transform: rotate(45deg);
-      }    
+      }
       @media screen and (max-width: 1000px) {
         :host {
           text-align: left;
