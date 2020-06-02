@@ -234,8 +234,8 @@ class SortableList extends LitElement {
   }
 
   render() {
-    let showLabel = this.i18n['showing'] ? this.i18n['showing'] : '?';
-    let showingAllLabel = this.i18n['showing_all'] ? this.i18n['showing_all'] : '?';
+    let showLabel = this.i18n['showing'] ? this.i18n['showing'] : '**i18n key not found**';
+    let showingAllLabel = this.i18n['showing_all'] ? this.i18n['showing_all'] : '**i18n key not found**';
 
     return html`
       <div class="item-summary">
