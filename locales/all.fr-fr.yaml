@@ -63,7 +63,7 @@
 - id: grants
   translation: "subventions"
 - id: bio
-  translation: "Bio"
+  translation: "Biopic"
 - id: searching
   translation: "Recherche"
 - id: filter_people
@@ -151,5 +151,9 @@
 - id: publication_z_a
   translation: "Publication z-a"
 - id: awarded_by
-  translation: "attribué par"    
+  translation: "attribué par"
+- id: learn_more
+  translation: "Apprendre encore plus"    
+- id: showing_all
+  translation: "Montrant tout"  
   

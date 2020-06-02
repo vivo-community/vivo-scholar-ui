@@ -19,6 +19,7 @@ import './elements/grant.js'
 import './elements/grant-list.js'
 import './elements/sort-option.js'
 import './elements/sortable-list.js'
+import './elements/i18n-label.js'
 
 import './elements/course.js'
 import './elements/popup-message.js'

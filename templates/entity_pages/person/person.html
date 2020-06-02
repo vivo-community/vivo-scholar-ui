@@ -104,6 +104,10 @@
                <vivo-sort-option field="title" direction="asc" label="<%= t("publication_a_z") %>"></vivo-sort-option>
                <vivo-sort-option field="title" direction="desc" label="<%= t("publication_z_a") %>"></vivo-sort-option>
               
+               <vivo-i18n-label key="showing" label="<%= t("showing") %>"></vivo-i18n-label>
+               <vivo-i18n-label key="of" label="<%= t("of") %>"></vivo-i18n-label>
+               <vivo-i18n-label key="showing_all" label="<%= t("showing_all") %>"></vivo-i18n-label>
+
                <%= for (idx, p) in person["publications"] { %>
                  <vivo-publication url="/entities/publication/<%= p["id"] %>" published-date="<%= p["publicationDate"] %>" title="<%= p["title"] %>">
                     <a slot="title" href="/entities/publication/<%= p["id"] %>">
@@ -145,6 +149,10 @@
              <vivo-sort-option field="startDate" direction="desc" label="<%= t("newest_first") %>"></vivo-sort-option>
              <vivo-sort-option field="title" direction="asc" label="<%= t("grant_a_z") %>"></vivo-sort-option>
              <vivo-sort-option field="title" direction="desc" label="<%= t("grant_z_a") %>"></vivo-sort-option>
+
+             <vivo-i18n-label key="showing" label="<%= t("showing") %>"></vivo-i18n-label>
+             <vivo-i18n-label key="of" label="<%= t("of") %>"></vivo-i18n-label>
+             <vivo-i18n-label key="showing_all" label="<%= t("showing_all") %>"></vivo-i18n-label>
 
              <%= for (idx, p) in person["researcherOn"] { %>
               <vivo-grant url="/entities/grant/<%= p["id"] %>" start-date="<%= p["startDate"] %>" title="<%= p["label"] %>">

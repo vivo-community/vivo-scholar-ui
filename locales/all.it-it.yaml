@@ -151,4 +151,8 @@
 - id: publication_z_a
   translation: "Pubblicazione z-a"
 - id: awarded_by
-  translation: "premiato da"      
+  translation: "premiato da"
+- id: learn_more
+  translation: Per saperne di più
+- id: showing_all
+  translation: "Mostrando tutto"   

@@ -160,7 +160,11 @@
 - id: publication_z_a
   translation: "Publcation z-a"
 - id: awarded_by
-  translation: "awarded by"  
+  translation: "awarded by"
+- id: learn_more
+  translation: "Learn more"
+- id: showing_all
+  translation: "Showing all"  
 
 
 

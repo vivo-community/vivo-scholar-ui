@@ -15,13 +15,15 @@ class SortableList extends LitElement {
       },
       items: { type: Array },
       sortItems: { type: Array },
+      i18nItems: { type: Array },
       itemCount: { type: Number },
       truncatedItemCount: { type: Number },
       truncate: { type: Boolean, reflect: true },
       truncationRequired: { type: Boolean },
       sortProperty: { type: String },
       sortDirection: { type: String },
-      sorts: { type: Array }
+      sorts: { type: Array },
+      i18n: { type: Object }
     };
   }
 
@@ -38,16 +40,24 @@ class SortableList extends LitElement {
     this.slotChanged = this.slotChanged.bind(this);
     this.itemType = 'items';
     this.sorts = [];
+    this.i18n = {};
+
   }
 
   slotChanged(e) {
-    const itemElements = Array.from(e.target.assignedNodes()).filter((n) => n.tagName && (n.tagName != 'VIVO-SORT-OPTION')).map((n) => n.cloneNode(true));
+    const itemElements = Array.from(e.target.assignedNodes()).filter(
+      (n) => n.tagName && (n.tagName != 'VIVO-SORT-OPTION' && n.tagName != 'VIVO-I18N-LABEL')
+    ).map((n) => n.cloneNode(true));
     this.items = itemElements;
     this.setItems();
 
     const sortElements = Array.from(e.target.assignedNodes()).filter((n) => n.tagName && n.tagName == 'VIVO-SORT-OPTION').map((n) => n.cloneNode(true));
     this.sortItems = sortElements;
     this.setSortItems();
+
+    const i18Elements = Array.from(e.target.assignedNodes()).filter((n) => n.tagName && n.tagName == 'VIVO-I18N-LABEL').map((n) => n.cloneNode(true));
+    this.i18nItems = i18Elements;
+    this.seti18Labels();
   }
 
   firstUpdated() {
@@ -75,6 +85,14 @@ class SortableList extends LitElement {
       let direction = opt.getAttribute("direction");
       return { property: field, direction: direction, label: label }
     });;
+  }
+
+  seti18Labels() {
+    this.i18nItems.forEach(opt => {
+      const key = opt.getAttribute("key");
+      const label = opt.getAttribute("label");
+      this.i18n[key] = label;
+    });
   }
 
   setTruncation() {
@@ -216,12 +234,15 @@ class SortableList extends LitElement {
   }
 
   render() {
+    let showLabel = this.i18n['showing'] ? this.i18n['showing'] : '?';
+    let showingAllLabel = this.i18n['showing_all'] ? this.i18n['showing_all'] : '?';
+
     return html`
       <div class="item-summary">
         ${this.truncationRequired && this.truncate ? html`
           <span>
             <span class="items-shown-message">
-              Showing ${this.displayedItemCount} of ${this.itemCount} ${this.itemType}
+              ${showLabel} ${this.displayedItemCount} of ${this.itemCount} ${this.itemType}
             </span>
           </span>
         `
@@ -229,7 +250,7 @@ class SortableList extends LitElement {
           <span>
             <slot id="title" name="title"></slot>
             <span class="items-shown-message">
-              Showing all ${this.itemCount} ${this.itemType}
+              ${showingAllLabel} ${this.itemCount} ${this.itemType}
             </span>
           </span>
         `}

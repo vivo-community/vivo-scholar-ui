@@ -61,11 +61,11 @@
 - id: keywords
   translation: "Schlüsselwörter"
 - id: grants
-  translation: "Grants"
+  translation: "Zuschüsse"
 - id: bio
-  translation: "Bio"
+  translation: "die Biografie"
 - id: searching
-  translation: "Searching"
+  translation: "Suchen"
 - id: filter_people
   translation: "Filter Menschen"
 - id: filter_publications
@@ -159,4 +159,8 @@
 - id: publication_z_a
   translation: "Veröffentlichung z-a"
 - id: awarded_by
-  translation: "verliehen"     
+  translation: "verliehen"
+- id: learn_more
+  translation: "Erfahren Sie mehr" 
+- id: showing_all
+  translation: "Alles zeigen"    
