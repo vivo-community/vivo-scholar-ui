@@ -1,5 +1,4 @@
 import { LitElement, html, css } from "lit-element";
-//import '@vaadin/vaadin-select';
 
 class SortableList extends LitElement {
   static get properties() {
