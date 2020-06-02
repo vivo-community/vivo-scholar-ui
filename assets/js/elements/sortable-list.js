@@ -98,7 +98,6 @@ class SortableList extends LitElement {
     this.refreshHides();
   }
 
-  //selectSort({detail: {value}}) {
   selectSort(e) {
     let value = e.target.value;
     if (!value) {
