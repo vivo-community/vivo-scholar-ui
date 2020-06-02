@@ -17,7 +17,6 @@ import './elements/truncated-text.js'
 import './elements/interval.js'
 import './elements/grant.js'
 import './elements/grant-list.js'
-import './elements/sort-options.js'
 import './elements/sort-option.js'
 import './elements/sortable-list.js'
 

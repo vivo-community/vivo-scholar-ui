@@ -9,8 +9,6 @@ class SortOption extends LitElement {
           label: { type: String }
         }
     }
-
-    // NOTE: no render, seemed easier
 }
 
 customElements.define('vivo-sort-option', SortOption);

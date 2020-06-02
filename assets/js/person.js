@@ -1,4 +1,5 @@
 // person entity page behavior
+/*
 const grantList = document.getElementById('grant-list');
 if (grantList) {
   grantList.sorts = [
@@ -8,7 +9,7 @@ if (grantList) {
     {property : "title", direction : "desc", label: "Grant z-a"}
   ];
 }
-/*
+
 const pubList = document.getElementById('publication-list');
 if (pubList) {
   pubList.sorts = [
