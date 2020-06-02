@@ -19,6 +19,7 @@ class PersonSearch extends Searcher(LitElement) {
         .people {
             display: block;
             padding: 1em;
+            padding-top: 0.4em;
         }
         .person {
             display: flex;

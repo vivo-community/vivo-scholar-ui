@@ -23,6 +23,7 @@ class PublicationSearch extends Searcher(LitElement) {
         .publications {
           display: block; 
           padding: 1em;
+          padding-top: 0.4em;
         }
         .search-actions {
           display: flex;
