@@ -8,11 +8,6 @@
   font-family: Verdana, sans-serif;
   line-height: 1.6em;
 }
-// NOTE: chrome specific
-// https://stackoverflow.com/questions/9328832/how-to-apply-specific-css-rules-to-chrome-only
-.selector:not(*:root), :root {
-  font-size: 0.85em;
-}
 .site-header {
   position: fixed;
   left: 0;
