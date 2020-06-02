@@ -158,9 +158,13 @@
 - id: publication_a_z
   translation: "Publication a-z"
 - id: publication_z_a
-  translation: "Publcation z-a"
+  translation: "Publication z-a"
 - id: awarded_by
-  translation: "awarded by"  
+  translation: "awarded by"
+- id: person_a_z
+  translation: "Person a-z"
+- id: person_z_a
+  translation: "Person z-a"  
 
 
 

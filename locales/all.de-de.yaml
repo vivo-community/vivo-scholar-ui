@@ -149,7 +149,7 @@
 - id: oldest_first
   translation: "Die ältesten zu erst"
 - id: newest_first
-  translation: "Das Neuste Zuerst"
+  translation: "Das neuste zuerst"
 - id: grant_a_z
   translation: "Gewähren a-z"
 - id: grant_z_a
@@ -159,4 +159,8 @@
 - id: publication_z_a
   translation: "Veröffentlichung z-a"
 - id: awarded_by
-  translation: "verliehen"     
+  translation: "verliehen" 
+- id: person_a_z
+  translation: "Person a-z"
+- id: person_z_a
+  translation: "Person z-a"    

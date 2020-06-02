@@ -152,4 +152,7 @@
   translation: "Publication z-a"
 - id: awarded_by
   translation: "attribué par"    
-  
+- id: person_a_z
+  translation: "la Personne a-z"
+- id: person_z_a
+  translation: "la Personne z-a"  
