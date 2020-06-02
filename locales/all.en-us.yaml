@@ -165,6 +165,10 @@
   translation: "Person a-z"
 - id: person_z_a
   translation: "Person z-a"  
+- id: learn_more
+  translation: "Learn more"
+- id: showing_all
+  translation: "Showing all"  
 
 
 

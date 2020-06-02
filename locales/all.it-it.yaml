@@ -156,3 +156,8 @@
   translation: "Persona a-z"
 - id: person_z_a
   translation: "Persona z-a"    
+  translation: "premiato da"
+- id: learn_more
+  translation: Per saperne di più
+- id: showing_all
+  translation: "Mostrando tutto"   
