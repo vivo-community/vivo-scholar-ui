@@ -2,6 +2,14 @@ import { LitElement, html, css } from 'lit-element';
 import './elements/grant';
 import './elements/interval';
 
+let check = customElements.get('vivo-sortable-list');
+
+// NOTE: if only using this component, need this imported
+(async () => {
+    if (!check) {
+      await import('./elements/sortable-list');
+    }
+})();
 
 import gql from 'graphql-tag'
 import ApolloClient from 'apollo-boost'
@@ -43,19 +51,15 @@ class EmbeddedGrantList extends LitElement {
     return {
       grants: { type: Array },
       person_id: { type: String},
-      sorts: { type: Object, reflect: true}
+      i18n: { type: Object }
     }
   }
 
   constructor() {
     super();
     this.grants = [];
-    this.sorts = [
-      {property : "startDate", direction : "asc", label: "Oldest First"} ,
-      {property : "startDate", direction : "desc", label: "Newest First"},
-      {property : "title", direction : "asc", label: "Grant a-z"} ,
-      {property : "title", direction : "desc", label: "Grant z-a"}
-    ];
+    this.i18n = {}
+    
   }
 
   connectedCallback() {
@@ -102,9 +106,27 @@ class EmbeddedGrantList extends LitElement {
 
   render() {
     let grantElements = this.grants.map((p) => this.grantTemplate(p));
+    let oldestFirstLabel = this.i18n['oldest_first'] ? this.i18n['oldest_first'] : 'Oldest First';
+    let newestFirstLabel = this.i18n['newest_first'] ? this.i18n['newest_first'] : 'Newest First';
+    let grantAtoZLabel = this.i18n['grant_a_z'] ? this.i18n['grant_a_z'] : 'Grant a-z';
+    let grantZtoALabel = this.i18n['grant_z_a'] ? this.i18n['grant_z_a'] : 'Grant z-a';
+    let showingLabel = this.i18n['showing'] ? this.i18n['showing'] : 'Showing';
+    let ofLabel = this.i18n['of'] ? this.i18n['of'] : 'of';
+    let showingAllLabel = this.i18n['showing_all'] ? this.i18n['showing_all'] : 'Showing All';
+
     return html`
       <vivo-sortable-list item-type="grants" sortProperty="startDate" sortDirection="desc" .sorts="${this.sorts}">
-        ${grantElements}
+      <vivo-sort-option field="startDate" direction="asc" label="${oldestFirstLabel}"></vivo-sort-option>
+      <vivo-sort-option field="startDate" direction="desc" label="${newestFirstLabel}"></vivo-sort-option>
+      <vivo-sort-option field="title" direction="asc" label="${grantAtoZLabel}"></vivo-sort-option>
+      <vivo-sort-option field="title" direction="desc" label="${grantZtoALabel}"></vivo-sort-option>
+
+      ${grantElements}
+
+      <vivo-i18n-label key="showing" label="${showingLabel}"></vivo-i18n-label>
+      <vivo-i18n-label key="of" label="${ofLabel}"></vivo-i18n-label>
+      <vivo-i18n-label key="showing_all" label="${showingAllLabel}"></vivo-i18n-label>
+
       </vivo-sortable-list>
     `
   }
