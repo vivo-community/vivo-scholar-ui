@@ -173,8 +173,14 @@ vivo-sidebar-item  > div:last-of-type {
 vivo-tabs {
   background-color: #F3F2F1;
 }
+vivo-tabs[vivo-tab-style="secondary"] {
+  background-color: unset;
+}
 vivo-tab-panel {
   background-color: white;
+}
+vivo-tabs[vivo-tab-style="secondary"] vivo-tab {
+  font-size: 1.1em;
 }
 vivo-tab h3 {
   display: inline;
