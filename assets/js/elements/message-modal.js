@@ -1,8 +1,8 @@
 import { LitElement, html, css } from "lit-element";
 
 import { classMap } from 'lit-html/directives/class-map';
-
-class ModalBox extends LitElement {
+// This web component copied from the search modal
+class MessageModal extends LitElement {
 
     static get properties() {
         return {
@@ -47,7 +47,7 @@ class ModalBox extends LitElement {
             transform: scale(1.0);
             transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
         }
-        @media screen and (max-width: 1000px) {
+        @media screen and (max-width: 750px) {
 
             .modal-content {
                 position: absolute;
@@ -74,4 +74,4 @@ class ModalBox extends LitElement {
     }
 }
 
-customElements.define('vivo-modal', ModalBox);
+customElements.define('vivo-message-modal', MessageModal);

@@ -63,7 +63,7 @@
 - id: grants
   translation: "subventions"
 - id: bio
-  translation: "Bio"
+  translation: "Biopic"
 - id: searching
   translation: "Recherche"
 - id: filter_people
@@ -137,5 +137,23 @@
 - id: hide
   translation: "Masquer"
 - id: reset
-  translation: "Réinitialiser"  
+  translation: "Réinitialiser"
+- id: oldest_first
+  translation: "Le Plus Ancien en Premier"
+- id: newest_first
+  translation: "Nouveau en premier"
+- id: grant_a_z
+  translation: "Subvention a-z"
+- id: grant_z_a
+  translation: "Subvention z-a"
+- id: publication_a_z
+  translation: "Publication a-z"
+- id: publication_z_a
+  translation: "Publication z-a"
+- id: awarded_by
+  translation: "attribué par"
+- id: learn_more
+  translation: "Apprendre encore plus"    
+- id: showing_all
+  translation: "Montrant tout"  
   

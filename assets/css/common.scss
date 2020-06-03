@@ -8,11 +8,6 @@
   font-family: Verdana, sans-serif;
   line-height: 1.6em;
 }
-// NOTE: chrome specific
-// https://stackoverflow.com/questions/9328832/how-to-apply-specific-css-rules-to-chrome-only
-.selector:not(*:root), :root {
-  font-size: 0.85em;
-}
 .site-header {
   position: fixed;
   left: 0;
@@ -161,6 +156,12 @@ vivo-sidebar-item a {
   font-weight: bold;
   text-decoration: none;
   border-bottom: 1px dotted currentColor;
+  margin: 0;
+}
+#keywords p {
+  color: black;
+  font-weight: bold;
+  margin: 0;
 }
 
 vivo-sidebar-item  > div:first-of-type {
@@ -285,6 +286,36 @@ vivo-tab-panel h4 {
   width: 100%;
   height: auto;
 }
+}
+@media screen and (max-width: 1200px){
+  .person-container{
+    grid-template-columns: repeat(10, minmax(0, 1fr));
+  }
+  .person-container .sidebar-image {
+    grid-column: 1 / span 2;
+  }
+  .person-container aside {
+    grid-column: 1 / span 2;
+    max-width: 230px
+  }
+  .person-container main {
+    grid-column: span 7;
+  }
+}
+@media screen and (max-width: 1150px){
+  .person-container{
+    grid-template-columns: repeat(9, minmax(0, 1fr));
+  }
+  .person-container .sidebar-image {
+    grid-column: 1 / span 2;
+  }
+  .person-container aside {
+    grid-column: 1 / span 2;
+    max-width: 230px
+  }
+  .person-container main {
+    grid-column: span 7;
+  }
 }
 @media screen and (max-width: 800px) {
 // person.html styling
