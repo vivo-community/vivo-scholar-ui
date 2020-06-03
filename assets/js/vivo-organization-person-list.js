@@ -1,10 +1,8 @@
-import '../elements/person-image.js';
-import '../elements/person-card.js';
-import '../elements/truncated-text-result.js';
-
-
 import { LitElement, html, css } from 'lit-element';
 
+import './elements/person-image.js';
+import './elements/person-card.js';
+import './elements/truncated-text-result.js';
 
 import gql from 'graphql-tag'
 import ApolloClient from 'apollo-boost'
@@ -133,4 +131,5 @@ class EmbeddedOrgPeopleList extends LitElement {
     `
   }
 }
-  customElements.define('vivo-embedded-organization-people-list', EmbeddedOrgPeopleList)
+  
+customElements.define('vivo-embedded-organization-people-list', EmbeddedOrgPeopleList);

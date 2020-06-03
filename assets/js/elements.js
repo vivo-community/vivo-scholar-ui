@@ -29,10 +29,12 @@ import './elements/message-modal.js'
 import '@vaadin/vaadin-select'
 
 //embedded-lists
+/*
 import './embedded-lists/embedded-publication-list.js'
 import './embedded-lists/embedded-grant-list.js'
 import './embedded-lists/embedded-course-list.js'
 import './embedded-lists/embedded-organization-person-list.js'
+*/
 
 //from search
 import './elements/person-image.js';

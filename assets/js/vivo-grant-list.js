@@ -1,6 +1,6 @@
 import { LitElement, html, css } from 'lit-element';
-import '../elements/grant';
-import '../elements/interval';
+import './elements/grant';
+import './elements/interval';
 
 
 import gql from 'graphql-tag'
@@ -42,7 +42,7 @@ class EmbeddedGrantList extends LitElement {
   static get properties() {
     return {
       grants: { type: Array },
-      person_url: { type: String},
+      person_id: { type: String},
       sorts: { type: Object, reflect: true}
     }
   }
@@ -60,9 +60,10 @@ class EmbeddedGrantList extends LitElement {
 
   connectedCallback() {
     super.connectedCallback();
-    let person_url = this.getAttribute("person-url");
-    let regex = /[n]\d+/g;
-    let person_id = (person_url.match(regex)).toString();
+    //let person_url = this.getAttribute("person-url");
+    //let regex = /[n]\d+/g;
+    let person_id = this.getAttribute("person-id");
+    //let person_id = (person_url.match(regex)).toString();
     const data = client.query({
       query: GRANT_QUERY,
       variables: {
@@ -98,9 +99,6 @@ class EmbeddedGrantList extends LitElement {
      </vivo-grant>
     `
   }
-
-
-
 
   render() {
     let grantElements = this.grants.map((p) => this.grantTemplate(p));

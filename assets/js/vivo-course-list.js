@@ -1,6 +1,5 @@
 import { LitElement, html, css } from 'lit-element';
 
-
 import gql from 'graphql-tag'
 import ApolloClient from 'apollo-boost'
 
@@ -45,9 +44,10 @@ class EmbeddedCourseList extends LitElement {
 
   connectedCallback() {
     super.connectedCallback();
-    let person_url = this.getAttribute("person-url");
-    let regex = /[n]\d+/g;
-    let person_id = (person_url.match(regex)).toString();
+    //let person_url = this.getAttribute("person-url");
+    //let regex = /[n]\d+/g;
+    //let person_id = (person_url.match(regex)).toString();
+    let person_id = this.getAttribute("person-id");
     const data = client.query({
       query: COURSE_QUERY,
       variables: {
