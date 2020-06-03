@@ -8,7 +8,6 @@ import './elements/sortable-list';
 
 import {unsafeHTML} from 'lit-html/directives/unsafe-html.js';
 
-
 import gql from 'graphql-tag'
 import ApolloClient from 'apollo-boost'
 
