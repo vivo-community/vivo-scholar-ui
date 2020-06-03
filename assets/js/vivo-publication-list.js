@@ -5,8 +5,6 @@ import './elements/publication-author-list';
 import './elements/publication-author';
 
 import './elements/sortable-list';
-import './elements/sort-option';
-
 
 import {unsafeHTML} from 'lit-html/directives/unsafe-html.js';
 
@@ -54,21 +52,15 @@ class EmbeddedPublicationList extends LitElement {
   static get properties() {
     return {
       publications: { type: Array },
-      //person_id: { type: String},
-      sorts: {type: Object, reflect: true}
+      i18n: { type: Object }
+      //person_id: { type: String}
     }
   }
 
   constructor() {
     super();
     this.publications = [];
-    // i18n
-    this.sorts = [
-        {property : "publishedDate", direction : "asc", label: "Oldest First"} ,
-        {property : "publishedDate", direction : "desc", label: "Newest First"},
-        {property : "title", direction : "asc", label: "Publication a-z"} ,
-        {property : "title", direction : "desc", label: "Publication z-a"}
-      ];
+    this.i18n = {};
   }
 
   connectedCallback() {
@@ -135,24 +127,32 @@ class EmbeddedPublicationList extends LitElement {
 
   render() {
     let publicationElements = this.publications.map((p) => this.publicationTemplate(p));
-    // .sorts="${this.sorts}"
+    // read in i18nLabel tags?
+    let oldestFirstLabel = this.i18n['oldest_first'] ? this.i18n['oldest_first'] : 'Oldest First';
+    let newestFirstLabel = this.i18n['newest_first'] ? this.i18n['newest_first'] : 'Newest First';
+    let pubAtoZLabel = this.i18n['publication_a_z'] ? this.i18n['publication_a_z'] : 'Publication a-z';
+    let pubZtoALabel = this.i18n['publication_z_a'] ? this.i18n['publication_z_a'] : 'Publication z-a';
+    let showingLabel = this.i18n['showing'] ? this.i18n['showing'] : 'Showing';
+    let ofLabel = this.i18n['of'] ? this.i18n['of'] : 'of';
+    let showingAllLabel = this.i18n['showing_all'] ? this.i18n['showing_all'] : 'Showing All';
+
+    // etc...
     return html`
       <vivo-sortable-list item-type="publications" sortProperty="publishedDate" sortDirection="desc">
-      <!-- allow overrides? -->
-      <vivo-sort-option field="publishedDate" direction="asc" label="Oldest First"></vivo-sort-option>
-      <vivo-sort-option field="publishedDate" direction="desc" label="Newest First"></vivo-sort-option>
-      <vivo-sort-option field="title" direction="asc" label="Publications a-z"></vivo-sort-option>
-      <vivo-sort-option field="title" direction="desc" label="Publications z-a"></vivo-sort-option>
+      
+      <vivo-sort-option field="publishedDate" direction="asc" label="${oldestFirstLabel}"></vivo-sort-option>
+      <vivo-sort-option field="publishedDate" direction="desc" label="${newestFirstLabel}"></vivo-sort-option>
+      <vivo-sort-option field="title" direction="asc" label="${pubAtoZLabel}"></vivo-sort-option>
+      <vivo-sort-option field="title" direction="desc" label="${pubZtoALabel}"></vivo-sort-option>
   
       ${publicationElements}
 
-      <vivo-i18n-label key="showing" label="showing"></vivo-i18n-label>
-      <vivo-i18n-label key="of" label="of"></vivo-i18n-label>
-      <vivo-i18n-label key="showing_all" label="Showing all"></vivo-i18n-label>
+      <vivo-i18n-label key="showing" label="${showingLabel}"></vivo-i18n-label>
+      <vivo-i18n-label key="of" label="${ofLabel}"></vivo-i18n-label>
+      <vivo-i18n-label key="showing_all" label="${showingAllLabel}"></vivo-i18n-label>
       </vivo-sortable-list>
     `
   }
 }
-  
-//customElements.define('vivo-embedded-pub-list', EmbeddedPubList);
+
 customElements.define('vivo-embedded-publication-list', EmbeddedPublicationList);
