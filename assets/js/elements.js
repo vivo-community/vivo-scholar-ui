@@ -26,7 +26,6 @@ import './elements/popup-message.js'
 import './elements/entity.js'
 import './elements/entity-item.js'
 import './elements/message-modal.js'
-import '@vaadin/vaadin-select'
 
 //embedded-lists
 /*
