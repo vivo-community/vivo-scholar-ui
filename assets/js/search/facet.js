@@ -106,6 +106,7 @@ class SearchFacet extends LitElement {
       .checkbox-container .checkbox-custom:after {
         /* had to just find these numbers by trying different ones */
         left: 4px; 
+        right: 4px;
         top: 0px;
         width: 2px;
         height: 0.50em;
