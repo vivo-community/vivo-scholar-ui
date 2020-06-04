@@ -61,9 +61,8 @@ class SearchSortOptions extends LitElement {
             color: #444;
             line-height: 1.3;
             padding: .6em 1.4em .5em .8em;
-            /* width: 100%;
+            width: auto;
             max-width: 100%;
-            */
             box-sizing: border-box;
             margin: 0;
             border: 1px solid #aaa;
