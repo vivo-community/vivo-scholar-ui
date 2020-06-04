@@ -3,27 +3,12 @@ import './elements/publication';
 import './elements/publication-list';
 import './elements/publication-author-list';
 import './elements/publication-author';
-
 import './elements/sortable-list';
 
 import {unsafeHTML} from 'lit-html/directives/unsafe-html.js';
 
 import gql from 'graphql-tag'
 import ApolloClient from 'apollo-boost'
-
-//is there a default endpoint?
-let endpoint = " "
-// let endpoint = "https://scholars-discovery-scholars.cloud.duke.edu/graphql"
-if (process.env.GRAPHQL_ENDPOINT != undefined) {
-  endpoint = `${process.env.GRAPHQL_ENDPOINT}`
-}
-
-const client = new ApolloClient({
-  uri: endpoint,
-  fetchOptions: {
-    useGETForQueries: true
-  }
-});
 
 const PUBLICATION_QUERY = gql`
   query($id: String) {
@@ -51,8 +36,8 @@ class EmbeddedPublicationList extends LitElement {
   static get properties() {
     return {
       publications: { type: Array },
-      i18n: { type: Object }
-      //person_id: { type: String}
+      i18n: { type: Object },
+      endpoint: { type: String, reflect: true }
     }
   }
 
@@ -64,14 +49,16 @@ class EmbeddedPublicationList extends LitElement {
 
   connectedCallback() {
     super.connectedCallback();
-    //let person_url = this.getAttribute("person-url");
     let person_id = this.getAttribute("person-id");
-    //let regex = /[n]\d+/g;
-    //let person_id = (person_url.match(regex)).toString();
-    const data = client.query({
+    this.client = new ApolloClient({
+      uri: this.endpoint,
+      fetchOptions: {
+        useGETForQueries: true
+      }
+    });
+    const data = this.client.query({
       query: PUBLICATION_QUERY,
       variables: {
-        //here get attribute person_url then strip all but the last bit for the id
         id: person_id
       }
     }).then(({data}) =>  {
@@ -126,7 +113,7 @@ class EmbeddedPublicationList extends LitElement {
 
   render() {
     let publicationElements = this.publications.map((p) => this.publicationTemplate(p));
-    // read in i18nLabel tags?
+    // NOTE: up to client to set these labels however there are done in system/language
     let oldestFirstLabel = this.i18n['oldest_first'] ? this.i18n['oldest_first'] : 'Oldest First';
     let newestFirstLabel = this.i18n['newest_first'] ? this.i18n['newest_first'] : 'Newest First';
     let pubAtoZLabel = this.i18n['publication_a_z'] ? this.i18n['publication_a_z'] : 'Publication a-z';
@@ -135,20 +122,17 @@ class EmbeddedPublicationList extends LitElement {
     let ofLabel = this.i18n['of'] ? this.i18n['of'] : 'of';
     let showingAllLabel = this.i18n['showing_all'] ? this.i18n['showing_all'] : 'Showing All';
 
-    // etc...
     return html`
       <vivo-sortable-list item-type="publications" sortProperty="publishedDate" sortDirection="desc">
-      
-      <vivo-sort-option field="publishedDate" direction="asc" label="${oldestFirstLabel}"></vivo-sort-option>
-      <vivo-sort-option field="publishedDate" direction="desc" label="${newestFirstLabel}"></vivo-sort-option>
-      <vivo-sort-option field="title" direction="asc" label="${pubAtoZLabel}"></vivo-sort-option>
-      <vivo-sort-option field="title" direction="desc" label="${pubZtoALabel}"></vivo-sort-option>
-  
-      ${publicationElements}
-
-      <vivo-i18n-label key="showing" label="${showingLabel}"></vivo-i18n-label>
-      <vivo-i18n-label key="of" label="${ofLabel}"></vivo-i18n-label>
-      <vivo-i18n-label key="showing_all" label="${showingAllLabel}"></vivo-i18n-label>
+        <vivo-sort-option field="publishedDate" direction="asc" label="${oldestFirstLabel}"></vivo-sort-option>
+        <vivo-sort-option field="publishedDate" direction="desc" label="${newestFirstLabel}"></vivo-sort-option>
+        <vivo-sort-option field="title" direction="asc" label="${pubAtoZLabel}"></vivo-sort-option>
+        <vivo-sort-option field="title" direction="desc" label="${pubZtoALabel}"></vivo-sort-option>
+        <!-- remaining labels (not sort) -->
+        <vivo-i18n-label key="showing" label="${showingLabel}"></vivo-i18n-label>
+        <vivo-i18n-label key="of" label="${ofLabel}"></vivo-i18n-label>
+        <vivo-i18n-label key="showing_all" label="${showingAllLabel}"></vivo-i18n-label>
+        ${publicationElements}
       </vivo-sortable-list>
     `
   }

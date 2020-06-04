@@ -14,20 +14,6 @@ let check = customElements.get('vivo-sortable-list');
 import gql from 'graphql-tag'
 import ApolloClient from 'apollo-boost'
 
-//is there a default endpoint?
-let endpoint = " "
-// let endpoint = "https://scholars-discovery-scholars.cloud.duke.edu/graphql"
-if (process.env.GRAPHQL_ENDPOINT != undefined) {
-  endpoint = `${process.env.GRAPHQL_ENDPOINT}`
-}
-
-const client = new ApolloClient({
-  uri: endpoint,
-  fetchOptions: {
-    useGETForQueries: true
-  }
-});
-
 const GRANT_QUERY = gql`
   query($id: String) {
     person(id: $id) {
@@ -51,27 +37,29 @@ class EmbeddedGrantList extends LitElement {
     return {
       grants: { type: Array },
       person_id: { type: String},
-      i18n: { type: Object }
+      i18n: { type: Object },
+      endpoint: { type: String }
     }
   }
 
   constructor() {
     super();
     this.grants = [];
-    this.i18n = {}
-    
+    this.i18n = {};
   }
 
   connectedCallback() {
     super.connectedCallback();
-    //let person_url = this.getAttribute("person-url");
-    //let regex = /[n]\d+/g;
     let person_id = this.getAttribute("person-id");
-    //let person_id = (person_url.match(regex)).toString();
-    const data = client.query({
+    this.client = new ApolloClient({
+        uri: this.endpoint,
+        fetchOptions: {
+          useGETForQueries: true
+        }
+    });
+    const data = this.client.query({
       query: GRANT_QUERY,
       variables: {
-        //here get attribute person_url then strip all but the last bit for the id
         id: person_id
       }
     }).then(({data}) =>  {

@@ -7,20 +7,6 @@ import './elements/truncated-text-result.js';
 import gql from 'graphql-tag'
 import ApolloClient from 'apollo-boost'
 
-//is there a default endpoint?
-let endpoint = " "
-// let endpoint = "https://scholars-discovery-scholars.cloud.duke.edu/graphql"
-if (process.env.GRAPHQL_ENDPOINT != undefined) {
-  endpoint = `${process.env.GRAPHQL_ENDPOINT}`
-}
-
-const client = new ApolloClient({
-  uri: endpoint,
-  fetchOptions: {
-    useGETForQueries: true
-  }
-});
-
 const ORG_QUERY = gql`
   query($filters: [FilterArgInput]) {
     people(filters: $filters, query: {q: "*", bq: "type:(*FacultyMember)^2.0"}) {
@@ -42,7 +28,8 @@ class EmbeddedOrgPeopleList extends LitElement {
     return {
       people: { type: Array },
       organization: { type: String },
-      type: { type: String }
+      type: { type: String },
+      endpoint: { type: String }
     }
   }
 
@@ -80,11 +67,17 @@ class EmbeddedOrgPeopleList extends LitElement {
     this.people = [];
     this.type = this.getAttribute("type");
     this.organization = this.getAttribute("organization");
-}
+  }
 
   connectedCallback() {
     super.connectedCallback();
-    const data = client.query({
+    this.client = new ApolloClient({
+        uri: this.endpoint,
+        fetchOptions: {
+          useGETForQueries: true
+        }
+    });
+    const data = this.client.query({
       query: ORG_QUERY,
       variables: {
         //here get attribute person_url then strip all but the last bit for the id
