@@ -68,7 +68,7 @@ class SearchSortOptions extends LitElement {
     
     render() { 
         return html`
-        <select @change="${this.handleSortSelected}" class="select-css">  
+        <select @change="${this.handleSortSelected}">  
            ${this.options.map(option => 
             html`
             <option 
