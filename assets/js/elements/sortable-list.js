@@ -1,5 +1,7 @@
 import { LitElement, html, css } from "lit-element";
 
+import { selectStyle } from './select-style.js';
+
 class SortableList extends LitElement {
   static get properties() {
     return {
@@ -191,10 +193,10 @@ class SortableList extends LitElement {
     }
   }
 
-
-
   static get styles() {
-    return css`
+    return [
+      selectStyle,
+      css`
       :host {
         display: block;
       }
@@ -225,7 +227,8 @@ class SortableList extends LitElement {
         cursor: pointer;
         white-space: nowrap;
       }
-    `;
+    `
+    ]
   }
 
   isSelected(option) {
