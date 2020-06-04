@@ -104,17 +104,15 @@ class EmbeddedGrantList extends LitElement {
 
     return html`
       <vivo-sortable-list item-type="grants" sortProperty="startDate" sortDirection="desc" .sorts="${this.sorts}">
-      <vivo-sort-option field="startDate" direction="asc" label="${oldestFirstLabel}"></vivo-sort-option>
-      <vivo-sort-option field="startDate" direction="desc" label="${newestFirstLabel}"></vivo-sort-option>
-      <vivo-sort-option field="title" direction="asc" label="${grantAtoZLabel}"></vivo-sort-option>
-      <vivo-sort-option field="title" direction="desc" label="${grantZtoALabel}"></vivo-sort-option>
-
-      ${grantElements}
-
-      <vivo-i18n-label key="showing" label="${showingLabel}"></vivo-i18n-label>
-      <vivo-i18n-label key="of" label="${ofLabel}"></vivo-i18n-label>
-      <vivo-i18n-label key="showing_all" label="${showingAllLabel}"></vivo-i18n-label>
-
+        <vivo-sort-option field="startDate" direction="asc" label="${oldestFirstLabel}"></vivo-sort-option>
+        <vivo-sort-option field="startDate" direction="desc" label="${newestFirstLabel}"></vivo-sort-option>
+        <vivo-sort-option field="title" direction="asc" label="${grantAtoZLabel}"></vivo-sort-option>
+        <vivo-sort-option field="title" direction="desc" label="${grantZtoALabel}"></vivo-sort-option>
+        <!-- remaining labels -->
+        <vivo-i18n-label key="showing" label="${showingLabel}"></vivo-i18n-label>
+        <vivo-i18n-label key="of" label="${ofLabel}"></vivo-i18n-label>
+        <vivo-i18n-label key="showing_all" label="${showingAllLabel}"></vivo-i18n-label>  
+        ${grantElements}
       </vivo-sortable-list>
     `
   }

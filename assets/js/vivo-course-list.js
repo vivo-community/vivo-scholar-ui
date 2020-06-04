@@ -51,8 +51,8 @@ class EmbeddedCourseList extends LitElement {
   courseTemplate(p) {
     return html`
       <vivo-course>
-           <span slot="course-title">${p.label}</span>
-          <span slot="course-role">${p.role}</span>
+        <span slot="course-title">${p.label}</span>
+        <span slot="course-role">${p.role}</span>
      </vivo-course>
     `
   }
