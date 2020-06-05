@@ -65,11 +65,13 @@ class EmbeddedOrgPeopleList extends LitElement {
   constructor() {
     super();
     this.people = [];
-    this.type = this.getAttribute("type");
-    this.organization = this.getAttribute("organization");
   }
 
   connectedCallback() {
+    this.type = this.getAttribute("type");
+    this.organization = this.getAttribute("organization");
+    this.defaultImage = this.getAttribute("default-image");
+
     super.connectedCallback();
     this.client = new ApolloClient({
         uri: this.endpoint,
@@ -80,7 +82,6 @@ class EmbeddedOrgPeopleList extends LitElement {
     const data = this.client.query({
       query: ORG_QUERY,
       variables: {
-        //here get attribute person_url then strip all but the last bit for the id
         filters:  {field: this.type, opKey: "EQUALS", tag: this.type, value: this.organization}
       }
     }).then(({data}) =>  {
@@ -103,7 +104,7 @@ class EmbeddedOrgPeopleList extends LitElement {
     return html`
     <div class="people">
       <div class="person">
-      <vivo-person-card-image thumbnail="${p.thumbnail}"></vivo-person-card-image>
+      <vivo-person-card-image default="${this.defaultImage}" thumbnail="${p.thumbnail}"></vivo-person-card-image>
       <vivo-person-card>
         <div slot="title">${p.preferredTitle}</div>
         <a slot="name" href="/entities/person/${p.id}">${p.name}</a>
