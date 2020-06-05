@@ -3,8 +3,19 @@
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="utf-8">
-    <title>Embedded Publication Example</title>
-    <script type="text/javascript" src="assets/vivo-publication-list.js"></script>
+    <title>Embedded List Examples</title>
+
+    <!-- 
+    NOTE: could include each one too like so ...
+
+    <script type="text/javascript" src="assets/vivo-publication-list.js"></script> 
+    <script type="text/javascript" src="assets/vivo-grant-list.js"></script>
+    <script type="text/javascript" src="assets/vivo-course-list.js"></script>
+    <script type="text/javascript" src="assets/vivo-organization-person-list.js"></script>
+    -->
+
+    <script type="text/javascript" src="assets/vivo-embed-all.js"></script>
+    
     <style type="text/css">
       html {
         --lightNeutralColor: #e2e6ed;
@@ -12,7 +23,25 @@
     </style>
   </head>
   <body>
-    <vivo-embedded-publication-list person_id="n2363"></vivo-embedded-publication-list>
-  
+    <!--  -->
+    <h1>Embedded lists examples</h1>
+    <h2>Publications</h2>
+    <vivo-embedded-publication-list endpoint="https://scholars-discovery-scholars.cloud.duke.edu/graphql"
+      person-id="n2363"></vivo-embedded-publication-list>
+
+    <h2>Grants</h2>
+    <vivo-embedded-grant-list endpoint="https://scholars-discovery-scholars.cloud.duke.edu/graphql"
+      person-id="n3323"></vivo-embedded-grant-list>
+
+    <h2>Courses</h2>
+    <vivo-embedded-course-list endpoint="https://scholars-discovery-scholars.cloud.duke.edu/graphql"
+      person-id="n3323"></vivo-embedded-course-list>
+
+    <h2>Organization People</h2>
+    <vivo-embedded-organization-people-list 
+      endpoint="https://scholars-discovery-scholars.cloud.duke.edu/graphql"
+      default-image="/assets/images/profile_picture_u39_a.png" 
+      type="schools" organization="School of Arts and Sciences"></vivo-embedded-organization-people-list>
+
   </body>
 </html>
