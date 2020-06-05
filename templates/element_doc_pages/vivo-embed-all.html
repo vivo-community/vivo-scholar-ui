@@ -45,10 +45,12 @@
 </blockquote>
 
 <h4>People List (of Organization)</h4>
-<p>Set the <i>endpoint</i>, <i>type</i> and <i>organization</i> attributes</p>
+<p>Set the <i>endpoint</i>, <i>type</i>, <i>organization</i> and <i>default-image</i> (image for person 
+    missing thumbnail) attributes</p>
 <blockquote>
     <xmp><%= raw(`
         <vivo-embedded-organization-people-list 
+          default-image="/assets/images/profile_picture_u39_a.png"
           endpoint="https://scholars-discovery-scholars.cloud.duke.edu/graphql"
           type="schools" organization="School of Arts and Sciences">
         </vivo-embedded-organization-people-list>
