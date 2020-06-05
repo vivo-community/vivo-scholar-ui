@@ -130,12 +130,8 @@ class PersonSearch extends Searcher(LitElement) {
 
     renderPerson(person) {
         let title = person.preferredTitle || '';
-        // just forcing this in, doesn't seem to be .env on openshift
-        // (despite app config values)
-        let defaultImage = '/assets/images/profile_picture_u39_a.png';
-        if (process.env.DEFAULT_PROFILE_IMAGE) {
-            defaultImage = process.env.DEFAULT_PROFILE_IMAGE;
-        }
+        // NOTE: defined in .env and set via _theme_variables.html
+        let defaultImage = defaultProfileImage;
         return html`<div class="person">
             <vivo-person-card-image default="${defaultImage}"
               thumbnail="${person.thumbnail}"></vivo-person-card-image>
