@@ -132,8 +132,10 @@ class PersonSearch extends Searcher(LitElement) {
 
     renderPerson(person) {
         let title = person.preferredTitle || '';
+        // NOTE: defined in .env and set via _theme_variables.html
+        let defaultImage = defaultProfileImage;
         return html`<div class="person">
-            <vivo-person-card-image default="${process.env.DEFAULT_PROFILE_IMAGE}"
+            <vivo-person-card-image default="${defaultImage}"
               thumbnail="${person.thumbnail}"></vivo-person-card-image>
             <vivo-person-card>
                 <div slot="title">${title}</div>
