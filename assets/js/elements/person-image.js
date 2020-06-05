@@ -24,13 +24,6 @@ class PersonImage extends LitElement {
   }
 
   render() {
-    // FIXME: how to best get this value in?
-    //let defaultProfileImage = "";
-    //if (process.env.DEFAULT_PROFILE_IMAGE != undefined) {
-    //    defaultProfileImage = `${process.env.DEFAULT_PROFILE_IMAGE}`
-    //}
-    // ??
-    //var url = `/assets/images/${defaultProfileImage}`;
     var url = this.default ||  '';
 
     if (this.thumbnail != "null") {
