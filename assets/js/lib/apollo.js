@@ -16,7 +16,6 @@ const link = onError(({ graphQLErrors, networkError }) => {
 let endpoint = graphqlEndpoint;
 
 const client = new ApolloClient({
-  //uri: 'http://localhost:9000/graphql',
   uri: endpoint,
   /// NOTE: bug right now, doesn't actually send GET
   // https://github.com/apollographql/apollo-link/issues/236
