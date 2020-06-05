@@ -68,8 +68,6 @@ class EmbeddedOrgPeopleList extends LitElement {
   }
 
   connectedCallback() {
-    //this.type = this.getAttribute("type");
-    //this.organization = this.getAttribute("organization");
     this.defaultImage = this.getAttribute("default-image");
 
     super.connectedCallback();
