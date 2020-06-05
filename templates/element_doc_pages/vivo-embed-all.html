@@ -1,0 +1,64 @@
+<h3>Embeddable Components</h3>
+<p>These are web components that can be imported within any site to display
+    lists of data.  They are in the assets directory, unhashed when compiled,
+    so available as straight imports e.g. 
+    <xmp>
+        <%= raw(`
+        <script type="text/javascript" src="https://vivo-scholars-scholars.cloud.duke.edu/assets/vivo-embed-all.js"></script>
+        `) %>
+    </xmp>
+</p>
+<h4>Publication List</h4>
+<p>Set the <i>endpoint</i> and <i>person-id</i> attributes</p>
+<blockquote>
+    <xmp><%= raw(`
+        <vivo-embedded-publication-list 
+          endpoint="https://scholars-discovery-scholars.cloud.duke.edu/graphql"
+          person-id="n2363">
+        </vivo-embedded-publication-list>
+        `) %>
+    </xmp>
+</blockquote>
+
+<h4>Grant List</h4>
+<p>Set the <i>endpoint</i> and <i>person-id</i> attributes</p>
+<blockquote>
+    <xmp><%= raw(`
+        <vivo-embedded-grant-list 
+          endpoint="https://scholars-discovery-scholars.cloud.duke.edu/graphql"
+          person-id="n3323">
+        </vivo-embedded-grant-list>
+        `) %>
+    </xmp>
+</blockquote>
+
+<h4>Course List</h4>
+<p>Set the <i>endpoint</i> and <i>person-id</i> attributes</p>
+<blockquote>
+    <xmp><%= raw(`
+        <vivo-embedded-course-list 
+          endpoint="https://scholars-discovery-scholars.cloud.duke.edu/graphql"
+          person-id="n3323">
+        </vivo-embedded-course-list>
+        `) %>
+    </xmp>
+</blockquote>
+
+<h4>People List (of Organization)</h4>
+<p>Set the <i>endpoint</i>, <i>type</i> and <i>organization</i> attributes</p>
+<blockquote>
+    <xmp><%= raw(`
+        <vivo-embedded-organization-people-list 
+          endpoint="https://scholars-discovery-scholars.cloud.duke.edu/graphql"
+          type="schools" organization="School of Arts and Sciences">
+        </vivo-embedded-organization-people-list>
+        `) %>
+    </xmp>
+</blockquote>
+
+<p>Running Examples: <a href="/embed_demo.html">Embedded Lists</a></p>
+
+<h4>i18n</h4>
+<p>It is possible to set labels for display to you're own i18n schema.  See code for 
+    more explanation.
+</p>
