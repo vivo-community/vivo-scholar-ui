@@ -124,7 +124,7 @@ Configurable theme variables include (note images would go in 'assets/images' di
 * Site Logo - SITE_LOGO
 * Home Page Background (image or color) - THEME_BACKGROUND_IMAGE
 * Color Palette: [http://localhost:4200/docs/elements/color-palette](http://localhost:4200/docs/elements/color-palette)
-* Default proflie image (if profile has no thumbnail) - DEFAULT_PROFILE_IMAGE
+* Default profile image (if profile has no thumbnail) - DEFAULT_PROFILE_IMAGE
 
 
 Additionally, custom styles may be added to:
