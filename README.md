@@ -118,12 +118,14 @@ work with.
 
 Theme variables are set using the environment. The default values are populated in `.env.example`
 
-Configurable theme variables include:
+Configurable theme variables include (note images would go in 'assets/images' directory):
 
-* Site Name - TODO
-* Site Logo - TODO
+* Site Name - SITE_NAME
+* Site Logo - SITE_LOGO
 * Home Page Background (image or color) - THEME_BACKGROUND_IMAGE
 * Color Palette: [http://localhost:4200/docs/elements/color-palette](http://localhost:4200/docs/elements/color-palette)
+* Default proflie image (if profile has no thumbnail) - DEFAULT_PROFILE_IMAGE
+
 
 Additionally, custom styles may be added to:
 
