@@ -11,26 +11,6 @@ const Dotenv = require('dotenv-webpack');
 
 const vivoRegex = RegExp('vivo*');
 
-const webcomponentsjs = './node_modules/@webcomponents/webcomponentsjs';
-
-const polyfills = [
-  {
-    from: resolve(`${webcomponentsjs}/webcomponents-*.{js,map}`),
-    to: 'vendor',
-    flatten: true
-  },
-  {
-    from: resolve(`${webcomponentsjs}/bundles/*.{js,map}`),
-    to: 'vendor/bundles',
-    flatten: true
-  },
-  {
-    from: resolve(`${webcomponentsjs}/custom-elements-es5-adapter.js`),
-    to: 'vendor',
-    flatten: true
-  }
-];
-
 const configurator = {
   entries: function(){
     var entries = {
@@ -74,7 +54,6 @@ const configurator = {
           }
         ]
       }),
-      new CopyWebpackPlugin({patterns: [...polyfills]}),
       new Webpack.LoaderOptionsPlugin({minimize: true,debug: false}),
       new ManifestPlugin({
         fileName: "manifest.json"
