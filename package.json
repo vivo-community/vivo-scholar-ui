@@ -18,7 +18,6 @@
     "lodash": "^4.17.13",
     "popper.js": "^1.14.4",
     "qs": "^6.7.0",
-    "terser-webpack-plugin": "^3.0.3",
     "yarn": "^1.22.0"
   },
   "devDependencies": {
@@ -35,6 +34,7 @@
     "node-sass": "~4.13.0",
     "sass-loader": "~7.1.0",
     "style-loader": "~0.23.0",
+    "terser-webpack-plugin": "^3.0.3",
     "url-loader": "~1.1.1",
     "webpack": "~4.37.0",
     "webpack-clean-obsolete-chunks": "^0.4.0",
