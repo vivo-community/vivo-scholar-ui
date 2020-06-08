@@ -101,6 +101,19 @@ Very flexible pages that can contain anything
     * Query Parameters: Dynamic, derived from query string
     * [Adding an Any Page](http://localhost:4200/docs/elements/any-page)
 
+#### Sitemaps
+
+Sitemaps for SEO purposes - so that search indexing services have a list of links to 
+work with. 
+
+* "sitemap_pages/sitemap.xml" - main page that is a link to other (buildable) sitemaps
+    * Template: templates/sitemap_pages/sitemap.xml
+* "sitemap_pages/{type}/{type}.xml" - a sitemap file per specifications.  It will run the
+  backing GraphQL query and send data to the template
+    * Template: templates/sitemap_pages/{name}/{name}.xml
+    * Query: templates/sitemap_pages/{name}/{name}.graphql
+
+
 #### Theme (Customizing)
 
 Theme variables are set using the environment. The default values are populated in `.env.example`
