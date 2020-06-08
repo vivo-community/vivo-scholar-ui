@@ -5,7 +5,7 @@ const CopyWebpackPlugin = require("copy-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const ManifestPlugin = require("webpack-manifest-plugin");
 const CleanObsoleteChunks = require('webpack-clean-obsolete-chunks');
-const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
+const TerserPlugin = require("terser-webpack-plugin");
 const LiveReloadPlugin = require('webpack-livereload-plugin');
 const Dotenv = require('dotenv-webpack');
 
@@ -63,8 +63,18 @@ const configurator = {
     var plugins = [
       new CleanObsoleteChunks(),
       new MiniCssExtractPlugin({filename: "[name].[contenthash].css"}),
-      new CopyWebpackPlugin([{from: "./assets",to: ""}], {copyUnmodified: true,ignore: ["css/**", "js/**", "src/**"] }),
-      new CopyWebpackPlugin([...polyfills]),
+      new CopyWebpackPlugin({
+        patterns: [
+          {
+            from: "./assets",
+            to: "", 
+            globOptions: {
+              ignore: ["css/**", "js/**", "src/**"]
+            }
+          }
+        ]
+      }),
+      new CopyWebpackPlugin({patterns: [...polyfills]}),
       new Webpack.LoaderOptionsPlugin({minimize: true,debug: false}),
       new ManifestPlugin({
         fileName: "manifest.json"
@@ -130,17 +140,9 @@ const configurator = {
       return config
     }
 
-    const uglifier = new UglifyJsPlugin({
-      uglifyOptions: {
-        beautify: false,
-        mangle: {keep_fnames: true},
-        output: {comments: false},
-        compress: {}
-      }
-    })
-
     config.optimization = {
-      minimizer: [uglifier]
+      minimize: true,
+      minimizer: [new TerserPlugin()]
     }
 
     return config
