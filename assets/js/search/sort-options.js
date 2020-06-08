@@ -1,5 +1,6 @@
 import { LitElement, html, css } from "lit-element";
 
+import { selectStyle } from '../elements/select-style.js';
 class SearchSortOptions extends LitElement {
 
     // NOT multi-select
@@ -48,27 +49,14 @@ class SearchSortOptions extends LitElement {
     }
 
     static get styles() {
-        return css`
+        return [
+          selectStyle,
+          css`
           :host {
             display: block;
           }
-          select::before {
-            content: var(--lumo-icons-chevron-down);
-            color: var(--textColor);
-            background-color: var(--lightNeutralColor);
-          }
-          select {
-            font-size: 1em;
-            line-height: 1em;
-            min-height: 1em;
-            padding: 0 0.25em;
-          }
-          option {
-            font-weight:normal;
-            line-height: 1.6em;
-            padding: 0.5em 1em;
-          }
         `
+      ]
     }
 
     isSelected(option) {

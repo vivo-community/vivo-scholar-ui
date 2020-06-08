@@ -3,7 +3,8 @@ import { LitElement, html, css } from "lit-element";
 class PersonImage extends LitElement {
   static get properties() {
     return {
-      thumbnail: { type: String }
+      thumbnail: { type: String },
+      default: { type: String }
     }
   }
 
@@ -23,7 +24,7 @@ class PersonImage extends LitElement {
   }
 
   render() {
-    var url = `${defaultProfileImage}`;
+    var url = this.default ||  '';
 
     if (this.thumbnail != "null") {
       url = `${this.thumbnail}`;
