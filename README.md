@@ -120,12 +120,14 @@ Theme variables are set using the environment. The default values are populated 
 
 Configurable theme variables include (note images would go in 'assets/images' directory):
 
-* Site Name - SITE_NAME
-* Site Logo - SITE_LOGO
-* Home Page Background (image or color) - THEME_BACKGROUND_IMAGE
-* Color Palette: [http://localhost:4200/docs/elements/color-palette](http://localhost:4200/docs/elements/color-palette)
-* Default profile image (if profile has no thumbnail) - DEFAULT_PROFILE_IMAGE
+* SITE_NAME - Site Name 
+* SITE_LOGO - Site Logo (image) 
+* THEME_BACKGROUND_IMAGE - Home Page Background (image or color) 
+* DEFAULT_PROFILE_IMAGE- Default profile image (to show if profile has no thumbnail) - 
+* GRAPHQL_ENDPOINT- Graphql endpoint (wherever `scholars-discovery` is running) -
 
+Several colors are set by environmental variables as well:
+* Color Palette: [http://localhost:4200/docs/elements/color-palette](http://localhost:4200/docs/elements/color-palette)
 
 Additionally, custom styles may be added to:
 
