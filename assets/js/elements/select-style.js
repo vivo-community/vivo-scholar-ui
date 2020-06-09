@@ -62,4 +62,13 @@ select:disabled, select[aria-disabled=true] {
 }
 select:disabled:hover, select[aria-disabled=true] {
   border-color: #aaa;
-}`;
+}
+
+@media screen and (max-width: 1000px) {
+  select {
+    font-size: 16px;
+    line-height: 1.3;
+   }
+}`
+
+;
