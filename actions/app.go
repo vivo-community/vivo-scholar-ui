@@ -1,15 +1,22 @@
 package actions
 
 import (
+	"fmt"
+
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/envy"
 	forcessl "github.com/gobuffalo/mw-forcessl"
 	paramlogger "github.com/gobuffalo/mw-paramlogger"
+	"github.com/gorilla/mux"
 	"github.com/unrolled/secure"
 
 	csrf "github.com/gobuffalo/mw-csrf"
 	i18n "github.com/gobuffalo/mw-i18n"
 	"github.com/gobuffalo/packr/v2"
+
+	"net/http"
+	"net/http/httputil"
+	"net/url"
 )
 
 // ENV is used to help switch settings based on where the
@@ -32,6 +39,23 @@ var T *i18n.Translator
 // placed last in the route declarations, as it will prevent routes
 // declared after it to never be called.
 func App() *buffalo.App {
+
+	baseURL, _ := envy.MustGet("GRAPHQL_ENDPOINT_BASE")
+	origin, _ := url.Parse(baseURL)
+	reverseProxy := httputil.NewSingleHostReverseProxy(origin)
+	reverseProxy.ErrorHandler = func(rw http.ResponseWriter, r *http.Request, err error) {
+		fmt.Printf("error was: %+v", err)
+		rw.WriteHeader(http.StatusInternalServerError)
+		rw.Write([]byte(err.Error()))
+	}
+
+	mux := mux.NewRouter()
+	mux.PathPrefix("/").HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		// r.URL.Path = "/graphql"
+		r.Host = r.URL.Host
+		reverseProxy.ServeHTTP(w, r)
+	}).Methods("GET", "POST")
+
 	if app == nil {
 		app = buffalo.New(buffalo.Options{
 			Env:         ENV,
@@ -50,6 +74,8 @@ func App() *buffalo.App {
 
 		// Setup and use translations:
 		app.Use(translations())
+
+		app.Mount("/api/", mux)
 
 		app.GET("/", HomeHandler)
 		app.GET("/sitemap.xml", SiteMapHandler)
