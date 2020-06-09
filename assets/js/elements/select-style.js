@@ -4,11 +4,11 @@ export const selectStyle = css`
 /* https://www.filamentgroup.com/lab/select-css.html */ 
 select {
   display: inline-block;
-  font-size: 16px;
+  font-size: 0.75em;
   font-family: sans-serif;
   font-weight: 700;
   color: #444;
-  line-height: 1.3;
+  line-height: 1em;
   padding: .6em 1.4em .5em .8em;
   width: auto;
   max-width: 100%;
