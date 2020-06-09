@@ -69,6 +69,4 @@ select:disabled:hover, select[aria-disabled=true] {
     font-size: 16px;
     line-height: 1.3;
    }
-}`
-
-;
+}`;
