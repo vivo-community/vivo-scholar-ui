@@ -199,33 +199,17 @@ vivo-tab-panel h4 {
   margin: auto;
   margin-top: 180px;
   margin-bottom: 5%;
-  padding-left: 5%;
+  margin-left: 4%;
+  padding: 0 5%;
 }
-.publication-heading .page-title{
-  margin-left: 3%;
-  margin-bottom: 1%;
+.entity-container .page-title {
+  margin-left: 1.6%;
 }
-.publication-heading button {
-  background-color: var(--highlightColor);
-  color: white;
-  border: none;
-  height: 35px;
-  margin-top: 15%;
-  display: block;
-  width: 100%;
-  text-align: center;
-}
+
 .publication-type{
   grid-area: publicationType;
   margin-bottom: 0;
   margin-left: 5%;
-}
-.text-button{
-  grid-area: textButton;
-  margin-left: 15%;
-}
-.cite-button{
-  grid-area: citeButton;
 }
 .abstract{
   grid-area: abstract;
@@ -241,7 +225,7 @@ vivo-tab-panel h4 {
   grid-template-columns: repeat(12, 1fr);
   grid-template-rows: 50px;
   grid-template-areas:
-  "publicationType publicationType publicationType publicationType . . . . textButton . citeButton ."
+  "publicationType publicationType publicationType publicationType . . . . . . . ."
   "publicationDate publicationDate publicationDate publicationDate . . . . . . . ."
   "abstract abstract abstract abstract abstract abstract abstract abstract abstract abstract abstract abstract";
 }
@@ -251,6 +235,7 @@ vivo-tab-panel h4 {
 }
 .grant-date {
   color: black;
+  margin-left: 1.5%;
 }
 
 
@@ -301,7 +286,6 @@ vivo-tab-panel h4 {
   }
   .person-container aside {
     grid-column: 1 / span 2;
-    max-width: 230px
   }
   .person-container main {
     grid-column: span 7;
@@ -316,7 +300,6 @@ vivo-tab-panel h4 {
   }
   .person-container aside {
     grid-column: 1 / span 2;
-    max-width: 230px
   }
   .person-container main {
     grid-column: span 7;
@@ -397,6 +380,9 @@ vivo-tab-panel h4 {
     width: 100%;
     padding-left: 0;
   }
+  .entity-container .page-title {
+    margin-left: 0;
+  }
   .publication-heading{
     padding: 0 5%;
     background-color: white;
@@ -406,27 +392,34 @@ vivo-tab-panel h4 {
     grid-template-areas:
     "publicationType publicationType publicationType publicationType publicationType publicationType publicationType publicationType publicationType publicationType publicationType publicationType"
     "publicationDate publicationDate publicationDate publicationDate publicationDate publicationDate . . . . . ."
-    "abstract abstract abstract abstract abstract abstract abstract abstract abstract abstract abstract abstract"
-    ". textButton textButton textButton textButton . citeButton citeButton citeButton citeButton . .";
+    "abstract abstract abstract abstract abstract abstract abstract abstract abstract abstract abstract abstract";
     padding-bottom: 10%;
   }
   .publication-type{
     margin: 0;
+    padding-left: 5%;
   }
   .publication-date{
     margin: 0;
     margin-bottom: 5%;
+    padding-left: 10%;
+  }
+  .entity-container{
+    margin: 0;
+    padding: 0;
   }
   .entity-container .page-title {
     text-align: left;
-    padding: 0 5%;
+    padding: 0 9.5%;
     padding-bottom: 3%;
     width: 100%;
   }
+  .abstract {
+    padding: 0 5%;
+  }
   .entity-content{
     margin-top: 5%;
-    padding: 0 5%;
-    padding-top: 5%;
+    padding: 5% 5% 5% 10%;
     background-color: white;
   }
   .grant-page{

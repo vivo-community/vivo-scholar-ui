@@ -65,7 +65,7 @@ class PopupMessage extends LitElement {
       padding: 4px;
       font-size: 1.5em;
       padding-right: 1em;
-      padding-top: 4px;
+      padding-top: 6px;
     }
     ::slotted(a) {
       text-decoration: none;

@@ -133,6 +133,11 @@
            <h3><%= t("tab_research_expertise") %></h3>
          </vivo-tab>
          <vivo-tab-panel id="research-expertise-panel">
+           <!-- add reserch overview -->
+           <div>
+            <h4 class="section-title"> Research Overview </h4>
+           <section><%= person["researchOverview"] %><section>
+           </div>
            <h4 class="section-title"><%= t("grants") %></h4>
            <vivo-sortable-list id="grant-list" item-type="grants" sortProperty="startDate" sortDirection="desc">
             <%= for (idx, p) in person["researcherOn"] { %>
@@ -143,7 +148,7 @@
                <%= if (p["awardedBy"]) { %>
                 <span slot="awardedBy">  awarded by  <%=p["awardedBy"]["label"] %></span>
                <% } %>
-               <span slot="date"><vivo-interval interval-start="<%= FormatISODate(p["startDate"], "year") %>" interval-end="<%= FormatISODate(p["endDate"], "year") %>"></vivo-interval></span>
+               <span slot="date"><vivo-interval id="grant-date" interval-start="<%= FormatISODate(p["startDate"], "year") %>" interval-end="<%= FormatISODate(p["endDate"], "year") %>"></vivo-interval></span>
              </vivo-grant>
             <% } %>
           </vivo-sortable-list>
