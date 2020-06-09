@@ -20,6 +20,9 @@ A front-end to the [Scholars Discovery](https://github.com/vivo-community/schola
 
 ## Getting Started
 
+Get the scholars-discovery project running.  This can be done in `docker` or using a local install
+of `java`
+
 ### Scholars Discovery
 
 `Scholars WebComponent UI` is a meant to be run atop a running instance of `scholars-discovery`, which in turn imports data from a `VIVO` instance
@@ -32,7 +35,9 @@ See [Scholars Discovery](https://github.com/vivo-community/scholars-discovery) f
 Update the value of GRAPHQL_ENDPOINT to the address of a running instance of Scholars Discovery. The default
 value of one running locally has been prepopulated in `.env.example`
 
-Set the SITE_ORGANIZATION_ID value to the institution's root organization id 
+Set the SITE_NAME, SITE_LOGO to a general name and logo for the entire site 
+
+Set the SITE_ORGANIZATION_ID value to the institution's root organization id
 
 #### Native
      buffalo dev
@@ -136,6 +141,9 @@ assets/css/theme.scss
 This file will be pre-processed with SASS and imported after all default stylesheets to allow specific overrides.
 
 #### Embeddable Components
+
+See [Embedded list examples](http://localhost:4200/embed_demo.html) - most useful to use browser
+`view source` function
 
 #### Advanced
 
