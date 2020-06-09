@@ -12,7 +12,6 @@ import './search/filter-clearer.js';
 import './search/spinner.js';
 import './search/modal.js';
 import './search/facet-group-toggle.js';
-import './search/i18n-label.js';
 
 import './search/sort-option.js';
 import './search/sort-options.js';

@@ -1,27 +1,11 @@
-import '../elements/person-image.js';
-import '../elements/person-card.js';
-import '../elements/truncated-text-result.js';
-
-
 import { LitElement, html, css } from 'lit-element';
 
+import './elements/person-image.js';
+import './elements/person-card.js';
+import './elements/truncated-text-result.js';
 
 import gql from 'graphql-tag'
 import ApolloClient from 'apollo-boost'
-
-//is there a default endpoint?
-let endpoint = " "
-// let endpoint = "https://scholars-discovery-scholars.cloud.duke.edu/graphql"
-if (process.env.GRAPHQL_ENDPOINT != undefined) {
-  endpoint = `${process.env.GRAPHQL_ENDPOINT}`
-}
-
-const client = new ApolloClient({
-  uri: endpoint,
-  fetchOptions: {
-    useGETForQueries: true
-  }
-});
 
 const ORG_QUERY = gql`
   query($filters: [FilterArgInput]) {
@@ -44,7 +28,8 @@ class EmbeddedOrgPeopleList extends LitElement {
     return {
       people: { type: Array },
       organization: { type: String },
-      type: { type: String }
+      type: { type: String },
+      endpoint: { type: String }
     }
   }
 
@@ -80,16 +65,21 @@ class EmbeddedOrgPeopleList extends LitElement {
   constructor() {
     super();
     this.people = [];
-    this.type = this.getAttribute("type");
-    this.organization = this.getAttribute("organization");
-}
+  }
 
   connectedCallback() {
+    this.defaultImage = this.getAttribute("default-image");
+
     super.connectedCallback();
-    const data = client.query({
+    this.client = new ApolloClient({
+        uri: this.endpoint,
+        fetchOptions: {
+          useGETForQueries: true
+        }
+    });
+    const data = this.client.query({
       query: ORG_QUERY,
       variables: {
-        //here get attribute person_url then strip all but the last bit for the id
         filters:  {field: this.type, opKey: "EQUALS", tag: this.type, value: this.organization}
       }
     }).then(({data}) =>  {
@@ -112,7 +102,7 @@ class EmbeddedOrgPeopleList extends LitElement {
     return html`
     <div class="people">
       <div class="person">
-      <vivo-person-card-image thumbnail="${p.thumbnail}"></vivo-person-card-image>
+      <vivo-person-card-image default="${this.defaultImage}" thumbnail="${p.thumbnail}"></vivo-person-card-image>
       <vivo-person-card>
         <div slot="title">${p.preferredTitle}</div>
         <a slot="name" href="/entities/person/${p.id}">${p.name}</a>
@@ -133,4 +123,5 @@ class EmbeddedOrgPeopleList extends LitElement {
     `
   }
 }
-  customElements.define('vivo-embedded-organization-people-list', EmbeddedOrgPeopleList)
+  
+customElements.define('vivo-embedded-organization-people-list', EmbeddedOrgPeopleList);

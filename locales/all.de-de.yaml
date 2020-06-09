@@ -9,9 +9,9 @@
 - id: tab_publications
   translation: "Veröffentlichungen"
 - id: tab_research_expertise
-  translation: "Research & Expertise"
+  translation: "Forschung & Fachwissen"
 - id: tab_teaching_mentoring
-  translation: "Teaching & Mentoring"
+  translation: "Lehren & Mentoring"
 - id: tab_professional_activities
   translation: "Berufliche Tätigkeiten"
 - id: publications
@@ -61,11 +61,11 @@
 - id: keywords
   translation: "Schlüsselwörter"
 - id: grants
-  translation: "Grants"
+  translation: "Zuschüsse"
 - id: bio
-  translation: "Bio"
+  translation: "die Biografie"
 - id: searching
-  translation: "Searching"
+  translation: "Suchen"
 - id: filter_people
   translation: "Filter Menschen"
 - id: filter_publications
@@ -145,4 +145,22 @@
 - id: hide
   translation: "Verbergen"
 - id: reset
-  translation: "Zurücksetzen"   
+  translation: "Zurücksetzen"
+- id: oldest_first
+  translation: "Die ältesten zu erst"
+- id: newest_first
+  translation: "Das Neuste Zuerst"
+- id: grant_a_z
+  translation: "Gewähren a-z"
+- id: grant_z_a
+  translation: "Gewähren z-a"
+- id: publication_a_z
+  translation: "Veröffentlichung a-z"
+- id: publication_z_a
+  translation: "Veröffentlichung z-a"
+- id: awarded_by
+  translation: "verliehen"
+- id: learn_more
+  translation: "Erfahren Sie mehr" 
+- id: showing_all
+  translation: "Alles zeigen"    

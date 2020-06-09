@@ -17,21 +17,16 @@ import './elements/truncated-text.js'
 import './elements/interval.js'
 import './elements/grant.js'
 import './elements/grant-list.js'
+import './elements/sort-option.js'
 import './elements/sortable-list.js'
+import './elements/i18n-label.js'
+
 import './elements/course.js'
 import './elements/popup-message.js'
 import './elements/entity.js'
 import './elements/entity-item.js'
 import './elements/message-modal.js'
-import '@vaadin/vaadin-select'
 
-//embedded-lists
-import './embedded-lists/embedded-publication-list.js'
-import './embedded-lists/embedded-grant-list.js'
-import './embedded-lists/embedded-course-list.js'
-import './embedded-lists/embedded-organization-person-list.js'
-
-//from search
 import './elements/person-image.js';
 import './elements/person-card.js';
 import './elements/truncated-text-result.js';

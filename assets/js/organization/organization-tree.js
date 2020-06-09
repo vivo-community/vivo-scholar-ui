@@ -5,11 +5,10 @@ import { until } from 'lit-html/directives/until'
 import organizationSubOrgQuery from "./organization-query"
 import OrganizationCache from "./organization-cache"
 import client from "../lib/apollo"
-import '../elements/vaadin-theme.js'
-import '@vaadin/vaadin-select'
 import _ from 'lodash'
 import qs from 'qs'
 
+import { selectStyle } from '../elements/select-style.js';
 /* NOTE: the organization-tree object has a variable to control logging level
      Go to the constructor near the bottom of this module to set the log level,
      or search for $$log (FIXME: use existing central logging control or factor out to create one)
@@ -55,12 +54,9 @@ class OrganizationTreeListSelector extends LitElement {
   handleSelection (e) {
     let vm = this
     let selected = e.target.value
-    // console.log('selected: ' + selected)
     if (vm.treeList) {
-      // console.log('tree-list-id: ' + vm.treelistid)
       if (selected === 'list') {
         this.selected = vm.labelForSelectTypeList
-        // console.log('setting treelist attribute showas to list')
         vm.treeList.showas = 'list'
       } else {
         this.selected = vm.labelForSelectTypeTree
@@ -70,20 +66,17 @@ class OrganizationTreeListSelector extends LitElement {
       this.selected = vm.labelForSelectTypeTree
     }
   }
+
+  static get styles () {
+    return selectStyle
+  }
+
   render () {
-    // console.log('treeListId: ' + this.treelistid)
     let vm = this
-    //return html`<select @change="${this.handleSelection}"><option value="tree">Hierarchy</option><option value="list">Index</option></input>`
-    return html`
-      <vaadin-select placeholder="${vm.labelForSelectTypeTree}" value="${vm.labelForSelectTypeTree}" @value-changed="${vm.handleSelection}">
-      <template>
-        <vaadin-list-box>
-          <vaadin-item value="tree">${vm.labelForSelectTypeTree}</vaadin-item>
-          <vaadin-item value="list">${vm.labelForSelectTypeList}</vaadin-item>
-        </vaadin-list-box>
-      </template>
-      </vaadin-select>
-    `
+    return html`<select @change="${this.handleSelection}">
+      <option value="tree">${vm.labelForSelectTypeTree}</option>
+      <option value="list">${vm.labelForSelectTypeList}</option>
+      </select>`
   }
 }
 customElements.define('vivo-organizations-tree-list-selector', OrganizationTreeListSelector)

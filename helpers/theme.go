@@ -17,7 +17,8 @@ var theme = map[string]string{
 	"backgroundImage":          envy.Get("THEME_BACKGROUND_IMAGE", "background.jpg"),
 	"backgroundColor":          envy.Get("THEME_BACKGROUND_COLOR", "#7f7f7f"),
 	"defaultProfileImage":      envy.Get("DEFAULT_PROFILE_IMAGE", ""),
-	"siteOrganizationId":      envy.Get("SITE_ORGANIZATION_ID",  ""),
+	"siteOrganizationId":       envy.Get("SITE_ORGANIZATION_ID",  ""),
+	"graphqlEndpoint":          envy.Get("GRAPHQL_ENDPOINT", ""),
 }
 
 func ThemeVariable(varname string) string {

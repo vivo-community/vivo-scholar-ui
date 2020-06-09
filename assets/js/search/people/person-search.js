@@ -1,8 +1,6 @@
 import { LitElement, html, css } from "lit-element";
 
 import peopleQuery from "./person-query";
-// import '../../elements/person-card';
-// import '../../elements/person-image';
 import Searcher from '../searcher.js'
 
 class PersonSearch extends Searcher(LitElement) {
@@ -132,8 +130,11 @@ class PersonSearch extends Searcher(LitElement) {
 
     renderPerson(person) {
         let title = person.preferredTitle || '';
+        // NOTE: defined in .env and set via _theme_variables.html
+        let defaultImage = defaultProfileImage;
         return html`<div class="person">
-            <vivo-person-card-image thumbnail="${person.thumbnail}"></vivo-person-card-image>
+            <vivo-person-card-image default="${defaultImage}"
+              thumbnail="${person.thumbnail}"></vivo-person-card-image>
             <vivo-person-card>
                 <div slot="title">${title}</div>
                 <a slot="name" href="/entities/person/${person.id}">
