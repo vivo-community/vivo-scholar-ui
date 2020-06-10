@@ -12,9 +12,8 @@ const link = onError(({ graphQLErrors, networkError }) => {
   if (networkError) console.error(`[Network error]: ${networkError}`);
 });
 
-// NOTE: defined in .env and set in _theme_variables.html
-let endpoint = graphqlEndpoint;
-
+// NOTE: using a proxy through this app
+let endpoint = '/api/graphql';
 const client = new ApolloClient({
   uri: endpoint,
   /// NOTE: bug right now, doesn't actually send GET
