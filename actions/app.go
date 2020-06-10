@@ -59,25 +59,7 @@ func graphqlProxy() http.Handler {
 // placed last in the route declarations, as it will prevent routes
 // declared after it to never be called.
 func App() *buffalo.App {
-	/*
-	baseURL, err := envy.MustGet("GRAPHQL_ENDPOINT_BASE")
-	if err != nil {
-		panic(err)
-	}
-	origin, _ := url.Parse(baseURL)
-	reverseProxy := httputil.NewSingleHostReverseProxy(origin)
-	reverseProxy.ErrorHandler = func(rw http.ResponseWriter, r *http.Request, err error) {
-		fmt.Printf("error was: %+v", err)
-		rw.WriteHeader(http.StatusInternalServerError)
-		rw.Write([]byte(err.Error()))
-	}
 
-	mux := mux.NewRouter()
-	mux.PathPrefix("/").HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		r.Host = r.URL.Host
-		reverseProxy.ServeHTTP(w, r)
-	}).Methods("GET", "POST")
-    */
 	if app == nil {
 		app = buffalo.New(buffalo.Options{
 			Env:         ENV,
