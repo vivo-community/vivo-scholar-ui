@@ -59,7 +59,6 @@ func graphqlProxy() http.Handler {
 // placed last in the route declarations, as it will prevent routes
 // declared after it to never be called.
 func App() *buffalo.App {
-
 	if app == nil {
 		app = buffalo.New(buffalo.Options{
 			Env:         ENV,
@@ -79,7 +78,6 @@ func App() *buffalo.App {
 		// Setup and use translations:
 		app.Use(translations())
 
-		//app.Mount("/api/", mux)
 		app.Mount("/api/", graphqlProxy())
 
 		app.GET("/", HomeHandler)
