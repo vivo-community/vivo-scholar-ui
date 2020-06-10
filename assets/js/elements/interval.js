@@ -22,7 +22,6 @@ class Interval extends LitElement {
       :host {
         display: inline-block;
         box-sizing: border-box;
-        color: var(--darkNeutralColor);
       }
     `
   }
@@ -41,4 +40,3 @@ class Interval extends LitElement {
 }
 
 customElements.define("vivo-interval", Interval);
-

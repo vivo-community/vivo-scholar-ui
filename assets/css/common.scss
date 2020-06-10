@@ -134,6 +134,9 @@ margin: 0;
   padding: 0;
 }
 
+.date-interval {
+  color: var(--darkNeutralColor);
+}
 
 /* elements */
 vivo-sidebar {
@@ -235,7 +238,6 @@ vivo-tab-panel h4 {
   white-space: pre;
 }
 .grant-date {
-  color: black;
   margin-left: 1.5%;
 }
 
@@ -379,10 +381,15 @@ vivo-tab-panel h4 {
   .entity-container{
     background-color: var(--lightNeutralColor);
     width: 100%;
-    padding-left: 0;
+    margin: 0;
+    padding: 0;
   }
   .entity-container .page-title {
     margin-left: 0;
+    text-align: left;
+    padding: 0 8%;
+    padding-bottom: 3%;
+    width: 100%;
   }
   .publication-heading{
     padding: 0 5%;
@@ -398,34 +405,28 @@ vivo-tab-panel h4 {
   }
   .publication-type{
     margin: 0;
-    padding-left: 5%;
+    padding-left: 1%;
   }
   .publication-date{
     margin: 0;
     margin-bottom: 5%;
-    padding-left: 10%;
-  }
-  .entity-container{
-    margin: 0;
-    padding: 0;
-  }
-  .entity-container .page-title {
-    text-align: left;
-    padding: 0 9.5%;
-    padding-bottom: 3%;
-    width: 100%;
+    padding-left: 2.5%;
   }
   .abstract {
-    padding: 0 5%;
+    padding: 0 1.5%;
   }
   .entity-content{
     margin-top: 5%;
-    padding: 5% 5% 5% 10%;
+    padding: 5% 5% 5% 7%;
     background-color: white;
   }
   .grant-page{
     margin-top: 0;
     padding-top: 0;
+    padding-left: 8.5%;
+  }
+  .grant-date {
+    margin-left: 0;
   }
   .linked-authors:after{
     display: inline-block;
@@ -442,10 +443,17 @@ vivo-tab-panel h4 {
 }
 
 @media (max-width: 500px) {
-
+  //publication entity page
+  .entity-container .page-title {
+    padding: 0 5.5%;
+    padding-bottom: 5%;
+  }
+  //grant entity page
+  .grant-page{
+    padding-left: 6%;
+  }
     // site search styling
   .site-search {
     width: 90%;
   }
 }
-
