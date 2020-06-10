@@ -55,10 +55,11 @@ func SiteMapPageHandler(c buffalo.Context) error {
 		return errors.Wrap(err, "running query template")
 	}
 
-	endpoint, err := envy.MustGet("GRAPHQL_ENDPOINT")
+	siteUrl, err := envy.MustGet("SITE_URL")
 	if err != nil {
-		return errors.Wrap(err, "finding endpoint")
+		return errors.Wrap(err, "finding SITE_URL env value")
 	}
+	endpoint := fmt.Sprintf("%s/api/graphql", siteUrl)
 	client := graphql.NewClient(endpoint)
 
 	req := graphql.NewRequest(query)

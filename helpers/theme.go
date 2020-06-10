@@ -19,7 +19,6 @@ var theme = map[string]string{
 	"siteOrganizationId":       envy.Get("SITE_ORGANIZATION_ID",  ""),
 	"siteLogo":                 envy.Get("SITE_LOGO",  ""),
 	"siteName":                 envy.Get("SITE_NAME",  ""),
-	"graphqlEndpoint":          envy.Get("GRAPHQL_ENDPOINT", ""),
 }
 
 func ThemeVariable(varname string) string {

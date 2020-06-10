@@ -15,6 +15,7 @@ require (
 	github.com/gobuffalo/packr/v2 v2.4.0
 	github.com/gobuffalo/plush v3.8.2+incompatible
 	github.com/gobuffalo/suite v2.7.0+incompatible
+	github.com/gorilla/mux v1.7.2
 	github.com/jackc/pgx v3.3.0+incompatible // indirect
 	github.com/machinebox/graphql v0.2.2
 	github.com/markbates/going v1.0.3 // indirect

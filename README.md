@@ -1,6 +1,5 @@
-# Scholars WebComponent UI
-
-A front-end to the [Scholars Discovery](https://github.com/vivo-community/scholars-discovery) GraphQL endpoint.  **NOTE** This project does nothing without a running instance of `scholars-discovery`.  To get that running see [Getting Started](#getting-started)
+# Vivo Scholar UI
+A possible front-end to the [Scholars Discovery](https://github.com/vivo-community/scholars-discovery) GraphQL endpoint. **NOTE** This project does nothing without a running instance of `scholars-discovery`.  To get that running see [Getting Started](#getting-started)
 
 ## Technology
 * [Go Buffalo](http://gobuffalo.io) - for server side rendering, and asset pipeline
