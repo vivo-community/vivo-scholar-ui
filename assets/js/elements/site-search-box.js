@@ -117,8 +117,8 @@ class SiteSearchBox extends LitElement {
           <span slot="title">About VIVO Scholar</span>
           <span slot="content">VIVO Scholar showcases the scholarly contributions and activities
           of the VIVO community. It includes up-to-date information on scholars'
-          publications, grants, and contact information.</span><br>
-          <a slot="link" href=" ">Learn more...</a>
+          publications, grants, and contact information.</span>
+          <a slot="link" href="/pages/about"<%= t("about") %>Learn more</a>
         </vivo-popup-message>
       </div>
 

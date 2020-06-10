@@ -69,8 +69,14 @@ class PopupMessage extends LitElement {
     }
     ::slotted(a) {
       text-decoration: none;
-      color: black;
+      display: block;
+      text-align: center;
+      color: white;
       font-weight: bold;
+      margin-top: 1em;
+      margin-right: 12em;
+      padding: .5em 1em .5em 1em;
+      background-color: var(--highlightColor);
     }
     ::slotted([slot="title"]) {
       flex-grow: 1;
@@ -132,6 +138,11 @@ class PopupMessage extends LitElement {
     @media screen and (max-width: 1000px) {
        :host([open]) .fa-times::before {
         padding-right: unset;
+      }
+      ::slotted(a) {
+        margin-top: 1em;
+        margin-right: 0;
+        padding: .5em 1em .5em 1em;
       }
       .message-container {
         display: block;
