@@ -39,8 +39,8 @@ class SearchTruncatedTextResult extends LitElement {
         }
         .truncate-overflow::before {
           position: absolute;
-          // FIXME: this overlaps text in chrome */
-          /* content: "..."; */
+          /* FIXME: this is not consistent in Chrome vs. Firefox */
+          content: "..."; 
           inset-block-end: 0; /* "bottom" */
           inset-inline-end: 0; /* "right" */
         }
