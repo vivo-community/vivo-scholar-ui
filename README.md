@@ -1,10 +1,9 @@
-# Scholars React
+# Vivo Scholar UI
 A possible front-end to the [Scholars Discovery](https://github.com/vivo-community/scholars-discovery) GraphQL endpoint.  
 
 ## Technology
 * [Go Buffalo](http://gobuffalo.io) - for server side rendering, and asset pipeline
 * [LitElement](https://lit-element.polymer-project.org/) - for generating web components
-* [React](https://reactjs.org/) - for client side search code - *to be replaced with web components, this project will be renamed at that time*
 
 ## Development Dependencies
 
