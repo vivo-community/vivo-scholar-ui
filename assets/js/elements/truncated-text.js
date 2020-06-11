@@ -5,7 +5,8 @@ class TruncatedText extends LitElement {
     static get properties() {
       return {
         truncateRequired: { attribute: 'truncate-required', type: Boolean, reflect: true },
-        truncatedLines: { attribute: 'truncated-lines', type: Number, reflect: true }
+        truncatedLines: { attribute: 'truncated-lines', type: Number, reflect: true },
+        noTruncate: { attribute: 'no-truncate', type: Boolean, reflect: true }
       }
     }
 
@@ -79,7 +80,10 @@ class TruncatedText extends LitElement {
       this.initialHeight = slot.offsetHeight;
       this.observer = new ResizeObserver(entries => {
         for (let entry of entries) {
-          if (entry.target.scrollHeight > Math.round(entry.contentRect.height)) {
+          if (window.innerWidth > 800 && this.noTruncate){
+            this.truncateRequired = false;
+            this.style.setProperty('--max-lines', 1000);
+          } else if (entry.target.scrollHeight > Math.round(entry.contentRect.height)) {
             this.truncateRequired = true;
           } else {
             this.truncateRequired = false;
