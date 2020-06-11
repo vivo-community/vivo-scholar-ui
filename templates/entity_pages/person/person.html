@@ -138,12 +138,21 @@
          </vivo-tab-panel>
          <% } %>
 
-        <%= if (person["researcherOn"]) { %>
+        <%= if (person["researcherOn"] || person["researchOverview"]) { %>
          <vivo-tab id="research-expertise-tab">
            <h3><%= t("tab_research_expertise") %></h3>
          </vivo-tab>
          <vivo-tab-panel id="research-expertise-panel">
-           <h4 class="section-title"><%= t("grants") %></h4>
+           <%= if (person["researchOverview"]) { %>
+           <h4 class="section-title">Research Overview</h4>
+           <div>
+              <%= raw(person["researchOverview"]) %>
+           </div>
+           <% } %>
+           <%= if (person["researchOverview"] &&  person["researcherOn"]) { %>
+           <h4 class="section-title" id="grant-section-title"><%= t("grants") %></h4>
+           <% } %>
+           <%= if (person["researcherOn"]) { %>
            <vivo-sortable-list id="grant-list" item-type="grants" sortProperty="startDate" sortDirection="desc">
              <vivo-sort-option field="startDate" direction="asc" label="<%= t("oldest_first") %>"></vivo-sort-option>
              <vivo-sort-option field="startDate" direction="desc" label="<%= t("newest_first") %>"></vivo-sort-option>
@@ -166,6 +175,7 @@
              </vivo-grant>
             <% } %>
           </vivo-sortable-list>
+          <% } %>
           </vivo-tab-panel>
           <% } %>
 

@@ -1,4 +1,4 @@
-FROM gobuffalo/buffalo:v0.14.10
+FROM gobuffalo/buffalo:v0.16.9
 
 RUN mkdir -p /vivo-scholar
 WORKDIR /vivo-scholar
