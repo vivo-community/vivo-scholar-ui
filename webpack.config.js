@@ -5,38 +5,16 @@ const CopyWebpackPlugin = require("copy-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const ManifestPlugin = require("webpack-manifest-plugin");
 const CleanObsoleteChunks = require('webpack-clean-obsolete-chunks');
-const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
+const TerserPlugin = require("terser-webpack-plugin");
 const LiveReloadPlugin = require('webpack-livereload-plugin');
 const Dotenv = require('dotenv-webpack');
 
 const vivoRegex = RegExp('vivo*');
 
-const webcomponentsjs = './node_modules/@webcomponents/webcomponentsjs';
-
-const polyfills = [
-  {
-    from: resolve(`${webcomponentsjs}/webcomponents-*.{js,map}`),
-    to: 'vendor',
-    flatten: true
-  },
-  {
-    from: resolve(`${webcomponentsjs}/bundles/*.{js,map}`),
-    to: 'vendor/bundles',
-    flatten: true
-  },
-  {
-    from: resolve(`${webcomponentsjs}/custom-elements-es5-adapter.js`),
-    to: 'vendor',
-    flatten: true
-  }
-];
-
 const configurator = {
   entries: function(){
     var entries = {
       application: [
-        'babel-polyfill',
-        './node_modules/jquery-ujs/src/rails.js',
         './assets/css/application.scss',
       ],
     }
@@ -64,10 +42,18 @@ const configurator = {
   plugins() {
     var plugins = [
       new CleanObsoleteChunks(),
-      new Webpack.ProvidePlugin({$: "jquery",jQuery: "jquery"}),
       new MiniCssExtractPlugin({filename: "[name].[contenthash].css"}),
-      new CopyWebpackPlugin([{from: "./assets",to: ""}], {copyUnmodified: true,ignore: ["css/**", "js/**", "src/**"] }),
-      new CopyWebpackPlugin([...polyfills]),
+      new CopyWebpackPlugin({
+        patterns: [
+          {
+            from: "./assets",
+            to: "", 
+            globOptions: {
+              ignore: ["css/**", "js/**", "src/**"]
+            }
+          }
+        ]
+      }),
       new Webpack.LoaderOptionsPlugin({minimize: true,debug: false}),
       new ManifestPlugin({
         fileName: "manifest.json"
@@ -91,12 +77,10 @@ const configurator = {
             { loader: "sass-loader", options: {sourceMap: true}}
           ]
         },
-        //{ test: /\.tsx?$/, use: "ts-loader", exclude: /node_modules/},
         { test: /\.jsx?$/,loader: "babel-loader",exclude: /node_modules/ },
         { test: /\.js?$/,loader: "babel-loader",exclude: /node_modules/ },
         { test: /\.(woff|woff2|ttf|svg)(\?v=\d+\.\d+\.\d+)?$/,use: "url-loader"},
         { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,use: "file-loader" },
-        { test: require.resolve("jquery"),use: "expose-loader?jQuery!expose-loader?$"},
       ]
     }
   },
@@ -135,17 +119,9 @@ const configurator = {
       return config
     }
 
-    const uglifier = new UglifyJsPlugin({
-      uglifyOptions: {
-        beautify: false,
-        mangle: {keep_fnames: true},
-        output: {comments: false},
-        compress: {}
-      }
-    })
-
     config.optimization = {
-      minimizer: [uglifier]
+      minimize: true,
+      minimizer: [new TerserPlugin()]
     }
 
     return config
