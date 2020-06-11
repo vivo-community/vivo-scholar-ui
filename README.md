@@ -31,8 +31,8 @@ See [Scholars Discovery](https://github.com/vivo-community/scholars-discovery) f
 ### Scholars WebComponent UI
      cp .env.example .env
 
-Update the value of GRAPHQL_ENDPOINT to the address of a running instance of Scholars Discovery. The default
-value of one running locally has been prepopulated in `.env.example`
+Update the value of GRAPHQL_ENDPOINT_BASE to the base address (before `/graphql`) of a running instance 
+of Scholars Discovery. The default value of one running locally has been prepopulated in `.env.example`
 
 Set the SITE_NAME, SITE_LOGO to a general name and logo for the entire site 
 
