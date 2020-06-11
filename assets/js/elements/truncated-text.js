@@ -4,13 +4,15 @@ class TruncatedText extends LitElement {
 
     static get properties() {
       return {
-        truncateRequired: { attribute: 'truncate-required', type: Boolean, reflect: true }
+        truncateRequired: { attribute: 'truncate-required', type: Boolean, reflect: true },
+        truncatedLines: { attribute: 'truncated-lines', type: Number, reflect: true }
       }
     }
 
     constructor() {
       super();
       this.truncateRequired = true;
+      this.truncatedLines = 2;
     }
 
     static get styles() {
@@ -19,7 +21,6 @@ class TruncatedText extends LitElement {
           display: block;
           position: relative;
           box-sizing: border-box;
-          --max-lines: 2;
           --lh: 1.6rem;
           line-height: var(--lh);
           max-height: calc(var(--lh) * var(--max-lines));
@@ -74,6 +75,7 @@ class TruncatedText extends LitElement {
 
     firstUpdated() {
       const slot = this.shadowRoot.querySelector('slot');
+      this.style.setProperty('--max-lines', this.truncatedLines);
       this.initialHeight = slot.offsetHeight;
       this.observer = new ResizeObserver(entries => {
         for (let entry of entries) {
