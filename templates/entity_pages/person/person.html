@@ -65,7 +65,7 @@
                        <% } %>
                      <% } %>
                    <% } %>
-                  <vivo-interval interval-start="<%= FormatISODate(p["startDate"], "year") %>" interval-end="<%= FormatISODate(p["endDate"], "year") %>" separate-open></vivo-interval>
+                  <vivo-interval class="date-interval" interval-start="<%= FormatISODate(p["startDate"], "year") %>" interval-end="<%= FormatISODate(p["endDate"], "year") %>" separate-open></vivo-interval>
                </div>
                <% } %>
             </section>
@@ -85,7 +85,7 @@
                   </div>
                   <%= e["abbreviation"] %>
                   <%= e["field"] %>
-                  <vivo-interval interval-start="<%= FormatISODate(e["startDate"], "year") %>" interval-end="<%= FormatISODate(e["endDate"], "year") %>"></vivo-interval>
+                  <vivo-interval class="date-interval" interval-start="<%= FormatISODate(e["startDate"], "year") %>" interval-end="<%= FormatISODate(e["endDate"], "year") %>"></vivo-interval>
                </div>
                <% } %>
             </section>
@@ -171,7 +171,7 @@
                <%= if (p["awardedBy"]) { %>
                 <span slot="awardedBy">  <%= t("awarded_by") %>  <%=p["awardedBy"]["label"] %></span>
                <% } %>
-               <span slot="date"><vivo-interval interval-start="<%= FormatISODate(p["startDate"], "year") %>" interval-end="<%= FormatISODate(p["endDate"], "year") %>"></vivo-interval></span>
+               <span slot="date"><vivo-interval id="grant-date" interval-start="<%= FormatISODate(p["startDate"], "year") %>" interval-end="<%= FormatISODate(p["endDate"], "year") %>"></vivo-interval></span>
              </vivo-grant>
             <% } %>
           </vivo-sortable-list>

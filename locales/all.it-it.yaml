@@ -151,6 +151,11 @@
 - id: publication_z_a
   translation: "Pubblicazione z-a"
 - id: awarded_by
+  translation: "premiato da"      
+- id: person_a_z
+  translation: "Persona a-z"
+- id: person_z_a
+  translation: "Persona z-a"    
   translation: "premiato da"
 - id: learn_more
   translation: Per saperne di più

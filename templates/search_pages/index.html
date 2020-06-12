@@ -142,9 +142,9 @@
           <vivo-person-search id="person-search" implements="vivo-search">
             <vivo-search-sort-options slot="sorter">
               <vivo-search-sort-option label="<%= t("relevance") %>" field="score" direction="ASC" />
-              <vivo-search-sort-option label="<%= t("last_name_ascending") %>" field="name" direction="ASC"
+              <vivo-search-sort-option label="<%= t("person_a_z") %>" field="name" direction="ASC"
                 default="true" />
-              <vivo-search-sort-option label="<%= t("last_name_descending") %>" field="name" direction="DESC" />
+              <vivo-search-sort-option label="<%= t("person_z_a") %>" field="name" direction="DESC" />
             </vivo-search-sort-options>
             <vivo-search-pagination slot="pagination">
             </vivo-search-pagination>
@@ -162,11 +162,11 @@
           <vivo-publication-search id="publication-search" implements="vivo-search">
             <vivo-search-sort-options slot="sorter">
               <vivo-search-sort-option label="<%= t("relevance") %>" field="score" direction="ASC" />
-              <vivo-search-sort-option label="<%= t("title_ascending") %>" field="title" direction="ASC"
+              <vivo-search-sort-option label="<%= t("publication_a_z") %>" field="title" direction="ASC"
                 default="true" />
-              <vivo-search-sort-option label="<%= t("title_descending") %>" field="title" direction="DESC" />
-              <vivo-search-sort-option label="<%= t("date_ascending") %>" field="publicationDate" direction="ASC" />
-              <vivo-search-sort-option label="<%= t("date_descending") %>" field="publicationDate" direction="DESC" />
+              <vivo-search-sort-option label="<%= t("publication_z_a") %>" field="title" direction="DESC" />
+              <vivo-search-sort-option label="<%= t("oldest_first") %>" field="publicationDate" direction="ASC" />
+              <vivo-search-sort-option label="<%= t("newest_first") %>" field="publicationDate" direction="DESC" />
             </vivo-search-sort-options>
             <vivo-search-pagination slot="pagination">
             </vivo-search-pagination>
@@ -185,9 +185,9 @@
           <vivo-grant-search id="grant-search" implements="vivo-search">
             <vivo-search-sort-options slot="sorter">
               <vivo-search-sort-option label="<%= t("relevance") %>" field="score" direction="ASC" />
-              <vivo-search-sort-option label="<%= t("title_ascending") %>" field="title" direction="ASC"
+              <vivo-search-sort-option label="<%= t("grant_a_z") %>" field="title" direction="ASC"
                 default="true" />
-              <vivo-search-sort-option label="<%= t("title_descending") %>" field="title" direction="DESC" />
+              <vivo-search-sort-option label="<%= t("grant_z_a") %>" field="title" direction="DESC" />
             </vivo-search-sort-options>
             <!-- TODO: here or just in component? -->
             <vivo-search-pagination slot="pagination">

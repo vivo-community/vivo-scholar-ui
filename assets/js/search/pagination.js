@@ -90,7 +90,7 @@ class SearchPagination extends LitElement {
     let nextLabel = this.coordinator.getLabel("next");
     let previousLabel = this.coordinator.getLabel("previous");
 
-    let { previous, pageList, next } = slicePages(this.totalPages, this.number, this.pagesGrouping)
+    let { previous, pageList, next } = slicePages(this.totalPages, this.number, this.pageGrouping)
 
     let callback = this.handlePageSelected;
     
