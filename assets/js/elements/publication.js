@@ -64,10 +64,8 @@ class Publication extends LitElement {
       ::slotted([slot="authors"]), ::slotted([slot="publisher"]) {
         padding-top: .5em;
         margin-right: 0.5em;
-        font-size: 0.75em;
       }
       ::slotted([slot="date"]){
-        font-size: 0.75em;
       }
       ::slotted([slot="date"])::before, ::slotted([slot="publisher"])::before  {
         content: '·';
