@@ -24,11 +24,11 @@ of `java`
 
 ### Scholars Discovery
 
-`Scholars WebComponent UI` is a meant to be run atop a running instance of `scholars-discovery`, which in turn imports data from a `VIVO` instance
+`Vivo Scholar UI` is a meant to be run atop a running instance of `scholars-discovery`, which in turn imports data from a `VIVO` instance
 
 See [Scholars Discovery](https://github.com/vivo-community/scholars-discovery) for more details about importing data and getting started
 
-### Scholars WebComponent UI
+### Vivo Scholar UI
      cp .env.example .env
 
 Update the value of GRAPHQL_ENDPOINT_BASE to the base address (before `/graphql`) of a running instance 
@@ -52,7 +52,8 @@ The underlying motivation of this project is to make it easier to customize the 
 
 Pages are represented by a template file and corresponding GraphQL query file. Adding new or editing existing templates and queries are the expected means of customization.
 
-Web Components are the primary method of encapsulating core styles and behaviors. They can be used to build new templates and will also provide embeddable 'widgets' for use on other sites.
+Web Components are the primary method of encapsulating core styles and behaviors. They can be used to build new templates and will also provide embeddable 'widgets' for use on other sites.  They are not generally
+*not* re-usable in a wholly separate context, except the [Embeddable Components](#embeddable-components)
 
 Server side rendering should be used for most pages where primary content is part of the document and then progressively enhanced with javascript. Searches and other complex UIs will be an exception.
 
@@ -79,7 +80,9 @@ Such as for a person, publication, grant etc...
 
 ##### Search 
 
-The search is essentially an SPA
+The search is essentially an SPA.  It is not designed to run without javascript enabled. Since the 
+entity pages are server-side rendered, and there is a sitemap, it is assumed SEO for the site
+content is handled by that
 
 * "/search/{type}" - search pages, any html/javascript
     * Template: templates/search_pages/{type}.html
@@ -87,7 +90,8 @@ The search is essentially an SPA
 
 ##### List Pages
 
-Although the purpose is already served by the search, there is also the capability of adding a browseable list of all entities.  The examples here are rudimentary, since our demo site does not use the list views
+Although the purpose is already served by the search, there is also the capability of adding a browseable list of all entities that are server-side rendered.  The examples here are rudimentary, since our demo 
+site does not use them
 
 * "/lists/{type}" - search pages, any html/javascript
     * Template: templates/list_pages/{type}/{type}.html
