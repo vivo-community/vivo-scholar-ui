@@ -65,8 +65,6 @@ class Publication extends LitElement {
         padding-top: .5em;
         margin-right: 0.5em;
       }
-      ::slotted([slot="date"]){
-      }
       ::slotted([slot="date"])::before, ::slotted([slot="publisher"])::before  {
         content: '·';
         font-weight: bold;
