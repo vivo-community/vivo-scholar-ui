@@ -42,7 +42,7 @@ let Searcher = (superclass) => class extends superclass {
       let order = orders[0];
       if (this.sortOptions) { 
         // NOTE: this means all searches need sortOptions defined
-        let obj =  _.find(this.sortOptions, { field: order.property, direction: order.direction });
+        let obj =  _.find(this.sortOptions, { property: order.property, direction: order.direction });
         if (!obj) {
           return this.figureDefaultSort(searchStr);
         } else {
