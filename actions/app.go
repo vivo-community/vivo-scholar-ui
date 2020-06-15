@@ -40,6 +40,8 @@ func graphqlProxy() http.Handler {
 	mux := mux.NewRouter()
 	mux.PathPrefix("/").HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		r.Host = r.URL.Host
+		r.Header.Del("Origin")                                                                                                              
+		r.Header.Add("Origin", baseURL)
 		reverseProxy.ServeHTTP(w, r)
 	}).Methods("GET", "POST")
 	return mux
