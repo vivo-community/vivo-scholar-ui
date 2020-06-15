@@ -7,4 +7,5 @@ ADD package.json .
 ADD yarn.lock .
 RUN yarn install --no-progress
 ENV GO111MODULE=on
+EXPOSE 3000
 ENV ADDR=0.0.0.0
