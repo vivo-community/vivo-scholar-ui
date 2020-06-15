@@ -166,7 +166,7 @@ class PopupMessage extends LitElement {
           <i class="fas fa-times" @click=${this.closeDown}></i>
         </div>
         <div class="message-container">
-          <slot name="content"></slot><br><br>
+          <slot name="content"></slot>
           <slot name="link"></slot>
         </div>
     </vivo-message-modal>
