@@ -1,5 +1,6 @@
 <a slot="title" href="/">
-  <img id="site-logo" src="<%= assetPath("images/"+"VIVO_Scholar_Header.svg") %>" alt="VIVO Scholar">
+  <img id="site-logo" src="<%= assetPath("images/"+ThemeVariable("siteLogo")) %>" 
+    alt="<%= ThemeVariable("siteName") %>">
 </a>
 <a slot="nav-item" href="/pages/about"><%= t("about") %></a>
 <a slot="nav-item" href="/search/?search=*"><%= t("browse") %></a>

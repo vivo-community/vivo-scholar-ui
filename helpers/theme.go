@@ -3,7 +3,6 @@ package helpers
 import (
 	"github.com/gobuffalo/envy"
 )
-
 var theme = map[string]string{
 	"primaryColor":             envy.Get("THEME_PRIMARY_COLOR", "#2f3d4f"),
 	"highlightColor":           envy.Get("THEME_HIGHLIGHT_COLOR", "#26a8df"),
@@ -18,6 +17,8 @@ var theme = map[string]string{
 	"backgroundColor":          envy.Get("THEME_BACKGROUND_COLOR", "#7f7f7f"),
 	"defaultProfileImage":      envy.Get("DEFAULT_PROFILE_IMAGE", ""),
 	"siteOrganizationId":       envy.Get("SITE_ORGANIZATION_ID",  ""),
+	"siteLogo":                 envy.Get("SITE_LOGO",  ""),
+	"siteName":                 envy.Get("SITE_NAME",  ""),
 }
 
 func ThemeVariable(varname string) string {
