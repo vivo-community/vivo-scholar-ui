@@ -38,17 +38,17 @@
     </vivo-entity-item>
   <% } %>
   <%= if (grant["contributors"]) { %>
-    <%= for (g) in grant["contributors"] { %>
-      <%= if ((g["role"] != "PrincipalInvestigatorRole") && (g["role"] != "coPrincipalInvestigatorsInvestigatorRole")) { %>
     <vivo-entity-item>
       <span slot="title">Contributors</span>
+      <%= for (g) in grant["contributors"] { %>
+        <%= if ((g["role"] != "PrincipalInvestigatorRole") && (g["role"] != "coPrincipalInvestigatorsInvestigatorRole")) { %>
       <span slot="content">
                   <a href="/entities/person/<%= g["id"] %>">
                     <%= g["label"] %></a> <%= SplitCamelCase(g["role"]) %>
                     <br>
-            <% } %>
-        <% } %>
       </span>
+      <% } %>
+    <% } %>
     </vivo-entity-item>
   <% } %>
   <%= if (grant["subjectAreas"]) { %>
