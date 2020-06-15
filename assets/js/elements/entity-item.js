@@ -13,7 +13,7 @@ class EntityItem extends LitElement {
         display: inline-block;
         width: 15%;
         text-align: right;
-        margin-right: 5%;
+        margin-right: 3%;
       }
       slot[name="content"]{
         display: inline-block;

@@ -64,6 +64,10 @@ class Publication extends LitElement {
       ::slotted([slot="authors"]), ::slotted([slot="publisher"]) {
         padding-top: .5em;
         margin-right: 0.5em;
+        font-size: 0.75em;
+      }
+      ::slotted([slot="date"]){
+        font-size: 0.75em;
       }
       ::slotted([slot="date"])::before, ::slotted([slot="publisher"])::before  {
         content: '·';
@@ -73,11 +77,12 @@ class Publication extends LitElement {
       slot[name="abstract"] {
         display: block;
         margin-top: 0.5em;
+        font-size: 0.75em;
       }
       slot[name="links"] {
         display: flex;
         flex-flow: row wrap;
-        margin-top: .75em;
+        margin-top: 0.75em;
       }
       ::slotted([slot="links"]) {
         color: var(--darkNeutralColor);

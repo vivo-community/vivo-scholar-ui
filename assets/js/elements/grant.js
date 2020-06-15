@@ -52,16 +52,26 @@ class Grant extends LitElement{
     return css `
       :host {
         display: block;
-        padding-top: 1em;
         line-height: 1.6;
       }
       ::slotted([slot="label"]) {
           color: var(--linkColor);
           font-weight: bold;
           text-decoration: none;
-          font-size: 1.55em;
+          font-size: 1.1em;
           margin-bottom: 1em;
         }
+      ::slotted([slot="awardedBy"]){
+        font-size: 0.75em;
+      }
+      ::slotted([slot="date"]){
+        font-size: 0.75em;
+      }
+      ::slotted([slot="date"])::before {
+        content: '·';
+        font-weight: bold;
+        margin-right: 0.5em;
+      }
     `;
   }
 

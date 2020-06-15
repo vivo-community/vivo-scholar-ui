@@ -15,9 +15,9 @@
       <%= if (publication["abstractText"]) { %>
           <vivo-entity-item class="abstract">
               <span slot="title">Abstract</span>
-              <span slot="content"><vivo-truncated-text slot="abstract">
+              <span slot="content"><vivo-truncated-text no-truncate="true" truncated-lines="15" slot="abstract">
                 <%= raw(publication["abstractText"])%>
-              </vivo-truncated-text></span>
+              </span>
           </vivo-entity-item>
       <% } %>
     </div>

@@ -122,6 +122,7 @@ class GrantSearch extends Searcher(LitElement) {
         .search-actions {
             display: flex;
             padding-top: 5px;
+            padding-left: 1em;
         }
         vivo-search-pagination-summary {
             flex-grow: 2;
@@ -144,6 +145,7 @@ class GrantSearch extends Searcher(LitElement) {
         }
         .grants {
             padding: 1em;
+            padding-top: 0.4em;
         }
         @media screen and (max-width: 1000px) {
             .grants {

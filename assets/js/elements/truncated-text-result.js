@@ -27,7 +27,7 @@ class SearchTruncatedTextResult extends LitElement {
     return css`
         :host {
             --lh: 1.2rem;
-            line-height: var(--lh);  
+            line-height: var(--lh);
         }
         /* https://css-tricks.com/line-clampin/ */
         .truncate-overflow {
@@ -40,7 +40,7 @@ class SearchTruncatedTextResult extends LitElement {
         .truncate-overflow::before {
           position: absolute;
           /* FIXME: this is not consistent in Chrome vs. Firefox */
-          content: "..."; 
+          content: "...";
           inset-block-end: 0; /* "bottom" */
           inset-inline-end: 0; /* "right" */
         }
