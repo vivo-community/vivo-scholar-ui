@@ -26,14 +26,13 @@
         <vivo-entity-item>
           <span slot="title">Authors</span>
           <span slot="content">
-            <%= for (p) in publication["authors"] { %>
-            <vivo-publication-author-list slot="authors">
+            <vivo-publication-author-list slot="authors" displayed-author-count="30">
+              <%= for (p) in publication["authors"] { %>
                 <vivo-publication-author>
                     <%= p["label"] %>
                 </vivo-publication-author>
             <% } %>
             </vivo-publication-author-list>
-            <% } %>
           </span>
         </vivo-entity-item>
       <% } %>
