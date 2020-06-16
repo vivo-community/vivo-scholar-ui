@@ -61,7 +61,7 @@ class Grant extends LitElement{
           font-size: 1.1em;
           margin-bottom: 1em;
         }
-      ::slotted([slot="date"])::before {
+      ::slotted([slot="awardedBy"])::after {
         content: '·';
         font-weight: bold;
         margin-right: 0.5em;
