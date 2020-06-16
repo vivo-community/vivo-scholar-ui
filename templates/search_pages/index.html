@@ -4,10 +4,10 @@
     height: 95%;
   }
   body {
-    height: 95%; 
+    height: 95%;
   }
   #main {
-    height: 95%; 
+    height: 95%;
     width: 100%;
     margin: 140px auto 0 auto;
   }
@@ -78,11 +78,6 @@
             <vivo-search-facets key="documents" field="type" tag="type">
               <h4><%= t("type") %></h4>
             </vivo-search-facets>
-
-            <vivo-publication-date-facets key="documents" field="publicationDate" implements="vivo-search-facets"
-              tag="publicationDate">
-              <h4><%= t("date") %></h4>
-            </vivo-publication-date-facets>
 
             <!-- NOTE: author name seemed to need 'RAW' option -->
             <vivo-search-facets key="documents" field="authors" tag="authors" popupHeading="<%= t("filter_authors") %>"
