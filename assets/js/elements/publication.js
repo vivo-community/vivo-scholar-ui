@@ -89,7 +89,7 @@ class Publication extends LitElement {
         ::slotted([slot="authors"]), ::slotted([slot="publisher"]), ::slotted([slot="date"]) {
           display: block;
         }
-        ::slotted([slot="date"])::before, ::slotted([slot="publisher"])::before  {
+        ::slotted([slot="authors"])::after, ::slotted([slot="publisher"])::after  {
           display: none;
         }
       }
