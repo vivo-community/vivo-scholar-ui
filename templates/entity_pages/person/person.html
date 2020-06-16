@@ -171,7 +171,9 @@
                <%= if (p["awardedBy"]) { %>
                 <span slot="awardedBy">  <%= t("awarded_by") %>  <%=p["awardedBy"]["label"] %></span>
                <% } %>
+               <%= if (p["startDate"]) { %>
                <span slot="date"><vivo-interval id="grant-date" interval-start="<%= FormatISODate(p["startDate"], "year") %>" interval-end="<%= FormatISODate(p["endDate"], "year") %>"></vivo-interval></span>
+               <% } %>
              </vivo-grant>
             <% } %>
           </vivo-sortable-list>
