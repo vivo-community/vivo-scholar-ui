@@ -236,6 +236,10 @@ vivo-tab-panel h4 {
   "publicationDate publicationDate publicationDate publicationDate . . . . . . . ."
   "abstract abstract abstract abstract abstract abstract abstract abstract abstract abstract abstract abstract";
 }
+.entity-content a {
+  color: var(--linkColor);
+  font-weight: bold;
+}
 .linked-authors:after{
   content: "\A";
   white-space: pre;
