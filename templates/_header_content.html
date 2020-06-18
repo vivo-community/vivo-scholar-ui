@@ -1,7 +1,8 @@
 <a slot="title" href="/">
-  <img id="site-logo" src="<%= assetPath("images/"+ThemeVariable("siteLogo")) %>" 
+  <img id="site-logo" src="<%= assetPath("images/"+ThemeVariable("siteLogo")) %>"
     alt="<%= ThemeVariable("siteName") %>">
 </a>
 <a slot="nav-item" href="/pages/about"><%= t("about") %></a>
+<a slot="nav-item" href="/pages/organizations">Organizations</a>
 <a slot="nav-item" href="/search/?search=*"><%= t("browse") %></a>
 <a slot="nav-item" href=""><%= t("sign_in") %></a>

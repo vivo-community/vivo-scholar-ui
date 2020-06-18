@@ -44,9 +44,12 @@ class SiteHeader extends LitElement {
         color: white;
         justify-content: space-evenly;
       }
+      #navigation {
+        width: 35%;
+      }
       ::slotted([slot="nav-item"]){
         font-size: calc(1em + .5vw);
-        margin-right: 10%;
+        margin-right: 5%;
         text-decoration: none;
         color: white !important;
         white-space: nowrap;
@@ -65,7 +68,7 @@ class SiteHeader extends LitElement {
          max-width: 380px;
        }
       }
-      @media (max-width: 725px){
+      @media (max-width: 950px){
         #menu-button {
           display: flex;
           background: none;
@@ -99,7 +102,7 @@ class SiteHeader extends LitElement {
         }
         ::slotted([slot="nav-item"]){
           font-size: 1em;
-          padding: 7.5% 0 7.5% 0;
+          padding-bottom: 7%;
           margin: 0;
           text-align: center;
         }
