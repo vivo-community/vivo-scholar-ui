@@ -68,7 +68,17 @@ class SiteHeader extends LitElement {
          max-width: 380px;
        }
       }
-      @media (max-width: 950px){
+      @media (max-width: 1000px){
+        #navigation {
+          width: 40%;
+        }
+      }
+      @media (max-width: 800px){
+        #navigation {
+          width: 45%;
+        }
+      }
+      @media (max-width: 800px){
         #menu-button {
           display: flex;
           background: none;
