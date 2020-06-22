@@ -50,6 +50,8 @@
 - id: about
   translation: "About"
 - id: browse
+  translation: "Organizations"
+- id: organizations
   translation: "Browse"
 - id: sign_in
   translation: "Sign In"
@@ -88,7 +90,7 @@
 - id: publisher
   translation: "Publisher"
 - id: contributors
-  translation: "Contributors"      
+  translation: "Contributors"
 - id: funding_source
   translation: "Funding Source"
 - id: people
@@ -106,7 +108,7 @@
 - id: filter_author
   translation: "Filter Author"
 - id: show_more
-  translation: "Show More"  
+  translation: "Show More"
 - id: show_less
   translation: "Show Less"
 - id: cancel
@@ -128,7 +130,7 @@
 - id: date_ascending
   translation: "Date (Ascending)"
 - id: date_descending
-  translation: "Date (Descending)" 
+  translation: "Date (Descending)"
 - id: next
   translation: "Next"
 - id: previous
@@ -140,7 +142,7 @@
 - id: filter_authors
   translation: "Filter Authors"
 - id: filter
-  translation: "Filter"  
+  translation: "Filter"
 - id: show
   translation: "Show"
 - id: hide
@@ -164,11 +166,8 @@
 - id: person_a_z
   translation: "Person a-z"
 - id: person_z_a
-  translation: "Person z-a"  
+  translation: "Person z-a"
 - id: learn_more
   translation: "Learn more"
 - id: showing_all
-  translation: "Showing all"  
-
-
-
+  translation: "Showing all"
